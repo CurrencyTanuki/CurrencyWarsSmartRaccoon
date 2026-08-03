@@ -1,0 +1,572 @@
+{
+  "schemaVersion": 1,
+  "pages": [
+    {
+      "id": "normal_hud",
+      "displayName": "游戏主界面",
+      "priority": 10,
+      "anchors": [
+        {
+          "id": "normal_hud_guide_button",
+          "displayName": "星际和平指南快捷按钮",
+          "file": "templates/1920x1080/pages/normal-hud-guide-button-edge.png",
+          "searchRegion": {
+            "x": 0.75,
+            "y": 0.0,
+            "width": 0.12,
+            "height": 0.12
+          },
+          "threshold": 0.52,
+          "edgeDetection": true
+        }
+      ]
+    },
+    {
+      "id": "guide_currency_wars",
+      "displayName": "星际和平指南-货币战争",
+      "priority": 30,
+      "anchors": [
+        {
+          "id": "guide_shell_title",
+          "displayName": "星际和平指南标题",
+          "file": "templates/1920x1080/pages/guide-shell-title.png",
+          "searchRegion": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 0.22,
+            "height": 0.14
+          },
+          "threshold": 0.9
+        },
+        {
+          "id": "guide_currency_wars_title",
+          "displayName": "货币战争活动标题",
+          "file": "templates/1920x1080/pages/guide-currency-wars-title.png",
+          "searchRegion": {
+            "x": 0.1,
+            "y": 0.2,
+            "width": 0.32,
+            "height": 0.22
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "guide_shell",
+      "displayName": "星际和平指南",
+      "priority": 20,
+      "anchors": [
+        {
+          "id": "guide_shell_title",
+          "displayName": "星际和平指南标题",
+          "file": "templates/1920x1080/pages/guide-shell-title.png",
+          "searchRegion": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 0.22,
+            "height": 0.14
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "update_popup",
+      "displayName": "赛季扩充说明",
+      "priority": 40,
+      "anchors": [
+        {
+          "id": "update_popup_header",
+          "displayName": "赛季扩充说明标题",
+          "file": "templates/1920x1080/pages/update-popup-header.png",
+          "searchRegion": {
+            "x": 0.12,
+            "y": 0.12,
+            "width": 0.7,
+            "height": 0.25
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "score_popup",
+      "displayName": "积分奖励",
+      "priority": 40,
+      "anchors": [
+        {
+          "id": "score_popup_title",
+          "displayName": "积分奖励标题",
+          "file": "templates/1920x1080/pages/score-popup-title.png",
+          "searchRegion": {
+            "x": 0.0,
+            "y": 0.2,
+            "width": 0.25,
+            "height": 0.2
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "abandon_settlement_prompt",
+      "displayName": "放弃并结算提示",
+      "priority": 50,
+      "anchors": [
+        {
+          "id": "abandon_settlement_prompt",
+          "displayName": "中断挑战提示内容",
+          "file": "templates/1920x1080/pages/abandon-settlement-prompt.png",
+          "searchRegion": {
+            "x": 0.28,
+            "y": 0.2,
+            "width": 0.52,
+            "height": 0.38
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "challenge_failed",
+      "displayName": "挑战失败",
+      "priority": 50,
+      "anchors": [
+        {
+          "id": "challenge_failed_title",
+          "displayName": "挑战失败标题",
+          "file": "templates/1920x1080/pages/challenge-failed-title.png",
+          "searchRegion": {
+            "x": 0.33,
+            "y": 0.08,
+            "width": 0.38,
+            "height": 0.32
+          },
+          "threshold": 0.88
+        }
+      ]
+    },
+    {
+      "id": "challenge_health_depleted",
+      "displayName": "生命值耗尽挑战结束",
+      "priority": 55,
+      "anchors": [
+        {
+          "id": "challenge_ended_title",
+          "displayName": "血量耗尽挑战结束标题",
+          "file": "templates/1920x1080/pages/challenge-ended-title.png",
+          "searchRegion": {
+            "x": 0.33,
+            "y": 0.08,
+            "width": 0.38,
+            "height": 0.32
+          },
+          "threshold": 0.84
+        }
+      ]
+    },
+    {
+      "id": "currency_wars_home",
+      "displayName": "货币战争主页面",
+      "priority": 10,
+      "anchors": [
+        {
+          "id": "currency_wars_home_title",
+          "displayName": "货币战争零和博弈标题",
+          "file": "templates/1920x1080/pages/currency-wars-home-title.png",
+          "searchRegion": {
+            "x": 0.0,
+            "y": 0.02,
+            "width": 0.24,
+            "height": 0.2
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "mode_selection",
+      "displayName": "模式选择",
+      "priority": 10,
+      "anchors": [
+        {
+          "id": "mode_selection_standard_header",
+          "displayName": "标准博弈标题",
+          "file": "templates/1920x1080/pages/mode-selection-standard-header.png",
+          "searchRegion": {
+            "x": 0.22,
+            "y": 0.07,
+            "width": 0.42,
+            "height": 0.18
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "rank_difficulty_in_progress",
+      "displayName": "已有进行中的货币战争对局",
+      "priority": 80,
+      "anchors": [
+        {
+          "id": "rank_difficulty_in_progress_actions",
+          "displayName": "结束并结算与继续进度按钮",
+          "file": "templates/1920x1080/pages/rank-difficulty-in-progress-actions.png",
+          "searchRegion": {
+            "x": 0.58,
+            "y": 0.82,
+            "width": 0.41,
+            "height": 0.15
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "rank_difficulty",
+      "displayName": "职级难度",
+      "priority": 10,
+      "anchors": [
+        {
+          "id": "rank_difficulty_header",
+          "displayName": "当前职级难度效果",
+          "file": "templates/1920x1080/pages/rank-difficulty-header.png",
+          "searchRegion": {
+            "x": 0.0,
+            "y": 0.2,
+            "width": 0.65,
+            "height": 0.25
+          },
+          "threshold": 0.76,
+          "grayscale": true
+        }
+      ]
+    },
+    {
+      "id": "enemy_overview",
+      "displayName": "敌方阵营与词缀",
+      "priority": 10,
+      "anchors": [
+        {
+          "id": "enemy_overview_leader_label",
+          "displayName": "本场对局首领",
+          "file": "templates/1920x1080/pages/enemy-overview-leader-label.png",
+          "threshold": 0.8
+        }
+      ]
+    },
+    {
+      "id": "plane_progress",
+      "displayName": "位面进度",
+      "priority": 10,
+      "anchors": [
+        {
+          "id": "plane_progress_continue",
+          "displayName": "点击空白处继续",
+          "file": "templates/1920x1080/pages/plane-progress-continue.png",
+          "searchRegion": {
+            "x": 0.35,
+            "y": 0.78,
+            "width": 0.3,
+            "height": 0.2
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "investment_environment",
+      "displayName": "投资环境",
+      "priority": 10,
+      "anchors": [
+        {
+          "id": "investment_environment_title",
+          "displayName": "投资环境标题",
+          "file": "templates/1920x1080/pages/investment-environment-title.png",
+          "searchRegion": {
+            "x": 0.38,
+            "y": 0.0,
+            "width": 0.25,
+            "height": 0.17
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "reward_shop",
+      "displayName": "奖励关商店",
+      "priority": 70,
+      "minimumAnchorMatches": 1,
+      "anchors": [
+        {
+          "id": "reward_shop_refresh_panel",
+          "displayName": "商店刷新面板",
+          "file": "templates/1920x1080/pages/reward-shop-refresh-panel.png",
+          "searchRegion": {
+            "x": 0.73,
+            "y": 0.3,
+            "width": 0.2,
+            "height": 0.34
+          },
+          "threshold": 0.86
+        },
+        {
+          "id": "reward_shop_refresh_disabled_panel",
+          "displayName": "金币不足时的商店刷新面板",
+          "file": "templates/1920x1080/pages/reward-shop-refresh-disabled-panel.png",
+          "searchRegion": {
+            "x": 0.73,
+            "y": 0.3,
+            "width": 0.2,
+            "height": 0.34
+          },
+          "threshold": 0.86
+        }
+      ]
+    },
+    {
+      "id": "reward_battle",
+      "displayName": "奖励关战斗",
+      "priority": 60,
+      "anchors": [
+        {
+          "id": "reward_battle_status_bar",
+          "displayName": "奖励关战斗状态栏",
+          "file": "templates/1920x1080/pages/reward-battle-status-bar.png",
+          "searchRegion": {
+            "x": 0.24,
+            "y": 0.0,
+            "width": 0.2,
+            "height": 0.14
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "reward_battle_pause",
+      "displayName": "奖励战斗暂停/关卡信息",
+      "priority": 85,
+      "anchors": [
+        {
+          "id": "reward_battle_pause_title",
+          "displayName": "战斗暂停与关卡信息标题",
+          "file": "templates/1920x1080/pages/reward-battle-pause-title.png",
+          "searchRegion": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 0.16,
+            "height": 0.13
+          },
+          "threshold": 0.88
+        },
+        {
+          "id": "reward_battle_pause_retreat_controls",
+          "displayName": "战斗暂停撤退按钮布局",
+          "file": "templates/1920x1080/pages/reward-battle-pause-retreat-controls.png",
+          "searchRegion": {
+            "x": 0.5,
+            "y": 0.86,
+            "width": 0.3,
+            "height": 0.13
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "battle_generic",
+      "displayName": "通用货币战争战斗页面",
+      "priority": 55,
+      "minimumAnchorMatches": 1,
+      "anchors": [
+        {
+          "id": "battle_generic_damage_tabs",
+          "displayName": "战斗伤害统计页签",
+          "file": "templates/1920x1080/pages/battle-damage-tabs.png",
+          "searchRegion": {
+            "x": 0.8,
+            "y": 0.13,
+            "width": 0.19,
+            "height": 0.13
+          },
+          "threshold": 0.7,
+          "edgeDetection": true
+        },
+        {
+          "id": "battle_generic_pause_control",
+          "displayName": "战斗暂停控件",
+          "file": "templates/1920x1080/pages/battle-pause-control.png",
+          "searchRegion": {
+            "x": 0.9,
+            "y": 0.0,
+            "width": 0.09,
+            "height": 0.09
+          },
+          "threshold": 0.74,
+          "edgeDetection": true
+        }
+      ]
+    },
+    {
+      "id": "incomplete_lineup_prompt",
+      "displayName": "出战人数未达上限确认",
+      "priority": 95,
+      "anchors": [
+        {
+          "id": "incomplete_lineup_prompt_title",
+          "displayName": "人数不足提示标题",
+          "file": "templates/1920x1080/pages/incomplete-lineup-prompt-title.png",
+          "searchRegion": {
+            "x": 0.4,
+            "y": 0.3,
+            "width": 0.2,
+            "height": 0.18
+          },
+          "threshold": 0.9
+        },
+        {
+          "id": "incomplete_lineup_prompt_message",
+          "displayName": "可出战角色人数未达上限正文",
+          "file": "templates/1920x1080/pages/incomplete-lineup-prompt-message.png",
+          "searchRegion": {
+            "x": 0.3,
+            "y": 0.4,
+            "width": 0.4,
+            "height": 0.18
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "challenge_success",
+      "displayName": "奖励关挑战成功",
+      "priority": 70,
+      "anchors": [
+        {
+          "id": "challenge_success_title",
+          "displayName": "挑战成功标题",
+          "file": "templates/1920x1080/pages/challenge-success-title.png",
+          "searchRegion": {
+            "x": 0.35,
+            "y": 0.1,
+            "width": 0.32,
+            "height": 0.24
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "investment_strategy",
+      "displayName": "投资策略选择",
+      "priority": 70,
+      "anchors": [
+        {
+          "id": "investment_strategy_title",
+          "displayName": "请选择投资策略标题",
+          "file": "templates/1920x1080/pages/investment-strategy-title.png",
+          "searchRegion": {
+            "x": 0.34,
+            "y": 0.0,
+            "width": 0.34,
+            "height": 0.2
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "companion_selection",
+      "displayName": "伙伴选择",
+      "priority": 90,
+      "anchors": [
+        {
+          "id": "companion_selection_title",
+          "displayName": "选择伙伴标题",
+          "file": "templates/1920x1080/pages/companion-selection-title.png",
+          "searchRegion": {
+            "x": 0.46,
+            "y": 0.03,
+            "width": 0.16,
+            "height": 0.1
+          },
+          "threshold": 0.9
+        },
+        {
+          "id": "companion_selection_instruction",
+          "displayName": "列车同行伙伴选择说明",
+          "file": "templates/1920x1080/pages/companion-selection-instruction.png",
+          "searchRegion": {
+            "x": 0.3,
+            "y": 0.09,
+            "width": 0.45,
+            "height": 0.1
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "preparation_1_1",
+      "displayName": "备战阶段1-1",
+      "priority": 10,
+      "anchors": [
+        {
+          "id": "preparation_stage_1_1",
+          "displayName": "备战阶段1-1标题",
+          "file": "templates/1920x1080/pages/preparation-stage-1-1.png",
+          "searchRegion": {
+            "x": 0.12,
+            "y": 0.0,
+            "width": 0.28,
+            "height": 0.16
+          },
+          "threshold": 0.9
+        }
+      ]
+    },
+    {
+      "id": "preparation_generic",
+      "displayName": "通用货币战争备战页面",
+      "priority": 5,
+      "anchors": [
+        {
+          "id": "preparation_stage_label",
+          "displayName": "备战阶段通用标题",
+          "file": "templates/1920x1080/pages/preparation-stage-label.png",
+          "searchRegion": {
+            "x": 0.18,
+            "y": 0.0,
+            "width": 0.14,
+            "height": 0.08
+          },
+          "threshold": 0.5,
+          "edgeDetection": true
+        }
+      ]
+    },
+    {
+      "id": "preparation_1_2",
+      "displayName": "备战阶段1-2",
+      "priority": 20,
+      "anchors": [
+        {
+          "id": "preparation_stage_1_2",
+          "displayName": "备战阶段1-2标题",
+          "file": "templates/1920x1080/pages/preparation-stage-1-2.png",
+          "searchRegion": {
+            "x": 0.12,
+            "y": 0.0,
+            "width": 0.28,
+            "height": 0.16
+          },
+          "threshold": 0.9
+        }
+      ]
+    }
+  ]
+}

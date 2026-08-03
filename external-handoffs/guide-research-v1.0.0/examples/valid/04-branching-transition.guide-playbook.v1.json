@@ -1,0 +1,334 @@
+{
+  "schemaVersion": "guide-playbook.v1",
+  "guideId": "guide-himeko-or-seele-transition-v1",
+  "title": "姬子列车主线与第二位面量子转型分支",
+  "status": "reviewed",
+  "applicableGameVersions": [
+    "4.4"
+  ],
+  "archetypeId": "archetype-himeko-with-seele-fallback",
+  "archetypeName": "列车护盾／量子转型",
+  "goalIds": [
+    "stable",
+    "adaptive"
+  ],
+  "signals": {
+    "coreCharacterIds": [
+      "currency_wars_character_01",
+      "currency_wars_character_67"
+    ],
+    "optionalCharacterIds": [
+      "currency_wars_character_35",
+      "currency_wars_character_23",
+      "currency_wars_character_55"
+    ],
+    "equipmentIds": [],
+    "bondIds": [
+      "currency_wars_bond_11",
+      "currency_wars_bond_15",
+      "currency_wars_bond_22"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+  },
+  "applicability": {
+    "required": [
+      {
+        "field": "gameVersion",
+        "operator": "equals",
+        "expected": "4.4",
+        "unknownPolicy": "reject",
+        "evidenceRefs": [
+          {
+            "evidenceSetId": "evidence-taptap-828363891523190942",
+            "claimId": "metadata-v44-a850"
+          }
+        ]
+      }
+    ],
+    "prohibited": [],
+    "defaultUnknownPolicy": "require_review"
+  },
+  "phases": [
+    {
+      "phaseId": "evaluate-at-plane-2",
+      "title": "第二位面核心检查",
+      "selector": {
+        "planeIds": [
+          2
+        ],
+        "nodeIds": [],
+        "nodeTypes": [
+          "preparation"
+        ]
+      },
+      "recommendedState": {
+        "economy": {
+          "min": null,
+          "max": null,
+          "unit": "coin"
+        },
+        "health": {
+          "min": null,
+          "max": null,
+          "unit": "health"
+        },
+        "level": {
+          "min": null,
+          "max": null,
+          "unit": "level"
+        },
+        "remainingActionPoints": {
+          "min": null,
+          "max": null,
+          "unit": "action_point"
+        },
+        "lineup": {
+          "frontCharacterIds": [],
+          "backCharacterIds": [],
+          "benchCharacterIds": [],
+          "minimumStarsByCharacterId": {}
+        },
+        "equipment": [],
+        "bondIds": [],
+        "investmentEnvironmentIds": [],
+        "investmentStrategyIds": []
+      },
+      "actionIds": [
+        "continue-train-route",
+        "pivot-to-seele"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-taptap-828363891523190942",
+          "claimId": "pivot-if-no-himeko"
+        },
+        {
+          "evidenceSetId": "evidence-taptap-828363891523190942",
+          "claimId": "core-train-shield"
+        }
+      ],
+      "notes": [
+        "信息不足时不自动做高风险转型。"
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "actionId": "continue-train-route",
+      "title": "已获得姬子时继续列车路线",
+      "instruction": "保留姬子·启行并继续补列车同行和护盾组件。",
+      "priority": 100,
+      "conditions": [
+        {
+          "field": "lineupIds",
+          "operator": "contains_any",
+          "expected": [
+            "currency_wars_character_01"
+          ],
+          "unknownPolicy": "reject",
+          "evidenceRefs": [
+            {
+              "evidenceSetId": "evidence-taptap-828363891523190942",
+              "claimId": "core-train-shield"
+            }
+          ]
+        }
+      ],
+      "benefits": [
+        "避免放弃已经确认的核心"
+      ],
+      "costs": [],
+      "risks": [
+        "仍需按实际经济控制刷新"
+      ],
+      "preconditions": [
+        "角色识别为 Known"
+      ],
+      "invalidatesWhen": [
+        "核心识别被后续高置信度证据否定"
+      ],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-taptap-828363891523190942",
+          "claimId": "core-train-shield"
+        }
+      ]
+    },
+    {
+      "actionId": "pivot-to-seele",
+      "title": "第二位面仍无姬子时评估量子转型",
+      "instruction": "若第二位面仍确认没有姬子·启行，结合真实经济与已有角色评估转向希儿量子路线。",
+      "priority": 90,
+      "conditions": [
+        {
+          "field": "plane",
+          "operator": "equals",
+          "expected": 2,
+          "unknownPolicy": "reject",
+          "evidenceRefs": [
+            {
+              "evidenceSetId": "evidence-taptap-828363891523190942",
+              "claimId": "pivot-if-no-himeko"
+            }
+          ]
+        },
+        {
+          "field": "lineupIds",
+          "operator": "contains_none",
+          "expected": [
+            "currency_wars_character_01"
+          ],
+          "unknownPolicy": "require_review",
+          "evidenceRefs": [
+            {
+              "evidenceSetId": "evidence-taptap-828363891523190942",
+              "claimId": "pivot-if-no-himeko"
+            }
+          ]
+        }
+      ],
+      "benefits": [
+        "停止为已经错过的核心持续投入"
+      ],
+      "costs": [
+        "可能放弃部分列车过渡投入"
+      ],
+      "risks": [
+        "转型成本取决于当前经济和已持有角色"
+      ],
+      "preconditions": [
+        "第二位面和缺少核心均经过可靠识别"
+      ],
+      "invalidatesWhen": [
+        "获得姬子·启行",
+        "量子组件不足"
+      ],
+      "fallbackActionIds": [
+        "continue-train-route"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-taptap-828363891523190942",
+          "claimId": "pivot-if-no-himeko"
+        }
+      ]
+    }
+  ],
+  "branches": [
+    {
+      "branchId": "plane-2-core-check",
+      "priority": 100,
+      "when": [
+        {
+          "field": "plane",
+          "operator": "equals",
+          "expected": 2,
+          "unknownPolicy": "reject",
+          "evidenceRefs": [
+            {
+              "evidenceSetId": "evidence-taptap-828363891523190942",
+              "claimId": "pivot-if-no-himeko"
+            }
+          ]
+        },
+        {
+          "field": "lineupIds",
+          "operator": "contains_none",
+          "expected": [
+            "currency_wars_character_01"
+          ],
+          "unknownPolicy": "require_review",
+          "evidenceRefs": [
+            {
+              "evidenceSetId": "evidence-taptap-828363891523190942",
+              "claimId": "pivot-if-no-himeko"
+            }
+          ]
+        }
+      ],
+      "thenActionIds": [
+        "pivot-to-seele"
+      ],
+      "otherwiseActionIds": [
+        "continue-train-route"
+      ],
+      "transitionToPhaseId": "evaluate-at-plane-2",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-taptap-828363891523190942",
+          "claimId": "pivot-if-no-himeko"
+        }
+      ]
+    }
+  ],
+  "alternativeRoutes": [
+    {
+      "routeId": "seele-quantum-fallback",
+      "title": "希儿量子备选",
+      "triggerConditions": [
+        {
+          "field": "lineupIds",
+          "operator": "contains_none",
+          "expected": [
+            "currency_wars_character_01"
+          ],
+          "unknownPolicy": "require_review",
+          "evidenceRefs": [
+            {
+              "evidenceSetId": "evidence-taptap-828363891523190942",
+              "claimId": "pivot-if-no-himeko"
+            }
+          ]
+        }
+      ],
+      "actionIds": [
+        "pivot-to-seele"
+      ],
+      "tradeoffs": [
+        "降低继续追姬子的机会成本",
+        "可能损失已投入的列车资源"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-taptap-828363891523190942",
+          "claimId": "pivot-if-no-himeko"
+        }
+      ]
+    }
+  ],
+  "risks": [
+    {
+      "riskId": "insufficient-transition-context",
+      "severity": "high",
+      "description": "单张截图可能无法证明完整经济和已投入资源。",
+      "mitigation": "信息不完整时仅提示评估，不自动执行刷新、出售或换阵。",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-taptap-828363891523190942",
+          "claimId": "pivot-if-no-himeko"
+        }
+      ]
+    }
+  ],
+  "missingInformationPolicy": {
+    "defaultBehavior": "mark_unknown",
+    "highRiskDecisionBehavior": "never_auto_execute",
+    "conflictBehavior": "preserve_all_sources",
+    "minimumConfidence": 0.7
+  },
+  "evidenceRefs": [
+    {
+      "evidenceSetId": "evidence-taptap-828363891523190942",
+      "claimId": "core-train-shield"
+    },
+    {
+      "evidenceSetId": "evidence-taptap-828363891523190942",
+      "claimId": "pivot-if-no-himeko"
+    }
+  ],
+  "notes": [
+    "这是复杂条件分支和替代路线的真实资料结构示例。"
+  ]
+}

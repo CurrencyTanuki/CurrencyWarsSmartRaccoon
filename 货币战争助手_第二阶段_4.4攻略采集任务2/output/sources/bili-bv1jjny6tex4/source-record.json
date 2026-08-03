@@ -1,0 +1,18 @@
+{
+    "schemaVersion":  "1.0.0",
+    "sourceId":  "bili-bv1jjny6tex4",
+    "title":  "【货币战争攻略】试用姬子竟能吊打所有主C和生存位？全网最详细姬子A850稳定通关教程！货币战争零和博弈的最终答案 你说的对这就是四装备大人",
+    "author":  "甘泽成谣雨成诗",
+    "url":  "https://www.bilibili.com/video/BV1jJNY6TEX4/",
+    "publishedAt":  "2026-07-15T03:04:30Z",
+    "accessedAt":  "2026-07-27T13:40:00Z",
+    "applicableGameVersion":  "4.4",
+    "copyrightStatus":  "linked_only",
+    "locators":  [
+                     "page:title",
+                     "page:description",
+                     "video:00:00-02:00 粗粒度开局复核窗口",
+                     "video:02:00-07:00 粗粒度成型复核窗口",
+                     "video:07:00-10:37 粗粒度终局复核窗口"
+                 ]
+}

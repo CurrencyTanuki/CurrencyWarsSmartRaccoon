@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\Brand\app-icon.ico</ApplicationIcon>
+    <AssemblyTitle>货币战争智能狸</AssemblyTitle>
+    <Product>货币战争智能狸</Product>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4078.44" />
+    <ProjectReference Include="..\CurrencyWarsAssistant.Advisor\CurrencyWarsAssistant.Advisor.csproj" />
+    <ProjectReference Include="..\CurrencyWarsAssistant.Core\CurrencyWarsAssistant.Core.csproj" />
+    <ProjectReference Include="..\CurrencyWarsAssistant.Vision\CurrencyWarsAssistant.Vision.csproj" />
+    <ProjectReference Include="..\CurrencyWarsAssistant.Game\CurrencyWarsAssistant.Game.csproj" />
+    <ProjectReference Include="..\CurrencyWarsAssistant.Automation\CurrencyWarsAssistant.Automation.csproj" />
+    <ProjectReference Include="..\CurrencyWarsAssistant.Tasks\CurrencyWarsAssistant.Tasks.csproj" />
+    <ProjectReference Include="..\CurrencyWarsAssistant.Workflow\CurrencyWarsAssistant.Workflow.csproj" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Assets\Brand\app-icon.ico" />
+    <Resource Include="Assets\Brand\app-icon.ico" />
+    <None Update="Assets\Brand\*.png" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="gen_report.py" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\config\**\*" Link="config\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\data\**\*" Link="data\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\schemas\advisor\**\*" Link="schemas\advisor\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\THIRD_PARTY_NOTICES.md" Link="THIRD_PARTY_NOTICES.md" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,18 @@
+{
+    "schemaVersion":  "1.0.0",
+    "sourceId":  "bili-bv1f7ny6begz",
+    "title":  "【货币战争攻略】试用姬子一个助战技就能轻松 10 亿？乱杀 A850？ 火力风暴潮驾驶员再添一员大将？三费战神姬子·启行 A850 详细上分攻略",
+    "author":  "可乐鉴赏大师",
+    "url":  "https://www.bilibili.com/video/BV1f7NY6BEgz/",
+    "publishedAt":  "2026-07-15T03:09:32Z",
+    "accessedAt":  "2026-07-27T13:40:00Z",
+    "applicableGameVersion":  "4.4",
+    "copyrightStatus":  "linked_only",
+    "locators":  [
+                     "page:title",
+                     "page:description A850口径与试用模拟说明",
+                     "video:00:00-02:30 粗粒度机制复核窗口",
+                     "video:02:30-05:30 粗粒度运营复核窗口",
+                     "video:05:30-07:58 粗粒度终局复核窗口"
+                 ]
+}

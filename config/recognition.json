@@ -1,0 +1,18 @@
+{
+  "openingPageAnchor": {
+    "id": "opening_page",
+    "displayName": "开局信息页",
+    "file": "templates/1920x1080/opening-page-anchor.png",
+    "searchRegion": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 1.0,
+      "height": 1.0
+    },
+    "threshold": 0.92
+  },
+  "investmentEnvironments": [],
+  "competitors": [],
+  "enemyModifiers": [],
+  "rerollSteps": []
+}

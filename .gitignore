@@ -1,0 +1,29 @@
+# 构建产物（每个版本 publish 目录，2GB）
+artifacts/
+
+# 编译中间文件
+bin/
+obj/
+
+# 游戏资源（含版权素材，不公开）
+data/
+货币战争_玩法图标资产包_4.4_证据重审版_2026-07-28/
+
+# 测试资源（真实截图，可能含用户信息）
+tests/CurrencyWarsAssistant.Tests/Fixtures/
+tests/CurrencyWarsAssistant.Tests/bin/
+tests/CurrencyWarsAssistant.Tests/obj/
+
+# 本地运行时数据
+reports/
+logs/
+*.log
+*.tmp
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# �������ߴ��ļ�
+release-baseline/
+*.zip

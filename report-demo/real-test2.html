@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>货币战争对局报告 · run-20260802-131519</title>
+<style>
+  body { margin:0; background:#0e1621; color:#f3f7fa; font-family:"Microsoft YaHei UI",sans-serif; }
+  .wrap { max-width:980px; margin:0 auto; padding:28px 24px 60px; }
+  h1 { font-size:30px; margin:0 0 4px; color:#e7ca82; }
+  .sub { color:#91a3b4; font-size:14px; margin-bottom:22px; }
+  .section { border-left:3px solid #e7ca82; padding:4px 0 4px 14px; margin:26px 0 12px; }
+  .section h2 { margin:0; font-size:19px; color:#e7ca82; }
+  .preset { background:#111c28; border:1px solid #2a3a4c; border-radius:8px; padding:14px 16px; }
+  .preset-row { margin:8px 0; }
+  .preset-label { color:#83d4e3; font-size:13px; margin-right:10px; }
+  .preset-item { display:inline-block; margin-right:16px; font-size:14px; vertical-align:middle; }
+  .icon { width:26px; height:26px; margin-right:5px; border-radius:4px; }
+  .charts { display:table; width:100%; border-spacing:10px 0; }
+  .chart { display:table-cell; width:50%; background:#111c28; border:1px solid #2a3a4c; border-radius:8px; padding:10px 12px; vertical-align:top; }
+  .chart-title { color:#91a3b4; font-size:13px; margin-bottom:6px; }
+  .chart-empty { color:#5a6b7d; font-size:13px; padding:12px 4px; }
+  .grid { stroke:#22303f; stroke-width:1; }
+  .xlabel { fill:#5a6b7d; font-size:10px; }
+  .ylabel { fill:#5a6b7d; font-size:10px; }
+  .node-card { background:#111c28; border:1px solid #2a3a4c; border-radius:8px; padding:14px 16px; margin-bottom:14px; }
+  .node-head { margin-bottom:8px; }
+  .node-id { color:#e7ca82; font-size:18px; font-weight:bold; }
+  .reward-chip { display:inline-block; margin-left:10px; padding:1px 8px; border-radius:3px; background:#5a3a2a; color:#ffd9a0; font-size:11px; vertical-align:middle; }
+  .boss-chip { display:inline-block; margin-left:10px; padding:1px 8px; border-radius:3px; background:#5a2020; color:#ffb0a0; font-size:11px; vertical-align:middle; }
+  .encounter-chip { display:inline-block; margin-left:10px; padding:1px 8px; border-radius:3px; background:#1f4a3a; color:#a0e0c0; font-size:11px; vertical-align:middle; }
+  .plane-title { margin:18px 0 10px; font-size:17px; color:#83d4e3; font-weight:600; border-bottom:1px solid #2a3a4c; padding-bottom:4px; }
+  .node-stats { margin-bottom:10px; }
+  .stat { display:inline-block; margin-right:24px; }
+  .stat-label { color:#83d4e3; font-size:12px; margin-right:6px; }
+  .stat-value { font-size:16px; font-weight:600; }
+  .zone-row { margin:6px 0; }
+  .zone-label { color:#83d4e3; font-size:12px; display:inline-block; width:64px; vertical-align:middle; }
+  .zone-empty { color:#5a6b7d; font-size:12px; }
+  .unit { margin-right:10px; }
+  .unit-card { text-align:center; }
+  .unit-card .icon { width:46px; height:46px; }
+  .unit-name { font-size:11px; color:#91a3b4; max-width:52px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .unit-equip .icon { width:16px; height:16px; margin:1px; }
+  .unit-star { color:#e7ca82; font-size:11px; line-height:1; }
+  .strategy-gain { margin-top:4px; color:#e7ca82; font-size:13px; font-weight:600; }
+  .bag { display:flex; align-items:center; margin-top:8px; }
+  .bag .icon { width:24px; height:24px; }
+  .technical { margin-top:34px; background:#0a1118; border:1px dashed #2a3a4c; border-radius:8px; padding:10px 14px; }
+  .technical summary { color:#5a6b7d; cursor:pointer; font-size:13px; }
+  .tech-row { display:flex; margin:4px 0; }
+  .tech-label { color:#5a6b7d; font-size:11px; width:110px; flex:none; }
+  .tech-value { color:#71849a; font-size:11px; word-break:break-all; }
+</style></head><body><div class="wrap">
+  <h1>货币战争 · 对局报告</h1>
+  <div class="sub">对局时间 2026-08-02 05:20:40 · 评级 C · 结束 node_failed</div>
+
+  <div class="section"><h2>本局预设</h2></div>
+  <div class="preset">
+    <div class="preset-row"><span class="preset-label">投资环境</span><img class="icon" src="../data/4.4/phase2-icon-assets/standardized/investment_environment/investment_environment_045.png" onerror="this.style.display=&#39;none&#39;" /><span style="font-size:15px">火药味</span></div>
+    <div class="preset-row"><span class="preset-label">敌人阵营</span><span class="preset-item">金血记忆体联盟</span><span class="preset-item">灰手生命科技</span><span class="preset-item">巨鹿生物制药</span></div>
+    <div class="preset-row"><span class="preset-label">负面词条</span><span class="preset-item"><img class="icon" src="../data/4.4/phase2-icon-assets/standardized/enemy_affix/enemy_affix_t1_02.png" onerror="this.style.display=&#39;none&#39;" />第二位面强化</span><span class="preset-item"><img class="icon" src="../data/4.4/phase2-icon-assets/standardized/enemy_affix/enemy_affix_t2_08.png" onerror="this.style.display=&#39;none&#39;" />前台熄火</span><span class="preset-item"><img class="icon" src="../data/4.4/phase2-icon-assets/standardized/enemy_affix/enemy_affix_t3_24.png" onerror="this.style.display=&#39;none&#39;" />库藏生锈</span><span class="preset-item"><img class="icon" src="../data/4.4/phase2-icon-assets/standardized/enemy_affix/enemy_affix_t3_11.png" onerror="this.style.display=&#39;none&#39;" />紧急止血</span></div>
+    <div class="preset-row"><span class="preset-label">投资策略</span><span class="zone-empty">未记录（投资策略于 1-3 / 2-2 / 3-2 固定获取）</span></div>
+    <div class="preset-row"><span class="preset-label">专家顾问</span><span class="zone-empty">未记录</span></div>
+  </div>
+
+  <div class="section"><h2>数值趋势</h2></div>
+  <div class="charts">
+    <div class="chart"><div class="chart-title">总伤害</div><svg width="560" height="120"><line x1="8" y1="8.0" x2="552" y2="8.0" class="grid" /><line x1="8" y1="34.0" x2="552" y2="34.0" class="grid" /><line x1="8" y1="60.0" x2="552" y2="60.0" class="grid" /><line x1="8" y1="86.0" x2="552" y2="86.0" class="grid" /><line x1="8" y1="112.0" x2="552" y2="112.0" class="grid" /><text x="3" y="11.0" class="ylabel" text-anchor="end">1</text><text x="3" y="37.0" class="ylabel" text-anchor="end">1</text><text x="3" y="63.0" class="ylabel" text-anchor="end">1</text><text x="3" y="89.0" class="ylabel" text-anchor="end">1</text><text x="3" y="115.0" class="ylabel" text-anchor="end">1</text><polyline points="280.0,112.0" fill="none" stroke="#e7ca82" stroke-width="2" /><circle cx="280.0" cy="112.0" r="2.5" fill="#e7ca82" /><text x="8.0" y="118" class="xlabel" text-anchor="middle">1-1</text><text x="280.0" y="118" class="xlabel" text-anchor="middle">1-2</text><text x="552.0" y="118" class="xlabel" text-anchor="middle">1-3</text></svg></div>
+    <div class="chart"><div class="chart-title">金币</div><svg width="560" height="120"><line x1="8" y1="8.0" x2="552" y2="8.0" class="grid" /><line x1="8" y1="34.0" x2="552" y2="34.0" class="grid" /><line x1="8" y1="60.0" x2="552" y2="60.0" class="grid" /><line x1="8" y1="86.0" x2="552" y2="86.0" class="grid" /><line x1="8" y1="112.0" x2="552" y2="112.0" class="grid" /><text x="3" y="11.0" class="ylabel" text-anchor="end">18</text><text x="3" y="37.0" class="ylabel" text-anchor="end">14</text><text x="3" y="63.0" class="ylabel" text-anchor="end">10</text><text x="3" y="89.0" class="ylabel" text-anchor="end">7</text><text x="3" y="115.0" class="ylabel" text-anchor="end">3</text><polyline points="8.0,112.0 280.0,49.6 552.0,8.0" fill="none" stroke="#83d4e3" stroke-width="2" /><circle cx="8.0" cy="112.0" r="2.5" fill="#83d4e3" /><circle cx="280.0" cy="49.6" r="2.5" fill="#83d4e3" /><circle cx="552.0" cy="8.0" r="2.5" fill="#83d4e3" /><text x="8.0" y="118" class="xlabel" text-anchor="middle">1-1</text><text x="280.0" y="118" class="xlabel" text-anchor="middle">1-2</text><text x="552.0" y="118" class="xlabel" text-anchor="middle">1-3</text></svg></div>
+    <div class="chart"><div class="chart-title">血量</div><svg width="560" height="120"><line x1="8" y1="8.0" x2="552" y2="8.0" class="grid" /><line x1="8" y1="34.0" x2="552" y2="34.0" class="grid" /><line x1="8" y1="60.0" x2="552" y2="60.0" class="grid" /><line x1="8" y1="86.0" x2="552" y2="86.0" class="grid" /><line x1="8" y1="112.0" x2="552" y2="112.0" class="grid" /><text x="3" y="11.0" class="ylabel" text-anchor="end">84</text><text x="3" y="37.0" class="ylabel" text-anchor="end">83</text><text x="3" y="63.0" class="ylabel" text-anchor="end">82</text><text x="3" y="89.0" class="ylabel" text-anchor="end">81</text><text x="3" y="115.0" class="ylabel" text-anchor="end">80</text><polyline points="8.0,112.0 280.0,60.0 552.0,8.0" fill="none" stroke="#e06060" stroke-width="2" /><circle cx="8.0" cy="112.0" r="2.5" fill="#e06060" /><circle cx="280.0" cy="60.0" r="2.5" fill="#e06060" /><circle cx="552.0" cy="8.0" r="2.5" fill="#e06060" /><text x="8.0" y="118" class="xlabel" text-anchor="middle">1-1</text><text x="280.0" y="118" class="xlabel" text-anchor="middle">1-2</text><text x="552.0" y="118" class="xlabel" text-anchor="middle">1-3</text></svg></div>
+    <div class="chart-empty">行动值：无数据</div>
+  </div>
+
+  <div class="section"><h2>节点明细</h2></div>
+  <div class="plane-title">第一面</div>
+        <div class="node-card">
+          <div class="node-head"><span class="node-id">1-1</span><span class="reward-chip">奖励关</span></div>
+          <div class="node-stats">
+            <div class="stat"><span class="stat-label">金币</span><span class="stat-value">3</span></div>
+            <div class="stat"><span class="stat-label">血量</span><span class="stat-value">80</span></div>
+            <div class="stat"><span class="stat-label">行动</span><span class="stat-value">未记录</span></div>
+            <div class="stat"><span class="stat-label">商店</span><span class="stat-value">Lv未记录</span></div>
+            <div class="stat"><span class="stat-label">难度</span><span class="stat-value">120</span></div>
+            <div class="stat"><span class="stat-label">结算</span><span class="stat-value">+4</span></div>
+            <div class="stat"><span class="stat-label">总伤害</span><span class="stat-value">未记录</span></div>
+          </div>
+          <div class="zone-row"><span class="zone-label">羁绊</span><span style="font-size:12px;color:#91a3b4">bond_群攻 / bond_银河学者 / bond_公司</span></div>
+          <div class="zones">
+            <div class="zone-row"><span class="zone-label">前台</span><span class="zone-empty">未记录</span></div>
+            <div class="zone-row"><span class="zone-label">后台</span><span class="zone-empty">未记录</span></div>
+            <div class="zone-row"><span class="zone-label">备战席</span><span class="zone-empty">未记录</span></div>
+          </div>
+          <div class="bag"><span class="zone-label">物品栏未装备</span><span class="zone-empty">无</span></div>
+          <div class="bag"><span class="zone-label">拆解工具</span><span style="font-size:12px;color:#91a3b4">1</span><span class="zone-label" style="margin-left:18px">特殊物品</span><span class="zone-empty">无</span></div>
+        </div>
+        <div class="node-card">
+          <div class="node-head"><span class="node-id">1-2</span><span class="reward-chip">奖励关</span></div>
+          <div class="node-stats">
+            <div class="stat"><span class="stat-label">金币</span><span class="stat-value">3 → 12</span></div>
+            <div class="stat"><span class="stat-label">血量</span><span class="stat-value">82（+2）</span></div>
+            <div class="stat"><span class="stat-label">行动</span><span class="stat-value">未记录</span></div>
+            <div class="stat"><span class="stat-label">商店</span><span class="stat-value">Lv未记录</span></div>
+            <div class="stat"><span class="stat-label">难度</span><span class="stat-value">120</span></div>
+            <div class="stat"><span class="stat-label">结算</span><span class="stat-value">+6</span></div>
+            <div class="stat"><span class="stat-label">总伤害</span><span class="stat-value">1</span></div>
+          </div>
+          <div class="zone-row"><span class="zone-label">羁绊</span><span style="font-size:12px;color:#91a3b4">bond_巡海游侠 / bond_击破 / bond_群攻 / bond_师徒</span></div>
+          <div class="zones">
+            <div class="zone-row"><span class="zone-label">前台</span><span class="zone-empty">未记录</span></div>
+            <div class="zone-row"><span class="zone-label">后台</span><span class="zone-empty">未记录</span></div>
+            <div class="zone-row"><span class="zone-label">备战席</span><span class="zone-empty">未记录</span></div>
+          </div>
+          <div class="bag"><span class="zone-label">物品栏未装备</span><img class="icon" src="../data/raw/4.4/equipment/890ae486642e979b/assets/currency_wars_equipment_icons/currency_wars_equipment_085.png" onerror="this.style.display=&#39;none&#39;" /></div>
+          <div class="bag"><span class="zone-label">拆解工具</span><span style="font-size:12px;color:#91a3b4">1</span><span class="zone-label" style="margin-left:18px">特殊物品</span><span class="zone-empty">无</span></div>
+        </div>
+        <div class="node-card">
+          <div class="node-head"><span class="node-id">1-3</span></div>
+          <div class="node-stats">
+            <div class="stat"><span class="stat-label">金币</span><span class="stat-value">12 → 18</span></div>
+            <div class="stat"><span class="stat-label">血量</span><span class="stat-value">84（+2）</span></div>
+            <div class="stat"><span class="stat-label">行动</span><span class="stat-value">未记录</span></div>
+            <div class="stat"><span class="stat-label">商店</span><span class="stat-value">Lv未记录</span></div>
+            <div class="stat"><span class="stat-label">难度</span><span class="stat-value">120</span></div>
+            <div class="stat"><span class="stat-label">结算</span><span class="stat-value">未记录</span></div>
+            <div class="stat"><span class="stat-label">总伤害</span><span class="stat-value">未记录</span></div>
+          </div>
+          <div class="zone-row"><span class="zone-label">羁绊</span><span style="font-size:12px;color:#91a3b4">bond_击破 / bond_群攻 / bond_公司</span></div>
+          <div class="zones">
+            <div class="zone-row"><span class="zone-label">前台</span><span class="zone-empty">未记录</span></div>
+            <div class="zone-row"><span class="zone-label">后台</span><span class="zone-empty">未记录</span></div>
+            <div class="zone-row"><span class="zone-label">备战席</span><span class="zone-empty">未记录</span></div>
+          </div>
+          <div class="bag"><span class="zone-label">物品栏未装备</span><img class="icon" src="../data/raw/4.4/equipment/890ae486642e979b/assets/currency_wars_equipment_icons/currency_wars_equipment_046.png" onerror="this.style.display=&#39;none&#39;" /></div>
+          <div class="bag"><span class="zone-label">拆解工具</span><span style="font-size:12px;color:#91a3b4">1</span><span class="zone-label" style="margin-left:18px">特殊物品</span><span class="zone-empty">无</span></div>
+        </div>
+
+  <details class="technical"><summary>调试信息（运行 ID / 来源文件等）</summary>
+    <div class="tech-row"><span class="tech-label">运行 ID</span><span class="tech-value">run-20260802-131519</span></div><div class="tech-row"><span class="tech-label">数据 Schema</span><span class="tech-value">1.0.0</span></div><div class="tech-row"><span class="tech-label">完成时间</span><span class="tech-value">2026-08-02T05:20:40.4514303+00:00</span></div><div class="tech-row"><span class="tech-label">结束页面</span><span class="tech-value">challenge_failed</span></div><div class="tech-row"><span class="tech-label">结束节点</span><span class="tech-value">node_failed</span></div><div class="tech-row"><span class="tech-label">结束截图</span><span class="tech-value">screenshots/20260802-052040451.png</span></div><div class="tech-row"><span class="tech-label">对局评级</span><span class="tech-value">C</span></div><div class="tech-row"><span class="tech-label">来源分析文件</span><span class="tech-value">analysis-20260802-051519386-fd5105b640834600a58b3049d4b38eb1.json, analysis-20260802-051522617-5f2b7f5fd74d49768436144573f9e775.json, analysis-20260802-051522803-807cdca16cab4f029867b44fd16ca554.json, analysis-20260802-051522984-8d32e6d611c24af0a3a1448961b184be.json, analysis-20260802-051536815-3ba9b7451dbb401e9329566f61025f22.json, analysis-20260802-051539317-bea3b381dca04c3897bb88bb64c8d1ec.json, analysis-20260802-051539500-1466ffacb97c4560a46f80bf4294796a.json, analysis-20260802-051539700-782f814c77924b86bcc1589a5be0f778.json, analysis-20260802-051543071-6416300f04e04a99bbd1f91b804680a3.json, analysis-20260802-051543287-966318ea1930422aa135090b23c504bb.json, analysis-20260802-051543469-c8e16d1a2909437391a62f8122c83864.json, analysis-20260802-051546304-8f47b80c2efa4db9967c226794450b2a.json, analysis-20260802-051546504-1ce4bf662eea4e9d881c6662d4f50e63.json, analysis-20260802-051547694-a8334cf6b2ea4c9da8cf196238179e43.json, analysis-20260802-051554012-07d072fe4b39416e88fc3fab25c20870.json, analysis-20260802-051554248-400f5017e1e847aeab9b8bc54b253270.json, analysis-20260802-051655937-07b0105d5d3f44cfbe48dcadfd82a575.json, analysis-20260802-051656119-d7be86332f6348ce8eb9acf2b3099641.json, analysis-20260802-051656336-9ab3b49a80974cdabb7f8182a7677fd0.json, analysis-20260802-051701497-5ccfd5d2f35a49078bb331b2fe4102fd.json, analysis-20260802-051704617-b420058210d84d7784e1237b71c7f2a6.json, analysis-20260802-051704766-f9542e13c6a940219a9aeb1aff545767.json, analysis-20260802-051707971-740fd87898d24b81adb178e0bca38a48.json, analysis-20260802-051708151-a25f07690358479992e0bc3c25db1938.json, analysis-20260802-051708325-90c02cb141a241d39654b25ba989c70d.json, analysis-20260802-051709188-5848d3b264dd492fb39e5598cb98c4c7.json, analysis-20260802-051709372-8c0eac96959e40d2bbfbc11638cde293.json, analysis-20260802-051709542-2e25bfda8cd8457997d70454d52e8085.json, analysis-20260802-051711472-d787474da568430e97e1164966383c1e.json, analysis-20260802-051716464-c43efd13f6894eb282da441aee6388da.json, analysis-20260802-051716635-c223d5d7a0d9497f86fd7bb3e736ff64.json, analysis-20260802-051716822-528db5d3456f4a38b07ba49adfb1b57e.json, analysis-20260802-051718633-922a21c8062b40f29db24f5ea65269bd.json, analysis-20260802-051722987-f1ccbcc78ff6437fbf327e47e535526c.json, analysis-20260802-051723190-6bd1c41e1343491ea39a3adcbfd48cdd.json, analysis-20260802-051723369-ea7d8443ecc54b1bbaad382905e18f5e.json, analysis-20260802-051731744-625a1361a0824057b48bc312f612d153.json, analysis-20260802-051731926-564d7b6b50554b78ba8f0f801e384ad4.json, analysis-20260802-051741887-3576d7b0df84471b92d4d8f2859bc678.json, analysis-20260802-051753593-ceee2f5df9c2454b8071a35ad3573d95.json, analysis-20260802-051753760-50c74190966348069c11478baefe616a.json, analysis-20260802-051753927-f53a7e2e4de0475fa802893b911c11fc.json, analysis-20260802-051754615-910228be94144185b06b6e5e3e8766f4.json, analysis-20260802-051754810-ec1ce731db864e32900c00e7340b4bbd.json, analysis-20260802-051754997-f6ff856ed252404facbdc646f11c7613.json, analysis-20260802-051755685-33e7110dac1445e6ab9e2650ebb978c8.json, analysis-20260802-051755899-fc4bbad1981b46ff870025125c56da1d.json, analysis-20260802-051756132-bc9f3e5c17314e17b2e04425a0304091.json, analysis-20260802-051756330-7e2dcfa9d6f641d092f5e20f435d1768.json, analysis-20260802-051801755-d9cad5fe46554c33ae75e938f5f2edf1.json, analysis-20260802-051802285-b95bc779b0c94e7982a75f7fa9f81ed9.json, analysis-20260802-051802639-398b497f306b43e9b31b20153aae0ae1.json, analysis-20260802-051805689-193bab0e416e44878abdb6395a98982f.json, analysis-20260802-051805891-55cb3ee403e7464cb4857b0d9c5ec727.json, analysis-20260802-051806237-c418663110c541cdbb012f93df6a39b3.json, analysis-20260802-051806426-3731d1f67fcc45cb8fe182c4238578cf.json, analysis-20260802-051806623-73aa99a894fe4c4dae1638ad81d17cb7.json, analysis-20260802-051827588-6715f555cab9403390ad35bc81c78e61.json, analysis-20260802-051828859-6bee87815f604f149862d9df84ad48d6.json, analysis-20260802-051833629-29e53fb9448f48a8860ee985ea00359d.json, analysis-20260802-051834131-957547879f544d4885941cd60d1b4702.json, analysis-20260802-051837352-0893cc89cbc8423780a72d6bb8a474e7.json, analysis-20260802-051837601-0ef8fb29610f4f869d7383645f2cd102.json, analysis-20260802-051838132-6a924fb308694f659e03e59d31b6bc68.json, analysis-20260802-051838300-195a5376b8654bbfa7cbf7c1eac2f442.json, analysis-20260802-051838467-4e5773923fbe48a6b220434b3974deda.json, analysis-20260802-051843218-d55c8a80f0524eb390de75e1fa3845e3.json, analysis-20260802-051843421-4ea77d603c5240259d06e574495cafad.json, analysis-20260802-051843605-f4307e36bafc4b919f44217f7ff498c9.json, analysis-20260802-052034997-1be2e1c893ad4510a000cf05d73dbcd0.json, analysis-20260802-052037199-c28f69160c7c4cb9811a1dcf3b76cf36.json, analysis-20260802-052037380-fa37447651d74ef5a5978ca889328f57.json, analysis-20260802-052037584-679da81cde7c42a08993cf39d6d507fd.json, analysis-20260802-052038718-65a4b081758d4442a272a7f710ddda15.json, analysis-20260802-052038938-50fcfebcc112464f812b98b7ca546142.json, analysis-20260802-052040451-3b44a1d9faa14571ae94779651678fb9.json</span></div>
+  </details>
+</div></body></html>

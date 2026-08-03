@@ -1,0 +1,17 @@
+{
+    "schemaVersion":  "1.0.0",
+    "sourceId":  "bili-bv1d83g6qexf",
+    "title":  "【货币战争】独属于黄泉的爻光？不带风扇的巡海游侠？试用黄泉也能把把0t关底boss！",
+    "author":  "Dusk不是鸭啊",
+    "url":  "https://www.bilibili.com/video/BV1d83g6QExF/",
+    "publishedAt":  "2026-07-25T10:48:14Z",
+    "accessedAt":  "2026-07-27T13:40:00Z",
+    "applicableGameVersion":  "4.4",
+    "copyrightStatus":  "linked_only",
+    "locators":  [
+                     "page:title",
+                     "video:00:00-03:00 粗粒度开局复核窗口",
+                     "video:03:00-06:00 粗粒度成型复核窗口",
+                     "video:06:00-08:41 粗粒度关底复核窗口"
+                 ]
+}

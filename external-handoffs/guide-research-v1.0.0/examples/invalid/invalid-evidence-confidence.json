@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "research-evidence.v1",
+  "evidenceSetId": "invalid-confidence",
+  "title": "故意非法：置信度超出范围",
+  "gameMode": "currency-wars",
+  "applicableGameVersions": [
+    "4.4"
+  ],
+  "createdAt": "2026-08-01T00:00:00Z",
+  "updatedAt": "2026-08-01T00:00:00Z",
+  "source": {
+    "sourceId": "invalid-source",
+    "title": "invalid",
+    "platform": "test",
+    "author": "test",
+    "url": "https://example.invalid/source",
+    "publishedAt": "unknown",
+    "accessedAt": "2026-08-01",
+    "contentType": "other",
+    "language": "zh-CN",
+    "applicableGameVersions": [
+      "4.4"
+    ],
+    "reuseStatus": "unknown"
+  },
+  "claims": [
+    {
+      "claimId": "bad-confidence",
+      "topic": "test",
+      "statement": "This record must be rejected.",
+      "assertionType": "ai_inference",
+      "supportStatus": "unverified",
+      "confidence": 1.5,
+      "locator": {
+        "kind": "whole_source",
+        "value": "test"
+      },
+      "applicableGameVersions": [
+        "4.4"
+      ],
+      "subjectRefs": {
+        "characterIds": [],
+        "equipmentIds": [],
+        "bondIds": [],
+        "investmentEnvironmentIds": [],
+        "investmentStrategyIds": [],
+        "enemyAffixIds": [],
+        "otherRefs": []
+      },
+      "conditions": [],
+      "conflicts": []
+    }
+  ],
+  "extractionStatus": "partial",
+  "unknowns": []
+}

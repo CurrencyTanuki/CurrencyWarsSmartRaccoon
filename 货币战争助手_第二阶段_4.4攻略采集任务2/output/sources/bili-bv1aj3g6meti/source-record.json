@@ -1,0 +1,18 @@
+{
+    "schemaVersion":  "1.0.0",
+    "sourceId":  "bili-bv1aj3g6meti",
+    "title":  "又一永动机？！货币战争全程只上4人15连胜通关A8-50全流程！圣杯羁绊真的神了！阿瓦隆神力！（缇宝或许可以优化，等我再试试）",
+    "author":  "洛河是小狼",
+    "url":  "https://www.bilibili.com/video/BV1AJ3G6METi/",
+    "publishedAt":  "2026-07-25T16:04:55Z",
+    "accessedAt":  "2026-07-27T13:40:00Z",
+    "applicableGameVersion":  "4.4",
+    "copyrightStatus":  "linked_only",
+    "locators":  [
+                     "page:title",
+                     "page:description",
+                     "video:00:00-18:00 粗粒度前期复核窗口",
+                     "video:18:00-40:00 粗粒度中期复核窗口",
+                     "video:40:00-54:29 粗粒度终局复核窗口"
+                 ]
+}

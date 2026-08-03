@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "currency-wars://schemas/game-data/1.0.0/equipment/runtime",
+  "title": "Currency Wars normalized equipment runtime data",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "game_version",
+    "dataset",
+    "source",
+    "source_extensions",
+    "records"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "game_version": { "const": "4.4" },
+    "dataset": { "const": "equipment" },
+    "source": {
+      "type": "object",
+      "required": ["records_sha256", "icon_manifest_sha256"],
+      "properties": {
+        "records_sha256": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{64}$"
+        },
+        "icon_manifest_sha256": {
+          "type": "string",
+          "pattern": "^[0-9A-F]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "source_extensions": { "type": "object" },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "category",
+          "equippable",
+          "occupies_equipment_slot",
+          "base_attributes",
+          "effect",
+          "acquisition_methods",
+          "introduced_version",
+          "component_ids",
+          "base_equipment_id",
+          "icon",
+          "source_extensions"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^currency_wars_equipment_[0-9]{3}$"
+          },
+          "name": { "type": "string", "minLength": 1 },
+          "category": {
+            "type": "string",
+            "enum": [
+              "basic",
+              "advanced",
+              "privileged",
+              "hacking_component",
+              "fate_component",
+              "bond_equipment",
+              "style_emblem",
+              "faction_emblem",
+              "gem_material",
+              "wealth_gem",
+              "consumable",
+              "armament_box",
+              "special_item",
+              "special_material"
+            ]
+          },
+          "equippable": { "type": "boolean" },
+          "occupies_equipment_slot": { "type": "boolean" },
+          "base_attributes": { "type": "array" },
+          "effect": { "type": "string" },
+          "acquisition_methods": { "type": "array", "minItems": 1 },
+          "introduced_version": { "type": ["string", "null"] },
+          "component_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^currency_wars_equipment_[0-9]{3}$"
+            }
+          },
+          "base_equipment_id": {
+            "type": ["string", "null"],
+            "pattern": "^currency_wars_equipment_[0-9]{3}$"
+          },
+          "icon": {
+            "type": "object",
+            "required": ["asset_path", "source_url", "sha256", "width", "height"],
+            "properties": {
+              "asset_path": { "type": "string", "minLength": 1 },
+              "source_url": { "type": "string", "minLength": 1 },
+              "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "width": { "type": "integer", "minimum": 1 },
+              "height": { "type": "integer", "minimum": 1 }
+            },
+            "additionalProperties": false
+          },
+          "source_extensions": { "type": "object" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

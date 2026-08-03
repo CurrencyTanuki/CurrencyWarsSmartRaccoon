@@ -1,0 +1,65 @@
+<Window x:Class="CurrencyWarsAssistant.App.StartupNoticeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="使用声明"
+        Width="560"
+        SizeToContent="Height"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Background="{StaticResource BackgroundBrush}"
+        Foreground="{StaticResource TextBrush}">
+    <Border Margin="18"
+            Padding="22"
+            CornerRadius="10"
+            Background="{StaticResource PanelBrush}">
+        <StackPanel>
+            <TextBlock FontSize="21"
+                       FontWeight="SemiBold"
+                       Text="免费使用与源码授权说明" />
+            <TextBlock Margin="0,14,0,0"
+                       FontSize="14"
+                       LineHeight="23"
+                       TextWrapping="Wrap"
+                       Text="本软件由项目官方免费提供，不收取软件购买费。若你从任何渠道付费购买，请向商家申请退款，并从项目官方发布页获取。" />
+            <TextBlock Margin="0,10,0,0"
+                       Foreground="#B7C7D9"
+                       LineHeight="21"
+                       TextWrapping="Wrap"
+                       Text="本项目源代码公开，可在许可证明确的范围内查看和修改；未经作者另行书面许可，不得将软件或源代码用于商业用途。项目正式许可证尚待发布前确认，因此本版本不作“完全开源”声明。" />
+            <Border Margin="0,16,0,0"
+                    Padding="12,10"
+                    CornerRadius="6"
+                    Background="#111A28">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Foreground="#8498AF" Text="QQ 交流群" />
+                    <TextBlock Grid.Column="1"
+                               FontWeight="SemiBold"
+                               Text="{Binding QqGroupDisplay}" />
+                    <TextBlock Grid.Row="1"
+                               Margin="0,7,0,0"
+                               Foreground="#8498AF"
+                               Text="官方网站" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Margin="0,7,0,0"
+                               FontWeight="SemiBold"
+                               Text="{Binding OfficialWebsiteDisplay}" />
+                </Grid>
+            </Border>
+            <Button Margin="0,20,0,0"
+                    HorizontalAlignment="Right"
+                    IsDefault="True"
+                    Click="OnContinueClick"
+                    Content="了解并继续" />
+        </StackPanel>
+    </Border>
+</Window>

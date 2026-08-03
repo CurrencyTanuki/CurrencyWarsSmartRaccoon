@@ -1,0 +1,172 @@
+{
+    "schemaVersion":  "1.0.0",
+    "guideId":  "guide-taptap-828363891523190942",
+    "sourceId":  "taptap-828363891523190942",
+    "authorClaims":  [
+                         {
+                             "claimId":  "ac-01",
+                             "paraphrase":  "作者将姬子·启行与三月七的护盾/反击/列车联动作为稳定挂机核心。",
+                             "locator":  "article:h2 一、阵容优势",
+                             "stableIds":  [
+
+                                           ]
+                         },
+                         {
+                             "claimId":  "ac-02",
+                             "paraphrase":  "作者建议第一位面用低费混合羁绊过渡，第二位面再转4列车。",
+                             "locator":  "article:h2 二、初期过渡；article:h2 三、中期运营",
+                             "stableIds":  [
+
+                                           ]
+                         },
+                         {
+                             "claimId":  "ac-03",
+                             "paraphrase":  "作者给出8人口终局底线，并把希儿列为未抽到姬子时的量子转型备选。",
+                             "locator":  "article:h2 三、中期运营；article:h2 四、终局",
+                             "stableIds":  [
+
+                                           ]
+                         }
+                     ],
+    "factualClaims":  [
+                          {
+                              "claimId":  "fc-01",
+                              "paraphrase":  "页面标注为V4.4、A850攻略，发布日期为2026-07-20。",
+                              "locator":  "article:h1 标题；page:publishedAt",
+                              "stableIds":  [
+
+                                            ]
+                          }
+                      ],
+    "sourceExtensions":  {
+                             "collectionStatus":  "complete_structural_extraction",
+                             "sourcePriority":  "standard",
+                             "platform":  "TapTap",
+                             "contentType":  "article",
+                             "durationSeconds":  null,
+                             "authorMid":  null,
+                             "noReprintFlag":  null,
+                             "archetype":  "姬子·启行：列车同行护盾挂机流",
+                             "coreCharacters":  [
+                                                    "姬子·启行",
+                                                    "三月七"
+                                                ],
+                             "substituteCharacters":  [
+                                                          "希儿",
+                                                          "符玄",
+                                                          "缇宝"
+                                                      ],
+                             "keySynergies":  [
+                                                  "4列车同行作为中期转型目标",
+                                                  "前台护盾与列车攻击、反击联动",
+                                                  "低费过渡可从DOT、减益、仙舟拼接"
+                                              ],
+                             "opening":  {
+                                             "acceptable":  [
+                                                                "优先取得姬子·启行；第一位面以低费五人羁绊过渡",
+                                                                "补折叠小刀与轮回鞋；目标在首个首领前升至6级"
+                                                            ],
+                                             "abandonOrPivot":  [
+                                                                    "第二位面仍未见姬子时以希儿作为量子转型备选",
+                                                                    "人口不足时先保证8人口与生存，再补第9位功能位"
+                                                                ]
+                                         },
+                             "priorities":  {
+                                                "investmentEnvironment":  [
+                                                                              "来源主张A850可跨环境稳定，不依赖重开环境"
+                                                                          ],
+                                                "investmentStrategy":  [
+                                                                           "优先核心三费与低费拼羁绊",
+                                                                           "等级7阶段集中追三星费"
+                                                                       ]
+                                            },
+                             "stages":  {
+                                            "early":  "低费DOT/减益/仙舟/列车拼接，先稳住第一位面",
+                                            "mid":  "第二位面转4列车并在7级追姬子",
+                                            "late":  "至少8人口完成前后排与生存位，9人口补齐符玄/缇宝"
+                                        },
+                             "economyTriggers":  [
+                                                     "首领前目标6级",
+                                                     "等级7拥有较高三星费商店概率",
+                                                     "先成型再升人口，不把未知刷新阈值写成定量结论"
+                                                 ],
+                             "completionStandard":  [
+                                                        "A850自动战斗可稳定过关，阵容、生存与四件装备框架同时成型"
+                                                    ],
+                             "fallbackRoutes":  [
+                                                    "第二位面仍未见姬子时以希儿作为量子转型备选",
+                                                    "人口不足时先保证8人口与生存，再补第9位功能位"
+                                                ],
+                             "failureRecovery":  [
+                                                     "无姬子时用希儿转量子",
+                                                     "人口紧张时先上符玄或缇宝之一",
+                                                     "中期DOT伤害不足时及时转列车"
+                                                 ],
+                             "risksAndExceptions":  [
+                                                        "文章是作者经验归纳，不等同官方机制说明",
+                                                        "角色与装备稳定ID待后续字典映射"
+                                                    ],
+                             "guideCodePresence":  false,
+                             "pendingMappings":  [
+                                                     {
+                                                         "name":  "4列车同行作为中期转型目标",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "低费过渡可从DOT、减益、仙舟拼接",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "符玄",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "姬子·启行",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "前台护盾与列车攻击、反击联动",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "三月七",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "缇宝",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "希儿",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     }
+                                                 ],
+                             "evidence":  {
+                                              "locatorMap":  [
+                                                                 "article:h1 标题",
+                                                                 "article:h2 一、阵容优势",
+                                                                 "article:h2 二、初期过渡",
+                                                                 "article:h2 三、中期运营",
+                                                                 "article:h2 四、终局",
+                                                                 "article:h2 五、结尾"
+                                                             ],
+                                              "granularity":  "heading_and_paragraph_anchors",
+                                              "limitations":  "Article was paraphrased by section; original body is not bundled.",
+                                              "manualSecondPassRequired":  false
+                                          },
+                             "copyright":  {
+                                               "status":  "linked_only",
+                                               "bundledMedia":  false,
+                                               "bundledSubtitles":  false,
+                                               "bundledFullText":  false
+                                           }
+                         }
+}

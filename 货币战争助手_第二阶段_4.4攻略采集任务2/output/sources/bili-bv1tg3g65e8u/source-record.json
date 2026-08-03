@@ -1,0 +1,17 @@
+{
+    "schemaVersion":  "1.0.0",
+    "sourceId":  "bili-bv1tg3g65e8u",
+    "title":  "货币战争，A8难度50，黑塔纪元，遭遇4，顺便聆听萨姆的心跳“娇喘”",
+    "author":  "青墨非琉",
+    "url":  "https://www.bilibili.com/video/BV1Tg3G65E8u/",
+    "publishedAt":  "2026-07-25T15:17:57Z",
+    "accessedAt":  "2026-07-27T13:40:00Z",
+    "applicableGameVersion":  "4.4",
+    "copyrightStatus":  "linked_only",
+    "locators":  [
+                     "page:title",
+                     "video:00:00-02:30 粗粒度前期复核窗口",
+                     "video:02:30-05:30 粗粒度成型复核窗口",
+                     "video:05:30-07:55 粗粒度遭遇4复核窗口"
+                 ]
+}

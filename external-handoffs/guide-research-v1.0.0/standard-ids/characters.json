@@ -1,0 +1,884 @@
+{
+  "catalog": "characters",
+  "gameVersion": "4.4",
+  "records": [
+    {
+      "bondIds": [
+        "currency_wars_bond_11",
+        "currency_wars_bond_32"
+      ],
+      "costs": [
+        3
+      ],
+      "id": "currency_wars_character_01",
+      "name": "姬子•启行",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_17",
+        "currency_wars_bond_01",
+        "currency_wars_bond_20"
+      ],
+      "costs": [
+        2
+      ],
+      "id": "currency_wars_character_02",
+      "name": "千冶•刃",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_31",
+        "currency_wars_bond_18"
+      ],
+      "costs": [
+        2
+      ],
+      "id": "currency_wars_character_03",
+      "name": "吉尔伽美什",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_31",
+        "currency_wars_bond_23"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_04",
+      "name": "远坂凛",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_30",
+        "currency_wars_bond_01",
+        "currency_wars_bond_29"
+      ],
+      "costs": [
+        3,
+        4,
+        5
+      ],
+      "id": "currency_wars_character_05",
+      "name": "银狼LV.999",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_04",
+        "currency_wars_bond_29"
+      ],
+      "costs": [
+        2
+      ],
+      "id": "currency_wars_character_07",
+      "name": "绯英",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_05",
+        "currency_wars_bond_21"
+      ],
+      "costs": [
+        2
+      ],
+      "id": "currency_wars_character_08",
+      "name": "不死途",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_23",
+        "currency_wars_bond_04",
+        "currency_wars_bond_29"
+      ],
+      "costs": [
+        4
+      ],
+      "id": "currency_wars_character_09",
+      "name": "火花",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_12",
+        "currency_wars_bond_29"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_10",
+      "name": "爻光",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_16",
+        "currency_wars_bond_09"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_11",
+      "name": "大丽花",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_25",
+        "currency_wars_bond_20",
+        "currency_wars_bond_02"
+      ],
+      "costs": [
+        5
+      ],
+      "id": "currency_wars_character_12",
+      "name": "布洛妮娅",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_12",
+        "currency_wars_bond_19"
+      ],
+      "costs": [
+        5
+      ],
+      "id": "currency_wars_character_13",
+      "name": "景元",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_31",
+        "currency_wars_bond_23",
+        "currency_wars_bond_28"
+      ],
+      "costs": [
+        5
+      ],
+      "id": "currency_wars_character_14",
+      "name": "Archer",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_10",
+        "currency_wars_bond_18"
+      ],
+      "costs": [
+        5
+      ],
+      "id": "currency_wars_character_15",
+      "name": "云璃",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_03",
+        "currency_wars_bond_21"
+      ],
+      "costs": [
+        5
+      ],
+      "id": "currency_wars_character_16",
+      "name": "托帕&账账",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_26",
+        "currency_wars_bond_14",
+        "currency_wars_bond_09"
+      ],
+      "costs": [
+        5
+      ],
+      "id": "currency_wars_character_17",
+      "name": "黑天鹅",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_16",
+        "currency_wars_bond_01"
+      ],
+      "costs": [
+        5
+      ],
+      "id": "currency_wars_character_18",
+      "name": "流萤",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_07",
+        "currency_wars_bond_27",
+        "currency_wars_bond_06"
+      ],
+      "costs": [
+        5
+      ],
+      "id": "currency_wars_character_19",
+      "name": "昔涟",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_17",
+        "currency_wars_bond_11",
+        "currency_wars_bond_04"
+      ],
+      "costs": [
+        5
+      ],
+      "id": "currency_wars_character_20",
+      "name": "瓦尔特",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_07",
+        "currency_wars_bond_20"
+      ],
+      "costs": [
+        4
+      ],
+      "id": "currency_wars_character_21",
+      "name": "长夜月",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_19",
+        "currency_wars_bond_08"
+      ],
+      "costs": [
+        4
+      ],
+      "id": "currency_wars_character_22",
+      "name": "大黑塔",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_12",
+        "currency_wars_bond_13",
+        "currency_wars_bond_22"
+      ],
+      "costs": [
+        4
+      ],
+      "id": "currency_wars_character_23",
+      "name": "符玄",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_07",
+        "currency_wars_bond_20"
+      ],
+      "costs": [
+        4
+      ],
+      "id": "currency_wars_character_24",
+      "name": "遐蝶",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_12",
+        "currency_wars_bond_17",
+        "currency_wars_bond_10"
+      ],
+      "costs": [
+        4
+      ],
+      "id": "currency_wars_character_25",
+      "name": "彦卿",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_14",
+        "currency_wars_bond_06"
+      ],
+      "costs": [
+        4
+      ],
+      "id": "currency_wars_character_26",
+      "name": "海瑟音",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_01",
+        "currency_wars_bond_22"
+      ],
+      "costs": [
+        4
+      ],
+      "id": "currency_wars_character_27",
+      "name": "银狼",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_09",
+        "currency_wars_bond_21"
+      ],
+      "costs": [
+        4
+      ],
+      "id": "currency_wars_character_29",
+      "name": "知更鸟",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_15",
+        "currency_wars_bond_02"
+      ],
+      "costs": [
+        4
+      ],
+      "id": "currency_wars_character_30",
+      "name": "杰帕德",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_16",
+        "currency_wars_bond_05"
+      ],
+      "costs": [
+        4
+      ],
+      "id": "currency_wars_character_31",
+      "name": "波提欧",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_04",
+        "currency_wars_bond_13"
+      ],
+      "costs": [
+        4
+      ],
+      "id": "currency_wars_character_32",
+      "name": "罗刹",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_31",
+        "currency_wars_bond_18"
+      ],
+      "costs": [
+        3
+      ],
+      "id": "currency_wars_character_33",
+      "name": "Saber",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_17",
+        "currency_wars_bond_05"
+      ],
+      "costs": [
+        3
+      ],
+      "id": "currency_wars_character_34",
+      "name": "黄泉",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_02",
+        "currency_wars_bond_22"
+      ],
+      "costs": [
+        3
+      ],
+      "id": "currency_wars_character_35",
+      "name": "希儿",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_11",
+        "currency_wars_bond_09",
+        "currency_wars_bond_18"
+      ],
+      "costs": [
+        3
+      ],
+      "id": "currency_wars_character_36",
+      "name": "星期日",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_13",
+        "currency_wars_bond_02"
+      ],
+      "costs": [
+        3
+      ],
+      "id": "currency_wars_character_37",
+      "name": "娜塔莎",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_06",
+        "currency_wars_bond_19"
+      ],
+      "costs": [
+        3
+      ],
+      "id": "currency_wars_character_38",
+      "name": "那刻夏",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_20",
+        "currency_wars_bond_10"
+      ],
+      "costs": [
+        3
+      ],
+      "id": "currency_wars_character_39",
+      "name": "镜流",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_24"
+      ],
+      "costs": [
+        3
+      ],
+      "id": "currency_wars_character_40",
+      "name": "白厄",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_12",
+        "currency_wars_bond_16"
+      ],
+      "costs": [
+        3
+      ],
+      "id": "currency_wars_character_41",
+      "name": "忘归人",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_16",
+        "currency_wars_bond_11"
+      ],
+      "costs": [
+        3
+      ],
+      "id": "currency_wars_character_42",
+      "name": "姬子",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_07",
+        "currency_wars_bond_23"
+      ],
+      "costs": [
+        3
+      ],
+      "id": "currency_wars_character_43",
+      "name": "刻律德菈",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_04",
+        "currency_wars_bond_21",
+        "currency_wars_bond_08"
+      ],
+      "costs": [
+        3
+      ],
+      "id": "currency_wars_character_44",
+      "name": "真理医生",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_04",
+        "currency_wars_bond_19"
+      ],
+      "costs": [
+        2
+      ],
+      "id": "currency_wars_character_45",
+      "name": "银枝",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_14",
+        "currency_wars_bond_01"
+      ],
+      "costs": [
+        2
+      ],
+      "id": "currency_wars_character_46",
+      "name": "卡芙卡",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_06",
+        "currency_wars_bond_13",
+        "currency_wars_bond_20"
+      ],
+      "costs": [
+        2
+      ],
+      "id": "currency_wars_character_47",
+      "name": "风堇",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_16",
+        "currency_wars_bond_08"
+      ],
+      "costs": [
+        2
+      ],
+      "id": "currency_wars_character_48",
+      "name": "阮•梅",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_17",
+        "currency_wars_bond_02"
+      ],
+      "costs": [
+        2
+      ],
+      "id": "currency_wars_character_49",
+      "name": "佩拉",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_07",
+        "currency_wars_bond_15"
+      ],
+      "costs": [
+        2
+      ],
+      "id": "currency_wars_character_50",
+      "name": "丹恒•腾荒",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_16",
+        "currency_wars_bond_13",
+        "currency_wars_bond_10"
+      ],
+      "costs": [
+        2
+      ],
+      "id": "currency_wars_character_51",
+      "name": "灵砂",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_03",
+        "currency_wars_bond_15",
+        "currency_wars_bond_21"
+      ],
+      "costs": [
+        2
+      ],
+      "id": "currency_wars_character_52",
+      "name": "砂金",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_12",
+        "currency_wars_bond_11",
+        "currency_wars_bond_23"
+      ],
+      "costs": [
+        2
+      ],
+      "id": "currency_wars_character_53",
+      "name": "丹恒•饮月",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_23",
+        "currency_wars_bond_09",
+        "currency_wars_bond_22"
+      ],
+      "costs": [
+        2
+      ],
+      "id": "currency_wars_character_54",
+      "name": "花火",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_06",
+        "currency_wars_bond_19",
+        "currency_wars_bond_22"
+      ],
+      "costs": [
+        2
+      ],
+      "id": "currency_wars_character_55",
+      "name": "缇宝",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_10",
+        "currency_wars_bond_21"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_56",
+      "name": "飞霄",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_17",
+        "currency_wars_bond_14",
+        "currency_wars_bond_10"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_57",
+      "name": "椒丘",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_19",
+        "currency_wars_bond_08"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_58",
+      "name": "黑塔",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_07",
+        "currency_wars_bond_20"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_59",
+      "name": "万敌",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_17",
+        "currency_wars_bond_07",
+        "currency_wars_bond_21"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_60",
+      "name": "赛飞儿",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_10",
+        "currency_wars_bond_21"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_61",
+      "name": "貊泽",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_14",
+        "currency_wars_bond_04",
+        "currency_wars_bond_02"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_62",
+      "name": "桑博",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_16",
+        "currency_wars_bond_13",
+        "currency_wars_bond_09"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_63",
+      "name": "加拉赫",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_12",
+        "currency_wars_bond_23"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_64",
+      "name": "青雀",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_03",
+        "currency_wars_bond_19"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_65",
+      "name": "翡翠",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_12",
+        "currency_wars_bond_18"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_66",
+      "name": "停云",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_11",
+        "currency_wars_bond_15"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_67",
+      "name": "三月七",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_16",
+        "currency_wars_bond_05"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_68",
+      "name": "乱破",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_12",
+        "currency_wars_bond_13",
+        "currency_wars_bond_18"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_69",
+      "name": "藿藿",
+      "position": "前后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_01",
+        "currency_wars_bond_20"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_70",
+      "name": "刃",
+      "position": "后台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_14",
+        "currency_wars_bond_08"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_71",
+      "name": "艾丝妲",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_06",
+        "currency_wars_bond_18"
+      ],
+      "costs": [
+        1
+      ],
+      "id": "currency_wars_character_72",
+      "name": "阿格莱雅",
+      "position": "前台"
+    },
+    {
+      "bondIds": [
+        "currency_wars_bond_11",
+        "currency_wars_bond_29",
+        "currency_wars_bond_18"
+      ],
+      "costs": [
+        4
+      ],
+      "id": "currency_wars_character_trailblazer",
+      "name": "开拓者",
+      "position": "形态切换：前台为记忆，后台为欢愉"
+    }
+  ],
+  "schemaVersion": "standard-id-catalog.v1"
+}

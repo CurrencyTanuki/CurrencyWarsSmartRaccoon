@@ -1,0 +1,191 @@
+{
+  "referenceWidth": 1920,
+  "referenceHeight": 1080,
+  "preparationPageId": "preparation_1_1",
+  "pollIntervalMilliseconds": 300,
+  "stableDetections": 2,
+  "initialPageTimeoutMilliseconds": 10000,
+  "maximumRuntimeMilliseconds": 180000,
+  "steps": [
+    {
+      "pageId": "normal_hud",
+      "actions": [
+        {
+          "id": "open_guide",
+          "displayName": "打开星际和平指南",
+          "kind": "altClick",
+          "point": { "x": 1598, "y": 45 },
+          "expectedPageIds": [ "guide_shell", "guide_currency_wars" ]
+        }
+      ]
+    },
+    {
+      "pageId": "guide_shell",
+      "actions": [
+        {
+          "id": "select_third_tab",
+          "displayName": "切换到第三个页签",
+          "kind": "click",
+          "point": { "x": 602, "y": 211 },
+          "expectedPageIds": [ "guide_currency_wars" ]
+        }
+      ]
+    },
+    {
+      "pageId": "guide_currency_wars",
+      "actions": [
+        {
+          "id": "participate_currency_wars",
+          "displayName": "前往参与货币战争",
+          "kind": "click",
+          "point": { "x": 1492, "y": 878 },
+          "expectedPageIds": [
+            "update_popup",
+            "score_popup",
+            "currency_wars_home"
+          ],
+          "timeoutMilliseconds": 20000
+        }
+      ]
+    },
+    {
+      "pageId": "update_popup",
+      "actions": [
+        {
+          "id": "close_update_popup",
+          "displayName": "关闭更新说明",
+          "kind": "escape",
+          "expectedPageIds": [ "score_popup", "currency_wars_home" ]
+        }
+      ]
+    },
+    {
+      "pageId": "score_popup",
+      "actions": [
+        {
+          "id": "close_score_popup",
+          "displayName": "关闭积分奖励",
+          "kind": "escape",
+          "expectedPageIds": [ "update_popup", "currency_wars_home" ]
+        }
+      ]
+    },
+    {
+      "pageId": "currency_wars_home",
+      "actions": [
+        {
+          "id": "start_currency_wars",
+          "displayName": "开始货币战争",
+          "kind": "click",
+          "point": { "x": 1590, "y": 976 },
+          "expectedPageIds": [ "mode_selection" ]
+        }
+      ]
+    },
+    {
+      "pageId": "mode_selection",
+      "actions": [
+        {
+          "id": "select_standard_mode",
+          "displayName": "选择标准博弈",
+          "kind": "click",
+          "point": { "x": 285, "y": 268 },
+          "requiredGameMode": "Standard"
+        },
+        {
+          "id": "select_overclock_mode",
+          "displayName": "选择超频博弈",
+          "kind": "click",
+          "point": { "x": 285, "y": 455 },
+          "requiredGameMode": "Overclock"
+        },
+        {
+          "id": "enter_selected_mode",
+          "displayName": "进入所选博弈模式",
+          "kind": "click",
+          "point": { "x": 1640, "y": 964 },
+          "expectedPageIds": [ "rank_difficulty" ]
+        }
+      ]
+    },
+    {
+      "pageId": "rank_difficulty",
+      "actions": [
+        {
+          "id": "start_run",
+          "displayName": "开始本局",
+          "kind": "click",
+          "point": { "x": 1690, "y": 967 },
+          "expectedPageIds": [ "enemy_overview" ],
+          "timeoutMilliseconds": 20000
+        }
+      ]
+    },
+    {
+      "pageId": "enemy_overview",
+      "actions": [
+        {
+          "id": "enemy_overview_next",
+          "displayName": "确认敌人概览",
+          "kind": "click",
+          "point": { "x": 1514, "y": 985 },
+          "expectedPageIds": [ "plane_progress" ]
+        }
+      ]
+    },
+    {
+      "pageId": "plane_progress",
+      "actions": [
+        {
+          "id": "continue_plane_progress",
+          "displayName": "继续位面流程",
+          "kind": "click",
+          "point": { "x": 960, "y": 720 },
+          "expectedPageIds": [ "investment_environment" ]
+        }
+      ]
+    },
+    {
+      "pageId": "investment_environment",
+      "actions": [
+        {
+          "id": "select_first_investment",
+          "displayName": "选择第一个投资环境",
+          "kind": "click",
+          "point": { "x": 439, "y": 530 },
+          "expectedPageIds": [ "investment_environment" ]
+        },
+        {
+          "id": "confirm_investment",
+          "displayName": "确认投资环境",
+          "kind": "click",
+          "point": { "x": 1083, "y": 984 },
+          "expectedPageIds": [ "preparation_1_1" ],
+          "timeoutMilliseconds": 20000
+        }
+      ]
+    },
+    {
+      "pageId": "preparation_1_1",
+      "terminal": true,
+      "actions": []
+    },
+    {
+      "pageId": "investment_strategy",
+      "actions": [
+        {
+          "id": "return_from_investment_strategy",
+          "displayName": "返回备战界面",
+          "kind": "click",
+          "point": { "x": 1768, "y": 58 },
+          "expectedPageIds": [ "preparation_1_2" ]
+        }
+      ]
+    },
+    {
+      "pageId": "preparation_1_2",
+      "terminal": true,
+      "actions": []
+    }
+  ]
+}

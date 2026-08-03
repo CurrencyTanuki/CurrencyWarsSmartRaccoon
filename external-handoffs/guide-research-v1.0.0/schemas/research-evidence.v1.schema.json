@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://currency-wars.local/schemas/research-evidence.v1.schema.json",
+  "title": "Currency Wars research evidence v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "evidenceSetId",
+    "title",
+    "gameMode",
+    "applicableGameVersions",
+    "createdAt",
+    "updatedAt",
+    "source",
+    "claims",
+    "extractionStatus",
+    "unknowns"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "research-evidence.v1" },
+    "evidenceSetId": { "$ref": "#/$defs/id" },
+    "title": { "$ref": "#/$defs/nonEmpty" },
+    "gameMode": { "const": "currency-wars" },
+    "applicableGameVersions": { "$ref": "#/$defs/versionList" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "createdBy": {
+      "type": "object",
+      "required": ["kind", "name"],
+      "properties": {
+        "kind": { "enum": ["ai", "human", "mixed"] },
+        "name": { "$ref": "#/$defs/nonEmpty" }
+      },
+      "additionalProperties": false
+    },
+    "source": { "$ref": "#/$defs/source" },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/claim" }
+    },
+    "extractionStatus": { "enum": ["complete", "partial", "blocked"] },
+    "unknowns": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/unknown" }
+    },
+    "deduplicationKey": { "type": ["string", "null"] },
+    "notes": { "$ref": "#/$defs/stringList" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]*$" },
+    "stringList": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/nonEmpty" }
+    },
+    "idList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/id" }
+    },
+    "versionList": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(unknown|[0-9]+\\.[0-9]+(?:\\.[0-9]+)?)$"
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "sourceId",
+        "title",
+        "platform",
+        "author",
+        "url",
+        "publishedAt",
+        "accessedAt",
+        "contentType",
+        "language",
+        "applicableGameVersions",
+        "reuseStatus"
+      ],
+      "properties": {
+        "sourceId": { "$ref": "#/$defs/id" },
+        "title": { "$ref": "#/$defs/nonEmpty" },
+        "platform": { "$ref": "#/$defs/nonEmpty" },
+        "author": { "$ref": "#/$defs/nonEmpty" },
+        "url": { "type": "string", "format": "uri" },
+        "publishedAt": {
+          "type": "string",
+          "pattern": "^(unknown|[0-9]{4}-[0-9]{2}-[0-9]{2}(?:T.*)?)$"
+        },
+        "accessedAt": { "type": "string", "format": "date" },
+        "contentType": {
+          "enum": ["official", "article", "video", "post", "livestream", "archive", "other"]
+        },
+        "language": { "$ref": "#/$defs/nonEmpty" },
+        "applicableGameVersions": { "$ref": "#/$defs/versionList" },
+        "reuseStatus": {
+          "enum": ["linked_only", "permission_granted", "public_domain", "unknown"]
+        },
+        "reuseNotes": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "locator": {
+      "type": "object",
+      "required": ["kind", "value"],
+      "properties": {
+        "kind": { "enum": ["timestamp", "section", "page", "paragraph", "whole_source"] },
+        "value": { "$ref": "#/$defs/nonEmpty" },
+        "timeStartSeconds": { "type": ["number", "null"], "minimum": 0 },
+        "timeEndSeconds": { "type": ["number", "null"], "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "subjectRefs": {
+      "type": "object",
+      "required": [
+        "characterIds",
+        "equipmentIds",
+        "bondIds",
+        "investmentEnvironmentIds",
+        "investmentStrategyIds",
+        "enemyAffixIds",
+        "otherRefs"
+      ],
+      "properties": {
+        "characterIds": { "$ref": "#/$defs/idList" },
+        "equipmentIds": { "$ref": "#/$defs/idList" },
+        "bondIds": { "$ref": "#/$defs/idList" },
+        "investmentEnvironmentIds": { "$ref": "#/$defs/idList" },
+        "investmentStrategyIds": { "$ref": "#/$defs/idList" },
+        "enemyAffixIds": { "$ref": "#/$defs/idList" },
+        "otherRefs": { "$ref": "#/$defs/stringList" }
+      },
+      "additionalProperties": false
+    },
+    "conflict": {
+      "type": "object",
+      "required": ["withEvidenceSetId", "withClaimId", "summary", "status"],
+      "properties": {
+        "withEvidenceSetId": { "$ref": "#/$defs/id" },
+        "withClaimId": { "$ref": "#/$defs/id" },
+        "summary": { "$ref": "#/$defs/nonEmpty" },
+        "status": { "enum": ["unresolved", "resolved", "not_comparable"] },
+        "resolution": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "claim": {
+      "type": "object",
+      "required": [
+        "claimId",
+        "topic",
+        "statement",
+        "assertionType",
+        "supportStatus",
+        "confidence",
+        "locator",
+        "applicableGameVersions",
+        "subjectRefs",
+        "conditions",
+        "conflicts"
+      ],
+      "properties": {
+        "claimId": { "$ref": "#/$defs/id" },
+        "topic": { "$ref": "#/$defs/nonEmpty" },
+        "statement": { "$ref": "#/$defs/nonEmpty" },
+        "assertionType": { "enum": ["source_fact", "author_recommendation", "ai_inference"] },
+        "supportStatus": { "enum": ["direct", "indirect", "unverified"] },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "locator": { "$ref": "#/$defs/locator" },
+        "applicableGameVersions": { "$ref": "#/$defs/versionList" },
+        "subjectRefs": { "$ref": "#/$defs/subjectRefs" },
+        "conditions": { "$ref": "#/$defs/stringList" },
+        "conflicts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/conflict" }
+        },
+        "notes": { "$ref": "#/$defs/stringList" }
+      },
+      "additionalProperties": false
+    },
+    "unknown": {
+      "type": "object",
+      "required": ["field", "reason", "attemptedSources"],
+      "properties": {
+        "field": { "$ref": "#/$defs/nonEmpty" },
+        "reason": { "$ref": "#/$defs/nonEmpty" },
+        "attemptedSources": { "$ref": "#/$defs/stringList" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

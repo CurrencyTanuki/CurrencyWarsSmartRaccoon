@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "research-evidence.v1",
+  "evidenceSetId": "evidence-bili-bv1jpny6neta",
+  "title": "创作体验服姬子护盾反震视频证据（待人工逐段复核）",
+  "gameMode": "currency-wars",
+  "applicableGameVersions": [
+    "4.4"
+  ],
+  "createdAt": "2026-07-27T13:40:00Z",
+  "updatedAt": "2026-08-01T14:00:00Z",
+  "createdBy": {
+    "kind": "ai",
+    "name": "local audited research migration"
+  },
+  "source": {
+    "sourceId": "bili-bv1jpny6neta",
+    "title": "【崩坏：星穹铁道】一动反伤140亿！4.4货币战争姬子护盾反震流",
+    "platform": "Bilibili",
+    "author": "Sennyuki风早千雪",
+    "url": "https://www.bilibili.com/video/BV1jpNY6NEtA/",
+    "publishedAt": "2026-07-15T03:17:16Z",
+    "accessedAt": "2026-07-27",
+    "contentType": "video",
+    "language": "zh-CN",
+    "applicableGameVersions": [
+      "4.4"
+    ],
+    "reuseStatus": "linked_only",
+    "reuseNotes": "未捆绑视频、字幕或长段文字；时间点是待复核的粗粒度窗口。"
+  },
+  "claims": [
+    {
+      "claimId": "metadata-creative-server",
+      "topic": "source_metadata",
+      "statement": "页面标题标注 4.4、A850 与创作体验服。",
+      "assertionType": "source_fact",
+      "supportStatus": "direct",
+      "confidence": 0.99,
+      "locator": {
+        "kind": "page",
+        "value": "page:title"
+      },
+      "applicableGameVersions": [
+        "4.4"
+      ],
+      "subjectRefs": {
+        "characterIds": [],
+        "equipmentIds": [],
+        "bondIds": [],
+        "investmentEnvironmentIds": [],
+        "investmentStrategyIds": [],
+        "enemyAffixIds": [],
+        "otherRefs": []
+      },
+      "conditions": [],
+      "conflicts": [],
+      "notes": [
+        "创作体验服与正式服可能存在差异。"
+      ]
+    },
+    {
+      "claimId": "coarse-train-shield-route",
+      "topic": "archetype_core",
+      "statement": "现有本地研究将视频路线概括为 6 列车同行、2 护盾与姬子反震，但缺少逐段字幕级核验。",
+      "assertionType": "ai_inference",
+      "supportStatus": "unverified",
+      "confidence": 0.55,
+      "locator": {
+        "kind": "timestamp",
+        "value": "video:00:00-17:19 粗粒度复核窗口",
+        "timeStartSeconds": 0,
+        "timeEndSeconds": 1039
+      },
+      "applicableGameVersions": [
+        "4.4"
+      ],
+      "subjectRefs": {
+        "characterIds": [
+          "currency_wars_character_01"
+        ],
+        "equipmentIds": [],
+        "bondIds": [
+          "currency_wars_bond_11",
+          "currency_wars_bond_15"
+        ],
+        "investmentEnvironmentIds": [],
+        "investmentStrategyIds": [],
+        "enemyAffixIds": [],
+        "otherRefs": []
+      },
+      "conditions": [
+        "创作体验服素材"
+      ],
+      "conflicts": [
+        {
+          "withEvidenceSetId": "evidence-taptap-828363891523190942",
+          "withClaimId": "core-train-shield",
+          "summary": "路线方向相近，但视频为创作体验服且缺少逐段核验，不能直接合并为正式服确定规则。",
+          "status": "unresolved",
+          "resolution": null
+        }
+      ],
+      "notes": [
+        "必须由外部研究者重新播放并补精确时间点。"
+      ]
+    }
+  ],
+  "extractionStatus": "partial",
+  "unknowns": [
+    {
+      "field": "逐节点经济、刷新和装备优先级",
+      "reason": "公开字幕和章节不可用，本地资料只有粗粒度回放窗口。",
+      "attemptedSources": [
+        "Bilibili 页面元数据",
+        "公开播放器元数据"
+      ]
+    }
+  ],
+  "deduplicationKey": "bilibili:BV1jpNY6NEtA",
+  "notes": [
+    "该例专门展示 incomplete、unknown 和 unresolved conflict 的合法表达。"
+  ]
+}

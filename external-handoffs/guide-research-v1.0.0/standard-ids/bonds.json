@@ -1,0 +1,340 @@
+{
+  "catalog": "bonds",
+  "gameVersion": "4.4",
+  "records": [
+    {
+      "activationThresholds": [
+        2,
+        3,
+        4
+      ],
+      "id": "currency_wars_bond_01",
+      "name": "星核猎手",
+      "type": "阵营羁绊"
+    },
+    {
+      "activationThresholds": [
+        2,
+        4
+      ],
+      "id": "currency_wars_bond_02",
+      "name": "贝洛伯格",
+      "type": "阵营羁绊"
+    },
+    {
+      "activationThresholds": [
+        2,
+        3
+      ],
+      "id": "currency_wars_bond_03",
+      "name": "公司",
+      "type": "阵营羁绊"
+    },
+    {
+      "activationThresholds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "id": "currency_wars_bond_04",
+      "name": "星间旅人",
+      "type": "阵营羁绊"
+    },
+    {
+      "activationThresholds": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "id": "currency_wars_bond_05",
+      "name": "巡海游侠",
+      "type": "阵营羁绊"
+    },
+    {
+      "activationThresholds": [
+        3,
+        4,
+        6,
+        9
+      ],
+      "id": "currency_wars_bond_06",
+      "name": "昼之半神",
+      "type": "阵营羁绊"
+    },
+    {
+      "activationThresholds": [
+        2,
+        4,
+        7,
+        9
+      ],
+      "id": "currency_wars_bond_07",
+      "name": "夜之半神",
+      "type": "阵营羁绊"
+    },
+    {
+      "activationThresholds": [
+        2,
+        4,
+        6
+      ],
+      "id": "currency_wars_bond_08",
+      "name": "银河学者",
+      "type": "阵营羁绊"
+    },
+    {
+      "activationThresholds": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "id": "currency_wars_bond_09",
+      "name": "盛会之星",
+      "type": "阵营羁绊"
+    },
+    {
+      "activationThresholds": [
+        3,
+        5,
+        6,
+        8
+      ],
+      "id": "currency_wars_bond_10",
+      "name": "狼狩",
+      "type": "阵营羁绊"
+    },
+    {
+      "activationThresholds": [
+        2,
+        4,
+        6
+      ],
+      "id": "currency_wars_bond_11",
+      "name": "列车同行",
+      "type": "阵营羁绊"
+    },
+    {
+      "activationThresholds": [
+        3,
+        5,
+        7,
+        10
+      ],
+      "id": "currency_wars_bond_12",
+      "name": "仙舟",
+      "type": "阵营羁绊"
+    },
+    {
+      "activationThresholds": [
+        2,
+        4,
+        6
+      ],
+      "id": "currency_wars_bond_13",
+      "name": "治疗",
+      "type": "流派羁绊"
+    },
+    {
+      "activationThresholds": [
+        2,
+        4,
+        6
+      ],
+      "id": "currency_wars_bond_14",
+      "name": "持续伤害",
+      "type": "流派羁绊"
+    },
+    {
+      "activationThresholds": [
+        2,
+        4
+      ],
+      "id": "currency_wars_bond_15",
+      "name": "护盾",
+      "type": "流派羁绊"
+    },
+    {
+      "activationThresholds": [
+        2,
+        4,
+        6,
+        9
+      ],
+      "id": "currency_wars_bond_16",
+      "name": "击破",
+      "type": "流派羁绊"
+    },
+    {
+      "activationThresholds": [
+        2,
+        4,
+        6,
+        8
+      ],
+      "id": "currency_wars_bond_17",
+      "name": "减益",
+      "type": "流派羁绊"
+    },
+    {
+      "activationThresholds": [
+        3,
+        5,
+        7,
+        10
+      ],
+      "id": "currency_wars_bond_18",
+      "name": "能量",
+      "type": "流派羁绊"
+    },
+    {
+      "activationThresholds": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "id": "currency_wars_bond_19",
+      "name": "群攻",
+      "type": "流派羁绊"
+    },
+    {
+      "activationThresholds": [
+        2,
+        4,
+        6,
+        8
+      ],
+      "id": "currency_wars_bond_20",
+      "name": "燃血",
+      "type": "流派羁绊"
+    },
+    {
+      "activationThresholds": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "id": "currency_wars_bond_21",
+      "name": "追击",
+      "type": "流派羁绊"
+    },
+    {
+      "activationThresholds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "id": "currency_wars_bond_22",
+      "name": "量子同频",
+      "type": "流派羁绊"
+    },
+    {
+      "activationThresholds": [
+        2,
+        4,
+        6,
+        8
+      ],
+      "id": "currency_wars_bond_23",
+      "name": "战技点",
+      "type": "流派羁绊"
+    },
+    {
+      "activationThresholds": [
+        1
+      ],
+      "id": "currency_wars_bond_24",
+      "name": "救世主",
+      "type": "独立羁绊"
+    },
+    {
+      "activationThresholds": [
+        1
+      ],
+      "id": "currency_wars_bond_25",
+      "name": "大守护者",
+      "type": "独立羁绊"
+    },
+    {
+      "activationThresholds": [
+        1
+      ],
+      "id": "currency_wars_bond_26",
+      "name": "命运卜者",
+      "type": "独立羁绊"
+    },
+    {
+      "activationThresholds": [
+        1
+      ],
+      "id": "currency_wars_bond_27",
+      "name": "挚爱之人",
+      "type": "独立羁绊"
+    },
+    {
+      "activationThresholds": [
+        1
+      ],
+      "id": "currency_wars_bond_28",
+      "name": "魔术师",
+      "type": "独立羁绊"
+    },
+    {
+      "activationThresholds": [
+        3,
+        4,
+        5,
+        7
+      ],
+      "id": "currency_wars_bond_29",
+      "name": "欢愉",
+      "type": "流派羁绊"
+    },
+    {
+      "activationThresholds": [
+        1
+      ],
+      "id": "currency_wars_bond_30",
+      "name": "头号玩家",
+      "type": "独立羁绊"
+    },
+    {
+      "activationThresholds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "id": "currency_wars_bond_31",
+      "name": "命运圣杯",
+      "type": "阵营羁绊"
+    },
+    {
+      "activationThresholds": [
+        1
+      ],
+      "id": "currency_wars_bond_32",
+      "name": "领航员",
+      "type": "独立羁绊"
+    },
+    {
+      "activationThresholds": [
+        2,
+        3
+      ],
+      "id": "currency_wars_bond_33",
+      "name": "师徒",
+      "type": "特殊羁绊"
+    }
+  ],
+  "schemaVersion": "standard-id-catalog.v1"
+}

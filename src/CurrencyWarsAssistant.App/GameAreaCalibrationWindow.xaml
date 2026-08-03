@@ -1,0 +1,79 @@
+<Window x:Class="CurrencyWarsAssistant.App.GameAreaCalibrationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="定位16:9游戏画面"
+        Width="1100"
+        Height="760"
+        MinWidth="820"
+        MinHeight="620"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BackgroundBrush}"
+        Foreground="{StaticResource TextBrush}">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <TextBlock FontSize="22"
+                       FontWeight="SemiBold"
+                       Text="定位浏览器中的游戏画面" />
+            <TextBlock Margin="0,5,0,0"
+                       Foreground="{StaticResource MutedBrush}"
+                       Text="拖动框选完整游戏画面。选择框固定为16:9；不要包含标签栏、地址栏、网页边框或黑边，也不要裁掉游戏UI。"
+                       TextWrapping="Wrap" />
+        </StackPanel>
+
+        <Border Grid.Row="1"
+                Margin="0,14"
+                Padding="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="#070B12"
+                BorderBrush="#3B82A4"
+                BorderThickness="1">
+            <Grid x:Name="PreviewSurface">
+                <Image x:Name="PreviewImage"
+                       Stretch="Fill"
+                       IsHitTestVisible="False" />
+                <Canvas x:Name="SelectionCanvas"
+                        Background="#01000000"
+                        Cursor="Cross"
+                        MouseLeftButtonDown="OnSelectionStarted"
+                        MouseMove="OnSelectionMoved"
+                        MouseLeftButtonUp="OnSelectionCompleted">
+                    <Rectangle x:Name="SelectionBox"
+                               Visibility="Collapsed"
+                               Stroke="#FF56D7FF"
+                               StrokeThickness="3"
+                               Fill="#2256D7FF" />
+                </Canvas>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock x:Name="SelectionStatus"
+                           FontWeight="SemiBold"
+                           Text="正在读取窗口预览……" />
+            </StackPanel>
+            <Button Grid.Column="1"
+                    Margin="10,0,0,0"
+                    Click="OnReloadPreview"
+                    Content="重新截图" />
+            <Button x:Name="ConfirmButton"
+                    Grid.Column="2"
+                    Margin="8,0,0,0"
+                    IsEnabled="False"
+                    Click="OnConfirm"
+                    Content="确认游戏区域" />
+        </Grid>
+    </Grid>
+</Window>

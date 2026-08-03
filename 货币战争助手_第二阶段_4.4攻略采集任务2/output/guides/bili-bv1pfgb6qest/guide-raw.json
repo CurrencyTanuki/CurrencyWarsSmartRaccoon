@@ -1,0 +1,122 @@
+{
+    "schemaVersion":  "1.0.0",
+    "guideId":  "guide-bili-bv1pfgb6qest",
+    "sourceId":  "bili-bv1pfgb6qest",
+    "authorClaims":  [
+                         {
+                             "claimId":  "ac-01",
+                             "paraphrase":  "作者分享4.4 Saber与命运圣杯路线，并公开5能量2列车同行的攻略路线。",
+                             "locator":  "page:title；page:description",
+                             "stableIds":  [
+
+                                           ]
+                         }
+                     ],
+    "factualClaims":  [
+                          {
+                              "claimId":  "fc-01",
+                              "paraphrase":  "作者声明素材来自创作体验服且应以正式服为准。",
+                              "locator":  "page:description",
+                              "stableIds":  [
+
+                                            ]
+                          }
+                      ],
+    "sourceExtensions":  {
+                             "collectionStatus":  "complete_structural_extraction",
+                             "sourcePriority":  "standard",
+                             "platform":  "Bilibili",
+                             "contentType":  "video",
+                             "durationSeconds":  618,
+                             "authorMid":  13534204,
+                             "noReprintFlag":  0,
+                             "archetype":  "Saber：5能量2列车同行",
+                             "coreCharacters":  [
+                                                    "Saber"
+                                                ],
+                             "substituteCharacters":  [
+
+                                                      ],
+                             "keySynergies":  [
+                                                  "5能量+2列车同行",
+                                                  "命运圣杯任务与能量循环"
+                                              ],
+                             "opening":  {
+                                             "acceptable":  [
+                                                                "优先能量与Saber组件"
+                                                            ],
+                                             "abandonOrPivot":  [
+                                                                    "若正式服规则与创作体验服不同，暂停照搬"
+                                                                ]
+                                         },
+                             "priorities":  {
+                                                "investmentEnvironment":  [
+                                                                              "4.4创作体验服"
+                                                                          ],
+                                                "investmentStrategy":  [
+                                                                           "能量羁绊优先，列车同行补充"
+                                                                       ]
+                                            },
+                             "stages":  {
+                                            "early":  "确认Saber与能量组件",
+                                            "mid":  "凑5能量2列车",
+                                            "late":  "围绕能量循环完成命运圣杯终局"
+                                        },
+                             "economyTriggers":  [
+                                                     "简介未给出定量刷新阈值"
+                                                 ],
+                             "completionStandard":  [
+                                                        "5能量2列车同行攻略路线成型"
+                                                    ],
+                             "fallbackRoutes":  [
+                                                    "若正式服规则与创作体验服不同，暂停照搬"
+                                                ],
+                             "failureRecovery":  [
+                                                     "组件不足时保留能量主轴并用列车过渡"
+                                                 ],
+                             "risksAndExceptions":  [
+                                                        "创作体验服素材，以正式服为准",
+                                                        "作者明确禁止搬运，故仅链接与转述"
+                                                    ],
+                             "guideCodePresence":  true,
+                             "pendingMappings":  [
+                                                     {
+                                                         "name":  "5能量+2列车同行",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "Saber",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "命运圣杯任务与能量循环",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     }
+                                                 ],
+                             "evidence":  {
+                                              "locatorMap":  [
+                                                                 "page:title",
+                                                                 "page:description 攻略路线与体验服声明",
+                                                                 "video:00:00-03:00 粗粒度开局复核窗口",
+                                                                 "video:03:00-07:00 粗粒度任务复核窗口",
+                                                                 "video:07:00-10:18 粗粒度终局复核窗口"
+                                                             ],
+                                              "granularity":  "coarse_time_windows_plus_page_metadata",
+                                              "limitations":  [
+                                                                  "Bilibili player endpoint exposed no public subtitles or chapter markers during collection.",
+                                                                  "Time ranges are coarse replay windows, not transcript-level attribution.",
+                                                                  "Only title/description claims are treated as directly text-verifiable."
+                                                              ],
+                                              "manualSecondPassRequired":  true
+                                          },
+                             "copyright":  {
+                                               "status":  "linked_only",
+                                               "bundledMedia":  false,
+                                               "bundledSubtitles":  false,
+                                               "bundledFullText":  false
+                                           }
+                         }
+}

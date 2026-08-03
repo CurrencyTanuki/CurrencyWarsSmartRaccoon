@@ -1,0 +1,19 @@
+{
+    "schemaVersion":  "1.0.0",
+    "sourceId":  "taptap-828363891523190942",
+    "title":  "【V4.4攻略】货币战争A850攻略｜姬子·启行挂机流",
+    "author":  "冻梨游研社",
+    "url":  "https://www.taptap.cn/moment/828363891523190942",
+    "publishedAt":  "2026-07-20T04:22:21Z",
+    "accessedAt":  "2026-07-27T13:40:00Z",
+    "applicableGameVersion":  "4.4",
+    "copyrightStatus":  "linked_only",
+    "locators":  [
+                     "article:h1 标题",
+                     "article:h2 一、阵容优势",
+                     "article:h2 二、初期过渡",
+                     "article:h2 三、中期运营",
+                     "article:h2 四、终局",
+                     "article:h2 五、结尾"
+                 ]
+}

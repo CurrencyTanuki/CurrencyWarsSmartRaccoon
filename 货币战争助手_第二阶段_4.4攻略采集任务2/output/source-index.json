@@ -1,0 +1,795 @@
+{
+    "schemaVersion":  "research-index-1.0.0",
+    "accessedAt":  "2026-07-27T13:40:00Z",
+    "targetGameVersion":  "4.4",
+    "scope":  "Currency Wars guide research; sources are deduplicated by canonical URL and kept author-separated.",
+    "copyrightPolicy":  "linked_only unless explicit permission is documented; no media, subtitles, article bodies or images are bundled.",
+    "summary":  {
+                    "candidateCount":  46,
+                    "selectedCompleteGuideCount":  13,
+                    "selectedIndependentAuthorCount":  12,
+                    "contentTypes":  [
+                                         "article",
+                                         "post",
+                                         "video"
+                                     ],
+                    "userDesignatedCoreCreators":  [
+                                                       "甘泽成谣雨成诗 (MID 482212512)",
+                                                       "这看缘吧 (MID 401579272)"
+                                                   ]
+                },
+    "candidates":  [
+                       {
+                           "sourceId":  "taptap-828363891523190942",
+                           "title":  "【V4.4攻略】货币战争A850攻略｜姬子·启行挂机流",
+                           "author":  "冻梨游研社",
+                           "url":  "https://www.taptap.cn/moment/828363891523190942",
+                           "platform":  "TapTap",
+                           "contentType":  "article",
+                           "publishedAt":  "2026-07-20T04:22:21Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  true,
+                           "selectionReason":  "complete guide; archetype=姬子·启行：列车同行护盾挂机流",
+                           "locators":  [
+                                            "article:h1 标题",
+                                            "article:h2 一、阵容优势",
+                                            "article:h2 二、初期过渡",
+                                            "article:h2 三、中期运营",
+                                            "article:h2 四、终局",
+                                            "article:h2 五、结尾"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1jjny6tex4",
+                           "title":  "【货币战争攻略】试用姬子竟能吊打所有主C和生存位？全网最详细姬子A850稳定通关教程！货币战争零和博弈的最终答案 你说的对这就是四装备大人",
+                           "author":  "甘泽成谣雨成诗",
+                           "url":  "https://www.bilibili.com/video/BV1jJNY6TEX4/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-15T03:04:30Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  true,
+                           "selectionReason":  "complete guide; archetype=姬子·启行：四装备列车量子",
+                           "locators":  [
+                                            "page:title",
+                                            "page:description",
+                                            "video:00:00-02:00 粗粒度开局复核窗口",
+                                            "video:02:00-07:00 粗粒度成型复核窗口",
+                                            "video:07:00-10:37 粗粒度终局复核窗口"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1unnq6aefk",
+                           "title":  "究极试用轮椅姬子正在摧毁货币战争!复制羁绊和装备?大领航时代降临！",
+                           "author":  "这看缘吧",
+                           "url":  "https://www.bilibili.com/video/BV1uNNq6AEFK/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-15T09:43:59Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  true,
+                           "selectionReason":  "complete guide; archetype=姬子·启行：反震/能量/盛会三路线",
+                           "locators":  [
+                                            "page:title",
+                                            "page:description 三套攻略路线",
+                                            "video:00:00-01:30 粗粒度机制复核窗口",
+                                            "video:01:30-04:30 粗粒度分支复核窗口",
+                                            "video:04:30-06:22 粗粒度结算复核窗口"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1uwkg6feih",
+                           "title":  "A850货币战争角色强度榜，开局定阵/抓牌思路一次看懂！",
+                           "author":  "绝不是dd",
+                           "url":  "https://www.bilibili.com/video/BV1uWKg6FEih/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-16T05:05:24Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  true,
+                           "selectionReason":  "complete guide; archetype=A850泛用：开局定阵与抓牌",
+                           "locators":  [
+                                            "page:title",
+                                            "video:00:00-03:00 粗粒度强度榜复核窗口",
+                                            "video:03:00-06:30 粗粒度定阵复核窗口",
+                                            "video:06:30-09:21 粗粒度抓牌复核窗口"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1jpny6neta",
+                           "title":  "【崩坏：星穹铁道】一动反伤140亿！比阿雅更轮椅！4.4货币战争最无脑阵容！速通A850！领航员姬子护盾反震流打法攻略！【创作体验服】",
+                           "author":  "Sennyuki风早千雪",
+                           "url":  "https://www.bilibili.com/video/BV1jpNY6NEtA/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-15T03:17:16Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  true,
+                           "selectionReason":  "complete guide; archetype=姬子·启行：6列车2护盾反震",
+                           "locators":  [
+                                            "page:title",
+                                            "page:description 攻略路线",
+                                            "video:00:00-05:30 粗粒度起手复核窗口",
+                                            "video:05:30-12:00 粗粒度成型复核窗口",
+                                            "video:12:00-17:19 粗粒度终局复核窗口"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1pfgb6qest",
+                           "title":  "【崩铁】4.4saber\u0026命运圣杯货币战争玩法攻略心得分享",
+                           "author":  "匚苹果",
+                           "url":  "https://www.bilibili.com/video/BV1Pfgb6QEST/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-24T04:00:00Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  true,
+                           "selectionReason":  "complete guide; archetype=Saber：5能量2列车同行",
+                           "locators":  [
+                                            "page:title",
+                                            "page:description 攻略路线与体验服声明",
+                                            "video:00:00-03:00 粗粒度开局复核窗口",
+                                            "video:03:00-07:00 粗粒度任务复核窗口",
+                                            "video:07:00-10:18 粗粒度终局复核窗口"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1qokj64ea8",
+                           "title":  "全试用非师徒无三星，彦卿核心阵容竟能15连胜A850? 小众角色科研的完美答卷，全队都是数值怪！全网首发刀剑狼阵容",
+                           "author":  "橘橘猫JJM_Tachibana",
+                           "url":  "https://www.bilibili.com/video/BV1QoKJ64Ea8/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-17T10:00:00Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  true,
+                           "selectionReason":  "complete guide; archetype=彦卿：刀剑狼全试用阵容",
+                           "locators":  [
+                                            "page:title",
+                                            "page:description",
+                                            "video:00:00-03:30 粗粒度阵容复核窗口",
+                                            "video:03:30-08:00 粗粒度运营复核窗口",
+                                            "video:08:00-11:38 粗粒度终局复核窗口"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1zykh6ve1c",
+                           "title":  "货币战争A850击破队三彩羁绊通关全过程（精简版附运营思路）",
+                           "author":  "dsx凋闪现",
+                           "url":  "https://www.bilibili.com/video/BV1ZyKH6VE1C/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-20T15:15:11Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  true,
+                           "selectionReason":  "complete guide; archetype=击破队：三彩羁绊",
+                           "locators":  [
+                                            "page:title",
+                                            "video:00:00-20:00 粗粒度前期复核窗口",
+                                            "video:20:00-45:00 粗粒度中期复核窗口",
+                                            "video:45:00-64:41 粗粒度终局复核窗口"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1tg3g65e8u",
+                           "title":  "货币战争，A8难度50，黑塔纪元，遭遇4，顺便聆听萨姆的心跳“娇喘”",
+                           "author":  "青墨非琉",
+                           "url":  "https://www.bilibili.com/video/BV1Tg3G65E8u/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-25T15:17:57Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  true,
+                           "selectionReason":  "complete guide; archetype=黑塔纪元：遭遇4",
+                           "locators":  [
+                                            "page:title",
+                                            "video:00:00-02:30 粗粒度前期复核窗口",
+                                            "video:02:30-05:30 粗粒度成型复核窗口",
+                                            "video:05:30-07:55 粗粒度遭遇4复核窗口"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1d83g6qexf",
+                           "title":  "【货币战争】独属于黄泉的爻光？不带风扇的巡海游侠？试用黄泉也能把把0t关底boss！",
+                           "author":  "Dusk不是鸭啊",
+                           "url":  "https://www.bilibili.com/video/BV1d83g6QExF/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-25T10:48:14Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  true,
+                           "selectionReason":  "complete guide; archetype=黄泉：巡海游侠",
+                           "locators":  [
+                                            "page:title",
+                                            "video:00:00-03:00 粗粒度开局复核窗口",
+                                            "video:03:00-06:00 粗粒度成型复核窗口",
+                                            "video:06:00-08:41 粗粒度关底复核窗口"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1f7ny6begz",
+                           "title":  "【货币战争攻略】试用姬子一个助战技就能轻松 10 亿？乱杀 A850？ 火力风暴潮驾驶员再添一员大将？三费战神姬子·启行 A850 详细上分攻略",
+                           "author":  "可乐鉴赏大师",
+                           "url":  "https://www.bilibili.com/video/BV1f7NY6BEgz/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-15T03:09:32Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  true,
+                           "selectionReason":  "complete guide; archetype=姬子·启行：直伤火力风暴潮",
+                           "locators":  [
+                                            "page:title",
+                                            "page:description A850口径与试用模拟说明",
+                                            "video:00:00-02:30 粗粒度机制复核窗口",
+                                            "video:02:30-05:30 粗粒度运营复核窗口",
+                                            "video:05:30-07:58 粗粒度终局复核窗口"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1aj3g6meti",
+                           "title":  "又一永动机？！货币战争全程只上4人15连胜通关A8-50全流程！圣杯羁绊真的神了！阿瓦隆神力！（缇宝或许可以优化，等我再试试）",
+                           "author":  "洛河是小狼",
+                           "url":  "https://www.bilibili.com/video/BV1AJ3G6METi/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-25T16:04:55Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  true,
+                           "selectionReason":  "complete guide; archetype=命运圣杯：四人阿瓦隆永动",
+                           "locators":  [
+                                            "page:title",
+                                            "page:description",
+                                            "video:00:00-18:00 粗粒度前期复核窗口",
+                                            "video:18:00-40:00 粗粒度中期复核窗口",
+                                            "video:40:00-54:29 粗粒度终局复核窗口"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1jjny6tehz",
+                           "title":  "【货币战争攻略】A850竟是有史以来最简单的一个版本？末法时代三体人诸神黄昏！货币战争癫疯之作 上场千冶刃想要多少分自己填",
+                           "author":  "甘泽成谣雨成诗",
+                           "url":  "https://www.bilibili.com/video/BV1jJNY6TEHz/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-15T03:07:17Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  true,
+                           "selectionReason":  "complete guide; archetype=A850泛用：千冶刃生存补强与五路线总览",
+                           "locators":  [
+                                            "page:title",
+                                            "page:description 五条攻略路线",
+                                            "video:00:00-03:00 粗粒度版本判断复核窗口",
+                                            "video:03:00-07:00 粗粒度分支复核窗口",
+                                            "video:07:00-09:48 粗粒度收束复核窗口"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv117ks6beqx",
+                           "title":  "【货币战争4.4 A850死龙】钢铁引擎希儿几乎不用出手",
+                           "author":  "海祇大头鱼",
+                           "url":  "https://www.bilibili.com/video/BV117Ks6bEqx/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-27T09:00:00Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: latest A850 Seele",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1c63f6nemj",
+                           "title":  "货币战争红A A850实战",
+                           "author":  "琴心酱",
+                           "url":  "https://www.bilibili.com/video/BV1C63F6NEMj/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-27T08:04:54Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: red Archer",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1mw-gz6uesi",
+                           "title":  "4.4三个最强星徽",
+                           "author":  "星见萤之宇",
+                           "url":  "https://www.bilibili.com/video/BV1MWgZ6uEsi/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-27T06:24:22Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: emblem ranking",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv118gz6pezj",
+                           "title":  "4.4圣杯日常长流程",
+                           "author":  "星来的基拉祈",
+                           "url":  "https://www.bilibili.com/video/BV118gZ6PEzj/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-27T05:02:14Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: long-form holy grail",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1efgf6zezl",
+                           "title":  "A850 0行动清屏",
+                           "author":  "伊蕾娜Pro",
+                           "url":  "https://www.bilibili.com/video/BV1Epgf6ZEzL/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-27T02:45:22Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: zero-action clear",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1icgd62ev2",
+                           "title":  "专家顾问排行",
+                           "author":  "星见萤之宇",
+                           "url":  "https://www.bilibili.com/video/BV1iCgd62Ev2/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-27T02:18:16Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: consultant ranking",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1j5gr6meje",
+                           "title":  "三星Saber四圣杯能量",
+                           "author":  "紡木千隼",
+                           "url":  "https://www.bilibili.com/video/BV1J5gR6mEJe/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-26T19:59:38Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: saber",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1gj3e6eewi",
+                           "title":  "V4.4数据雷达图",
+                           "author":  "ptyhon",
+                           "url":  "https://www.bilibili.com/video/BV1gj3E6eEwi/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-26T10:38:01Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: data visualization",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1neks6fecg",
+                           "title":  "阿格莱雅A850",
+                           "author":  "海祇大头鱼",
+                           "url":  "https://www.bilibili.com/video/BV1NEKs6fEcG/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-26T10:00:00Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: Aglaea",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1fa3j61evj",
+                           "title":  "4.4崛起羁绊",
+                           "author":  "星见萤之宇",
+                           "url":  "https://www.bilibili.com/video/BV1Fa3j61Evj/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-26T06:22:29Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: synergy ranking",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1rt376teug",
+                           "title":  "反甲加直伤姬子",
+                           "author":  "小卢同学不嘻嘻",
+                           "url":  "https://www.bilibili.com/video/BV1Rt376TEug/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-26T03:52:27Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: himeko variant",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1rt376terw",
+                           "title":  "7仙舟4减益飞光传剑",
+                           "author":  "水月千代纸",
+                           "url":  "https://www.bilibili.com/video/BV1Rt376TERw/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-26T03:50:41Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: xianzhou debuff",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1vs376uehy",
+                           "title":  "Saber A850流程",
+                           "author":  "知雀嘿",
+                           "url":  "https://www.bilibili.com/video/BV1vs376uEhy/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-26T03:40:46Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: saber",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1li3g64egv",
+                           "title":  "追击转红A",
+                           "author":  "柚被看穿L",
+                           "url":  "https://www.bilibili.com/video/BV1Li3G64EGv/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-26T02:04:15Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: red Archer",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1p13v6uevg",
+                           "title":  "8减益4治疗阿雅",
+                           "author":  "波风桐人",
+                           "url":  "https://www.bilibili.com/video/BV1p13V6uEvg/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-25T19:49:06Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: debuff sustain",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1e1336hed4",
+                           "title":  "8复制器狼尊",
+                           "author":  "MQZCZBCK",
+                           "url":  "https://www.bilibili.com/video/BV1E1336hED4/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-25T16:41:10Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: replicator",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1x63g6xek1",
+                           "title":  "4.4词条排行",
+                           "author":  "t0级昔涟单推人",
+                           "url":  "https://www.bilibili.com/video/BV1X63G6XEK1/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-25T14:54:32Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: modifier ranking",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1jm3u6hegf",
+                           "title":  "A850遭遇4难度189",
+                           "author":  "神州山川",
+                           "url":  "https://www.bilibili.com/video/BV1jm3u6HEGf/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-25T14:10:42Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: high difficulty",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1vb3g67e2s",
+                           "title":  "9追击7旅人6盛会5圣杯",
+                           "author":  "香子兰味的巧克力",
+                           "url":  "https://www.bilibili.com/video/BV1VB3g67E2S/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-25T11:42:31Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: multi-synergy",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1yg3e6beqt",
+                           "title":  "鸡爪流",
+                           "author":  "理想乡EX",
+                           "url":  "https://www.bilibili.com/video/BV1Yg3E6BEqt/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-26T10:55:09Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: niche archetype",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1ex376behd",
+                           "title":  "Saber锁轴",
+                           "author":  "八奈见杏菜是对的",
+                           "url":  "https://www.bilibili.com/video/BV1ex376BEhD/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-26T03:35:16Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: saber turn-lock",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1vckl6jevx",
+                           "title":  "5能量4圣杯Saber",
+                           "author":  "叱咤月海魚鱼貓",
+                           "url":  "https://www.bilibili.com/video/BV1VcKL6JEvx/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-16T19:31:48Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: detailed saber gear",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1pa-ga6oejc",
+                           "title":  "姬子SP能量列车",
+                           "author":  "哩噜",
+                           "url":  "https://www.bilibili.com/video/BV1PAga6oEJC/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-24T03:16:12Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: himeko energy train",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1rjk567efc",
+                           "title":  "姬子不停开大",
+                           "author":  "海祇大头鱼",
+                           "url":  "https://www.bilibili.com/video/BV1RJK567EfC/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-19T10:00:00Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: himeko ultimate loop",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1mwnv64ehh",
+                           "title":  "7欢愉姬子完整流程",
+                           "author":  "水月千代纸",
+                           "url":  "https://www.bilibili.com/video/BV1MwNv64EHh/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-15T06:18:37Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: elation himeko",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1cjk36denk",
+                           "title":  "黄泉巡海游侠攻略",
+                           "author":  "匚苹果",
+                           "url":  "https://www.bilibili.com/video/BV1cJK36DEnk/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-16T02:22:32Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: Acheron ranger",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1yo3g6pe6c",
+                           "title":  "0元刷新桂无限免费刷新",
+                           "author":  "这看缘吧",
+                           "url":  "https://www.bilibili.com/video/BV1yo3g6PE6C/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-25T09:33:36Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: likely patch-sensitive exploit; do not normalize",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1qdg86ke2e",
+                           "title":  "Fate任务里一定会踩到的坑",
+                           "author":  "这看缘吧",
+                           "url":  "https://www.bilibili.com/video/BV1qdg86kE2E/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-24T05:16:00Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: mechanism pitfalls",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "bili-bv1ptgh6dewb",
+                           "title":  "前台符玄锁血联动",
+                           "author":  "这看缘吧",
+                           "url":  "https://www.bilibili.com/video/BV1ptgh6DEWb/",
+                           "platform":  "Bilibili",
+                           "contentType":  "video",
+                           "publishedAt":  "2026-07-24T04:02:34Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: mechanism interaction",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "taptap-826155463815990910",
+                           "title":  "4.4版本与零和博弈扩展开放公告",
+                           "author":  "崩坏：星穹铁道官方/页面署名",
+                           "url":  "https://www.taptap.cn/moment/826155463815990910",
+                           "platform":  "TapTap",
+                           "contentType":  "article",
+                           "publishedAt":  "2026-07-14T00:00:00Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: official version context",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "taptap-822252094286204746",
+                           "title":  "4.4货币战争前瞻",
+                           "author":  "冻梨游研社",
+                           "url":  "https://www.taptap.cn/moment/822252094286204746",
+                           "platform":  "TapTap",
+                           "contentType":  "article",
+                           "publishedAt":  "2026-07-03T00:00:00Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: preview, not final guide",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "tieba-10853438284",
+                           "title":  "4.4货币战争前瞻讨论帖",
+                           "author":  "贴吧用户（页面署名待复核）",
+                           "url":  "https://tieba.baidu.com/p/10853438284",
+                           "platform":  "Baidu Tieba",
+                           "contentType":  "post",
+                           "publishedAt":  "2026-07-01T00:00:00Z",
+                           "versionStatus":  "uncertain_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: forum post, author/time anchors need second pass",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       },
+                       {
+                           "sourceId":  "leyuan-2077226260529864704",
+                           "title":  "货币战争赛季扩展介绍",
+                           "author":  "页面署名待复核",
+                           "url":  "https://www.233leyuan.com/post-detail/2077226260529864704",
+                           "platform":  "233leyuan",
+                           "contentType":  "article",
+                           "publishedAt":  "2026-07-15T00:00:00Z",
+                           "versionStatus":  "confirmed_4.4",
+                           "selected":  false,
+                           "selectionReason":  "candidate: possible repost; copyright chain unclear",
+                           "locators":  [
+                                            "page:title",
+                                            "page:metadata"
+                                        ]
+                       }
+                   ]
+}

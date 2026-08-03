@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "dataset": "equipment",
+  "source_fields": [
+    "id",
+    "name",
+    "equipment_type",
+    "equippable",
+    "occupies_equipment_slot",
+    "base_attributes",
+    "effect",
+    "acquisition_methods",
+    "implementation_version",
+    "synthesis_components",
+    "base_equipment_name",
+    "icon"
+  ],
+  "field_mappings": [
+    { "source": "id", "runtime": "id", "operation": "copy" },
+    { "source": "name", "runtime": "name", "operation": "copy" },
+    { "source": "equipment_type", "runtime": "category", "operation": "enum_map" },
+    { "source": "equippable", "runtime": "equippable", "operation": "copy" },
+    { "source": "occupies_equipment_slot", "runtime": "occupies_equipment_slot", "operation": "copy" },
+    { "source": "base_attributes", "runtime": "base_attributes", "operation": "copy" },
+    { "source": "effect", "runtime": "effect", "operation": "copy" },
+    { "source": "acquisition_methods", "runtime": "acquisition_methods", "operation": "copy" },
+    { "source": "implementation_version", "runtime": "introduced_version", "operation": "normalize_unspecified_to_null" },
+    { "source": "synthesis_components", "runtime": "component_ids", "operation": "resolve_equipment_names_to_ids" },
+    { "source": "base_equipment_name", "runtime": "base_equipment_id", "operation": "resolve_equipment_name_to_id" },
+    { "source": "icon", "runtime": "icon", "operation": "cross_validate_icon_manifest" }
+  ],
+  "defaults": [],
+  "unspecified_version_values": ["页面未注明"],
+  "equipment_type_mappings": {
+    "简易装备": "basic",
+    "进阶装备": "advanced",
+    "特权装备": "privileged",
+    "骇客改件": "hacking_component",
+    "命运改件": "fate_component",
+    "羁绊装备": "bond_equipment",
+    "流派星徽": "style_emblem",
+    "阵营星徽": "faction_emblem",
+    "钻石": "gem_material",
+    "宝钻": "wealth_gem",
+    "消耗品": "consumable",
+    "武装箱": "armament_box",
+    "特殊道具": "special_item",
+    "？": "special_material",
+    "？？？": "special_material"
+  }
+}

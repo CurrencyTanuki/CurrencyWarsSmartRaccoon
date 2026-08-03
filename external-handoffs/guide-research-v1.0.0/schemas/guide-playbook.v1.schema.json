@@ -1,0 +1,304 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://currency-wars.local/schemas/guide-playbook.v1.schema.json",
+  "title": "Currency Wars declarative guide playbook v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "guideId",
+    "title",
+    "status",
+    "applicableGameVersions",
+    "archetypeId",
+    "archetypeName",
+    "goalIds",
+    "signals",
+    "applicability",
+    "phases",
+    "actions",
+    "branches",
+    "alternativeRoutes",
+    "risks",
+    "missingInformationPolicy",
+    "evidenceRefs"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "guide-playbook.v1" },
+    "guideId": { "$ref": "#/$defs/id" },
+    "title": { "$ref": "#/$defs/nonEmpty" },
+    "status": { "enum": ["draft", "reviewed", "verified", "conflicted"] },
+    "applicableGameVersions": { "$ref": "#/$defs/versionList" },
+    "archetypeId": { "$ref": "#/$defs/id" },
+    "archetypeName": { "$ref": "#/$defs/nonEmpty" },
+    "goalIds": { "$ref": "#/$defs/idSet" },
+    "signals": { "$ref": "#/$defs/signals" },
+    "applicability": { "$ref": "#/$defs/applicability" },
+    "phases": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/phase" }
+    },
+    "actions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/action" }
+    },
+    "branches": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/branch" }
+    },
+    "alternativeRoutes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/alternative" }
+    },
+    "risks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/risk" }
+    },
+    "missingInformationPolicy": { "$ref": "#/$defs/missingPolicy" },
+    "evidenceRefs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/evidenceRef" }
+    },
+    "notes": { "$ref": "#/$defs/stringList" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]*$" },
+    "idList": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/id" }
+    },
+    "idSet": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/id" }
+    },
+    "stringList": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/nonEmpty" }
+    },
+    "versionList": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(unknown|[0-9]+\\.[0-9]+(?:\\.[0-9]+)?)$"
+      }
+    },
+    "value": {
+      "type": ["string", "number", "integer", "boolean", "null", "array"],
+      "items": { "type": ["string", "number", "integer", "boolean", "null"] }
+    },
+    "evidenceRef": {
+      "type": "object",
+      "required": ["evidenceSetId", "claimId"],
+      "properties": {
+        "evidenceSetId": { "$ref": "#/$defs/id" },
+        "claimId": { "$ref": "#/$defs/id" }
+      },
+      "additionalProperties": false
+    },
+    "condition": {
+      "type": "object",
+      "required": ["field", "operator", "expected", "unknownPolicy"],
+      "properties": {
+        "field": { "$ref": "#/$defs/nonEmpty" },
+        "operator": {
+          "enum": [
+            "equals", "not_equals", "contains_any", "contains_all", "contains_none",
+            "greater_than", "greater_or_equal", "less_than", "less_or_equal",
+            "between_inclusive", "starts_with", "is_known", "is_unknown"
+          ]
+        },
+        "expected": { "$ref": "#/$defs/value" },
+        "unknownPolicy": { "enum": ["reject", "accept_with_penalty", "require_review", "use_fallback"] },
+        "evidenceRefs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidenceRef" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "signals": {
+      "type": "object",
+      "required": [
+        "coreCharacterIds", "optionalCharacterIds", "equipmentIds", "bondIds",
+        "investmentEnvironmentIds", "investmentStrategyIds"
+      ],
+      "properties": {
+        "coreCharacterIds": { "$ref": "#/$defs/idList" },
+        "optionalCharacterIds": { "$ref": "#/$defs/idList" },
+        "equipmentIds": { "$ref": "#/$defs/idList" },
+        "bondIds": { "$ref": "#/$defs/idList" },
+        "investmentEnvironmentIds": { "$ref": "#/$defs/idList" },
+        "investmentStrategyIds": { "$ref": "#/$defs/idList" }
+      },
+      "additionalProperties": false
+    },
+    "applicability": {
+      "type": "object",
+      "required": ["required", "prohibited", "defaultUnknownPolicy"],
+      "properties": {
+        "required": { "type": "array", "items": { "$ref": "#/$defs/condition" } },
+        "prohibited": { "type": "array", "items": { "$ref": "#/$defs/condition" } },
+        "defaultUnknownPolicy": { "enum": ["reject", "accept_with_penalty", "require_review", "use_fallback"] }
+      },
+      "additionalProperties": false
+    },
+    "selector": {
+      "type": "object",
+      "required": ["planeIds", "nodeIds", "nodeTypes"],
+      "properties": {
+        "planeIds": { "type": "array", "items": { "type": "integer", "minimum": 1, "maximum": 3 } },
+        "nodeIds": { "$ref": "#/$defs/stringList" },
+        "nodeTypes": { "type": "array", "items": { "enum": ["preparation", "battle", "reward", "encounter", "boss", "unknown"] } }
+      },
+      "additionalProperties": false
+    },
+    "range": {
+      "type": "object",
+      "required": ["min", "max", "unit"],
+      "properties": {
+        "min": { "type": ["number", "null"] },
+        "max": { "type": ["number", "null"] },
+        "unit": { "$ref": "#/$defs/nonEmpty" }
+      },
+      "additionalProperties": false
+    },
+    "lineupTarget": {
+      "type": "object",
+      "required": ["frontCharacterIds", "backCharacterIds", "benchCharacterIds", "minimumStarsByCharacterId"],
+      "properties": {
+        "frontCharacterIds": { "$ref": "#/$defs/idList" },
+        "backCharacterIds": { "$ref": "#/$defs/idList" },
+        "benchCharacterIds": { "$ref": "#/$defs/idList" },
+        "minimumStarsByCharacterId": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 1, "maximum": 3 }
+        }
+      },
+      "additionalProperties": false
+    },
+    "equipmentAssignment": {
+      "type": "object",
+      "required": ["characterId", "equipmentIds", "priority", "substituteEquipmentIds"],
+      "properties": {
+        "characterId": { "$ref": "#/$defs/id" },
+        "equipmentIds": { "$ref": "#/$defs/idList" },
+        "priority": { "type": "integer", "minimum": 1 },
+        "substituteEquipmentIds": { "$ref": "#/$defs/idList" }
+      },
+      "additionalProperties": false
+    },
+    "recommendedState": {
+      "type": "object",
+      "required": [
+        "economy", "health", "level", "remainingActionPoints", "lineup",
+        "equipment", "bondIds", "investmentEnvironmentIds", "investmentStrategyIds"
+      ],
+      "properties": {
+        "economy": { "$ref": "#/$defs/range" },
+        "health": { "$ref": "#/$defs/range" },
+        "level": { "$ref": "#/$defs/range" },
+        "remainingActionPoints": { "$ref": "#/$defs/range" },
+        "lineup": { "$ref": "#/$defs/lineupTarget" },
+        "equipment": { "type": "array", "items": { "$ref": "#/$defs/equipmentAssignment" } },
+        "bondIds": { "$ref": "#/$defs/idList" },
+        "investmentEnvironmentIds": { "$ref": "#/$defs/idList" },
+        "investmentStrategyIds": { "$ref": "#/$defs/idList" }
+      },
+      "additionalProperties": false
+    },
+    "phase": {
+      "type": "object",
+      "required": ["phaseId", "title", "selector", "recommendedState", "actionIds", "evidenceRefs"],
+      "properties": {
+        "phaseId": { "$ref": "#/$defs/id" },
+        "title": { "$ref": "#/$defs/nonEmpty" },
+        "selector": { "$ref": "#/$defs/selector" },
+        "recommendedState": { "$ref": "#/$defs/recommendedState" },
+        "actionIds": { "$ref": "#/$defs/idList" },
+        "evidenceRefs": { "type": "array", "items": { "$ref": "#/$defs/evidenceRef" } },
+        "notes": { "$ref": "#/$defs/stringList" }
+      },
+      "additionalProperties": false
+    },
+    "action": {
+      "type": "object",
+      "required": [
+        "actionId", "title", "instruction", "priority", "conditions", "benefits",
+        "costs", "risks", "preconditions", "invalidatesWhen", "fallbackActionIds", "evidenceRefs"
+      ],
+      "properties": {
+        "actionId": { "$ref": "#/$defs/id" },
+        "title": { "$ref": "#/$defs/nonEmpty" },
+        "instruction": { "$ref": "#/$defs/nonEmpty" },
+        "priority": { "type": "integer", "minimum": 1, "maximum": 1000 },
+        "conditions": { "type": "array", "items": { "$ref": "#/$defs/condition" } },
+        "benefits": { "$ref": "#/$defs/stringList" },
+        "costs": { "$ref": "#/$defs/stringList" },
+        "risks": { "$ref": "#/$defs/stringList" },
+        "preconditions": { "$ref": "#/$defs/stringList" },
+        "invalidatesWhen": { "$ref": "#/$defs/stringList" },
+        "fallbackActionIds": { "$ref": "#/$defs/idList" },
+        "evidenceRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/evidenceRef" } }
+      },
+      "additionalProperties": false
+    },
+    "branch": {
+      "type": "object",
+      "required": ["branchId", "priority", "when", "thenActionIds", "otherwiseActionIds", "transitionToPhaseId", "evidenceRefs"],
+      "properties": {
+        "branchId": { "$ref": "#/$defs/id" },
+        "priority": { "type": "integer", "minimum": 1 },
+        "when": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/condition" } },
+        "thenActionIds": { "$ref": "#/$defs/idList" },
+        "otherwiseActionIds": { "$ref": "#/$defs/idList" },
+        "transitionToPhaseId": { "type": ["string", "null"] },
+        "evidenceRefs": { "type": "array", "items": { "$ref": "#/$defs/evidenceRef" } }
+      },
+      "additionalProperties": false
+    },
+    "alternative": {
+      "type": "object",
+      "required": ["routeId", "title", "triggerConditions", "actionIds", "tradeoffs", "evidenceRefs"],
+      "properties": {
+        "routeId": { "$ref": "#/$defs/id" },
+        "title": { "$ref": "#/$defs/nonEmpty" },
+        "triggerConditions": { "type": "array", "items": { "$ref": "#/$defs/condition" } },
+        "actionIds": { "$ref": "#/$defs/idList" },
+        "tradeoffs": { "$ref": "#/$defs/stringList" },
+        "evidenceRefs": { "type": "array", "items": { "$ref": "#/$defs/evidenceRef" } }
+      },
+      "additionalProperties": false
+    },
+    "risk": {
+      "type": "object",
+      "required": ["riskId", "severity", "description", "mitigation", "evidenceRefs"],
+      "properties": {
+        "riskId": { "$ref": "#/$defs/id" },
+        "severity": { "enum": ["low", "medium", "high", "unknown"] },
+        "description": { "$ref": "#/$defs/nonEmpty" },
+        "mitigation": { "$ref": "#/$defs/nonEmpty" },
+        "evidenceRefs": { "type": "array", "items": { "$ref": "#/$defs/evidenceRef" } }
+      },
+      "additionalProperties": false
+    },
+    "missingPolicy": {
+      "type": "object",
+      "required": ["defaultBehavior", "highRiskDecisionBehavior", "conflictBehavior", "minimumConfidence"],
+      "properties": {
+        "defaultBehavior": { "enum": ["mark_unknown", "require_review", "use_safe_fallback"] },
+        "highRiskDecisionBehavior": { "enum": ["never_auto_execute", "require_review"] },
+        "conflictBehavior": { "enum": ["preserve_all_sources", "require_review"] },
+        "minimumConfidence": { "type": "number", "minimum": 0, "maximum": 1 }
+      },
+      "additionalProperties": false
+    }
+  }
+}

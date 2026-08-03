@@ -1,0 +1,204 @@
+{
+  "schemaVersion": "handoff-package-manifest.v1",
+  "packageVersion": "1.0.0",
+  "manifestSelfHash": null,
+  "manifestSelfHashReason": "A file cannot contain its own stable SHA-256; every other package file is listed.",
+  "fileCountExcludingManifest": 39,
+  "files": [
+    {
+      "path": "BUILD_VALIDATION_REPORT.md",
+      "size": 1198,
+      "sha256": "f3b7371da64c96ef6cf2282c72649ec5d92bec212bd2df1cdb31b1b85145532c"
+    },
+    {
+      "path": "docs/ACCEPTANCE_CHECKLIST.md",
+      "size": 1122,
+      "sha256": "918f3f46fa524d12cf278e9b6a173a7e440c4d05802401f37d1f4e0751ff3816"
+    },
+    {
+      "path": "docs/FIELD_REFERENCE_AND_MAPPING.md",
+      "size": 3540,
+      "sha256": "e898fa4d44fd667036546619daf915015e5c156094d8f531bf661794b7f32b69"
+    },
+    {
+      "path": "docs/GAME_GLOSSARY.md",
+      "size": 1916,
+      "sha256": "821a117ffa520ba9a60dd2c29b4cc2af0c073f712650a7f4fc31b4decedb1c69"
+    },
+    {
+      "path": "docs/PROJECT_BACKGROUND_AND_GOALS.md",
+      "size": 1592,
+      "sha256": "d6f7167354809b4c47c72507758af7832f6954bc255dff33ba55fb55695efe60"
+    },
+    {
+      "path": "docs/SOURCE_AND_QUALITY_RULES.md",
+      "size": 1905,
+      "sha256": "cf1e7e2788cce61106918e696f899819544111e779e49eab6ca6f53e08a53ac0"
+    },
+    {
+      "path": "docs/VALIDATION_GUIDE.md",
+      "size": 1248,
+      "sha256": "209a2d9997bd117529fcef4a43282a777fb9774346911e5772396e6970784899"
+    },
+    {
+      "path": "examples/invalid/invalid-evidence-confidence.json",
+      "size": 1376,
+      "sha256": "efce448398abddce7e90856d108a9310429a895fffe7f33a5cbbaa88831cec7d"
+    },
+    {
+      "path": "examples/invalid/invalid-playbook-executable-code.json",
+      "size": 947,
+      "sha256": "920fb7408863d55577ac12d4fff61de6dd784c4dc79fb496f13aee88ce34e11b"
+    },
+    {
+      "path": "examples/valid/01-complete.research-evidence.v1.json",
+      "size": 4999,
+      "sha256": "a0622fd077ecdca625bb0832cad70143c13caa51694ae6406b5de98d08e98c1c"
+    },
+    {
+      "path": "examples/valid/02-incomplete-conflicted.research-evidence.v1.json",
+      "size": 3766,
+      "sha256": "7ca3fcce4e05ff14c928dcc2e9b9e7f998c02e92102af2377219e2a9a9777935"
+    },
+    {
+      "path": "examples/valid/03-complete.guide-playbook.v1.json",
+      "size": 8073,
+      "sha256": "dcd6aa51bfd5ec0e6178db3aca08d041737d0b70525d0edc2376fe2f7a736369"
+    },
+    {
+      "path": "examples/valid/04-branching-transition.guide-playbook.v1.json",
+      "size": 8723,
+      "sha256": "27ee3bbc985e8bbc8e1d964b79ad5d6c67c52431ad3c941042705e811c79d7ef"
+    },
+    {
+      "path": "examples/valid/05-incomplete-conflicted.guide-playbook.v1.json",
+      "size": 5146,
+      "sha256": "1a378a85acc91e4495f65d780058726eda286e69aad5c04407629f6d8707ca98"
+    },
+    {
+      "path": "FILE_LIST.md",
+      "size": 1566,
+      "sha256": "bbceba4413ef018af4998cc3f6de79b4899d4b41d814b1dd84e8d0c9c89d9462"
+    },
+    {
+      "path": "output-template/evidence/README.md",
+      "size": 88,
+      "sha256": "efe6a1c60fb3c1b837dea6517d545ee92f414854177b672d1a5524c284d75b89"
+    },
+    {
+      "path": "output-template/playbooks/README.md",
+      "size": 74,
+      "sha256": "2f3f62020cec03539b3a8c1325a4d72ad846cc9a239539d61d2f802ae8c6a16e"
+    },
+    {
+      "path": "output-template/README_OUTPUT.md",
+      "size": 536,
+      "sha256": "8ee7a219bd57ea96623ff92e97f10623aa73c7c618c4369ab05eb2811e830d78"
+    },
+    {
+      "path": "output-template/reports/COVERAGE_AND_OPEN_QUESTIONS.md",
+      "size": 190,
+      "sha256": "af23a32f4609c8012f3f0a3bb0d9ce7f7c981b81cd647398fcb065ceacb2e618"
+    },
+    {
+      "path": "output-template/reports/SOURCE_INDEX.md",
+      "size": 144,
+      "sha256": "bc1cd01a3de72b57db63fb842af8fd90448d9982be4a3aa910ca40ff0919bd6b"
+    },
+    {
+      "path": "output-template/reports/VALIDATION_RESULT.txt",
+      "size": 103,
+      "sha256": "310af306d689eeb61474454fb722dc09a15bdcb69c8701fe5374a3671f2a7f2b"
+    },
+    {
+      "path": "README_START_HERE.md",
+      "size": 3106,
+      "sha256": "270690ddca4e07fbe379816e368a29d864b942c96d77c6baac0e777d844fb3e4"
+    },
+    {
+      "path": "schemas/guide-playbook.v1.schema.json",
+      "size": 11587,
+      "sha256": "f39782c739a4726059c43b787a3a2eca489d4a595a80d8ea203614836497c354"
+    },
+    {
+      "path": "schemas/research-evidence.v1.schema.json",
+      "size": 6507,
+      "sha256": "92c04d3541944f48ce45f010624928c85a4cdbde0a38e9557012d86047ad82aa"
+    },
+    {
+      "path": "standard-ids/bond-states.json",
+      "size": 16569,
+      "sha256": "ff5dd33170776c7b9f75fbde2415fdcaa986ffd62ac409c2062daeb56a4a41c3"
+    },
+    {
+      "path": "standard-ids/bonds.json",
+      "size": 6064,
+      "sha256": "b1c162607f01ceaf757331f154ea8cfd20ab7728ac7da425564ce8db91f9358f"
+    },
+    {
+      "path": "standard-ids/catalog-index.v1.json",
+      "size": 2617,
+      "sha256": "cc9fe0d26c837c0ca3d71d9b90db474e68f5ad517049f20724fc59f8b2c7904c"
+    },
+    {
+      "path": "standard-ids/characters.json",
+      "size": 17836,
+      "sha256": "4273252a1c9d32db9edacd295b8c87c081d8bc2d5fd59b64761a1ecd5304dad1"
+    },
+    {
+      "path": "standard-ids/enemy-affixes.json",
+      "size": 4834,
+      "sha256": "841136ac78ddc802524ca5373c38919701acf30ed51723c307fce1e5534e6212"
+    },
+    {
+      "path": "standard-ids/equipment.json",
+      "size": 29375,
+      "sha256": "9a70311f4c93edbfc7b087b4aef931f9f225df6c152a4bb5a3daf822fcd7f391"
+    },
+    {
+      "path": "standard-ids/investment-environments.json",
+      "size": 7313,
+      "sha256": "4be3a1268dc5540084e5e2d33ab0f6a3ca8d55e44fb50808aba175abddfeb098"
+    },
+    {
+      "path": "standard-ids/investment-strategies.json",
+      "size": 55401,
+      "sha256": "25369e81d48a4ceb5fe6ef4c4acae19c90194976958289d2e2ba2965043c9675"
+    },
+    {
+      "path": "TASK_PROMPT.md",
+      "size": 6355,
+      "sha256": "3aaafe8700acfbb6663d364b7e93d5dfdc99d3b13e3a610e6cfc6ee50a3f556c"
+    },
+    {
+      "path": "tests/test_contracts.py",
+      "size": 2428,
+      "sha256": "e419328e8ed8fe98e959d62edf8dcf5e0a3fa4bf0be48834ecdc12c1badf5618"
+    },
+    {
+      "path": "tools/build_examples.py",
+      "size": 30460,
+      "sha256": "a61f5e62a3a3fe9ca6ccbe484bd60d96304af45296689e86e214052e129e91bd"
+    },
+    {
+      "path": "tools/build_package.py",
+      "size": 4587,
+      "sha256": "24097371624c459a3359c4cf985720222207ea0289680980ec25fb03323aba3d"
+    },
+    {
+      "path": "tools/build_standard_ids.py",
+      "size": 6198,
+      "sha256": "9d06c5cd4321f3258502e13e79f755dd093ed9e0e1beec8c8a58ecf30fd2d1fd"
+    },
+    {
+      "path": "tools/validate_all.py",
+      "size": 18122,
+      "sha256": "ae79a8e9acb921ee900fd93233e14c269b09ad1dec73f0e705030bef63c05061"
+    },
+    {
+      "path": "VERSION.json",
+      "size": 591,
+      "sha256": "52b3296a7414c46029e4dc503acc3c52245c7922c03f6d851c683da5188033f8"
+    }
+  ]
+}

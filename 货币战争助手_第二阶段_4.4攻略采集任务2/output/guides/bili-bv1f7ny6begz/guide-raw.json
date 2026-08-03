@@ -1,0 +1,130 @@
+{
+    "schemaVersion":  "1.0.0",
+    "guideId":  "guide-bili-bv1f7ny6begz",
+    "sourceId":  "bili-bv1f7ny6begz",
+    "authorClaims":  [
+                         {
+                             "claimId":  "ac-01",
+                             "paraphrase":  "作者认为姬子·启行能兼容多数直伤增益，并把火力风暴潮列为关键放大。",
+                             "locator":  "page:description；page:title",
+                             "stableIds":  [
+
+                                           ]
+                         },
+                         {
+                             "claimId":  "ac-02",
+                             "paraphrase":  "作者说明素材和结论均基于A850，并用去除遗器和光锥模拟试用姬子。",
+                             "locator":  "page:description",
+                             "stableIds":  [
+
+                                           ]
+                         }
+                     ],
+    "factualClaims":  [
+                          {
+                              "claimId":  "fc-01",
+                              "paraphrase":  "页面明确披露试用模拟方法，避免把模拟值误当官方试用配置。",
+                              "locator":  "page:description",
+                              "stableIds":  [
+
+                                            ]
+                          }
+                      ],
+    "sourceExtensions":  {
+                             "collectionStatus":  "complete_structural_extraction",
+                             "sourcePriority":  "standard",
+                             "platform":  "Bilibili",
+                             "contentType":  "video",
+                             "durationSeconds":  478,
+                             "authorMid":  84041165,
+                             "noReprintFlag":  0,
+                             "archetype":  "姬子·启行：直伤火力风暴潮",
+                             "coreCharacters":  [
+                                                    "姬子·启行"
+                                                ],
+                             "substituteCharacters":  [
+
+                                                      ],
+                             "keySynergies":  [
+                                                  "火力风暴潮",
+                                                  "姬子可接受多类直伤增益"
+                                              ],
+                             "opening":  {
+                                             "acceptable":  [
+                                                                "出现姬子与直伤放大时可确立方向"
+                                                            ],
+                                             "abandonOrPivot":  [
+                                                                    "缺少单一增益不应把模拟数据当正式服固定值"
+                                                                ]
+                                         },
+                             "priorities":  {
+                                                "investmentEnvironment":  [
+                                                                              "A850"
+                                                                          ],
+                                                "investmentStrategy":  [
+                                                                           "姬子优先，直伤增益广泛兼容"
+                                                                       ]
+                                            },
+                             "stages":  {
+                                            "early":  "确认姬子与直伤组件",
+                                            "mid":  "叠加可用直伤放大",
+                                            "late":  "以助战技和火力风暴潮完成输出"
+                                        },
+                             "economyTriggers":  [
+                                                     "页面未公开定量经济触发点"
+                                                 ],
+                             "completionStandard":  [
+                                                        "A850条件下形成姬子直伤主轴并通关"
+                                                    ],
+                             "fallbackRoutes":  [
+                                                    "缺少单一增益不应把模拟数据当正式服固定值"
+                                                ],
+                             "failureRecovery":  [
+                                                     "缺火力风暴潮时保留其他直伤增益路线"
+                                                 ],
+                             "risksAndExceptions":  [
+                                                        "试用姬子通过移除遗器与光锥模拟，并非官方试用模板",
+                                                        "伤害数字不可外推到所有练度"
+                                                    ],
+                             "guideCodePresence":  false,
+                             "pendingMappings":  [
+                                                     {
+                                                         "name":  "火力风暴潮",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "姬子·启行",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "姬子可接受多类直伤增益",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     }
+                                                 ],
+                             "evidence":  {
+                                              "locatorMap":  [
+                                                                 "page:title",
+                                                                 "page:description A850口径与试用模拟说明",
+                                                                 "video:00:00-02:30 粗粒度机制复核窗口",
+                                                                 "video:02:30-05:30 粗粒度运营复核窗口",
+                                                                 "video:05:30-07:58 粗粒度终局复核窗口"
+                                                             ],
+                                              "granularity":  "coarse_time_windows_plus_page_metadata",
+                                              "limitations":  [
+                                                                  "Bilibili player endpoint exposed no public subtitles or chapter markers during collection.",
+                                                                  "Time ranges are coarse replay windows, not transcript-level attribution.",
+                                                                  "Only title/description claims are treated as directly text-verifiable."
+                                                              ],
+                                              "manualSecondPassRequired":  true
+                                          },
+                             "copyright":  {
+                                               "status":  "linked_only",
+                                               "bundledMedia":  false,
+                                               "bundledSubtitles":  false,
+                                               "bundledFullText":  false
+                                           }
+                         }
+}

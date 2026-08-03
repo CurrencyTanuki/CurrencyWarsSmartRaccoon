@@ -1,0 +1,18 @@
+{
+    "schemaVersion":  "1.0.0",
+    "sourceId":  "bili-bv1qokj64ea8",
+    "title":  "全试用非师徒无三星，彦卿核心阵容竟能15连胜A850? 小众角色科研的完美答卷，全队都是数值怪！全网首发刀剑狼阵容",
+    "author":  "橘橘猫JJM_Tachibana",
+    "url":  "https://www.bilibili.com/video/BV1QoKJ64Ea8/",
+    "publishedAt":  "2026-07-17T10:00:00Z",
+    "accessedAt":  "2026-07-27T13:40:00Z",
+    "applicableGameVersion":  "4.4",
+    "copyrightStatus":  "linked_only",
+    "locators":  [
+                     "page:title",
+                     "page:description",
+                     "video:00:00-03:30 粗粒度阵容复核窗口",
+                     "video:03:30-08:00 粗粒度运营复核窗口",
+                     "video:08:00-11:38 粗粒度终局复核窗口"
+                 ]
+}

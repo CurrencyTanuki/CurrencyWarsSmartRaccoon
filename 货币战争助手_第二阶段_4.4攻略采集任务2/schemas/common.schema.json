@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://currency-wars.local/schemas/1.0.0/common.schema.json",
+  "$defs": {
+    "schemaVersion": { "const": "1.0.0" },
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "stringArray": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "evidence": {
+      "type": "object",
+      "required": ["sourceId", "locator"],
+      "properties": {
+        "sourceId": { "$ref": "#/$defs/nonEmptyString" },
+        "locator": { "$ref": "#/$defs/nonEmptyString" },
+        "summary": { "type": "string" },
+        "capturedAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "observedBase": {
+      "type": "object",
+      "required": ["status", "confidence", "evidence", "uncertainty"],
+      "properties": {
+        "status": { "enum": ["known", "unknown", "conflict", "stale"] },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "evidence": { "type": "array", "items": { "$ref": "#/$defs/evidence" } },
+        "uncertainty": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "observedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "observedString": {
+      "allOf": [
+        { "$ref": "#/$defs/observedBase" },
+        { "type": "object", "properties": { "value": { "type": "string" } }, "unevaluatedProperties": false }
+      ]
+    },
+    "observedInteger": {
+      "allOf": [
+        { "$ref": "#/$defs/observedBase" },
+        { "type": "object", "properties": { "value": { "type": "integer" } }, "unevaluatedProperties": false }
+      ]
+    },
+    "observedNumber": {
+      "allOf": [
+        { "$ref": "#/$defs/observedBase" },
+        { "type": "object", "properties": { "value": { "type": "number" } }, "unevaluatedProperties": false }
+      ]
+    },
+    "observedStringArray": {
+      "allOf": [
+        { "$ref": "#/$defs/observedBase" },
+        { "type": "object", "properties": { "value": { "$ref": "#/$defs/stringArray" } }, "unevaluatedProperties": false }
+      ]
+    }
+  }
+}

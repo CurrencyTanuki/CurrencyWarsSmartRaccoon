@@ -1,0 +1,116 @@
+{
+    "schemaVersion":  "1.0.0",
+    "guideId":  "guide-bili-bv1qokj64ea8",
+    "sourceId":  "bili-bv1qokj64ea8",
+    "authorClaims":  [
+                         {
+                             "claimId":  "ac-01",
+                             "paraphrase":  "作者展示了以彦卿为核心、全试用且无三星单位的刀剑狼阵容。",
+                             "locator":  "page:title；page:description",
+                             "stableIds":  [
+
+                                           ]
+                         }
+                     ],
+    "factualClaims":  [
+                          {
+                              "claimId":  "fc-01",
+                              "paraphrase":  "视频标题明确标注A850与15连胜展示。",
+                              "locator":  "page:title",
+                              "stableIds":  [
+
+                                            ]
+                          }
+                      ],
+    "sourceExtensions":  {
+                             "collectionStatus":  "complete_structural_extraction",
+                             "sourcePriority":  "standard",
+                             "platform":  "Bilibili",
+                             "contentType":  "video",
+                             "durationSeconds":  698,
+                             "authorMid":  153021560,
+                             "noReprintFlag":  0,
+                             "archetype":  "彦卿：刀剑狼全试用阵容",
+                             "coreCharacters":  [
+                                                    "彦卿"
+                                                ],
+                             "substituteCharacters":  [
+
+                                                      ],
+                             "keySynergies":  [
+                                                  "全试用、非师徒、无三星限制下的刀剑狼阵容"
+                                              ],
+                             "opening":  {
+                                             "acceptable":  [
+                                                                "以彦卿为核心保留刀剑狼相关组件"
+                                                            ],
+                                             "abandonOrPivot":  [
+                                                                    "具体抓牌弃牌阈值无字幕，待二次听写"
+                                                                ]
+                                         },
+                             "priorities":  {
+                                                "investmentEnvironment":  [
+                                                                              "A850"
+                                                                          ],
+                                                "investmentStrategy":  [
+                                                                           "在低练度限制下优先阵容整体数值与连胜"
+                                                                       ]
+                                            },
+                             "stages":  {
+                                            "early":  "锁定彦卿核心",
+                                            "mid":  "补齐刀剑狼骨架",
+                                            "late":  "以全试用阵容冲击连胜通关"
+                                        },
+                             "economyTriggers":  [
+                                                     "页面未公开定量经济触发点"
+                                                 ],
+                             "completionStandard":  [
+                                                        "作者展示15连胜A850"
+                                                    ],
+                             "fallbackRoutes":  [
+                                                    "具体抓牌弃牌阈值无字幕，待二次听写"
+                                                ],
+                             "failureRecovery":  [
+                                                     "核心组件不足时作为科研候选而非硬抄路线"
+                                                 ],
+                             "risksAndExceptions":  [
+                                                        "“全网首发”无法独立核验",
+                                                        "连胜为单次展示，不等于概率保证"
+                                                    ],
+                             "guideCodePresence":  false,
+                             "pendingMappings":  [
+                                                     {
+                                                         "name":  "全试用、非师徒、无三星限制下的刀剑狼阵容",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "彦卿",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     }
+                                                 ],
+                             "evidence":  {
+                                              "locatorMap":  [
+                                                                 "page:title",
+                                                                 "page:description",
+                                                                 "video:00:00-03:30 粗粒度阵容复核窗口",
+                                                                 "video:03:30-08:00 粗粒度运营复核窗口",
+                                                                 "video:08:00-11:38 粗粒度终局复核窗口"
+                                                             ],
+                                              "granularity":  "coarse_time_windows_plus_page_metadata",
+                                              "limitations":  [
+                                                                  "Bilibili player endpoint exposed no public subtitles or chapter markers during collection.",
+                                                                  "Time ranges are coarse replay windows, not transcript-level attribution.",
+                                                                  "Only title/description claims are treated as directly text-verifiable."
+                                                              ],
+                                              "manualSecondPassRequired":  true
+                                          },
+                             "copyright":  {
+                                               "status":  "linked_only",
+                                               "bundledMedia":  false,
+                                               "bundledSubtitles":  false,
+                                               "bundledFullText":  false
+                                           }
+                         }
+}

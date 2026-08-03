@@ -1,0 +1,110 @@
+{
+    "schemaVersion":  "1.0.0",
+    "guideId":  "guide-bili-bv1uwkg6feih",
+    "sourceId":  "bili-bv1uwkg6feih",
+    "authorClaims":  [
+                         {
+                             "claimId":  "ac-01",
+                             "paraphrase":  "作者将本视频定位为A850角色强度、开局定阵和抓牌的一体化说明。",
+                             "locator":  "page:title",
+                             "stableIds":  [
+
+                                           ]
+                         }
+                     ],
+    "factualClaims":  [
+                          {
+                              "claimId":  "fc-01",
+                              "paraphrase":  "视频标题明确标注A850，时长9分21秒。",
+                              "locator":  "page:title；page:metadata",
+                              "stableIds":  [
+
+                                            ]
+                          }
+                      ],
+    "sourceExtensions":  {
+                             "collectionStatus":  "complete_structural_extraction",
+                             "sourcePriority":  "standard",
+                             "platform":  "Bilibili",
+                             "contentType":  "video",
+                             "durationSeconds":  561,
+                             "authorMid":  27934260,
+                             "noReprintFlag":  1,
+                             "archetype":  "A850泛用：开局定阵与抓牌",
+                             "coreCharacters":  [
+
+                                                ],
+                             "substituteCharacters":  [
+
+                                                      ],
+                             "keySynergies":  [
+                                                  "以角色强度、开局定阵和抓牌为决策主线"
+                                              ],
+                             "opening":  {
+                                             "acceptable":  [
+                                                                "先根据来牌确定阵容方向，再决定抓牌"
+                                                            ],
+                                             "abandonOrPivot":  [
+                                                                    "未公开字幕，具体弃牌阈值待二次听写"
+                                                                ]
+                                         },
+                             "priorities":  {
+                                                "investmentEnvironment":  [
+                                                                              "A850"
+                                                                          ],
+                                                "investmentStrategy":  [
+                                                                           "泛用角色优先级与抓牌决策"
+                                                                       ]
+                                            },
+                             "stages":  {
+                                            "early":  "定阵与抓牌",
+                                            "mid":  "依据来牌确认主轴",
+                                            "late":  "按已定主轴补终局组件"
+                                        },
+                             "economyTriggers":  [
+                                                     "标题未提供定量经济触发点，待人工复核视频"
+                                                 ],
+                             "completionStandard":  [
+                                                        "形成可执行的A850阵容与抓牌路线"
+                                                    ],
+                             "fallbackRoutes":  [
+                                                    "未公开字幕，具体弃牌阈值待二次听写"
+                                                ],
+                             "failureRecovery":  [
+                                                     "来牌偏离时切换到已持有的高质量骨架"
+                                                 ],
+                             "risksAndExceptions":  [
+                                                        "强度榜属于作者评价",
+                                                        "无公开字幕，细节只做待复核槽位"
+                                                    ],
+                             "guideCodePresence":  false,
+                             "pendingMappings":  [
+                                                     {
+                                                         "name":  "以角色强度、开局定阵和抓牌为决策主线",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     }
+                                                 ],
+                             "evidence":  {
+                                              "locatorMap":  [
+                                                                 "page:title",
+                                                                 "video:00:00-03:00 粗粒度强度榜复核窗口",
+                                                                 "video:03:00-06:30 粗粒度定阵复核窗口",
+                                                                 "video:06:30-09:21 粗粒度抓牌复核窗口"
+                                                             ],
+                                              "granularity":  "coarse_time_windows_plus_page_metadata",
+                                              "limitations":  [
+                                                                  "Bilibili player endpoint exposed no public subtitles or chapter markers during collection.",
+                                                                  "Time ranges are coarse replay windows, not transcript-level attribution.",
+                                                                  "Only title/description claims are treated as directly text-verifiable."
+                                                              ],
+                                              "manualSecondPassRequired":  true
+                                          },
+                             "copyright":  {
+                                               "status":  "linked_only",
+                                               "bundledMedia":  false,
+                                               "bundledSubtitles":  false,
+                                               "bundledFullText":  false
+                                           }
+                         }
+}

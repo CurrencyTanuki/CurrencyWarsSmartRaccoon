@@ -1,0 +1,121 @@
+{
+    "schemaVersion":  "1.0.0",
+    "guideId":  "guide-bili-bv1tg3g65e8u",
+    "sourceId":  "bili-bv1tg3g65e8u",
+    "authorClaims":  [
+                         {
+                             "claimId":  "ac-01",
+                             "paraphrase":  "作者展示A8-50黑塔纪元在遭遇4中的实战。",
+                             "locator":  "page:title",
+                             "stableIds":  [
+
+                                           ]
+                         }
+                     ],
+    "factualClaims":  [
+                          {
+                              "claimId":  "fc-01",
+                              "paraphrase":  "视频标题标注A8难度50与遭遇4。",
+                              "locator":  "page:title",
+                              "stableIds":  [
+
+                                            ]
+                          }
+                      ],
+    "sourceExtensions":  {
+                             "collectionStatus":  "complete_structural_extraction",
+                             "sourcePriority":  "standard",
+                             "platform":  "Bilibili",
+                             "contentType":  "video",
+                             "durationSeconds":  475,
+                             "authorMid":  19543807,
+                             "noReprintFlag":  0,
+                             "archetype":  "黑塔纪元：遭遇4",
+                             "coreCharacters":  [
+                                                    "黑塔"
+                                                ],
+                             "substituteCharacters":  [
+
+                                                      ],
+                             "keySynergies":  [
+                                                  "黑塔纪元路线",
+                                                  "A8-50遭遇4实战"
+                                              ],
+                             "opening":  {
+                                             "acceptable":  [
+                                                                "围绕黑塔纪元条件抓牌"
+                                                            ],
+                                             "abandonOrPivot":  [
+                                                                    "页面未给出替代路线，待二次听写"
+                                                                ]
+                                         },
+                             "priorities":  {
+                                                "investmentEnvironment":  [
+                                                                              "A8-50"
+                                                                          ],
+                                                "investmentStrategy":  [
+                                                                           "黑塔纪元组件优先"
+                                                                       ]
+                                            },
+                             "stages":  {
+                                            "early":  "建立黑塔纪元方向",
+                                            "mid":  "补足纪元组件",
+                                            "late":  "遭遇4实战验收"
+                                        },
+                             "economyTriggers":  [
+                                                     "页面未给出定量经济触发点"
+                                                 ],
+                             "completionStandard":  [
+                                                        "A8-50遭遇4完成"
+                                                    ],
+                             "fallbackRoutes":  [
+                                                    "页面未给出替代路线，待二次听写"
+                                                ],
+                             "failureRecovery":  [
+                                                     "不满足纪元条件时不强行计作该路线完成"
+                                                 ],
+                             "risksAndExceptions":  [
+                                                        "页面信息较少，需人工二次听写",
+                                                        "未从标题证明通用稳定性"
+                                                    ],
+                             "guideCodePresence":  false,
+                             "pendingMappings":  [
+                                                     {
+                                                         "name":  "A8-50遭遇4实战",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "黑塔",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "黑塔纪元路线",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     }
+                                                 ],
+                             "evidence":  {
+                                              "locatorMap":  [
+                                                                 "page:title",
+                                                                 "video:00:00-02:30 粗粒度前期复核窗口",
+                                                                 "video:02:30-05:30 粗粒度成型复核窗口",
+                                                                 "video:05:30-07:55 粗粒度遭遇4复核窗口"
+                                                             ],
+                                              "granularity":  "coarse_time_windows_plus_page_metadata",
+                                              "limitations":  [
+                                                                  "Bilibili player endpoint exposed no public subtitles or chapter markers during collection.",
+                                                                  "Time ranges are coarse replay windows, not transcript-level attribution.",
+                                                                  "Only title/description claims are treated as directly text-verifiable."
+                                                              ],
+                                              "manualSecondPassRequired":  true
+                                          },
+                             "copyright":  {
+                                               "status":  "linked_only",
+                                               "bundledMedia":  false,
+                                               "bundledSubtitles":  false,
+                                               "bundledFullText":  false
+                                           }
+                         }
+}

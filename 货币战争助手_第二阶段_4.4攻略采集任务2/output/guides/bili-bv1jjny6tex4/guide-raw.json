@@ -1,0 +1,152 @@
+{
+    "schemaVersion":  "1.0.0",
+    "guideId":  "guide-bili-bv1jjny6tex4",
+    "sourceId":  "bili-bv1jjny6tex4",
+    "authorClaims":  [
+                         {
+                             "claimId":  "ac-01",
+                             "paraphrase":  "作者把四装备姬子视为A850稳定通关主轴，并强调追击转提升显著但不是无它即弃的硬门槛。",
+                             "locator":  "page:description",
+                             "stableIds":  [
+
+                                           ]
+                         },
+                         {
+                             "claimId":  "ac-02",
+                             "paraphrase":  "作者提供4列车同行3量子同频的已过审攻略路线。",
+                             "locator":  "page:description",
+                             "stableIds":  [
+
+                                           ]
+                         }
+                     ],
+    "factualClaims":  [
+                          {
+                              "claimId":  "fc-01",
+                              "paraphrase":  "视频元数据标明A850、时长10分37秒，作者空间MID为482212512。",
+                              "locator":  "page:title；page:metadata",
+                              "stableIds":  [
+
+                                            ]
+                          }
+                      ],
+    "sourceExtensions":  {
+                             "collectionStatus":  "complete_structural_extraction",
+                             "sourcePriority":  "user_designated_core",
+                             "platform":  "Bilibili",
+                             "contentType":  "video",
+                             "durationSeconds":  637,
+                             "authorMid":  482212512,
+                             "noReprintFlag":  0,
+                             "archetype":  "姬子·启行：四装备列车量子",
+                             "coreCharacters":  [
+                                                    "姬子·启行"
+                                                ],
+                             "substituteCharacters":  [
+                                                          "瓦尔特",
+                                                          "刃"
+                                                      ],
+                             "keySynergies":  [
+                                                  "4列车同行+3量子同频",
+                                                  "追击转是高增益但非启动硬门槛",
+                                                  "火力风暴潮、列车转与高基础前台强度联动"
+                                              ],
+                             "opening":  {
+                                             "acceptable":  [
+                                                                "追击转可作为可接受开局",
+                                                                "没有追击转仍可继续运营，不应机械重开"
+                                                            ],
+                                             "abandonOrPivot":  [
+                                                                    "以列车同行与量子同频为主框架",
+                                                                    "装备不齐时保留四装备方向并优先生存"
+                                                                ]
+                                         },
+                             "priorities":  {
+                                                "investmentEnvironment":  [
+                                                                              "A850稳定通关导向"
+                                                                          ],
+                                                "investmentStrategy":  [
+                                                                           "优先姬子与四装备条件",
+                                                                           "随后补列车/量子羁绊"
+                                                                       ]
+                                            },
+                             "stages":  {
+                                            "early":  "确认姬子与可用转换条件",
+                                            "mid":  "拼出列车/量子骨架并补装备",
+                                            "late":  "以四装备姬子为主C，补足全队护盾与放大"
+                                        },
+                             "economyTriggers":  [
+                                                     "标题与简介未给出可核验的定量刷新/升人口触发点，保留待二次听写"
+                                                 ],
+                             "completionStandard":  [
+                                                        "作者定义为A850稳定通关；简介给出已过审攻略路线"
+                                                    ],
+                             "fallbackRoutes":  [
+                                                    "以列车同行与量子同频为主框架",
+                                                    "装备不齐时保留四装备方向并优先生存"
+                                                ],
+                             "failureRecovery":  [
+                                                     "没有追击转也继续运营",
+                                                     "缺少单一转职时使用其他直伤/列车放大"
+                                                 ],
+                             "risksAndExceptions":  [
+                                                        "简介中的夸张比较是作者评价，不作客观排行事实",
+                                                        "无公开字幕，时间点为粗粒度复核窗口"
+                                                    ],
+                             "guideCodePresence":  true,
+                             "pendingMappings":  [
+                                                     {
+                                                         "name":  "4列车同行+3量子同频",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "火力风暴潮、列车转与高基础前台强度联动",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "姬子·启行",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "刃",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "瓦尔特",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "追击转是高增益但非启动硬门槛",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     }
+                                                 ],
+                             "evidence":  {
+                                              "locatorMap":  [
+                                                                 "page:title",
+                                                                 "page:description",
+                                                                 "video:00:00-02:00 粗粒度开局复核窗口",
+                                                                 "video:02:00-07:00 粗粒度成型复核窗口",
+                                                                 "video:07:00-10:37 粗粒度终局复核窗口"
+                                                             ],
+                                              "granularity":  "coarse_time_windows_plus_page_metadata",
+                                              "limitations":  [
+                                                                  "Bilibili player endpoint exposed no public subtitles or chapter markers during collection.",
+                                                                  "Time ranges are coarse replay windows, not transcript-level attribution.",
+                                                                  "Only title/description claims are treated as directly text-verifiable."
+                                                              ],
+                                              "manualSecondPassRequired":  true
+                                          },
+                             "copyright":  {
+                                               "status":  "linked_only",
+                                               "bundledMedia":  false,
+                                               "bundledSubtitles":  false,
+                                               "bundledFullText":  false
+                                           }
+                         }
+}

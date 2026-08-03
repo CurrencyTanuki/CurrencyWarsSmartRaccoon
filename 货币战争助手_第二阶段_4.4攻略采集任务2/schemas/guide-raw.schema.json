@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://currency-wars.local/schemas/1.0.0/guide-raw.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "guideId", "sourceId", "authorClaims", "factualClaims"],
+  "properties": {
+    "schemaVersion": { "$ref": "common.schema.json#/$defs/schemaVersion" },
+    "guideId": { "$ref": "common.schema.json#/$defs/nonEmptyString" },
+    "sourceId": { "$ref": "common.schema.json#/$defs/nonEmptyString" },
+    "authorClaims": { "$ref": "#/$defs/claims" },
+    "factualClaims": { "$ref": "#/$defs/claims" },
+    "sourceExtensions": { "type": "object" }
+  },
+  "$defs": {
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claimId", "paraphrase", "locator"],
+        "properties": {
+          "claimId": { "$ref": "common.schema.json#/$defs/nonEmptyString" },
+          "paraphrase": { "$ref": "common.schema.json#/$defs/nonEmptyString" },
+          "locator": { "$ref": "common.schema.json#/$defs/nonEmptyString" },
+          "stableIds": { "$ref": "common.schema.json#/$defs/stringArray" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,339 @@
+{
+  "catalog": "investment-environments",
+  "gameVersion": "4.4",
+  "records": [
+    {
+      "id": "investment_environment_001",
+      "name": "三星佩佩"
+    },
+    {
+      "id": "investment_environment_002",
+      "name": "专家研讨会"
+    },
+    {
+      "id": "investment_environment_003",
+      "name": "二手市场"
+    },
+    {
+      "id": "investment_environment_004",
+      "name": "人才下沉"
+    },
+    {
+      "id": "investment_environment_005",
+      "name": "人才储备"
+    },
+    {
+      "id": "investment_environment_006",
+      "name": "人才引进"
+    },
+    {
+      "id": "investment_environment_007",
+      "name": "人身意外险"
+    },
+    {
+      "id": "investment_environment_008",
+      "name": "仙舟概念股"
+    },
+    {
+      "id": "investment_environment_009",
+      "name": "仙舟邀请"
+    },
+    {
+      "id": "investment_environment_010",
+      "name": "公司契约"
+    },
+    {
+      "id": "investment_environment_011",
+      "name": "减益概念股"
+    },
+    {
+      "id": "investment_environment_012",
+      "name": "减益邀请"
+    },
+    {
+      "id": "investment_environment_013",
+      "name": "击破概念股"
+    },
+    {
+      "id": "investment_environment_014",
+      "name": "击破邀请"
+    },
+    {
+      "id": "investment_environment_015",
+      "name": "列车同行概念股"
+    },
+    {
+      "id": "investment_environment_016",
+      "name": "列车同行邀请"
+    },
+    {
+      "id": "investment_environment_017",
+      "name": "劳务派遣合同"
+    },
+    {
+      "id": "investment_environment_018",
+      "name": "命运圣杯契约"
+    },
+    {
+      "id": "investment_environment_019",
+      "name": "命运圣杯邀请"
+    },
+    {
+      "id": "investment_environment_020",
+      "name": "命运礼物"
+    },
+    {
+      "id": "investment_environment_021",
+      "name": "增发货币"
+    },
+    {
+      "id": "investment_environment_022",
+      "name": "夜之半神概念股"
+    },
+    {
+      "id": "investment_environment_023",
+      "name": "夜之半神邀请"
+    },
+    {
+      "id": "investment_environment_024",
+      "name": "头彩"
+    },
+    {
+      "id": "investment_environment_025",
+      "name": "尾彩"
+    },
+    {
+      "id": "investment_environment_026",
+      "name": "彩虹时代"
+    },
+    {
+      "id": "investment_environment_027",
+      "name": "成功经验"
+    },
+    {
+      "id": "investment_environment_028",
+      "name": "战争边疆"
+    },
+    {
+      "id": "investment_environment_029",
+      "name": "战力提升"
+    },
+    {
+      "id": "investment_environment_030",
+      "name": "战力飙升"
+    },
+    {
+      "id": "investment_environment_031",
+      "name": "战技点契约"
+    },
+    {
+      "id": "investment_environment_032",
+      "name": "战技点概念股"
+    },
+    {
+      "id": "investment_environment_033",
+      "name": "战技点邀请"
+    },
+    {
+      "id": "investment_environment_034",
+      "name": "持续伤害契约"
+    },
+    {
+      "id": "investment_environment_035",
+      "name": "持续伤害邀请"
+    },
+    {
+      "id": "investment_environment_036",
+      "name": "敌后破坏"
+    },
+    {
+      "id": "investment_environment_037",
+      "name": "星核猎手契约"
+    },
+    {
+      "id": "investment_environment_038",
+      "name": "星间旅人概念股"
+    },
+    {
+      "id": "investment_environment_039",
+      "name": "星间旅人邀请"
+    },
+    {
+      "id": "investment_environment_040",
+      "name": "昼之半神概念股"
+    },
+    {
+      "id": "investment_environment_041",
+      "name": "昼之半神邀请"
+    },
+    {
+      "id": "investment_environment_042",
+      "name": "欢愉契约"
+    },
+    {
+      "id": "investment_environment_043",
+      "name": "欢愉邀请"
+    },
+    {
+      "id": "investment_environment_044",
+      "name": "深井角斗场"
+    },
+    {
+      "id": "investment_environment_045",
+      "name": "火药味"
+    },
+    {
+      "id": "investment_environment_046",
+      "name": "燃血概念股"
+    },
+    {
+      "id": "investment_environment_047",
+      "name": "燃血邀请"
+    },
+    {
+      "id": "investment_environment_048",
+      "name": "特权阶级"
+    },
+    {
+      "id": "investment_environment_049",
+      "name": "特邀专家：停云"
+    },
+    {
+      "id": "investment_environment_050",
+      "name": "特邀专家：加拉赫"
+    },
+    {
+      "id": "investment_environment_051",
+      "name": "特邀专家：桑博"
+    },
+    {
+      "id": "investment_environment_052",
+      "name": "特邀专家：银狼"
+    },
+    {
+      "id": "investment_environment_053",
+      "name": "狼狩概念股"
+    },
+    {
+      "id": "investment_environment_054",
+      "name": "狼狩邀请"
+    },
+    {
+      "id": "investment_environment_055",
+      "name": "白银时代"
+    },
+    {
+      "id": "investment_environment_056",
+      "name": "盛会之星邀请"
+    },
+    {
+      "id": "investment_environment_057",
+      "name": "策略大师"
+    },
+    {
+      "id": "investment_environment_058",
+      "name": "粗星佩佩"
+    },
+    {
+      "id": "investment_environment_059",
+      "name": "红钻贵族"
+    },
+    {
+      "id": "investment_environment_060",
+      "name": "经济严重过热"
+    },
+    {
+      "id": "investment_environment_061",
+      "name": "经济过热"
+    },
+    {
+      "id": "investment_environment_062",
+      "name": "群攻概念股"
+    },
+    {
+      "id": "investment_environment_063",
+      "name": "群攻邀请"
+    },
+    {
+      "id": "investment_environment_064",
+      "name": "联席决策"
+    },
+    {
+      "id": "investment_environment_065",
+      "name": "能量概念股"
+    },
+    {
+      "id": "investment_environment_066",
+      "name": "能量邀请"
+    },
+    {
+      "id": "investment_environment_067",
+      "name": "英雄登场"
+    },
+    {
+      "id": "investment_environment_068",
+      "name": "蓝海"
+    },
+    {
+      "id": "investment_environment_069",
+      "name": "蓝钻贵族"
+    },
+    {
+      "id": "investment_environment_070",
+      "name": "贝洛伯格概念股"
+    },
+    {
+      "id": "investment_environment_071",
+      "name": "贝洛伯格邀请"
+    },
+    {
+      "id": "investment_environment_072",
+      "name": "轮岗"
+    },
+    {
+      "id": "investment_environment_073",
+      "name": "过剩经费"
+    },
+    {
+      "id": "investment_environment_074",
+      "name": "进化算法"
+    },
+    {
+      "id": "investment_environment_075",
+      "name": "追击概念股"
+    },
+    {
+      "id": "investment_environment_076",
+      "name": "追击邀请"
+    },
+    {
+      "id": "investment_environment_077",
+      "name": "量子同频契约"
+    },
+    {
+      "id": "investment_environment_078",
+      "name": "量子同频邀请"
+    },
+    {
+      "id": "investment_environment_079",
+      "name": "银•金•彩"
+    },
+    {
+      "id": "investment_environment_080",
+      "name": "银河学者概念股"
+    },
+    {
+      "id": "investment_environment_081",
+      "name": "银河学者邀请"
+    },
+    {
+      "id": "investment_environment_082",
+      "name": "长线利好"
+    },
+    {
+      "id": "investment_environment_083",
+      "name": "黄金时代"
+    }
+  ],
+  "schemaVersion": "standard-id-catalog.v1"
+}

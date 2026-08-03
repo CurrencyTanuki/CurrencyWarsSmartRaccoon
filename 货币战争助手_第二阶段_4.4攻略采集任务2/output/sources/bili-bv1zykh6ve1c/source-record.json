@@ -1,0 +1,17 @@
+{
+    "schemaVersion":  "1.0.0",
+    "sourceId":  "bili-bv1zykh6ve1c",
+    "title":  "货币战争A850击破队三彩羁绊通关全过程（精简版附运营思路）",
+    "author":  "dsx凋闪现",
+    "url":  "https://www.bilibili.com/video/BV1ZyKH6VE1C/",
+    "publishedAt":  "2026-07-20T15:15:11Z",
+    "accessedAt":  "2026-07-27T13:40:00Z",
+    "applicableGameVersion":  "4.4",
+    "copyrightStatus":  "linked_only",
+    "locators":  [
+                     "page:title",
+                     "video:00:00-20:00 粗粒度前期复核窗口",
+                     "video:20:00-45:00 粗粒度中期复核窗口",
+                     "video:45:00-64:41 粗粒度终局复核窗口"
+                 ]
+}

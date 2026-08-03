@@ -1,0 +1,123 @@
+{
+    "schemaVersion":  "1.0.0",
+    "guideId":  "guide-bili-bv1aj3g6meti",
+    "sourceId":  "bili-bv1aj3g6meti",
+    "authorClaims":  [
+                         {
+                             "claimId":  "ac-01",
+                             "paraphrase":  "作者展示仅上4人的命运圣杯/阿瓦隆循环，并报告15连胜通关A8-50。",
+                             "locator":  "page:title",
+                             "stableIds":  [
+
+                                           ]
+                         }
+                     ],
+    "factualClaims":  [
+                          {
+                              "claimId":  "fc-01",
+                              "paraphrase":  "作者在标题中将缇宝标为可能继续优化的槽位。",
+                              "locator":  "page:title",
+                              "stableIds":  [
+
+                                            ]
+                          }
+                      ],
+    "sourceExtensions":  {
+                             "collectionStatus":  "complete_structural_extraction",
+                             "sourcePriority":  "standard",
+                             "platform":  "Bilibili",
+                             "contentType":  "video",
+                             "durationSeconds":  3269,
+                             "authorMid":  2120038537,
+                             "noReprintFlag":  1,
+                             "archetype":  "命运圣杯：四人阿瓦隆永动",
+                             "coreCharacters":  [
+
+                                                ],
+                             "substituteCharacters":  [
+                                                          "缇宝"
+                                                      ],
+                             "keySynergies":  [
+                                                  "命运圣杯+阿瓦隆",
+                                                  "仅上4人的少人阵容"
+                                              ],
+                             "opening":  {
+                                             "acceptable":  [
+                                                                "围绕圣杯和阿瓦隆组件构筑"
+                                                            ],
+                                             "abandonOrPivot":  [
+                                                                    "作者指出缇宝仍可能优化，保留替换槽"
+                                                                ]
+                                         },
+                             "priorities":  {
+                                                "investmentEnvironment":  [
+                                                                              "A8-50"
+                                                                          ],
+                                                "investmentStrategy":  [
+                                                                           "圣杯核心组件与四人循环优先"
+                                                                       ]
+                                            },
+                             "stages":  {
+                                            "early":  "建立圣杯方向",
+                                            "mid":  "压缩为四人循环",
+                                            "late":  "以15连胜和A8-50通关验收"
+                                        },
+                             "economyTriggers":  [
+                                                     "长流程未有公开字幕，经济节点待二次听写"
+                                                 ],
+                             "completionStandard":  [
+                                                        "四人阵容完成15连胜并通关A8-50"
+                                                    ],
+                             "fallbackRoutes":  [
+                                                    "作者指出缇宝仍可能优化，保留替换槽"
+                                                ],
+                             "failureRecovery":  [
+                                                     "缇宝作为待优化槽位",
+                                                     "循环不成立时增补生存/能量位"
+                                                 ],
+                             "risksAndExceptions":  [
+                                                        "作者明确称缇宝方案仍在试验",
+                                                        "长视频无字幕，精确操作未结构化"
+                                                    ],
+                             "guideCodePresence":  false,
+                             "pendingMappings":  [
+                                                     {
+                                                         "name":  "仅上4人的少人阵容",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "命运圣杯+阿瓦隆",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "缇宝",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     }
+                                                 ],
+                             "evidence":  {
+                                              "locatorMap":  [
+                                                                 "page:title",
+                                                                 "page:description",
+                                                                 "video:00:00-18:00 粗粒度前期复核窗口",
+                                                                 "video:18:00-40:00 粗粒度中期复核窗口",
+                                                                 "video:40:00-54:29 粗粒度终局复核窗口"
+                                                             ],
+                                              "granularity":  "coarse_time_windows_plus_page_metadata",
+                                              "limitations":  [
+                                                                  "Bilibili player endpoint exposed no public subtitles or chapter markers during collection.",
+                                                                  "Time ranges are coarse replay windows, not transcript-level attribution.",
+                                                                  "Only title/description claims are treated as directly text-verifiable."
+                                                              ],
+                                              "manualSecondPassRequired":  true
+                                          },
+                             "copyright":  {
+                                               "status":  "linked_only",
+                                               "bundledMedia":  false,
+                                               "bundledSubtitles":  false,
+                                               "bundledFullText":  false
+                                           }
+                         }
+}

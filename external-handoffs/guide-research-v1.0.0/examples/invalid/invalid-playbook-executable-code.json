@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "guide-playbook.v1",
+  "guideId": "invalid-executable-code",
+  "title": "故意非法：包含任意代码字段",
+  "status": "draft",
+  "applicableGameVersions": [
+    "4.4"
+  ],
+  "archetypeId": "invalid",
+  "archetypeName": "invalid",
+  "goalIds": [
+    "test"
+  ],
+  "signals": {
+    "coreCharacterIds": [],
+    "optionalCharacterIds": [],
+    "equipmentIds": [],
+    "bondIds": [],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+  },
+  "applicability": {
+    "required": [],
+    "prohibited": [],
+    "defaultUnknownPolicy": "require_review"
+  },
+  "phases": [],
+  "actions": [],
+  "branches": [],
+  "alternativeRoutes": [],
+  "risks": [],
+  "missingInformationPolicy": {
+    "defaultBehavior": "mark_unknown",
+    "highRiskDecisionBehavior": "never_auto_execute",
+    "conflictBehavior": "preserve_all_sources",
+    "minimumConfidence": 0.7
+  },
+  "evidenceRefs": [],
+  "executeCode": "rm -rf /"
+}

@@ -1,0 +1,141 @@
+{
+    "schemaVersion":  "1.0.0",
+    "guideId":  "guide-bili-bv1unnq6aefk",
+    "sourceId":  "bili-bv1unnq6aefk",
+    "authorClaims":  [
+                         {
+                             "claimId":  "ac-01",
+                             "paraphrase":  "作者公开了反震姬子、能量流姬子和列车转盛会姬子三条4.4路线。",
+                             "locator":  "page:description",
+                             "stableIds":  [
+
+                                           ]
+                         },
+                         {
+                             "claimId":  "ac-02",
+                             "paraphrase":  "三条路线共享4列车同行骨架，并按量子同频或盛会之星分支。",
+                             "locator":  "page:description",
+                             "stableIds":  [
+
+                                           ]
+                         }
+                     ],
+    "factualClaims":  [
+                          {
+                              "claimId":  "fc-01",
+                              "paraphrase":  "视频由用户指定重点UP主“这看缘吧”发布，MID为401579272，时长6分22秒。",
+                              "locator":  "page:metadata",
+                              "stableIds":  [
+
+                                            ]
+                          }
+                      ],
+    "sourceExtensions":  {
+                             "collectionStatus":  "complete_structural_extraction",
+                             "sourcePriority":  "user_designated_core",
+                             "platform":  "Bilibili",
+                             "contentType":  "video",
+                             "durationSeconds":  382,
+                             "authorMid":  401579272,
+                             "noReprintFlag":  1,
+                             "archetype":  "姬子·启行：反震/能量/盛会三路线",
+                             "coreCharacters":  [
+                                                    "姬子·启行"
+                                                ],
+                             "substituteCharacters":  [
+
+                                                      ],
+                             "keySynergies":  [
+                                                  "4列车同行+3量子同频反震",
+                                                  "4列车同行+3量子同频能量",
+                                                  "4列车同行+2盛会之星列车转"
+                                              ],
+                             "opening":  {
+                                             "acceptable":  [
+                                                                "按到手强化在反震、能量与盛会三条路线间选择",
+                                                                "列车转出现时可转盛会分支"
+                                                            ],
+                                             "abandonOrPivot":  [
+                                                                    "反震条件差时转能量流",
+                                                                    "拿到列车转时采用盛会之星分支"
+                                                                ]
+                                         },
+                             "priorities":  {
+                                                "investmentEnvironment":  [
+                                                                              "4.4正式服首日公开路线"
+                                                                          ],
+                                                "investmentStrategy":  [
+                                                                           "先锁4列车骨架，再依据转职/装备确定副羁绊"
+                                                                       ]
+                                            },
+                             "stages":  {
+                                            "early":  "先确认列车骨架及可用转换",
+                                            "mid":  "在反震、能量、盛会分支中择一",
+                                            "late":  "完成作者给出的对应攻略路线并以姬子收束"
+                                        },
+                             "economyTriggers":  [
+                                                     "简介未给出刷新/升人口的可核验数值触发点，待视频人工二次听写"
+                                                 ],
+                             "completionStandard":  [
+                                                        "三套路线均有作者公开攻略码存在性证据；本文不复制长码正文"
+                                                    ],
+                             "fallbackRoutes":  [
+                                                    "反震条件差时转能量流",
+                                                    "拿到列车转时采用盛会之星分支"
+                                                ],
+                             "failureRecovery":  [
+                                                     "反震装备不齐转能量流",
+                                                     "列车转出现则转盛会之星"
+                                                 ],
+                             "risksAndExceptions":  [
+                                                        "标题含宣传性措辞",
+                                                        "视频标记禁止转载",
+                                                        "无公开字幕，时间点为粗粒度复核窗口"
+                                                    ],
+                             "guideCodePresence":  true,
+                             "pendingMappings":  [
+                                                     {
+                                                         "name":  "4列车同行+2盛会之星列车转",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "4列车同行+3量子同频反震",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "4列车同行+3量子同频能量",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "姬子·启行",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     }
+                                                 ],
+                             "evidence":  {
+                                              "locatorMap":  [
+                                                                 "page:title",
+                                                                 "page:description 三套攻略路线",
+                                                                 "video:00:00-01:30 粗粒度机制复核窗口",
+                                                                 "video:01:30-04:30 粗粒度分支复核窗口",
+                                                                 "video:04:30-06:22 粗粒度结算复核窗口"
+                                                             ],
+                                              "granularity":  "coarse_time_windows_plus_page_metadata",
+                                              "limitations":  [
+                                                                  "Bilibili player endpoint exposed no public subtitles or chapter markers during collection.",
+                                                                  "Time ranges are coarse replay windows, not transcript-level attribution.",
+                                                                  "Only title/description claims are treated as directly text-verifiable."
+                                                              ],
+                                              "manualSecondPassRequired":  true
+                                          },
+                             "copyright":  {
+                                               "status":  "linked_only",
+                                               "bundledMedia":  false,
+                                               "bundledSubtitles":  false,
+                                               "bundledFullText":  false
+                                           }
+                         }
+}

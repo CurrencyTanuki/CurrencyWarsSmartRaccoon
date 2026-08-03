@@ -1,0 +1,122 @@
+{
+    "schemaVersion":  "1.0.0",
+    "guideId":  "guide-bili-bv1jpny6neta",
+    "sourceId":  "bili-bv1jpny6neta",
+    "authorClaims":  [
+                         {
+                             "claimId":  "ac-01",
+                             "paraphrase":  "作者给出的阵容主轴是6列车同行2护盾的领航员姬子反震流。",
+                             "locator":  "page:description",
+                             "stableIds":  [
+
+                                           ]
+                         }
+                     ],
+    "factualClaims":  [
+                          {
+                              "claimId":  "fc-01",
+                              "paraphrase":  "页面明确标注4.4、A850与创作体验服。",
+                              "locator":  "page:title",
+                              "stableIds":  [
+
+                                            ]
+                          }
+                      ],
+    "sourceExtensions":  {
+                             "collectionStatus":  "complete_structural_extraction",
+                             "sourcePriority":  "standard",
+                             "platform":  "Bilibili",
+                             "contentType":  "video",
+                             "durationSeconds":  1039,
+                             "authorMid":  23938690,
+                             "noReprintFlag":  0,
+                             "archetype":  "姬子·启行：6列车2护盾反震",
+                             "coreCharacters":  [
+                                                    "姬子·启行"
+                                                ],
+                             "substituteCharacters":  [
+
+                                                      ],
+                             "keySynergies":  [
+                                                  "6列车同行+2护盾",
+                                                  "护盾反震作为伤害与生存共用主轴"
+                                              ],
+                             "opening":  {
+                                             "acceptable":  [
+                                                                "优先列车和护盾组件"
+                                                            ],
+                                             "abandonOrPivot":  [
+                                                                    "创作体验服路线，正式服差异需复核"
+                                                                ]
+                                         },
+                             "priorities":  {
+                                                "investmentEnvironment":  [
+                                                                              "4.4创作体验服、A850"
+                                                                          ],
+                                                "investmentStrategy":  [
+                                                                           "先完成列车同行，再补护盾"
+                                                                       ]
+                                            },
+                             "stages":  {
+                                            "early":  "收集列车骨架",
+                                            "mid":  "补2护盾与姬子",
+                                            "late":  "以反震伤害和护盾承伤完成A850"
+                                        },
+                             "economyTriggers":  [
+                                                     "简介未公开定量经济触发点"
+                                                 ],
+                             "completionStandard":  [
+                                                        "6列车同行2护盾框架成型并完成A850"
+                                                    ],
+                             "fallbackRoutes":  [
+                                                    "创作体验服路线，正式服差异需复核"
+                                                ],
+                             "failureRecovery":  [
+                                                     "正式服数值不符时降低为候选路线并重新验证"
+                                                 ],
+                             "risksAndExceptions":  [
+                                                        "创作体验服素材可能与正式服存在差异",
+                                                        "标题伤害数字是作者展示值，不外推为通用值"
+                                                    ],
+                             "guideCodePresence":  true,
+                             "pendingMappings":  [
+                                                     {
+                                                         "name":  "6列车同行+2护盾",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "护盾反震作为伤害与生存共用主轴",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "姬子·启行",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     }
+                                                 ],
+                             "evidence":  {
+                                              "locatorMap":  [
+                                                                 "page:title",
+                                                                 "page:description 攻略路线",
+                                                                 "video:00:00-05:30 粗粒度起手复核窗口",
+                                                                 "video:05:30-12:00 粗粒度成型复核窗口",
+                                                                 "video:12:00-17:19 粗粒度终局复核窗口"
+                                                             ],
+                                              "granularity":  "coarse_time_windows_plus_page_metadata",
+                                              "limitations":  [
+                                                                  "Bilibili player endpoint exposed no public subtitles or chapter markers during collection.",
+                                                                  "Time ranges are coarse replay windows, not transcript-level attribution.",
+                                                                  "Only title/description claims are treated as directly text-verifiable."
+                                                              ],
+                                              "manualSecondPassRequired":  true
+                                          },
+                             "copyright":  {
+                                               "status":  "linked_only",
+                                               "bundledMedia":  false,
+                                               "bundledSubtitles":  false,
+                                               "bundledFullText":  false
+                                           }
+                         }
+}

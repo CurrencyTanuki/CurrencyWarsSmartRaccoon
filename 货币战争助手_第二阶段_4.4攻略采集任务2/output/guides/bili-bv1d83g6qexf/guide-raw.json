@@ -1,0 +1,126 @@
+{
+    "schemaVersion":  "1.0.0",
+    "guideId":  "guide-bili-bv1d83g6qexf",
+    "sourceId":  "bili-bv1d83g6qexf",
+    "authorClaims":  [
+                         {
+                             "claimId":  "ac-01",
+                             "paraphrase":  "作者把试用黄泉与巡海游侠组合成不带特定组件的0T关底路线。",
+                             "locator":  "page:title",
+                             "stableIds":  [
+
+                                           ]
+                         }
+                     ],
+    "factualClaims":  [
+                          {
+                              "claimId":  "fc-01",
+                              "paraphrase":  "视频时长8分41秒，标题定位为试用黄泉关底展示。",
+                              "locator":  "page:title；page:metadata",
+                              "stableIds":  [
+
+                                            ]
+                          }
+                      ],
+    "sourceExtensions":  {
+                             "collectionStatus":  "complete_structural_extraction",
+                             "sourcePriority":  "standard",
+                             "platform":  "Bilibili",
+                             "contentType":  "video",
+                             "durationSeconds":  521,
+                             "authorMid":  602154938,
+                             "noReprintFlag":  1,
+                             "archetype":  "黄泉：巡海游侠",
+                             "coreCharacters":  [
+                                                    "黄泉"
+                                                ],
+                             "substituteCharacters":  [
+                                                          "爻光"
+                                                      ],
+                             "keySynergies":  [
+                                                  "试用黄泉+巡海游侠",
+                                                  "不依赖“风扇”的变体"
+                                              ],
+                             "opening":  {
+                                             "acceptable":  [
+                                                                "优先黄泉与巡海游侠相关组件"
+                                                            ],
+                                             "abandonOrPivot":  [
+                                                                    "缺少展示组件时回落为常规黄泉/减益路线"
+                                                                ]
+                                         },
+                             "priorities":  {
+                                                "investmentEnvironment":  [
+                                                                              "4.4当期A850候选"
+                                                                          ],
+                                                "investmentStrategy":  [
+                                                                           "黄泉与巡海羁绊优先"
+                                                                       ]
+                                            },
+                             "stages":  {
+                                            "early":  "建立黄泉/巡海骨架",
+                                            "mid":  "补齐游侠相关组件",
+                                            "late":  "以关底首轮击破作为展示目标"
+                                        },
+                             "economyTriggers":  [
+                                                     "页面未给出定量经济触发点"
+                                                 ],
+                             "completionStandard":  [
+                                                        "作者展示试用黄泉0T关底首领"
+                                                    ],
+                             "fallbackRoutes":  [
+                                                    "缺少展示组件时回落为常规黄泉/减益路线"
+                                                ],
+                             "failureRecovery":  [
+                                                     "无法满足0T条件时仍以安全通关为次级标准"
+                                                 ],
+                             "risksAndExceptions":  [
+                                                        "“把把0T”是作者主张，未做样本量验证",
+                                                        "标题疑问句部分不作事实断言"
+                                                    ],
+                             "guideCodePresence":  false,
+                             "pendingMappings":  [
+                                                     {
+                                                         "name":  "不依赖“风扇”的变体",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "黄泉",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "试用黄泉+巡海游侠",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "爻光",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     }
+                                                 ],
+                             "evidence":  {
+                                              "locatorMap":  [
+                                                                 "page:title",
+                                                                 "video:00:00-03:00 粗粒度开局复核窗口",
+                                                                 "video:03:00-06:00 粗粒度成型复核窗口",
+                                                                 "video:06:00-08:41 粗粒度关底复核窗口"
+                                                             ],
+                                              "granularity":  "coarse_time_windows_plus_page_metadata",
+                                              "limitations":  [
+                                                                  "Bilibili player endpoint exposed no public subtitles or chapter markers during collection.",
+                                                                  "Time ranges are coarse replay windows, not transcript-level attribution.",
+                                                                  "Only title/description claims are treated as directly text-verifiable."
+                                                              ],
+                                              "manualSecondPassRequired":  true
+                                          },
+                             "copyright":  {
+                                               "status":  "linked_only",
+                                               "bundledMedia":  false,
+                                               "bundledSubtitles":  false,
+                                               "bundledFullText":  false
+                                           }
+                         }
+}

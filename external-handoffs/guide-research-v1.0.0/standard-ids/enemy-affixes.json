@@ -1,0 +1,262 @@
+{
+  "catalog": "enemy-affixes",
+  "gameVersion": "4.4",
+  "records": [
+    {
+      "id": "enemy_affix_t1_01",
+      "name": "第一位面强化",
+      "tier": 1
+    },
+    {
+      "id": "enemy_affix_t1_02",
+      "name": "第二位面强化",
+      "tier": 1
+    },
+    {
+      "id": "enemy_affix_t1_03",
+      "name": "第三位面强化",
+      "tier": 1
+    },
+    {
+      "id": "enemy_affix_t1_04",
+      "name": "首领强化",
+      "tier": 1
+    },
+    {
+      "id": "enemy_affix_t1_05",
+      "name": "随从强化",
+      "tier": 1
+    },
+    {
+      "id": "enemy_affix_t2_01",
+      "name": "开局不利",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_02",
+      "name": "榜样激励",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_03",
+      "name": "时间刺客",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_04",
+      "name": "一鼓作气",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_05",
+      "name": "挫其锋芒",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_06",
+      "name": "冷冻冬眠",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_07",
+      "name": "坠入陷阱",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_08",
+      "name": "前台熄火",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_09",
+      "name": "后台熄火",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_10",
+      "name": "战个痛快",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_11",
+      "name": "复仇心切",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_12",
+      "name": "软弱无力",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_13",
+      "name": "霸凌弱者",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_14",
+      "name": "区别对待",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_15",
+      "name": "决战在即",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_16",
+      "name": "额外打击",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_17",
+      "name": "沉重脚步",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_18",
+      "name": "忽快忽慢",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_19",
+      "name": "免死金牌",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t2_20",
+      "name": "高费审美",
+      "tier": 2
+    },
+    {
+      "id": "enemy_affix_t3_01",
+      "name": "正当防卫",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_02",
+      "name": "忍无可忍",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_03",
+      "name": "火之熄火",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_04",
+      "name": "冰之熄火",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_05",
+      "name": "雷之熄火",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_06",
+      "name": "风之熄火",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_07",
+      "name": "物理熄火",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_08",
+      "name": "虚数熄火",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_09",
+      "name": "量子熄火",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_10",
+      "name": "变宝为废",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_11",
+      "name": "紧急止血",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_12",
+      "name": "能量逃逸",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_13",
+      "name": "极速制冷",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_14",
+      "name": "净化身心",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_15",
+      "name": "重症难题",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_16",
+      "name": "永久创伤",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_17",
+      "name": "灼热轰炸",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_18",
+      "name": "丢失幸运",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_19",
+      "name": "应激反应",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_20",
+      "name": "皮糙肉厚",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_21",
+      "name": "以人为本",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_22",
+      "name": "同步行动",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_23",
+      "name": "成长的烦恼",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_24",
+      "name": "库藏生锈",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_25",
+      "name": "形单影只",
+      "tier": 3
+    },
+    {
+      "id": "enemy_affix_t3_26",
+      "name": "低费审美",
+      "tier": 3
+    }
+  ],
+  "schemaVersion": "standard-id-catalog.v1"
+}

@@ -1,0 +1,116 @@
+{
+    "schemaVersion":  "1.0.0",
+    "guideId":  "guide-bili-bv1zykh6ve1c",
+    "sourceId":  "bili-bv1zykh6ve1c",
+    "authorClaims":  [
+                         {
+                             "claimId":  "ac-01",
+                             "paraphrase":  "作者以完整对局展示A850三彩羁绊击破队，并声明包含运营思路。",
+                             "locator":  "page:title",
+                             "stableIds":  [
+
+                                           ]
+                         }
+                     ],
+    "factualClaims":  [
+                          {
+                              "claimId":  "fc-01",
+                              "paraphrase":  "视频时长64分41秒，标题明确为A850通关全过程。",
+                              "locator":  "page:title；page:metadata",
+                              "stableIds":  [
+
+                                            ]
+                          }
+                      ],
+    "sourceExtensions":  {
+                             "collectionStatus":  "complete_structural_extraction",
+                             "sourcePriority":  "standard",
+                             "platform":  "Bilibili",
+                             "contentType":  "video",
+                             "durationSeconds":  3881,
+                             "authorMid":  507395037,
+                             "noReprintFlag":  1,
+                             "archetype":  "击破队：三彩羁绊",
+                             "coreCharacters":  [
+
+                                                ],
+                             "substituteCharacters":  [
+
+                                                      ],
+                             "keySynergies":  [
+                                                  "击破队三彩羁绊",
+                                                  "完整对局与运营思路"
+                                              ],
+                             "opening":  {
+                                             "acceptable":  [
+                                                                "按击破相关来牌确定三彩方向"
+                                                            ],
+                                             "abandonOrPivot":  [
+                                                                    "缺少核心颜色/组件时转现有击破分支"
+                                                                ]
+                                         },
+                             "priorities":  {
+                                                "investmentEnvironment":  [
+                                                                              "A850"
+                                                                          ],
+                                                "investmentStrategy":  [
+                                                                           "击破核心与三彩羁绊并重"
+                                                                       ]
+                                            },
+                             "stages":  {
+                                            "early":  "识别击破来牌",
+                                            "mid":  "维持经济并拼三彩",
+                                            "late":  "在完整对局中完成A850"
+                                        },
+                             "economyTriggers":  [
+                                                     "视频定位为全流程运营，具体数值触发点待人工听写"
+                                                 ],
+                             "completionStandard":  [
+                                                        "三彩击破成型并在完整流程中通关A850"
+                                                    ],
+                             "fallbackRoutes":  [
+                                                    "缺少核心颜色/组件时转现有击破分支"
+                                                ],
+                             "failureRecovery":  [
+                                                     "颜色不齐时优先保留已成型击破骨架"
+                                                 ],
+                             "risksAndExceptions":  [
+                                                        "无公开字幕，精确节点待二次听写",
+                                                        "时长较长，当前仅建立粗粒度窗口"
+                                                    ],
+                             "guideCodePresence":  false,
+                             "pendingMappings":  [
+                                                     {
+                                                         "name":  "击破队三彩羁绊",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "完整对局与运营思路",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     }
+                                                 ],
+                             "evidence":  {
+                                              "locatorMap":  [
+                                                                 "page:title",
+                                                                 "video:00:00-20:00 粗粒度前期复核窗口",
+                                                                 "video:20:00-45:00 粗粒度中期复核窗口",
+                                                                 "video:45:00-64:41 粗粒度终局复核窗口"
+                                                             ],
+                                              "granularity":  "coarse_time_windows_plus_page_metadata",
+                                              "limitations":  [
+                                                                  "Bilibili player endpoint exposed no public subtitles or chapter markers during collection.",
+                                                                  "Time ranges are coarse replay windows, not transcript-level attribution.",
+                                                                  "Only title/description claims are treated as directly text-verifiable."
+                                                              ],
+                                              "manualSecondPassRequired":  true
+                                          },
+                             "copyright":  {
+                                               "status":  "linked_only",
+                                               "bundledMedia":  false,
+                                               "bundledSubtitles":  false,
+                                               "bundledFullText":  false
+                                           }
+                         }
+}

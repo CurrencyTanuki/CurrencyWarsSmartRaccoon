@@ -1,0 +1,17 @@
+{
+    "schemaVersion":  "1.0.0",
+    "sourceId":  "bili-bv1uwkg6feih",
+    "title":  "A850货币战争角色强度榜，开局定阵/抓牌思路一次看懂！",
+    "author":  "绝不是dd",
+    "url":  "https://www.bilibili.com/video/BV1uWKg6FEih/",
+    "publishedAt":  "2026-07-16T05:05:24Z",
+    "accessedAt":  "2026-07-27T13:40:00Z",
+    "applicableGameVersion":  "4.4",
+    "copyrightStatus":  "linked_only",
+    "locators":  [
+                     "page:title",
+                     "video:00:00-03:00 粗粒度强度榜复核窗口",
+                     "video:03:00-06:30 粗粒度定阵复核窗口",
+                     "video:06:30-09:21 粗粒度抓牌复核窗口"
+                 ]
+}

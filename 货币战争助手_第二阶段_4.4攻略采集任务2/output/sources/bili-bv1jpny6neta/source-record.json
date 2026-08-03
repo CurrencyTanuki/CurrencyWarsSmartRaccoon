@@ -1,0 +1,18 @@
+{
+    "schemaVersion":  "1.0.0",
+    "sourceId":  "bili-bv1jpny6neta",
+    "title":  "【崩坏：星穹铁道】一动反伤140亿！比阿雅更轮椅！4.4货币战争最无脑阵容！速通A850！领航员姬子护盾反震流打法攻略！【创作体验服】",
+    "author":  "Sennyuki风早千雪",
+    "url":  "https://www.bilibili.com/video/BV1jpNY6NEtA/",
+    "publishedAt":  "2026-07-15T03:17:16Z",
+    "accessedAt":  "2026-07-27T13:40:00Z",
+    "applicableGameVersion":  "4.4",
+    "copyrightStatus":  "linked_only",
+    "locators":  [
+                     "page:title",
+                     "page:description 攻略路线",
+                     "video:00:00-05:30 粗粒度起手复核窗口",
+                     "video:05:30-12:00 粗粒度成型复核窗口",
+                     "video:12:00-17:19 粗粒度终局复核窗口"
+                 ]
+}

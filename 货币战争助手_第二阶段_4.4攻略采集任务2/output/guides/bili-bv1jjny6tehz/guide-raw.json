@@ -1,0 +1,131 @@
+{
+    "schemaVersion":  "1.0.0",
+    "guideId":  "guide-bili-bv1jjny6tehz",
+    "sourceId":  "bili-bv1jjny6tehz",
+    "authorClaims":  [
+                         {
+                             "claimId":  "ac-01",
+                             "paraphrase":  "作者认为A850的核心思路是先上千冶刃补生存，再围绕现有输出骨架完成构筑。",
+                             "locator":  "page:description",
+                             "stableIds":  [
+
+                                           ]
+                         },
+                         {
+                             "claimId":  "ac-02",
+                             "paraphrase":  "简介列出列车量子姬子、击破大丽花、撕裂、低血量量子和阿格莱雅昼半神等五条已过审路线。",
+                             "locator":  "page:description",
+                             "stableIds":  [
+
+                                           ]
+                         }
+                     ],
+    "factualClaims":  [
+                          {
+                              "claimId":  "fc-01",
+                              "paraphrase":  "该记录与另一条姬子攻略同属作者甘泽成谣雨成诗，统计时不增加独立作者数。",
+                              "locator":  "page:metadata",
+                              "stableIds":  [
+
+                                            ]
+                          }
+                      ],
+    "sourceExtensions":  {
+                             "collectionStatus":  "complete_structural_extraction",
+                             "sourcePriority":  "user_designated_core",
+                             "platform":  "Bilibili",
+                             "contentType":  "video",
+                             "durationSeconds":  588,
+                             "authorMid":  482212512,
+                             "noReprintFlag":  0,
+                             "archetype":  "A850泛用：千冶刃生存补强与五路线总览",
+                             "coreCharacters":  [
+                                                    "千冶刃"
+                                                ],
+                             "substituteCharacters":  [
+
+                                                      ],
+                             "keySynergies":  [
+                                                  "先用千冶刃补生存，再按来牌转列车/击破/量子/昼之半神",
+                                                  "简介公开五条已过审路线"
+                                              ],
+                             "opening":  {
+                                             "acceptable":  [
+                                                                "优先找到可上场的千冶刃生存支点"
+                                                            ],
+                                             "abandonOrPivot":  [
+                                                                    "可转姬子列车量子、前台大丽花击破、撕裂、低血量量子或阿格莱雅昼半神"
+                                                                ]
+                                         },
+                             "priorities":  {
+                                                "investmentEnvironment":  [
+                                                                              "A850"
+                                                                          ],
+                                                "investmentStrategy":  [
+                                                                           "先解决生存，再选择输出骨架"
+                                                                       ]
+                                            },
+                             "stages":  {
+                                            "early":  "用千冶刃建立生存底座",
+                                            "mid":  "按来牌选择五条输出分支之一",
+                                            "late":  "补齐生存并完成对应攻略路线"
+                                        },
+                             "economyTriggers":  [
+                                                     "简介未给定统一刷新阈值，不跨路线编造"
+                                                 ],
+                             "completionStandard":  [
+                                                        "对应分支攻略路线成型并适应A850生存压力"
+                                                    ],
+                             "fallbackRoutes":  [
+                                                    "可转姬子列车量子、前台大丽花击破、撕裂、低血量量子或阿格莱雅昼半神"
+                                                ],
+                             "failureRecovery":  [
+                                                     "输出压力不足时优先补生存并换分支",
+                                                     "单一路线缺牌时转五条公开路线中的其他骨架"
+                                                 ],
+                             "risksAndExceptions":  [
+                                                        "“最简单版本”是作者评价",
+                                                        "同作者多来源不计作额外独立作者"
+                                                    ],
+                             "guideCodePresence":  true,
+                             "pendingMappings":  [
+                                                     {
+                                                         "name":  "简介公开五条已过审路线",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "千冶刃",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     },
+                                                     {
+                                                         "name":  "先用千冶刃补生存，再按来牌转列车/击破/量子/昼之半神",
+                                                         "stableId":  null,
+                                                         "status":  "pending_mapping"
+                                                     }
+                                                 ],
+                             "evidence":  {
+                                              "locatorMap":  [
+                                                                 "page:title",
+                                                                 "page:description 五条攻略路线",
+                                                                 "video:00:00-03:00 粗粒度版本判断复核窗口",
+                                                                 "video:03:00-07:00 粗粒度分支复核窗口",
+                                                                 "video:07:00-09:48 粗粒度收束复核窗口"
+                                                             ],
+                                              "granularity":  "coarse_time_windows_plus_page_metadata",
+                                              "limitations":  [
+                                                                  "Bilibili player endpoint exposed no public subtitles or chapter markers during collection.",
+                                                                  "Time ranges are coarse replay windows, not transcript-level attribution.",
+                                                                  "Only title/description claims are treated as directly text-verifiable."
+                                                              ],
+                                              "manualSecondPassRequired":  true
+                                          },
+                             "copyright":  {
+                                               "status":  "linked_only",
+                                               "bundledMedia":  false,
+                                               "bundledSubtitles":  false,
+                                               "bundledFullText":  false
+                                           }
+                         }
+}

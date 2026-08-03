@@ -1,0 +1,18 @@
+{
+    "schemaVersion":  "1.0.0",
+    "sourceId":  "bili-bv1pfgb6qest",
+    "title":  "【崩铁】4.4saber\u0026命运圣杯货币战争玩法攻略心得分享",
+    "author":  "匚苹果",
+    "url":  "https://www.bilibili.com/video/BV1Pfgb6QEST/",
+    "publishedAt":  "2026-07-24T04:00:00Z",
+    "accessedAt":  "2026-07-27T13:40:00Z",
+    "applicableGameVersion":  "4.4",
+    "copyrightStatus":  "linked_only",
+    "locators":  [
+                     "page:title",
+                     "page:description 攻略路线与体验服声明",
+                     "video:00:00-03:00 粗粒度开局复核窗口",
+                     "video:03:00-07:00 粗粒度任务复核窗口",
+                     "video:07:00-10:18 粗粒度终局复核窗口"
+                 ]
+}

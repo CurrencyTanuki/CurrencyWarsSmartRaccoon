@@ -1,0 +1,1098 @@
+<Window x:Class="CurrencyWarsAssistant.App.MainWindow"
+        x:Name="RootWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:CurrencyWarsAssistant.App"
+        Title="货币战争智能狸"
+        Width="1440"
+        Height="1000"
+        MinWidth="1080"
+        MinHeight="800"
+        Background="{StaticResource BackgroundBrush}"
+        Foreground="{StaticResource TextBrush}">
+    <Window.Resources>
+        <Style x:Key="EditorTextBoxStyle" TargetType="TextBox">
+            <Setter Property="MinHeight" Value="32" />
+            <Setter Property="Padding" Value="9,5" />
+            <Setter Property="Background" Value="#0F1420" />
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="BorderBrush" Value="#39445B" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="SectionTitleStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style x:Key="NavigationButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="Margin" Value="0,2" />
+            <Setter Property="Padding" Value="14,10" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Foreground" Value="#C8D5E6" />
+        </Style>
+
+        <Style x:Key="PrimaryActionButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#6E541F" />
+            <Setter Property="BorderBrush" Value="#E7CA82" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="#FFF6E3" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="16,9" />
+        </Style>
+
+        <Style x:Key="SecondaryActionButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#1B2636" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Foreground" Value="#C7D5E7" />
+            <Setter Property="Padding" Value="13,9" />
+        </Style>
+
+        <Style x:Key="RecordActionButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource SecondaryActionButtonStyle}">
+            <Setter Property="MinWidth" Value="104" />
+            <Setter Property="Background" Value="#1E2D3E" />
+            <Setter Property="BorderBrush" Value="#46647B" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="#C8E4F2" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style x:Key="StopActionButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#51303A" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Foreground" Value="#FFD9DF" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="14,9" />
+        </Style>
+
+        <ItemsPanelTemplate x:Key="VirtualizedFilterItemsPanel">
+            <WrapPanel />
+        </ItemsPanelTemplate>
+
+        <Style x:Key="FilterTabControlStyle" TargetType="TabControl">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="#3A4B65" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <Grid ClipToBounds="False">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <UniformGrid Margin="2,2,2,8"
+                                         Rows="1"
+                                         Columns="4"
+                                         ClipToBounds="False"
+                                         IsItemsHost="True"
+                                         Panel.ZIndex="2" />
+                            <Border Grid.Row="1"
+                                    Padding="0"
+                                    CornerRadius="6"
+                                    Background="#111722"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                <ContentPresenter ContentSource="SelectedContent" />
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="StrategyTabControlStyle"
+               TargetType="TabControl"
+               BasedOn="{StaticResource FilterTabControlStyle}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <Grid ClipToBounds="False">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <UniformGrid Margin="2,2,2,8"
+                                         Rows="1"
+                                         Columns="3"
+                                         ClipToBounds="False"
+                                         IsItemsHost="True"
+                                         Panel.ZIndex="2" />
+                            <Border Grid.Row="1"
+                                    CornerRadius="6"
+                                    Background="#111722"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                <ContentPresenter ContentSource="SelectedContent" />
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="FilterChipButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="128" />
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="MinHeight" Value="34" />
+            <Setter Property="MaxWidth" Value="320" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="11,6" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Background" Value="#202838" />
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="BorderBrush" Value="#3B475F" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="ToolTip" Value="{Binding Description}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SelectionMode}"
+                             Value="{x:Static local:AppFilterSelectionMode.Required}">
+                    <Setter Property="Background" Value="#7DD3FC" />
+                    <Setter Property="Foreground" Value="#07131D" />
+                    <Setter Property="BorderBrush" Value="#BAE6FD" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding SelectionMode}"
+                             Value="{x:Static local:AppFilterSelectionMode.Forbidden}">
+                    <Setter Property="Background" Value="#DC4B58" />
+                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="BorderBrush" Value="#FDA4AF" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding DataContext.ShowFilterDescriptions,
+                                              RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                             Value="True">
+                    <Setter Property="Width" Value="270" />
+                    <Setter Property="MinHeight" Value="86" />
+                    <Setter Property="Padding" Value="12,10" />
+                    <Setter Property="VerticalContentAlignment" Value="Top" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding HasAvailabilityLabel}"
+                             Value="True">
+                    <Setter Property="Width" Value="230" />
+                    <Setter Property="MinHeight" Value="54" />
+                    <Setter Property="Background" Value="#171D29" />
+                    <Setter Property="Foreground" Value="#8B96A8" />
+                    <Setter Property="BorderBrush" Value="#2B3445" />
+                </DataTrigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.78" />
+                    <Setter Property="Background" Value="#171D29" />
+                    <Setter Property="Foreground" Value="#8B96A8" />
+                    <Setter Property="BorderBrush" Value="#2B3445" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="FilterTabItemStyle" TargetType="TabItem">
+            <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="MinHeight" Value="38" />
+            <Setter Property="Margin" Value="0,0,6,0" />
+            <Setter Property="Panel.ZIndex" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="HeaderBorder"
+                                SnapsToDevicePixels="True"
+                                Padding="18,9"
+                                CornerRadius="6"
+                                Background="#141A25"
+                                BorderBrush="#303A4E"
+                                BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              ContentSource="Header" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="HeaderBorder"
+                                        Property="Background"
+                                        Value="#202A3B" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Panel.ZIndex" Value="3" />
+                                <Setter Property="Foreground" Value="#A5E5FF" />
+                                <Setter TargetName="HeaderBorder"
+                                        Property="Background"
+                                        Value="#25364D" />
+                                <Setter TargetName="HeaderBorder"
+                                        Property="BorderBrush"
+                                        Value="#67C9F2" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SpecialRuleToggleStyle" TargetType="ToggleButton">
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="MinHeight" Value="36" />
+            <Setter Property="Padding" Value="10,7" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+            <Setter Property="Background" Value="#202838" />
+            <Setter Property="BorderBrush" Value="#3B475F" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="RuleBorder"
+                                CornerRadius="5"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid>
+                                <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="Center" />
+                                <Border x:Name="HoverLayer"
+                                        CornerRadius="4"
+                                        Background="White"
+                                        IsHitTestVisible="False"
+                                        Opacity="0" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Foreground" Value="White" />
+                                <Setter TargetName="RuleBorder" Property="Background" Value="#C94352" />
+                                <Setter TargetName="RuleBorder" Property="BorderBrush" Value="#EF7B88" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="HoverLayer" Property="Opacity" Value="0.07" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="HoverLayer" Property="Opacity" Value="0.13" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CombinationRuleButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="Padding" Value="10,7" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="#202838" />
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="BorderBrush" Value="#3B475F" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Condition}"
+                             Value="{x:Static local:AppFilterSelectionMode.Required}">
+                    <Setter Property="Background" Value="#7DD3FC" />
+                    <Setter Property="Foreground" Value="#07131D" />
+                    <Setter Property="BorderBrush" Value="#BAE6FD" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Condition}"
+                             Value="{x:Static local:AppFilterSelectionMode.Forbidden}">
+                    <Setter Property="Background" Value="#DC4B58" />
+                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="BorderBrush" Value="#FDA4AF" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="LogClickThroughToggleStyle" TargetType="ToggleButton">
+            <Setter Property="MinWidth" Value="138" />
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="Background" Value="#202838" />
+            <Setter Property="BorderBrush" Value="#3B475F" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="ToggleBorder"
+                                Padding="{TemplateBinding Padding}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ToggleBorder"
+                                        Property="Background"
+                                        Value="#2A3549" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Foreground" Value="#07131D" />
+                                <Setter TargetName="ToggleBorder"
+                                        Property="Background"
+                                        Value="#7DD3FC" />
+                                <Setter TargetName="ToggleBorder"
+                                        Property="BorderBrush"
+                                        Value="#BAE6FD" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <DataTemplate x:Key="FilterChipTemplate">
+            <Button Command="{Binding CycleSelectionCommand}"
+                    IsEnabled="{Binding IsSelectable}"
+                    Style="{StaticResource FilterChipButtonStyle}">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock FontWeight="SemiBold"
+                                   Text="{Binding Name}"
+                                   TextWrapping="Wrap" />
+                        <TextBlock Grid.Column="1"
+                                   Margin="9,0,0,0"
+                                   FontSize="11"
+                                   FontWeight="Bold"
+                                   Text="{Binding SelectionLabel}" />
+                    </Grid>
+                    <TextBlock Margin="0,4,0,0"
+                               FontSize="11"
+                               FontWeight="SemiBold"
+                               Foreground="#D6A84A"
+                               Text="{Binding AvailabilityLabel}"
+                               TextWrapping="Wrap">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding HasAvailabilityLabel}"
+                                                 Value="False">
+                                        <Setter Property="Visibility"
+                                                Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock Margin="0,7,0,0"
+                               FontSize="12"
+                               Opacity="0.86"
+                               Text="{Binding Description}"
+                               TextWrapping="Wrap">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DataContext.ShowFilterDescriptions,
+                                                                  RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                 Value="True">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+        </DataTemplate>
+
+        <Style x:Key="FilterListStyle" TargetType="ListBox">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="ItemsPanel" Value="{StaticResource VirtualizedFilterItemsPanel}" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden" />
+            <Setter Property="ItemTemplate" Value="{StaticResource FilterChipTemplate}" />
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Margin" Value="0,0,7,7" />
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Focusable" Value="False" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <DataTemplate x:Key="InvestmentStrategyRarityTemplate">
+            <Grid Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="4*" MinHeight="220" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" MinHeight="105" />
+                </Grid.RowDefinitions>
+                <TextBlock Margin="0,0,0,7"
+                           Foreground="#7DD3FC"
+                           Text="可点亮任意多个；不选择代表这一品质全部接受。4.4、4.2 新增策略优先排列。" />
+                <TextBox Grid.Row="1"
+                         Margin="0,0,0,8"
+                         Style="{StaticResource EditorTextBoxStyle}"
+                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="按投资策略名称或效果搜索" />
+                <ListBox Grid.Row="2"
+                         ItemsSource="{Binding SelectableView}"
+                         Style="{StaticResource FilterListStyle}" />
+                <Border Grid.Row="3"
+                        Margin="0,8,0,8"
+                        Padding="9,6"
+                        CornerRadius="5"
+                        Background="#181E2A"
+                        BorderBrush="#303A4E"
+                        BorderThickness="1">
+                    <TextBlock FontWeight="SemiBold"
+                               Foreground="#AAB4C4"
+                               Text="以下策略第一位面不会出现" />
+                </Border>
+                <ListBox Grid.Row="4"
+                         ItemsSource="{Binding UnavailableView}"
+                         Style="{StaticResource FilterListStyle}" />
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="184" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0"
+                Padding="14,22"
+                Background="#0B111C"
+                BorderBrush="#1E2B3D"
+                BorderThickness="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel>
+                    <TextBlock FontSize="17"
+                               FontWeight="SemiBold"
+                               Foreground="#E7CA82"
+                               Text="货币战争智能狸" />
+                    <TextBlock Margin="0,2,0,0"
+                               FontSize="11"
+                               Foreground="#71849A"
+                               Text="自动化与对局记录" />
+                    <Border Margin="0,8,0,0"
+                            Height="1"
+                            Background="#40E7CA82" />
+                </StackPanel>
+                <StackPanel Grid.Row="1" Margin="0,28,0,0">
+                    <Button Style="{StaticResource NavigationButtonStyle}"
+                            Click="OnHomeNavigationClick"
+                            Content="首页" />
+                    <Button Style="{StaticResource NavigationButtonStyle}"
+                            Click="OnRunsNavigationClick"
+                            Content="未完成对局" />
+                    <Button Style="{StaticResource NavigationButtonStyle}"
+                            Click="OnDashboardNavigationClick"
+                            Content="节点历史" />
+                    <Button Style="{StaticResource NavigationButtonStyle}"
+                            Click="OnRunHistoryClick"
+                            Content="对局历史记录" />
+                    <Button Style="{StaticResource NavigationButtonStyle}"
+                            Click="OnShowLogWindowClick"
+                            Content="运行日志" />
+                    <Button Style="{StaticResource NavigationButtonStyle}"
+                            Click="OnOpenLatestChallengeReportClick"
+                            Content="挑战总结（实验版）" />
+                    <Button Style="{StaticResource NavigationButtonStyle}"
+                            Click="OnSettingsClick"
+                            Content="设置" />
+                </StackPanel>
+                <TextBlock Grid.Row="3"
+                           FontSize="10.5"
+                           Foreground="#60748B"
+                           Text="Ctrl+Shift+F12  紧急停止"
+                           TextWrapping="Wrap" />
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="1" Margin="22">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+        <StackPanel>
+            <TextBlock FontSize="26"
+                       FontWeight="SemiBold"
+                       Text="货币战争智能狸" />
+            <Border Margin="0,8,0,0"
+                    Height="1"
+                    Background="#50E7CA82" />
+            <TextBlock Margin="0,8,0,0"
+                       Foreground="{StaticResource MutedBrush}"
+                       Text="配置理想开局，或直接开始对局记录。" />
+            <StackPanel Margin="0,7,0,0" Orientation="Horizontal">
+                <TextBlock Foreground="#71849A" Text="QQ 交流群  " />
+                <TextBlock Foreground="#AFC2D8"
+                           Text="{Binding Community.QqGroupDisplay}" />
+                <TextBlock Margin="20,0,0,0"
+                           Foreground="#71849A"
+                           Text="官方网站  " />
+                <TextBlock Foreground="#AFC2D8"
+                           Text="{Binding Community.OfficialWebsiteDisplay}" />
+            </StackPanel>
+        </StackPanel>
+
+        <Border Grid.Row="1"
+                Margin="0,14,0,14"
+                Padding="12"
+                CornerRadius="8"
+                Background="{StaticResource PanelBrush}"
+                BorderBrush="#2A3A52"
+                BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Margin="0,0,12,0"
+                               VerticalAlignment="Center"
+                               Text="游戏来源" />
+                    <ComboBox Grid.Column="1"
+                              MinWidth="128"
+                              MinHeight="34"
+                              ItemsSource="{Binding GameSourceOptions}"
+                              DisplayMemberPath="DisplayName"
+                              SelectedValuePath="Value"
+                              SelectedValue="{Binding SelectedGameSource, Mode=TwoWay}"
+                              VerticalContentAlignment="Center" />
+                    <TextBlock Grid.Column="2"
+                               Margin="16,0,8,0"
+                               VerticalAlignment="Center"
+                               Text="游戏窗口" />
+                    <ComboBox Grid.Column="3"
+                              MinHeight="34"
+                              ItemsSource="{Binding Windows}"
+                              SelectedItem="{Binding SelectedWindow}"
+                              VerticalContentAlignment="Center" />
+                    <Button Grid.Column="4"
+                            Margin="8,0,0,0"
+                            Click="OnCalibrateGameAreaClick"
+                            Content="定位画面" />
+                    <Button Grid.Column="5"
+                            Margin="8,0,0,0"
+                            Command="{Binding RefreshWindowsCommand}"
+                            Content="刷新" />
+                    <TextBlock Grid.Column="6"
+                               Margin="16,0,8,0"
+                               VerticalAlignment="Center"
+                               Text="博弈模式" />
+                    <ComboBox Grid.Column="7"
+                              MinWidth="130"
+                              MinHeight="34"
+                              ItemsSource="{Binding GameModeOptions}"
+                              DisplayMemberPath="DisplayName"
+                              SelectedValuePath="Value"
+                              SelectedValue="{Binding SelectedGameMode, Mode=TwoWay}"
+                              VerticalContentAlignment="Center" />
+                </Grid>
+
+                <Border Grid.Row="1"
+                        Margin="0,10,0,0"
+                        Padding="11,9"
+                        CornerRadius="7"
+                        Background="#101824">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Margin="1,0,16,0"
+                                    VerticalAlignment="Center">
+                            <TextBlock FontSize="11"
+                                       FontWeight="SemiBold"
+                                       Foreground="#7F93AA"
+                                       Text="运行状态" />
+                            <TextBlock Margin="0,3,0,0"
+                                       Foreground="#D9E3EF"
+                                       Text="{Binding Status}"
+                                       TextTrimming="CharacterEllipsis"
+                                       ToolTip="{Binding Status}" />
+                            <TextBlock Margin="0,2,0,0"
+                                       FontSize="11"
+                                       Foreground="#83BDD9"
+                                       Text="{Binding SituationAnalysis.Status, ElementName=RootWindow}"
+                                       TextTrimming="CharacterEllipsis"
+                                       ToolTip="{Binding SituationAnalysis.Status, ElementName=RootWindow}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal">
+                            <Button Command="{Binding AutoRerollCommand}"
+                                    Style="{StaticResource PrimaryActionButtonStyle}"
+                                    Content="开始刷开局"
+                                    ToolTip="自动进入货币战争并按当前条件重刷开局" />
+                            <Button Click="OnRealtimeRecognitionStarted"
+                                    Command="{Binding SituationAnalysis.StartCollectionCommand, ElementName=RootWindow}"
+                                    Style="{StaticResource RecordActionButtonStyle}"
+                                    Content="{Binding SituationAnalysis.CollectionStartLabel, ElementName=RootWindow, FallbackValue=开始记录, TargetNullValue=开始记录}"
+                                    ToolTip="不操作游戏，持续识别并记录当前对局" />
+                            <Button Click="OnStopAllClick"
+                                    Style="{StaticResource StopActionButtonStyle}"
+                                    Content="停止" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <ScrollViewer x:Name="MainContentScroller"
+                      Grid.Row="2"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Hidden"
+                      Focusable="True">
+          <StackPanel>
+            <Border x:Name="IncompleteRunsSection"
+                    Margin="0,0,0,10"
+                    Padding="12"
+                    CornerRadius="8"
+                    Background="{StaticResource PanelBrush}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource SectionTitleStyle}"
+                                       Text="未完成对局" />
+                            <TextBlock Margin="0,3,0,0"
+                                       Foreground="{StaticResource MutedBrush}"
+                                       Text="{Binding IncompleteRunsSummary}" />
+                        </StackPanel>
+                        <Button Grid.Column="1"
+                                Command="{Binding RefreshIncompleteRunsCommand}"
+                                Content="刷新" />
+                    </Grid>
+                    <ItemsControl Grid.Row="1"
+                                  Margin="0,10,0,0"
+                                  ItemsSource="{Binding IncompleteRuns}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="0,0,0,6"
+                                        Padding="10,8"
+                                        CornerRadius="6"
+                                        Background="#121A27">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="120" />
+                                            <ColumnDefinition Width="90" />
+                                            <ColumnDefinition Width="145" />
+                                            <ColumnDefinition Width="145" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Text="{Binding StartedAtDisplay, StringFormat=开始 {0}}" />
+                                        <TextBlock Grid.Column="1"
+                                                   VerticalAlignment="Center"
+                                                   FontWeight="SemiBold"
+                                                   Text="{Binding LastNodeDisplay}" />
+                                        <TextBlock Grid.Column="2"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="{StaticResource MutedBrush}"
+                                                   Text="{Binding CompletenessDisplay}" />
+                                        <TextBlock Grid.Column="3"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="{StaticResource MutedBrush}"
+                                                   Text="{Binding RecoveryDisplay}" />
+                                        <TextBlock Grid.Column="4"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="{StaticResource MutedBrush}"
+                                                   Text="{Binding LastSavedDisplay, StringFormat=最后保存 {0}}" />
+                                        <Button Grid.Column="5"
+                                                Padding="12,5"
+                                                Command="{Binding DataContext.ContinueIncompleteRunCommand,
+                                                                  RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                CommandParameter="{Binding}"
+                                                Content="继续" />
+                                        <Button Grid.Column="6"
+                                                Margin="6,0,0,0"
+                                                Padding="12,5"
+                                                Command="{Binding DataContext.SettleIncompleteRunCommand,
+                                                                  RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                CommandParameter="{Binding}"
+                                                Content="结算" />
+                                        <Button Grid.Column="7"
+                                                Margin="6,0,0,0"
+                                                Padding="12,5"
+                                                Command="{Binding DataContext.DeleteIncompleteRunCommand,
+                                                                  RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                CommandParameter="{Binding}"
+                                                Content="删除" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </Border>
+
+            <Border x:Name="OpeningFiltersSection"
+                    Height="620"
+                    Margin="0,0,0,10"
+                    Padding="10"
+                    CornerRadius="8"
+                    Background="{StaticResource PanelBrush}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource SectionTitleStyle}"
+                                       Text="开局词条" />
+                            <TextBlock Margin="0,3,0,8"
+                                       Foreground="{StaticResource MutedBrush}"
+                                       Text="投资环境和投资策略选择可接受项；敌人项浅蓝＝必出、红色＝刷掉、深色＝不限制。" />
+                        </StackPanel>
+                        <CheckBox Grid.Column="1"
+                                  Margin="12,0,0,8"
+                                  VerticalAlignment="Bottom"
+                                  IsChecked="{Binding ShowFilterDescriptions, Mode=TwoWay}"
+                                  Content="显示具体解释" />
+                    </Grid>
+
+                    <TabControl Grid.Row="1"
+                                IsEnabled="{Binding CanEditOpeningFilters}"
+                                Style="{StaticResource FilterTabControlStyle}">
+                        <TabItem Header="投资环境"
+                                 Style="{StaticResource FilterTabItemStyle}">
+                            <Grid Margin="8">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Margin="0,0,0,7"
+                                           Foreground="#7DD3FC"
+                                           Text="可点亮任意多个；任意命中一个即合格，否则刷新一次。不选择代表全部接受。" />
+                                <TextBox Grid.Row="1"
+                                         Margin="0,0,0,8"
+                                         Style="{StaticResource EditorTextBoxStyle}"
+                                         Text="{Binding InvestmentEnvironmentFilters.SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="按名称或效果搜索" />
+                                <ListBox Grid.Row="2"
+                                         ItemsSource="{Binding InvestmentEnvironmentFilters.View}"
+                                         Style="{StaticResource FilterListStyle}" />
+                            </Grid>
+                        </TabItem>
+
+                        <TabItem Header="敌人阵营"
+                                 Style="{StaticResource FilterTabItemStyle}">
+                            <Grid Margin="8">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <TextBox Grid.Row="1"
+                                         Margin="0,0,0,8"
+                                         Style="{StaticResource EditorTextBoxStyle}"
+                                         Text="{Binding CompetitorFilters.SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="搜索敌人阵营" />
+                                <ListBox Grid.Row="2"
+                                         ItemsSource="{Binding CompetitorFilters.View}"
+                                         Style="{StaticResource FilterListStyle}" />
+                            </Grid>
+                        </TabItem>
+
+                        <TabItem Header="敌人负面词条"
+                                 Style="{StaticResource FilterTabItemStyle}">
+                            <Grid Margin="8">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <TextBox Grid.Row="1"
+                                         Margin="0,0,0,8"
+                                         Style="{StaticResource EditorTextBoxStyle}"
+                                         Text="{Binding EnemyAffixFilters.SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="按名称或效果搜索" />
+                                <ListBox Grid.Row="2"
+                                         ItemsSource="{Binding EnemyAffixFilters.View}"
+                                         Style="{StaticResource FilterListStyle}" />
+                            </Grid>
+                        </TabItem>
+
+                        <TabItem Header="投资策略（1-3）"
+                                 Style="{StaticResource FilterTabItemStyle}">
+                            <TabControl Margin="8"
+                                        Style="{StaticResource StrategyTabControlStyle}"
+                                        SelectedIndex="0">
+                                <TabItem Header="棱彩投资策略"
+                                         Style="{StaticResource FilterTabItemStyle}"
+                                         Content="{Binding PrismaticInvestmentStrategies}"
+                                         ContentTemplate="{StaticResource InvestmentStrategyRarityTemplate}" />
+                                <TabItem Header="黄金投资策略"
+                                         Style="{StaticResource FilterTabItemStyle}"
+                                         Content="{Binding GoldInvestmentStrategies}"
+                                         ContentTemplate="{StaticResource InvestmentStrategyRarityTemplate}" />
+                                <TabItem Header="白银投资策略"
+                                         Style="{StaticResource FilterTabItemStyle}"
+                                         Content="{Binding SilverInvestmentStrategies}"
+                                         ContentTemplate="{StaticResource InvestmentStrategyRarityTemplate}" />
+                            </TabControl>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </Border>
+
+            <Border Margin="0,0,0,10"
+                    Padding="12"
+                    CornerRadius="8"
+                    Background="{StaticResource PanelBrush}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SectionTitleStyle}"
+                                   Text="刷取方案" />
+                        <TextBlock Margin="0,3,0,8"
+                                   Foreground="{StaticResource MutedBrush}"
+                                   Text="一套方案内：同类多选取其一、不同类别同时满足；多套方案之间任意命中一套即可。若同时命中多套，程序随机锁定一套继续。方案未设置环境或策略时，沿用上方通用选择。"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                    <ItemsControl Grid.Row="1"
+                                  ItemsSource="{Binding RerollProfiles}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="0,0,0,8"
+                                        Padding="10"
+                                        CornerRadius="6"
+                                        Background="#111722"
+                                        BorderBrush="#303A4E"
+                                        BorderThickness="1">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox Margin="0,0,12,0"
+                                                  VerticalAlignment="Center"
+                                                  IsChecked="{Binding IsEnabled, Mode=TwoWay}" />
+                                        <TextBlock Grid.Column="1"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="15"
+                                                   FontWeight="SemiBold"
+                                                   Text="{Binding Name}" />
+                                        <Button Grid.Column="2"
+                                                MinWidth="64"
+                                                Padding="9,5"
+                                                Margin="8,0,8,0"
+                                                Click="OnEditRerollProfileClick"
+                                                Content="编辑" />
+                                        <Button Grid.Column="3"
+                                                MinWidth="64"
+                                                Padding="9,5"
+                                                Margin="0"
+                                                Click="OnDeleteRerollProfileClick"
+                                                Content="删除" />
+                                        <UniformGrid Grid.Row="1"
+                                                     Grid.ColumnSpan="4"
+                                                     Margin="0,8,0,0"
+                                                     Columns="4">
+                                            <TextBlock Margin="0,0,12,0"
+                                                       Foreground="#B8C5D8"
+                                                       Text="{Binding InvestmentEnvironmentSummary, StringFormat=环境：{0}}"
+                                                       TextWrapping="Wrap" />
+                                            <TextBlock Margin="0,0,12,0"
+                                                       Foreground="#B8C5D8"
+                                                       Text="{Binding InvestmentStrategySummary, StringFormat=策略：{0}}"
+                                                       TextWrapping="Wrap" />
+                                            <TextBlock Margin="0,0,12,0"
+                                                       Foreground="#9EE6FF"
+                                                       Text="{Binding RequiredSummary, StringFormat=必出：{0}}"
+                                                       TextWrapping="Wrap" />
+                                            <TextBlock Foreground="#FB9AA5"
+                                                       Text="{Binding RejectedSummary, StringFormat=刷掉：{0}}"
+                                                       TextWrapping="Wrap" />
+                                        </UniformGrid>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Button Grid.Row="2"
+                            Margin="0,2,0,0"
+                            HorizontalAlignment="Left"
+                            Click="OnAddRerollProfileClick"
+                            Content="添加刷取方案" />
+                </Grid>
+            </Border>
+
+            <Border Margin="0,0,0,10"
+                    Padding="12"
+                    CornerRadius="8"
+                    Background="{StaticResource PanelBrush}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SectionTitleStyle}"
+                                   Text="特殊组合" />
+                        <TextBlock Margin="0,3,0,8"
+                                   Foreground="{StaticResource MutedBrush}"
+                                   Text="组合中的条件分别出现不受影响；全部同时出现时才会刷掉。" />
+                    </StackPanel>
+                    <ListBox Grid.Row="1"
+                             ItemsSource="{Binding SpecialCombinations}"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="0,0,0,7"
+                                        Padding="9"
+                                        CornerRadius="6"
+                                        Background="#111722">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <ToggleButton Grid.ColumnSpan="2"
+                                                      Style="{StaticResource SpecialRuleToggleStyle}"
+                                                      IsChecked="{Binding IsRuleEnabled, Mode=TwoWay}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" />
+                                                    <TextBlock Margin="8,0,0,0"
+                                                               Opacity="0.78"
+                                                               Text="{Binding SourceDisplayName}" />
+                                                </StackPanel>
+                                                <TextBlock Grid.Column="1"
+                                                           Margin="10,0,0,0"
+                                                           FontWeight="Bold"
+                                                           Text="{Binding RuleStateLabel}" />
+                                            </Grid>
+                                        </ToggleButton>
+                                        <Button Grid.Column="2"
+                                                MinWidth="48"
+                                                Padding="7,3"
+                                                Margin="7,0,0,0"
+                                                Command="{Binding DataContext.DeleteCombinationCommand,
+                                                                  RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                CommandParameter="{Binding}"
+                                                Content="删除">
+                                            <Button.Style>
+                                                <Style TargetType="Button"
+                                                       BasedOn="{StaticResource {x:Type Button}}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsBuiltIn}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                        <TextBlock Grid.Row="1"
+                                                   Grid.ColumnSpan="3"
+                                                   Margin="0,5,0,0"
+                                                   Text="{Binding InvestmentEnvironments, StringFormat=投资环境：{0}}"
+                                                   TextWrapping="Wrap" />
+                                        <TextBlock Grid.Row="2"
+                                                   Grid.ColumnSpan="3"
+                                                   Text="{Binding Competitors, StringFormat=敌人阵营：{0}}"
+                                                   TextWrapping="Wrap" />
+                                        <TextBlock Grid.Row="3"
+                                                   Grid.ColumnSpan="3"
+                                                   Text="{Binding EnemyAffixes, StringFormat=负面词条：{0}}"
+                                                   TextWrapping="Wrap" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Button Grid.Row="2"
+                            Margin="0,8,0,0"
+                            HorizontalAlignment="Left"
+                            Click="OnAddCombinationRuleClick"
+                            Content="添加组合规则" />
+                </Grid>
+            </Border>
+
+          </StackPanel>
+        </ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>

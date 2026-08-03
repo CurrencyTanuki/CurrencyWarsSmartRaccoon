@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://currency-wars.local/schemas/1.0.0/source-record.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "sourceId", "title", "author", "url", "publishedAt", "accessedAt", "applicableGameVersion", "copyrightStatus"],
+  "properties": {
+    "schemaVersion": { "$ref": "common.schema.json#/$defs/schemaVersion" },
+    "sourceId": { "$ref": "common.schema.json#/$defs/nonEmptyString" },
+    "title": { "$ref": "common.schema.json#/$defs/nonEmptyString" },
+    "author": { "$ref": "common.schema.json#/$defs/nonEmptyString" },
+    "url": { "type": "string", "format": "uri" },
+    "publishedAt": { "type": "string", "format": "date-time" },
+    "accessedAt": { "type": "string", "format": "date-time" },
+    "applicableGameVersion": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+$" },
+    "copyrightStatus": { "enum": ["linked_only", "permission_granted", "public_domain", "synthetic"] },
+    "locators": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/nonEmptyString" }, "minItems": 1 }
+  },
+  "additionalProperties": false
+}

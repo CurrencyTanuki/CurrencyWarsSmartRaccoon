@@ -45,4 +45,4 @@ dotnet test tests/CurrencyWarsAssistant.Tests -c Release
 
 ## 许可证
 
-本项目源码以 MIT 许可证开源，详见 [LICENSE](LICENSE)。
+本项目采用**非商业使用开源许可证**：任何人均可免费使用、修改和分发本软件（需保留原作者署名），但**严禁任何形式的商业用途**（出售、集成到商业产品、营利活动）。详见 [LICENSE](LICENSE)。如需商业授权，请联系 QQ 群 726898246。

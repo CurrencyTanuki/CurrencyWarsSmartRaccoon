@@ -44,19 +44,19 @@ public sealed class GrailCollectionSessionTests
         }
     }
 
-    private static Task<OpeningRerollLoopResult> FailingOpeningLoop(
+    private static Task<OpeningRerollLoopResult> MatchedOpeningLoop(
         nint handle, OpeningFilterSet filters, OpeningRerollLoopOptions options, CancellationToken ct) =>
         Task.FromResult(new OpeningRerollLoopResult(
-            OpeningRerollLoopState.NavigationFailed, 1, null, null, null, null,
-            "测试：导航失败"));
+            OpeningRerollLoopState.Matched, 1, null, null, null, null,
+            "测试：开局命中"));
 
     [Fact]
     public async Task Session_UsesGrailRunIdPrefix_AutoRerollEntry_AndCancelPropagates()
     {
-        // 识别流无帧（假采集器不发事件）→ 1-3 组装恒 null → opening 失败走到局末 → 取消采集
+        // opening 命中后才自起采集会话（新时序）；识别流无帧 → 1-3 循环空转至超时取消
         var fake = new FakeCollectionService();
         var loop = new GrailRunLoop(
-            FailingOpeningLoop,
+            MatchedOpeningLoop,
             new GrailOperationExecutor(null!, null!, null!, null!, new GrailRunStateHolder()),
             new GrailRunStateHolder(),
             new GrailRecognitionListener(fake),
@@ -69,7 +69,7 @@ public sealed class GrailCollectionSessionTests
             GrailRunLoop.BuildViableEnvironmentFilter(),
             new OpeningRerollLoopOptions { MaximumRounds = 1 },
             new GrailLoopOptions { MaxRounds = 1, TickDelayMs = 1 },
-            CancellationToken.None);
+            new CancellationTokenSource(TimeSpan.FromSeconds(3)).Token);
 
         var started = Assert.Single(fake.StartedRunIds);
         Assert.StartsWith("run-", started);

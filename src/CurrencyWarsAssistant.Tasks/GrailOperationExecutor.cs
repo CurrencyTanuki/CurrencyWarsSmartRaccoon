@@ -22,6 +22,31 @@ public sealed class GrailOperationExecutor(
     /// <summary>当前局面快照（由编排层在每次识别更新后刷新，供 select 委托内决策使用）。</summary>
     public GrailRunSnapshot? LatestSnapshot { get; set; }
 
+    /// <summary>用户目标（opening 期无识别快照时构建最小快照用）。</summary>
+    public GrailUserGoal Goal { get; set; } = GrailUserGoal.Single;
+
+    /// <summary>opening 期无识别管线时，用持有器事件态构建最小快照（首祈愿盲选左不依赖识别；奇迹代偿因血量未知自动保守拒绝）。</summary>
+    private GrailRunSnapshot BuildMinimalSnapshot()
+    {
+        var (wishes, obtained, opened, miracle, mHealth, cauldron, givenUp, newMember) = stateHolder.PeekEventState();
+        var (health, _) = stateHolder.PeekHealth();
+        return new GrailRunSnapshot
+        {
+            Goal = Goal,
+            TeamHealth = health,
+            Population = GrailRunSnapshot.BasePopulation,
+            WishesResponded = wishes,
+            LettersObtained = obtained,
+            LettersOpened = opened,
+            MiracleCompensationSelected = miracle,
+            MiracleCompensationSelectedAtHealth = mHealth,
+            InfiniteCauldronSelected = cauldron,
+            FiveBondGivenUp = givenUp,
+            NewBondMemberAvailable = newMember,
+            HasFiveCostBody = cauldron,
+        };
+    }
+
     /// <summary>N14 一轮：买一个命杯角色 → 关商店 → 上场。返回是否买到了。</summary>
     public async Task<bool> ExecuteShopPassAsync(
         nint windowHandle,
@@ -116,12 +141,7 @@ public sealed class GrailOperationExecutor(
         nint windowHandle,
         CancellationToken cancellationToken)
     {
-        var snapshot = LatestSnapshot;
-        if (snapshot is null)
-        {
-            return false;
-        }
-
+        var snapshot = LatestSnapshot ?? BuildMinimalSnapshot();
         var healthAtSelection = snapshot.TeamHealth;
         GrailTrialResponse? response = null;
         var status = await trialSelection.TryHandleSelectionAsync(

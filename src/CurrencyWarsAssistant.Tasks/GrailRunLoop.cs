@@ -65,9 +65,24 @@ public sealed class GrailRunLoop(
                     await RoundRecorder.StartAsync($"grail-round-{round}", cancellationToken);
                 }
 
-                // 自起独立采集会话（Transient 实例，独立 runId；放弃局截图自动清理）
+                // W1：1-1/1-2 也会强制弹祈愿——opening 期间挂"轻量"弹框泵
+                //（直接探测+应答，不依赖重型识别管线：重刷导航期没有命杯成员，管线纯烧 CPU 拖慢导航）
+                using var openingCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                var dialogPump = PumpDialogsAsync(windowHandle, openingCts.Token);
+
+                GrailLoopOutcome? outcome = null;
+                var opening = await openingLoop(
+                    windowHandle, environmentFilter, openingOptions, cancellationToken);
+                if (!opening.Succeeded)
+                {
+                    // opening 内部已负责"未命中→重开"的重刷循环；返回失败即硬失败
+                    //（用户停止/导航失败/被动监测放弃）——如实终止整个流程，由用户决定是否重试
+                    return new GrailLoopOutcome(false, round, $"开局阶段终止：{opening.Message}");
+                }
+
+                // 命中后自起独立采集会话（1-3 快照与弹框依赖它；重刷导航期不跑，省 CPU）
                 var runId = $"run-{DateTimeOffset.Now:yyyyMMdd-HHmmss}-grail-r{round}-{Guid.NewGuid():N}";
-                using var sessionCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                var sessionCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
                 var collectionTask = collectionService.RunAsync(
                     windowHandle,
                     new AdvisorSelection(AdvisorMode.Auto, "stable", "4.4"),
@@ -76,24 +91,10 @@ public sealed class GrailRunLoop(
                         RunEntryMode.AutomaticReroll,
                         DeleteScreenshotsOnCompletion: true),
                     sessionCts.Token);
-                // 等识别管线起帧（事件驱动：预热可能远超固定延迟；超时 15s 兜底继续，让 opening 失败路径兜底）
-                await listener.WaitForFirstAnalysisAsync(TimeSpan.FromSeconds(15), cancellationToken);
-
-                // W1：1-1/1-2 也会强制弹祈愿（019 星徽上场即可能升档）——opening 期间挂弹框泵
-                using var openingCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-                var dialogPump = PumpDialogsAsync(windowHandle, openingCts.Token);
-
-                GrailLoopOutcome? outcome = null;
                 try
                 {
-                    var opening = await openingLoop(
-                        windowHandle, environmentFilter, openingOptions, cancellationToken);
-                    if (!opening.Succeeded)
-                    {
-                        // opening 内部已负责"未命中→重开"的重刷循环；返回失败即硬失败
-                        //（用户停止/导航失败/被动监测放弃）——如实终止整个流程，由用户决定是否重试
-                        return new GrailLoopOutcome(false, round, $"开局阶段终止：{opening.Message}");
-                    }
+                    // 等识别管线起帧（事件驱动；预热超 15s 兜底）
+                    await listener.WaitForFirstAnalysisAsync(TimeSpan.FromSeconds(15), cancellationToken);
 
                     // ② 1-3 运营循环直至判定通过或山穷水尽
                     outcome = await RunPreparationLoopAsync(
@@ -105,21 +106,14 @@ public sealed class GrailRunLoop(
                 }
                 finally
                 {
-                    // 会话/弹框泵取消兜底：任何路径（异常/取消/失败/成功）都不泄漏
+                    // 会话取消兜底：任何路径（异常/取消/失败/成功）都不泄漏
                     sessionCts.Cancel();
                     try { await collectionTask; }
                     catch (Exception ex) when (ex is not OperationCanceledException)
                     {
                         // 采集器收尾错误不击穿主循环（记录性吞掉）
                     }
-
-                    openingCts.Cancel();
-                    try { await dialogPump; } catch (OperationCanceledException) { }
-
-                    if (outcome is not null && RoundRecorder is not null)
-                    {
-                        await RoundRecorder.FinishAsync(outcome.Succeeded, RecordingOutputDirectory);
-                    }
+                    sessionCts.Dispose();
                 }
             }
 

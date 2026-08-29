@@ -391,7 +391,10 @@ public partial class MainWindow : Window
             var listener = new GrailRecognitionListener(_liveCollection);
             _threeStarFiveCostListener = listener;
             var executor = new GrailOperationExecutor(
-                _rewardController, _preparationBoard, _trialSelection, _trialRecruit, stateHolder);
+                _rewardController, _preparationBoard, _trialSelection, _trialRecruit, stateHolder)
+            {
+                Goal = goal,
+            };
             var loop = new GrailRunLoop(_openingCoordinator.RunAsync, executor, stateHolder, listener, _gameData, _liveCollection);
             if (recording is not null)
             {

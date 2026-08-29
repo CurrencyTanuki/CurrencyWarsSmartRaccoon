@@ -833,7 +833,7 @@ public static class PreparationBenchOccupancyPolicy
     }
 }
 
-public sealed class PreparationBoardController(
+public sealed partial class PreparationBoardController(
     IGameCapture capture,
     ICharacterCardRecognizer recognizer,
     IReadOnlyList<CharacterCardTemplateDefinition> templates,

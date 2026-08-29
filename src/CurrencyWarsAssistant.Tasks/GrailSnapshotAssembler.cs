@@ -180,6 +180,7 @@ public static class GrailSnapshotAssembler
             WishesResponded = eventState.WishesResponded,
             FiveBondGivenUp = eventState.FiveBondGivenUp,
             NewBondMemberAvailable = eventState.NewBondMemberAvailable,
+            RefreshGoldCost = GrailRunSnapshot.MinRefreshGold + (holder.PeekRefreshSurcharge() ? 1 : 0),
             SellableBeyondKeepLineCount = sellableBeyondKeepLine,
             CapturedAt = now,
         };

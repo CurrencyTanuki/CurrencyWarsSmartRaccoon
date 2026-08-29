@@ -33,6 +33,13 @@ public sealed record GrailRunSnapshot
     /// <summary>商店刷新最低金币门槛（低于此值视为无法继续刷新；实机可校准）。</summary>
     public const int MinRefreshGold = 2;
 
+    /// <summary>
+    /// 当前商店刷新价格：基础 2 金；选中令咒决议·回路过载/行为限制后其诅咒代价 = 刷新价格 +1 金
+    /// （用户 2026-08-29 确认；解除条件——回路过载=累计刷新16次、行为限制=商店等级8——
+    /// 决策侧保守取“选中后全程 +1”，宁多备一枚金币也不空点）。
+    /// </summary>
+    public int RefreshGoldCost { get; init; } = MinRefreshGold;
+
     /// <summary>命运圣杯羁绊中可从商店购买的三名成员（Archer 商店 0%，不在此列）。</summary>
     public static readonly string[] ShopBondMemberNames = ["远坂凛", "吉尔伽美什", "Saber"];
 

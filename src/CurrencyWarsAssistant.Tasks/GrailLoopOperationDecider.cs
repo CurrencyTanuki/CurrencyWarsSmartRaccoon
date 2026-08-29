@@ -93,7 +93,7 @@ public static class GrailLoopOperationDecider
         }
 
         // N18：金币是否足够继续刷新/购买目标角色（命杯成员/本体昔涟）
-        if (s.Gold >= GrailRunSnapshot.MinRefreshGold)
+        if (s.Gold >= s.RefreshGoldCost)
             return new(
                 GrailLoopOperationKind.ShopPass,
                 TargetGold: 0,
@@ -104,7 +104,7 @@ public static class GrailLoopOperationDecider
         if (s.SellableBeyondKeepLineCount > 0)
             return new(
                 GrailLoopOperationKind.SellForGold,
-                TargetGold: GrailRunSnapshot.MinRefreshGold,
+                TargetGold: s.RefreshGoldCost,
                 "金币不足以刷新/购买，按保留线出售角色凑资金。",
                 "N18→S1B");
 
@@ -148,7 +148,7 @@ public static class GrailLoopOperationDecider
             && s.MiracleCompensationSelected
             && (s.MiracleCompensationSelectedAtHealth ?? 0) >= GrailFinalJudge.MiracleHealthThreshold
             && !s.XilianOnField
-            && (s.Gold >= GrailRunSnapshot.MinRefreshGold
+            && (s.Gold >= s.RefreshGoldCost
                 || s.SellableBeyondKeepLineCount > 0
                 || s.LettersOpened < s.LettersObtained);
 

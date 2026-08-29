@@ -29,6 +29,7 @@ public sealed class GrailRunStateHolder
     private bool _infiniteCauldronSelected;
     private bool _fiveBondGivenUp;
     private bool _newBondMemberAvailable;
+    private bool _refreshSurcharge;
 
     private int? _lastHealth;
     private DateTimeOffset? _healthCapturedAt;
@@ -107,6 +108,13 @@ public sealed class GrailRunStateHolder
                 _infiniteCauldronSelected = true;
             }
 
+            // 令咒决议·回路过载/行为限制的诅咒代价 = 商店刷新价格 +1 金（用户 2026-08-29 确认）
+            if (GrailFuzzyText.ContainsFuzzy(selected, GrailTrialResponseDecider.OverloadKeyword)
+                || GrailFuzzyText.ContainsFuzzy(selected, GrailTrialResponseDecider.RestrictKeyword))
+            {
+                _refreshSurcharge = true;
+            }
+
             if (response.OpenLettersAfter)
             {
                 _lettersObtained += 2;
@@ -152,6 +160,15 @@ public sealed class GrailRunStateHolder
         lock (_gate)
         {
             _fiveBondGivenUp = true;
+        }
+    }
+
+    /// <summary>令咒决议诅咒是否已使商店刷新价格 +1（回路过载/行为限制选中后为真，保守全程生效）。</summary>
+    public bool PeekRefreshSurcharge()
+    {
+        lock (_gate)
+        {
+            return _refreshSurcharge;
         }
     }
 

@@ -325,4 +325,28 @@ public sealed class GrailSnapshotAssemblerTests
         holder.GiveUpFiveBond();
         Assert.True(holder.PeekEventState().FiveBondGivenUp);
     }
+    [Fact]
+    public void CurseTrial_RaisesRefreshCost()
+    {
+        // 令咒决议·回路过载选中后：刷新价 2→3（诅咒代价，用户 2026-08-29 确认）
+        var holder = new GrailRunStateHolder();
+        var before = GrailSnapshotAssembler.Assemble(
+            State(formation: [Slot(FormationZone.Front, "currency_wars_character_04")]),
+            null, GameData, holder, GrailUserGoal.Single, Now, StaleAfter);
+        Assert.Equal(GrailRunSnapshot.MinRefreshGold, before.RefreshGoldCost);
+
+        holder.ApplyTrialResponse(new GrailTrialResponse(
+            GrailTrialResponseKind.SelectLetterTrial,
+            GrailTrialSide.Left,
+            "令咒决议·回路过载",
+            OpenLettersAfter: true,
+            "test",
+            "F11"), healthAtSelection: 95);
+
+        var after = GrailSnapshotAssembler.Assemble(
+            State(formation: [Slot(FormationZone.Front, "currency_wars_character_04")]),
+            null, GameData, holder, GrailUserGoal.Single, Now, StaleAfter);
+        Assert.Equal(GrailRunSnapshot.MinRefreshGold + 1, after.RefreshGoldCost);
+        Assert.Equal(2, after.LettersObtained);
+    }
 }

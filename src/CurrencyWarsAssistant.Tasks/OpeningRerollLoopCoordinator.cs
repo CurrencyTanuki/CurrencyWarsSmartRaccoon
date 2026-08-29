@@ -880,7 +880,9 @@ public sealed class OpeningRerollLoopCoordinator(
                         StringComparer.OrdinalIgnoreCase)
                     : configured.PreferredInvestmentStrategyIds,
             SelectedInvestmentEnvironmentId =
-                navigation.SelectedInvestmentEnvironmentId
+                navigation.SelectedInvestmentEnvironmentId,
+            SoftInvestmentStrategyRequirement =
+                configured.SoftInvestmentStrategyRequirement
         };
 
     private static PreparationBoardOptions BuildPreparationOptions(

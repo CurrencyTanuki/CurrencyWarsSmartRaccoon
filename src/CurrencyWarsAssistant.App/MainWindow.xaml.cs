@@ -430,6 +430,7 @@ public partial class MainWindow : Window
                     // N1：三仙舟+2DOT 购买预设禁用；银河学者（猫猫糕）策略启用；
                     // 1-1/1-2 商店买入命杯成员（同名只买一次），禁卖命杯与星徽携带者
                     EnableEarlyStrongFormationPurchase = false,
+                    // 银河学者（猫猫糕）：沿用旧代码成熟实现（仅 1-1 生效，1-2 不生效）
                     EnableGalaxyScholarRewardStrategy = true,
                     // N11 软门槛：策略未命中选最左推进，绝不为此弃局（保住 067/昔涟等好开局）
                     SoftInvestmentStrategyRequirement = true,

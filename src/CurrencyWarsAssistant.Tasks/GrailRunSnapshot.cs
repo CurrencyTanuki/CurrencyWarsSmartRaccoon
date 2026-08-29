@@ -53,7 +53,10 @@ public sealed record GrailRunSnapshot
     /// <summary>当前金币。</summary>
     public int Gold { get; init; }
 
-    /// <summary>已上场（前台/后台/备战席）的命运圣杯羁绊成员名（按不同角色去重——自走棋通则：同一角色不能重复上场）。</summary>
+    /// <summary>
+    /// 已上场（前台/后台）的命运圣杯羁绊成员名（按不同角色去重——自走棋通则：同一角色不能重复上场）。
+    /// 羁绊档位只计上场成员，备战席不计（决策树 N4“上场了 N 位”口径）；L4 的 5 费在场判定才含备战席。
+    /// </summary>
     public IReadOnlySet<string> DeployedBondMembers { get; init; } = new HashSet<string>();
 
     /// <summary>

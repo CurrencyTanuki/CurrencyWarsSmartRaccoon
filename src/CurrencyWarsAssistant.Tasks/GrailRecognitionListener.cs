@@ -31,6 +31,15 @@ public sealed class GrailRecognitionListener
     /// <summary>每条非弹框帧识别（编排层用于刷新 LatestSnapshot 并跑运营循环 tick）。</summary>
     public event EventHandler<ScreenshotAnalysisResult>? AnalysisUpdated;
 
+    /// <summary>最近一条非弹框帧识别结果（弹框期间保持上一备战帧，供组装）。</summary>
+    public ScreenshotAnalysisResult? LatestAnalysis { get; private set; }
+
+    /// <summary>祈愿弹框当前是否在屏上（边沿检测的对外只读视图）。</summary>
+    public bool IsWishDialogOpen
+    {
+        get { lock (_gate) { return _dialogWasOpen; } }
+    }
+
     public void Subscribe()
     {
         lock (_gate)
@@ -79,6 +88,11 @@ public sealed class GrailRecognitionListener
                 ? WishDialogOpened?.GetInvocationList().Cast<EventHandler<GrailRecognitionEvent>>().ToList()
                 : null;
             _dialogWasOpen = isDialogNow;
+            if (!isDialogNow)
+            {
+                LatestAnalysis = analysis;
+            }
+
             analysisHandlers = isDialogNow
                 ? null
                 : AnalysisUpdated?.GetInvocationList().Cast<EventHandler<ScreenshotAnalysisResult>>().ToList();

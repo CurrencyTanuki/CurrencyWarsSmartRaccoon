@@ -76,7 +76,8 @@ public sealed class GrailRunLoop(
                         RunEntryMode.AutomaticReroll,
                         DeleteScreenshotsOnCompletion: true),
                     sessionCts.Token);
-                await Task.Delay(1500, cancellationToken); // 等识别管线起帧，弹框边沿检测才有输入
+                // 等识别管线起帧（事件驱动：预热可能远超固定延迟；超时 15s 兜底继续，让 opening 失败路径兜底）
+                await listener.WaitForFirstAnalysisAsync(TimeSpan.FromSeconds(15), cancellationToken);
 
                 // W1：1-1/1-2 也会强制弹祈愿（019 星徽上场即可能升档）——opening 期间挂弹框泵
                 using var openingCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);

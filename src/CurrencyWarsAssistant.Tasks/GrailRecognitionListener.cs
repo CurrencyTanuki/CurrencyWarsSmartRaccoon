@@ -19,6 +19,7 @@ public sealed class GrailRecognitionListener
     private readonly object _gate = new();
     private bool _subscribed;
     private bool _dialogWasOpen;
+    private TaskCompletionSource? _firstAnalysisSignal = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
     public GrailRecognitionListener(IPhase2LiveCollectionService collectionService)
     {
@@ -38,6 +39,20 @@ public sealed class GrailRecognitionListener
     public bool IsWishDialogOpen
     {
         get { lock (_gate) { return _dialogWasOpen; } }
+    }
+
+    /// <summary>等待识别流产出首帧（识别预热可能远超固定延迟，事件驱动替代盲等；超时返回 false）。</summary>
+    public async Task<bool> WaitForFirstAnalysisAsync(TimeSpan timeout, CancellationToken cancellationToken)
+    {
+        var signal = _firstAnalysisSignal;
+        if (signal is null || signal.Task.IsCompleted)
+        {
+            return true;
+        }
+
+        var completed = await Task.WhenAny(signal.Task, Task.Delay(timeout, cancellationToken));
+        _firstAnalysisSignal = null;
+        return completed == signal.Task;
     }
 
     public void Subscribe()
@@ -91,6 +106,7 @@ public sealed class GrailRecognitionListener
             if (!isDialogNow)
             {
                 LatestAnalysis = analysis;
+                _firstAnalysisSignal?.TrySetResult();
             }
 
             analysisHandlers = isDialogNow

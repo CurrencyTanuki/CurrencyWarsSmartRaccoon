@@ -845,6 +845,15 @@ public sealed class MainViewModel : ObservableObject
     public bool IsPassiveCollectionRunning =>
         _passiveCollectionCancellation is not null;
 
+    /// <summary>「刷三星五费」任务占用标志（双向互斥：识别/其余自动化命令据此禁用，防双采集器同拍窗口）。</summary>
+    public bool IsGrailRunActive { get; private set; }
+
+    /// <summary>标记「刷三星五费」开始占用（MainWindow 启动时调用，finally 中 EndGrailRun 释放）。</summary>
+    public void BeginGrailRun() => IsGrailRunActive = true;
+
+    /// <summary>释放「刷三星五费」占用。</summary>
+    public void EndGrailRun() => IsGrailRunActive = false;
+
     public void BeginPassiveCollection(CancellationTokenSource cancellation)
     {
         ArgumentNullException.ThrowIfNull(cancellation);

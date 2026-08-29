@@ -670,7 +670,8 @@ public sealed class SituationAnalysisViewModel : ObservableObject, IDisposable
         !IsBusy &&
         !IsCollecting &&
         !_mainViewModel.IsRunning &&
-        !_mainViewModel.IsPassiveCollectionRunning;
+        !_mainViewModel.IsPassiveCollectionRunning &&
+        !_mainViewModel.IsGrailRunActive;
 
     private void OnMainViewModelPropertyChanged(
         object? sender,
@@ -678,7 +679,8 @@ public sealed class SituationAnalysisViewModel : ObservableObject, IDisposable
     {
         if (e.PropertyName is nameof(MainViewModel.SelectedWindow) or
             nameof(MainViewModel.IsRunning) or
-            nameof(MainViewModel.IsPassiveCollectionRunning))
+            nameof(MainViewModel.IsPassiveCollectionRunning) or
+            nameof(MainViewModel.IsGrailRunActive))
         {
             NotifyCommands();
         }

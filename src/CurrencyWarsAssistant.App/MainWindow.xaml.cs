@@ -348,6 +348,8 @@ public partial class MainWindow : Window
             return;
         }
 
+        _viewModel.BeginGrailRun();
+
         var goal = ThreeStarFiveCostTargetCombo.SelectedIndex == 1
             ? GrailUserGoal.All
             : GrailUserGoal.Single;
@@ -478,8 +480,9 @@ public partial class MainWindow : Window
                 }
                 finally
                 {
-                    // 任务结束（达成/上限/取消/异常）都退订识别流，防止泄漏 & 挂住 Updated 事件。
+                    // 任务结束（达成/上限/取消/异常）都退订识别流并释放互斥标志。
                     snapshotSource.Unsubscribe();
+                    _viewModel.EndGrailRun();
                 }
             }, cts.Token);
         }

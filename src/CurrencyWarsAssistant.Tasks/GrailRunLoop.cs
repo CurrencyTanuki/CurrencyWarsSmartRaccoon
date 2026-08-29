@@ -1,3 +1,4 @@
+using CurrencyWarsAssistant.Advisor;
 using CurrencyWarsAssistant.Game;
 
 namespace CurrencyWarsAssistant.Tasks;
@@ -24,11 +25,12 @@ public sealed record GrailLoopOutcome(bool Succeeded, int RoundsPlayed, string M
 /// 监听器驱动的 1-3 运营循环（弹框响应 + 决策 tick + 执行）→ 达成收工 / 山穷水尽重开。
 /// </summary>
 public sealed class GrailRunLoop(
-    OpeningRerollLoopCoordinator openingCoordinator,
+    Func<nint, OpeningFilterSet, OpeningRerollLoopOptions, CancellationToken, Task<OpeningRerollLoopResult>> openingLoop,
     GrailOperationExecutor executor,
     GrailRunStateHolder stateHolder,
     GrailRecognitionListener listener,
-    GameDataCatalog gameData)
+    GameDataCatalog gameData,
+    IPhase2LiveCollectionService collectionService)
 {
     /// <summary>滚动录屏（可选；成功局保留、失败局删除）。语义与旧 IRoundRecorder 一致。</summary>
     public interface IRoundRecorder
@@ -63,16 +65,32 @@ public sealed class GrailRunLoop(
                     await RoundRecorder.StartAsync($"grail-round-{round}", cancellationToken);
                 }
 
+                // 自起独立采集会话（Transient 实例，独立 runId；放弃局截图自动清理）
+                var runId = $"run-{DateTimeOffset.Now:yyyyMMdd-HHmmss}-grail-r{round}-{Guid.NewGuid():N}";
+                using var sessionCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                var collectionTask = collectionService.RunAsync(
+                    windowHandle,
+                    new AdvisorSelection(AdvisorMode.Auto, "stable", "4.4"),
+                    new LiveCollectionStartOptions(
+                        runId,
+                        RunEntryMode.AutomaticReroll,
+                        DeleteScreenshotsOnCompletion: true),
+                    sessionCts.Token);
+                await Task.Delay(1500, cancellationToken); // 等识别管线起帧，弹框边沿检测才有输入
+
                 // W1：1-1/1-2 也会强制弹祈愿（019 星徽上场即可能升档）——opening 期间挂弹框泵
                 using var openingCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
                 var dialogPump = PumpDialogsAsync(windowHandle, openingCts.Token);
 
-                var opening = await openingCoordinator.RunAsync(
+                var opening = await openingLoop(
                     windowHandle, environmentFilter, openingOptions, cancellationToken);
                 openingCts.Cancel();
                 try { await dialogPump; } catch (OperationCanceledException) { }
                 if (!opening.Succeeded)
                 {
+                    // 局末必须停掉本轮采集会话（continue 跳过局末 Cancel，这里补上）
+                    sessionCts.Cancel();
+                    try { await collectionTask; } catch (OperationCanceledException) { }
                     continue; // 导航失败等：下一轮重试
                 }
 
@@ -83,6 +101,9 @@ public sealed class GrailRunLoop(
                 {
                     await RoundRecorder.FinishAsync(outcome.Succeeded, RecordingOutputDirectory);
                 }
+
+                sessionCts.Cancel();
+                try { await collectionTask; } catch (OperationCanceledException) { }
 
                 if (outcome.Succeeded)
                 {

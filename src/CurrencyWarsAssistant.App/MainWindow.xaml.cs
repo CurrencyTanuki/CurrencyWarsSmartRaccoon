@@ -428,6 +428,8 @@ public partial class MainWindow : Window
                     // 1-1/1-2 商店买入命杯成员（同名只买一次），禁卖命杯与星徽携带者
                     EnableEarlyStrongFormationPurchase = false,
                     EnableGalaxyScholarRewardStrategy = true,
+                    // N11 软门槛：策略未命中选最左推进，绝不为此弃局（保住 067/昔涟等好开局）
+                    SoftInvestmentStrategyRequirement = true,
                     AutoPurchaseCharacterNames = new HashSet<string>(["远坂凛", "吉尔伽美什", "Saber"]),
                     RetainedCharacterNames = new HashSet<string>(["远坂凛", "吉尔伽美什", "Saber", "Archer"]),
                     PreferredInvestmentStrategyIds = new HashSet<string>(

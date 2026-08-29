@@ -1057,6 +1057,20 @@ public sealed partial class RewardStageAutomationController
                 cancellationToken);
         }
 
+        if (_softInvestmentStrategyRequirement)
+        {
+            // 定稿树 N11：全未命中 → 按正常流程选最左一张，不为挑策略重刷（保留 067/昔涟等好开局）
+            Publish(
+                "InvestmentStrategySoftFallback",
+                "三连刷后三张策略仍未命中目标；按软门槛语义选择最左一张推进，不弃局。",
+                TaskEventLevel.Warning);
+            return await SelectStrategyAndConfirmAsync(
+                windowHandle,
+                0,
+                "未命中偏好时的最左投资策略",
+                cancellationToken);
+        }
+
         return new RewardStageAutomationResult(
             RewardStageAutomationStatus.InvestmentStrategyNotFound,
             "原始三张及三连刷后的三张投资策略均未命中用户要求，需要退出本局重刷。");

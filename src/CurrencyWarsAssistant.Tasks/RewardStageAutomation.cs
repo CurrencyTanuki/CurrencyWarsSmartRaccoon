@@ -26,6 +26,12 @@ public sealed class RewardStageAutomationOptions
     public IReadOnlySet<string> PreferredInvestmentStrategyIds { get; init; } =
         new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     public string? SelectedInvestmentEnvironmentId { get; init; }
+
+    /// <summary>
+    /// 「刷三星五费」语义（定稿树 N11）：三张策略全未命中偏好时，选最左一张推进页面，
+    /// 不因策略未命中而弃局重刷。默认 false 保留既有"必须命中否则重刷"语义。
+    /// </summary>
+    public bool SoftInvestmentStrategyRequirement { get; init; }
 }
 public static class PreparationPlacementConsistencyPolicy
 {
@@ -167,12 +173,15 @@ public sealed partial class RewardStageAutomationController(
         DateTimeOffset.UtcNow -
         (foregroundGuard.TotalPausedDuration - _pauseBaseline);
 
+    private bool _softInvestmentStrategyRequirement;
+
     public async Task<RewardStageAutomationResult> RunAsync(
         nint windowHandle,
         RewardStageAutomationOptions options,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(options);
+        _softInvestmentStrategyRequirement = options.SoftInvestmentStrategyRequirement;
         _pauseBaseline = foregroundGuard.TotalPausedDuration;
         _battleTimeoutRecoveredToHome = false;
         // 统一识别流基线：以 feed 当前帧版本为起点（不拿上一局残留帧），

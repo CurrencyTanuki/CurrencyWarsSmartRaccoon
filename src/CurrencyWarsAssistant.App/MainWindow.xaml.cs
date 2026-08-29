@@ -409,7 +409,7 @@ public partial class MainWindow : Window
                     PreferredInvestmentStrategyIds = new HashSet<string>(
                         new[]
                         {
-                            FateGrailHealthGate.DiodeInvestmentStrategyId,
+                            GrailInvestmentStrategyDecider.DiodeId,
                             InvestmentStrategyPicker.PurchaseSpecialistColor,
                             InvestmentStrategyPicker.PurchaseSpecialistGold,
                         },

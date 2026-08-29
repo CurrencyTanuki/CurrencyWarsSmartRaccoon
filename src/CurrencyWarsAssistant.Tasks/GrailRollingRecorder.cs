@@ -21,8 +21,8 @@ namespace CurrencyWarsAssistant.Tasks;
 /// </para>
 /// <para>依赖外置 ffmpeg（不捆绑，见 <see cref="FfmpegLocator"/>）。</para>
 /// </summary>
-public sealed class FateGrailRollingRecorder :
-    FateGrailRunLoop.IRoundRecorder,
+public sealed class GrailRollingRecorder :
+    GrailRunLoop.IRoundRecorder,
     IDisposable
 {
     private readonly IGameCapture _capture;
@@ -37,7 +37,7 @@ public sealed class FateGrailRollingRecorder :
     private string? _tempFile;
     private bool _disposed;
 
-    public FateGrailRollingRecorder(
+    public GrailRollingRecorder(
         IGameCapture capture,
         GameWindowInfo window,
         FateGrailRecordingQuality quality,

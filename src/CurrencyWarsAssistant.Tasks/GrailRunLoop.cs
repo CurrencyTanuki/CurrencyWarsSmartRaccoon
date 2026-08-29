@@ -30,6 +30,20 @@ public sealed class GrailRunLoop(
     GrailRecognitionListener listener,
     GameDataCatalog gameData)
 {
+    /// <summary>滚动录屏（可选；成功局保留、失败局删除）。语义与旧 IRoundRecorder 一致。</summary>
+    public interface IRoundRecorder
+    {
+        Task StartAsync(string roundId, CancellationToken cancellationToken = default);
+
+        Task FinishAsync(bool success, string? outputDirectory, CancellationToken cancellationToken = default);
+    }
+
+    /// <summary>录像输出目录（成功局 MP4 保留位置）。</summary>
+    public string RecordingOutputDirectory { get; init; } =
+        System.IO.Path.Combine(AppContext.BaseDirectory, "Recordings");
+
+    /// <summary>可选录屏器（编排层组装时注入）。</summary>
+    public IRoundRecorder? RoundRecorder { get; init; }
     public async Task<GrailLoopOutcome> RunAsync(
         nint windowHandle,
         GrailUserGoal goal,
@@ -44,6 +58,11 @@ public sealed class GrailRunLoop(
             for (var round = 1; round <= options.MaxRounds; round++)
             {
                 // ① 重刷开局（环境过滤器只收 067/019；命中后进 1-1/1-2/1-3）
+                if (RoundRecorder is not null)
+                {
+                    await RoundRecorder.StartAsync($"grail-round-{round}", cancellationToken);
+                }
+
                 var opening = await openingCoordinator.RunAsync(
                     windowHandle, environmentFilter, openingOptions, cancellationToken);
                 if (!opening.Succeeded)
@@ -54,6 +73,11 @@ public sealed class GrailRunLoop(
                 // ② 1-3 运营循环直至判定通过或山穷水尽
                 var outcome = await RunPreparationLoopAsync(
                     windowHandle, goal, options, round, cancellationToken);
+                if (RoundRecorder is not null)
+                {
+                    await RoundRecorder.FinishAsync(outcome.Succeeded, RecordingOutputDirectory);
+                }
+
                 if (outcome.Succeeded)
                 {
                     return outcome;

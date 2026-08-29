@@ -37,6 +37,11 @@ public sealed class Win32InputController : IInputController
         ActionPolicy policy,
         CancellationToken cancellationToken)
     {
+        if (InputKillSwitch.Armed)
+        {
+            return ActionResult.Failure("输入急停闸生效，已拒绝本次模拟输入。");
+        }
+
         var validation = await PrepareTargetAsync(target, policy, cancellationToken);
         if (!validation.Succeeded)
         {
@@ -170,6 +175,11 @@ public sealed class Win32InputController : IInputController
         ActionPolicy policy,
         CancellationToken cancellationToken)
     {
+        if (InputKillSwitch.Armed)
+        {
+            return ActionResult.Failure("输入急停闸生效，已拒绝本次模拟输入。");
+        }
+
         var validation = await PrepareTargetAsync(source, policy, cancellationToken);
         if (!validation.Succeeded)
         {
@@ -211,6 +221,11 @@ public sealed class Win32InputController : IInputController
         ActionPolicy policy,
         CancellationToken cancellationToken)
     {
+        if (InputKillSwitch.Armed)
+        {
+            return ActionResult.Failure("输入急停闸生效，已拒绝本次模拟输入。");
+        }
+
         var validation = await PrepareWindowAsync(window, policy, cancellationToken);
         if (!validation.Succeeded)
         {
@@ -235,6 +250,11 @@ public sealed class Win32InputController : IInputController
         ActionPolicy policy,
         CancellationToken cancellationToken)
     {
+        if (InputKillSwitch.Armed)
+        {
+            return ActionResult.Failure("输入急停闸生效，已拒绝本次模拟输入。");
+        }
+
         var validation = await PrepareTargetAsync(target, policy, cancellationToken);
         if (!validation.Succeeded)
         {

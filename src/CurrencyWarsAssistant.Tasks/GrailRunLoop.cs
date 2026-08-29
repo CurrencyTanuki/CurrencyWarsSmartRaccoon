@@ -90,7 +90,9 @@ public sealed class GrailRunLoop(
                         windowHandle, environmentFilter, openingOptions, cancellationToken);
                     if (!opening.Succeeded)
                     {
-                        continue; // 导航失败等：下一轮重试（finally 停会话）
+                        // opening 内部已负责"未命中→重开"的重刷循环；返回失败即硬失败
+                        //（用户停止/导航失败/被动监测放弃）——如实终止整个流程，由用户决定是否重试
+                        return new GrailLoopOutcome(false, round, $"开局阶段终止：{opening.Message}");
                     }
 
                     // ② 1-3 运营循环直至判定通过或山穷水尽

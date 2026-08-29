@@ -8,6 +8,7 @@ using System.Windows.Interop;
 using System.Windows.Threading;
 using CurrencyWarsAssistant.Advisor;
 using CurrencyWarsAssistant.Core;
+using CurrencyWarsAssistant.Automation;
 using CurrencyWarsAssistant.Game;
 using CurrencyWarsAssistant.Tasks;
 using CurrencyWarsAssistant.Vision;
@@ -349,6 +350,7 @@ public partial class MainWindow : Window
         }
 
         _viewModel.BeginGrailRun();
+        InputKillSwitch.Armed = false; // 新任务启动解除急停闸
 
         var goal = ThreeStarFiveCostTargetCombo.SelectedIndex == 1
             ? GrailUserGoal.All
@@ -417,9 +419,6 @@ public partial class MainWindow : Window
             {
                 DeployMatchedOpening = true,
                 CompleteRewardStages = true,
-                // 每轮只做一次 opening 尝试：失败立即返回 NavigationFailed，
-                // 由 GrailRunLoop 外层重开（否则协调器进入无限被动监测，外层循环失效）
-                MaximumRounds = 1,
                 // N1：命杯成员绝不自动卖出（商店只买命运圣杯羁绊成员）——其余配置见 RewardStage（商店只买命运圣杯羁绊成员）。
                 BenchSaleMode = PreparationBenchSaleMode.None,
                 // 投资策略偏好：二极管276（补血）+ 采购专员（抬5费刷出概率），由 Rewards 阶段选。
@@ -496,9 +495,10 @@ public partial class MainWindow : Window
         }
     }
 
-    /// <summary>「停止」：取消当前「刷三星五费」运行。</summary>
+    /// <summary>「停止」：取消当前「刷三星五费」运行，并置输入急停闸（停止=立即拒绝一切模拟输入）。</summary>
     private void OnStopThreeStarFiveCostClick(object sender, RoutedEventArgs e)
     {
+        InputKillSwitch.Armed = true;
         _threeStarFiveCostCts?.Cancel();
         _threeStarFiveCostListener?.Unsubscribe();
         _threeStarFiveCostListener = null;

@@ -1553,6 +1553,20 @@ private async Task<PageClassificationResult?> FastWaitForPageAsync(
                 if (!latest.IsComplete ||
                     excludedOptionIds!.SetEquals(currentIds))
                 {
+                    if (attempt >= 12)
+                    {
+                        // 刷新后候选长期不变（免费刷新已耗尽/动画异常）：停止无效轮询，走降级重开
+                        Publish(
+                            CurrencyWarsNavigationState.WaitingForPage,
+                            "investment_environment_refresh_static_failure",
+                            $"刷新后候选连续 {attempt} 次未变化；停止无效轮询，进入任选一项后强制重开的降级路径。",
+                            TaskEventLevel.Warning);
+                        return (
+                            new InvestmentEnvironmentReadResult(
+                                votes.BuildBestEffort(latest.Options)),
+                            false);
+                    }
+
                     Publish(
                         CurrencyWarsNavigationState.WaitingForPage,
                         "investment_environment",

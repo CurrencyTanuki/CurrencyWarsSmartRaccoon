@@ -1,0 +1,4 @@
+Source: user-provided screenshot
+Original: C:\Users\zzz81\AppData\Local\Temp\codex-clipboard-98dcaf67-f0d6-44ad-b2c3-5c09b526574e.png
+SHA256: BAA9037DAEBB756A4B6284F6CA650BEE8543EC4598D665B07DE811E53B1A5C8E
+Ground truth: 15 privilege equipment icons, including six dim locked entries. Each retains the privilege frame and V marker.

@@ -1,0 +1,253 @@
+{
+  "schemaVersion": 1,
+  "referenceSize": {
+    "width": 1920,
+    "height": 1080
+  },
+  "supportedAspectRatio": "16:9",
+  "sampleCapture": {
+    "method": "Windows Win+Shift+S manual full-screen selection",
+    "fileSize": [2559, 1439],
+    "intendedDisplaySize": [2560, 1440],
+    "note": "The one-pixel difference is a manual selection artifact and is not used at runtime."
+  },
+  "privacyMasks": [
+    {
+      "id": "uid_bottom_left",
+      "rect": [0, 1025, 235, 55]
+    }
+  ],
+  "screens": [
+    {
+      "id": "currency_wars_home",
+      "sourceSample": "Screenshot 2026-07-24 013506.png",
+      "anchors": [
+        {
+          "id": "currency_wars_title",
+          "rect": [35, 70, 300, 135]
+        },
+        {
+          "id": "start_currency_wars_button",
+          "rect": [1298, 925, 585, 103]
+        }
+      ],
+      "actions": [
+        {
+          "id": "start_currency_wars",
+          "rect": [1298, 925, 585, 103],
+          "point": [1590, 976],
+          "expectedScreen": "mode_selection"
+        }
+      ]
+    },
+    {
+      "id": "mode_selection",
+      "sourceSample": "Screenshot 2026-07-24 013541.png",
+      "anchors": [
+        {
+          "id": "standard_mode_header",
+          "rect": [570, 130, 410, 55]
+        },
+        {
+          "id": "enter_standard_mode_button",
+          "rect": [1415, 934, 450, 60]
+        }
+      ],
+      "actions": [
+        {
+          "id": "enter_standard_mode",
+          "rect": [1415, 934, 450, 60],
+          "point": [1640, 964],
+          "expectedScreen": "rank_difficulty"
+        }
+      ]
+    },
+    {
+      "id": "rank_difficulty",
+      "sourceSample": "Screenshot 2026-07-24 013547.png",
+      "anchors": [
+        {
+          "id": "rank_effect_header",
+          "rect": [70, 295, 1130, 85]
+        },
+        {
+          "id": "start_run_button",
+          "rect": [1500, 937, 380, 60]
+        }
+      ],
+      "actions": [
+        {
+          "id": "start_run",
+          "rect": [1500, 937, 380, 60],
+          "point": [1690, 967],
+          "expectedScreen": "enemy_overview"
+        }
+      ]
+    },
+    {
+      "id": "enemy_overview",
+      "sourceSample": "Screenshot 2026-07-24 013558.png",
+      "anchors": [
+        {
+          "id": "enemy_leader_label",
+          "rect": [1280, 735, 515, 85]
+        },
+        {
+          "id": "next_button",
+          "rect": [1323, 956, 382, 58]
+        }
+      ],
+      "recognitionRegions": {
+        "enemyFactionNames": [
+          [125, 700, 260, 65],
+          [430, 700, 260, 65],
+          [738, 700, 255, 65]
+        ],
+        "enemyModifierNames": [
+          [263, 958, 162, 48],
+          [434, 958, 151, 48],
+          [597, 958, 159, 48],
+          [766, 958, 172, 48]
+        ]
+      },
+      "actions": [
+        {
+          "id": "enemy_overview_next",
+          "rect": [1323, 956, 382, 58],
+          "point": [1514, 985],
+          "expectedScreen": "plane_progress"
+        }
+      ]
+    },
+    {
+      "id": "plane_progress",
+      "sourceSample": "Screenshot 2026-07-24 013604.png",
+      "anchors": [
+        {
+          "id": "plane_circles",
+          "rect": [330, 315, 1250, 285]
+        },
+        {
+          "id": "click_blank_to_continue",
+          "rect": [872, 952, 180, 35]
+        }
+      ],
+      "actions": [
+        {
+          "id": "continue_from_plane_progress",
+          "rect": [820, 650, 280, 170],
+          "point": [960, 720],
+          "expectedScreen": "investment_environment"
+        }
+      ]
+    },
+    {
+      "id": "investment_environment",
+      "sourceSample": "Screenshot 2026-07-24 013612.png",
+      "anchors": [
+        {
+          "id": "investment_environment_title",
+          "rect": [895, 75, 170, 50]
+        },
+        {
+          "id": "confirm_button",
+          "rect": [893, 955, 380, 58]
+        }
+      ],
+      "recognitionRegions": {
+        "optionCards": [
+          [207, 198, 464, 667],
+          [727, 198, 466, 667],
+          [1248, 198, 467, 667]
+        ],
+        "optionNames": [
+          [285, 375, 300, 50],
+          [800, 375, 320, 50],
+          [1320, 375, 310, 50]
+        ],
+        "optionDescriptions": [
+          [250, 420, 375, 80],
+          [760, 420, 390, 80],
+          [1280, 420, 390, 110]
+        ],
+        "remainingRerolls": [706, 960, 180, 45]
+      },
+      "actions": [
+        {
+          "id": "reroll_investments",
+          "rect": [647, 954, 60, 60],
+          "point": [677, 984],
+          "expectedScreen": "investment_environment"
+        },
+        {
+          "id": "select_option_1",
+          "rect": [207, 198, 464, 667],
+          "point": [439, 530]
+        },
+        {
+          "id": "select_option_2",
+          "rect": [727, 198, 466, 667],
+          "point": [960, 530]
+        },
+        {
+          "id": "select_option_3",
+          "rect": [1248, 198, 467, 667],
+          "point": [1481, 530]
+        },
+        {
+          "id": "confirm_investment",
+          "rect": [893, 955, 380, 58],
+          "point": [1083, 984],
+          "expectedScreen": "preparation_1_1"
+        }
+      ]
+    },
+    {
+      "id": "preparation_1_1",
+      "sourceSample": "Screenshot 2026-07-24 013625.png",
+      "anchors": [
+        {
+          "id": "preparation_stage_1_1",
+          "rect": [393, 23, 155, 80]
+        },
+        {
+          "id": "unit_capacity",
+          "rect": [850, 200, 235, 105]
+        },
+        {
+          "id": "battle_button",
+          "rect": [1652, 710, 268, 85]
+        }
+      ],
+      "recognitionRegions": {
+        "frontSlots": [
+          [681, 329, 128, 140],
+          [827, 329, 122, 140],
+          [972, 329, 120, 140],
+          [1114, 329, 120, 140]
+        ],
+        "backSlots": [
+          [535, 600, 140, 145],
+          [687, 600, 130, 145],
+          [829, 600, 130, 145],
+          [966, 600, 130, 145],
+          [1108, 600, 130, 145],
+          [1258, 600, 130, 145]
+        ],
+        "visibleHandSlots": [
+          [383, 844, 114, 137],
+          [506, 844, 119, 137],
+          [633, 844, 117, 137],
+          [759, 844, 114, 137]
+        ]
+      },
+      "actions": [
+        {
+          "id": "start_battle",
+          "rect": [1652, 710, 268, 85],
+          "point": [1786, 752]
+        }
+      ]
+    }
+  ]
+}

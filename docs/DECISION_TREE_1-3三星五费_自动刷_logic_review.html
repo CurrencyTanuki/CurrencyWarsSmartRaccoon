@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1-3 三星五费自动刷 · 决策树（逻辑版 · 供审核）</title>
+<style>
+  :root{
+    --ink:#1f2733; --muted:#6b7686; --line:#dfe4ec;
+    --env:#f0f7ff; --env-b:#3b82c4;
+    --blood:#fff1f0; --blood-b:#e5484d;
+    --comp:#f4f1ff; --comp-b:#7c5cd6;
+    --trial:#fff8e6; --trial-b:#d99a06;
+    --goal:#effbf1; --goal-b:#2f9e44;
+    --retry:#f2f4f7; --retry-b:#868e9d;
+    --user:#fff5e6; --user-b:#e8890c;
+    --star:#fff3bf; --star-b:#c9a400;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Microsoft YaHei",system-ui,sans-serif;color:var(--ink);margin:0;background:#f7f8fa;line-height:1.6;}
+  header{background:linear-gradient(135deg,#1f2937,#374151);color:#fff;padding:22px 34px;}
+  header h1{margin:0 0 4px;font-size:22px;}
+  header p{margin:2px 0;opacity:.9;font-size:13px;}
+  .wrap{max-width:1060px;margin:0 auto;padding:24px 20px 60px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:14px 0;box-shadow:0 1px 3px rgba(16,42,67,.05);}
+  .card h2{margin:0 0 10px;font-size:17px;display:flex;align-items:center;gap:8px;}
+  .card h3{margin:16px 0 6px;font-size:14px;color:#33415c;}
+  .badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600;color:#fff;margin-left:auto;}
+  .legend{display:flex;flex-wrap:wrap;gap:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;}
+  .lg{display:flex;align-items:center;gap:7px;font-size:12.5px;color:#33415c;}
+  .dot{width:14px;height:14px;border-radius:4px;border:1px solid #cfd5df;}
+  .tree{margin:6px 0;}
+  .node{position:relative;border:1.5px solid;border-radius:10px;padding:12px 14px;margin:10px 0;}
+  .node .n-title{font-weight:700;font-size:14.5px;}
+  .node .n-sub{font-size:12.5px;color:var(--muted);margin-top:3px;}
+  .node ol,.node ul{margin:8px 0 2px 4px;padding-left:20px;font-size:13.5px;}
+  .node li{margin:3px 0;}
+  .arrow{color:var(--muted);font-size:20px;text-align:center;margin:-2px 0;font-weight:600;}
+  .tag{font-size:11px;font-weight:700;padding:1px 7px;border-radius:6px;margin-left:8px;vertical-align:2px;color:#fff;}
+  .t-env{background:var(--env-b);}
+  .t-blood{background:var(--blood-b);}
+  .t-comp{background:var(--comp-b);}
+  .t-trial{background:var(--trial-b);}
+  .t-goal{background:var(--goal-b);}
+  .t-retry{background:var(--retry-b);}
+  .t-user{background:var(--user-b);}
+  .t-star{background:var(--star-b);}
+  .n-env{background:var(--env);border-color:var(--env-b);}
+  .n-blood{background:var(--blood);border-color:var(--blood-b);}
+  .n-comp{background:var(--comp);border-color:var(--comp-b);}
+  .n-trial{background:var(--trial);border-color:var(--trial-b);}
+  .n-goal{background:var(--goal);border-color:var(--goal-b);}
+  .n-retry{background:var(--retry);border-color:var(--retry-b);}
+  .n-user{background:var(--user);border-color:var(--user-b);}
+  .n-star{background:var(--star);border-color:var(--star-b);}
+  .box{background:#f0f1f4;border:1px dashed #99a3b2;border-radius:8px;padding:9px 12px;font-size:13px;margin:8px 0;}
+  .box b{color:#374151;}
+  code{background:#eef1f5;border:1px solid #d7dce5;border-radius:4px;padding:0 5px;font-size:12.5px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0;}
+  th,td{border:1px solid #dfe4ec;padding:7px 10px;text-align:left;}
+  th{background:#f0f3f8;}
+  .note{font-size:12.5px;color:#5b6574;border-left:3px solid #c9d2e0;padding:4px 10px;margin:8px 0;}
+  .ok{color:#2f9e44;font-weight:700;}
+  .no{color:#e5484d;font-weight:700;}
+  .muted{color:var(--muted);}
+  .kbd{border:1px solid #b9c2d0;border-radius:5px;padding:0 6px;background:#fff;font-size:12px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>《1-3 三星五费》自动刷 · 决策树（逻辑基础 · 不写代码）</h1>
+  <p>依据既有三份攻略实现方法 · 软件只做逻辑，爽点动作（拖8投影形成三星）交用户手动 · 所有操作必须在 1-3 备战页内完成、不超出、不再开战</p>
+</header>
+<div class="wrap">
+
+  <!-- 图例 -->
+  <div class="legend">
+    <span class="lg"><span class="dot" style="background:var(--env);border-color:var(--env-b)"></span>投资环境</span>
+    <span class="lg"><span class="dot" style="background:var(--blood);border-color:var(--blood-b)"></span>血量节点（决策点）</span>
+    <span class="lg"><span class="dot" style="background:var(--comp);border-color:var(--comp-b)"></span>买角色组件</span>
+    <span class="lg"><span class="dot" style="background:var(--trial);border-color:var(--trial-b)"></span>试炼接取</span>
+    <span class="lg"><span class="dot" style="background:var(--goal);border-color:var(--goal-b)"></span>达成终点</span>
+    <span class="lg"><span class="dot" style="background:var(--retry);border-color:var(--retry-b)"></span>重刷</span>
+    <span class="lg"><span class="dot" style="background:var(--user);border-color:var(--user-b)"></span>用户手动（爽点）</span>
+    <span class="lg"><span class="dot" style="background:var(--star);border-color:var(--star-b)"></span>圣杯/星徽</span>
+  </div>
+
+  <!-- 0 输入与配置 -->
+  <div class="card">
+    <h2>0 · 输入：用户配置 <span class="tag t-starlabel badge" style="background:#2f9e44">决策1 · 目标</span></h2>
+    <div class="box"><b>目标配置（二选一）</b>：<br>
+      <b>A · 只要 1 个三星5费</b>：条件放宽，任意 5 费角色已形成三星即可（昔涟 / Archer / 银狼<b>LV.999</b> 任一个）收工。<br>
+      <b>B · 全员三星5费</b>：必须先出<b>昔涟</b>（她三星后给金币，才能续凑其他5费三星）；其余不必定追银狼LV.999。
+    </div>
+    <div class="box"><b>运行感知（软件实时读取）</b>：
+      <code>hpNow</code> 当前血量 · <code>hpInvest</code> 选投资策略那一刻的前一刻血量 · 投资环境 · 投资策略 · 金币 · 已有角色。都是备战页可读信息。</div>
+    <div class="box"><b>达成终点判据（已拍板）</b>：
+      <span class="ok">凑齐达成条件即判可成</span> —— 软件判到“条件齐”就收工报告，8 完美投影仪拖拽等<b>爽点动作由用户手动</b>（软件不代劳、不做界面适配）。</div>
+    <div class="note">⚠️ 软件<b>不检测难度是否 A4-5 以上/以下</b>——只实时检测血量两个节点（见 N1 / N4）。</div>
+  </div>
+
+  <!-- 1 开局环境 -->
+  <div class="card">
+    <h2>1 · 开局：投资环境判定 <span class="tag t-env badge">起点</span></h2>
+    <p style="font-size:13px;color:#5b6574;margin:0 0 8px;">读开局投资环境 → 决定起手主线（三份攻略的实现方法都对到这层）。</p>
+    <div class="node n-env"><span class="n-title">N1 · 读投资环境</span>
+      <ul>
+        <li><b>英雄登场 (067)</b> → 送 1 个 <b>2星5费昔涟</b>（19节点后上场，连胜提前）→ 天然 5 费本体，直奔奇迹代偿/无限之釜。<span class="tag t-star">环境A</span></li>
+        <li><b>命运圣杯契约 (018)</b> → 白送凛(1费)+闪(2费)，完成试炼后送 Archer(5费) → 圣杯线本体齐全。<span class="tag t-star">环境B</span></li>
+        <li><b>圣杯转 / 命运圣杯邀请 (019)</b> → 送圣杯星徽(第5圣杯用) / 圣杯转 → 走凑圣杯线。<span class="tag t-star">环境C</span></li>
+        <li><b>无上述关键环境</b> → 环境不可行性高，判定进 <b>重刷</b>（见 RETRY）。</li>
+      </ul>
+    </div>
+    <div class="note">注：英雄登场给的昔涟是“2星5费”，1 张即可当“已有 5 费本体”，后续复制到 9 张才三星。</div>
+  </div>
+
+  <!-- 2 血量节点1 -->
+  <div class="card">
+    <h2>2 · 血量节点①：选投资策略 <span class="tag t-blood badge">关键决策</span></h2>
+    <div class="node n-blood"><span class="n-title">N2 · 选投资策略那一刻，读 <code>hpInvest</code></span>
+      <ul>
+        <li><b>hpInvest ≥ 88</b> → <span class="ok">二极管非必须</span>，策略可选可不选，自然进入后续节点。</li>
+        <li><b>hpInvest &lt; 88</b>（至1-3备战=84）→ <b>是否必须二极管，按本次走到哪条达成终点分叉</b>：
+          <ul>
+            <li><b>主线=奇迹代偿终点</b>（需≥88血）→ <span class="no">必须刷出「二极管」(STR276，+10血+10上限，位面1)</span> 补到 94≥88，否则奇迹代偿选不了。
+              <ul>
+                <li>命中二极管 → 选它 → 血量 84+10=94 ≥ 88 ✓</li>
+                <li>没刷到二极管 → 尝试迂回（白银→黄金→白银投资）再凹；仍无 → 进 <b>重刷</b>。</li>
+              </ul></li>
+            <li><b>主线=无限之釜终点</b>（不依赖88血，直接给三星Archer）→ 二极管 <span class="ok">可选可不选</span>，<b>不必强求</b>，直接进入后续节点（目标A常走此线）。</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="note">⚠️ 健康充值(STR139，+30)只在二三位面，1-3(A4位面1)拿不到 → 二极管在 1-3 几乎不可替代。</div>
+  </div>
+
+  <!-- 3 购角色组件 -->
+  <div class="card">
+    <h2>3 · 购角色（命运圣杯成员）= 组件边界 <span class="tag t-comp badge">组件</span></h2>
+    <p style="font-size:13px;color:#5b6574;margin:4px 0 8px;">组件封装的“买角色”逻辑，独立可复用，与决策树解耦。</p>
+    <div class="node n-comp"><span class="n-title">BUY · 购买商店角色（组件接口）</span>
+      <div class="box"><b>入参</b>：<code>目标角色数</code> + <code>目标角色列表</code>（仅 <b>1/2/3 费圣杯成员</b> 可购：凛/闪/Saber）</div>
+      <div class="box"><b>行为</b>：在商店逐次购买目标角色；<b>同一角色多次刷到只购一次</b>；<code>命运圣杯成员才购</code>（用于激活羁绊）；激活羁绊后购物即停。</div>
+      <div class="box"><b>返回</b>：金币是否花完(<code>goldExhausted?</code>) · 剩余金币(<code>goldLeft</code>) · 买到哪些角色(<code>bought[]</code>) · 哪些还没买到(<code>missing[]</code>)。</div>
+      <div class="note">⚠️ <b>BUY 组件只能买到 1/2/3 费角色</b>（商店 5 费概率为0，买不到 Archer/昔涟这些 5 费）；因此 <b>5 费本体（含 Archer/昔涟）一律走 N4 机制来源</b>（祈愿登场·聘书·英雄登场·专家招募），<b>不进 BUY 列表</b>。Archer 虽是圣杯成员，也靠机制拿，不走商店。</div>
+      <div class="note">组件不负责策略决策，只负责“买”。决策树在调用前决定买谁、是否终止（如金币将尽）。</div>
+    </div>
+  </div>
+
+  <!-- 4 凑4圣杯 -->
+  <div class="card">
+    <h2>4 · 凑 4 圣杯 <span class="tag t-star badge">圣杯线</span></h2>
+    <div class="node n-star"><span class="n-title">N3 · 圣杯成员达标检查</span>
+      <ul>
+        <li>圣杯成员：凛(1费)/闪(2费)/Saber(3费)/Archer(5费)。</li>
+        <li>用 <b>BUY 组件</b> 在商店购齐所需圣杯成员（同角色只购一次）。</li>
+        <li>第 4/5 档用 <b>圣杯星徽</b> 或 <b>圣杯转</b>（圣杯转=羁绊数+1，放任意非圣杯角色上场凑第5档；获取=投资环境/补给/炼金炉）。</li>
+        <li>开局补给球可凹 <b>炼金炉+钻石+简易装备</b> → 合成圣杯 → <b>重铸圣杯星徽</b>。</li>
+        <li><b>圣杯成员达成 4 个不够 / 无法凑齐</b> → 判断本环境无法推进 → <b>重刷</b>。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5 拿5费本体 -->
+  <div class="card">
+    <h2>5 · 拿 5 费本体（仅奇迹代偿线前置） <span class="tag t-star badge">本体</span></h2>
+    <div class="node n-star"><span class="n-title">N4 · 是否已有 5 费本体，按达成分叉</span>
+      <ul>
+        <li><b>主线=奇迹代偿终点</b>（需把8投影拖到本体→9张）→ <b>必须有 ≥1 个 5 费本体在池</b>（全扣金币前必须在手）。</li>
+        <li><b>主线=无限之釜终点</b>（直接给三星Archer）→ <b>无需已有 5 费本体</b>，本体要求可跳过。</li>
+        <li>本体来源（<b>机制获取，坚决不进商店</b>）：英雄登场(2星5费昔涟) / 祈愿「登场Archer」白嫖Archer / 5费聘书 / 专家招募聘书(167/236)。</li>
+        <li>奇迹代偿线：目标 <code>A 只要1个</code> → 任意 5 费本体即可；目标 <code>B 全员</code> → <b>必须先昔涟本体</b>（缺她启动资金不足，后续全员续不动）。</li>
+        <li>若 <code>goldExhausted</code> 而目标 5 费仍未到手 → 无复制目标 → 只能 <b>重刷</b>（顺序绝不能颠倒：先扣金币再拿5费=废）。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 6 试炼 + 血量节点2 -->
+  <div class="card">
+    <h2>6 · 试炼接取 + 血量节点② <span class="tag t-blood badge">关键决策</span></h2>
+    <div class="node n-trial"><span class="n-title">N5 · 4圣杯后祈愿试炼浮现（与已开发的选择试炼模块匹配）</span>
+      <ul>
+        <li><b>试炼选择优先级</b>：
+          <b>无限之釜</b>（诅咒·直接给1个三星5费Archer）&gt; <b>奇迹代偿</b>（诅咒·8投影仪）&gt; <b>5费聘书 / 登场Archer</b> &gt; <b>令咒决议·行为限制</b>（3圣杯=2聘书）&gt; 其他。</li>
+        <li><b>血量节点②（重点 · 扣88血试炼卡死分支）</b>：当祈愿试炼浮现「奇迹代偿」(扣88血诅咒)时——
+          <ul><li>若 <code>hpNow ≥ 88</code> → <b>可点 → 选奇迹代偿</b>（主线达成）。</li>
+            <li>若 <code>hpNow &lt; 88</code> → <b>该试炼图标不可点击</b> → <b>软件改选另一个试炼</b>；若另一试炼也换不到想要的、且血量无法回升到88 → 本局<b>大概率成不了</b> → <b>退出结算重刷</b>（见 RETRY）。</li></ul></li>
+        <li><b>常态无目的试炼兜底（与血量无关 · 不重刷）</b>：若第 1、2 个诅咒试炼都没刷到想要的（无限之釜/奇迹代偿/目标聘书）→ <b>随机选（默认选左边那个试炼）</b>，推进试炼进程而<b>不重刷</b>；行为与已开发的 <code>WishTrialSelectionAutomation</code> 一致（选一侧→确认一次→复查，最多3次）。</li>
+      </ul>
+    </div>
+    <div class="note">⚠️ 奇迹代偿触发门槛 = 4圣杯 + ≥88血；低于88直接选不了（不是代价问题，是门槛不够）。选则扣88血+全金币 → 8完美投影仪；94-88=6血不算输。</div>
+  </div>
+
+  <!-- 7 达成终点 -->
+  <div class="card">
+    <h2>7 · 达成终点判定 + 目标分叉 <span class="tag t-goal badge">收工判定</span></h2>
+    <div class="node n-goal"><span class="n-title">N6 · 按其“凑齐即判可成”</span>
+      <ul>
+        <li><b>达成终点A 无限之釜</b> → 已直接得 1 个三星5费 Archer → <b>判“已1个三星”达成</b>。</li>
+        <li><b>达成终点B 奇迹代偿</b> → 已拿到 <b>8完美投影仪</b> 且 <b>目标5费本体已在池</b> → <b>判“条件齐、可成”</b>，交用户手动拖 8 投影形成三星。</li>
+        <li>目标 <code>A 只要1个</code>：任一终点达成 → <b>收工，报告用户，人工接管</b>。</li>
+        <li>目标 <code>B 全员</code>：已达 1 个三星(昔涟) → 用昔涟金币 → <b>续追其他5费三星</b>（银狼LV.999等）→ 全部分支都形成 → 判全员达成；中途无法续 → 重刷。</li>
+      </ul>
+    </div>
+    <div class="node n-user"><span class="n-title"><b>爽点（用户手动，软件不代劳/不为其做界面适配）</b><span class="tag t-user">用户</span></span>
+      <div class="box">拿到 8 完美投影仪后，<b>拖投影仪到已有 5 费本体 → 复制出 8 张 + 1 本体 = 9 张 = 三星5费</b>——这一步由你亲手完成（爽点）。软件到“条件齐”即停，不自动拖、不写拖拽界面。</div>
+    </div>
+  </div>
+
+  <!-- 8 重刷 -->
+  <div class="card">
+    <h2>8 · 重刷/收工 <span class="tag t-retry badge">边界</span></h2>
+    <div class="node n-retry"><span class="n-title">RETRY · 触发再次结算重刷（本局不作数）</span>
+      <ul>
+        <li>开局环境不可行（无英雄登场/圣杯线且无法迂回）→ 重刷。</li>
+        <li>血量节点① hp&lt;88 且走奇迹代偿线却刷不到二极管 → 重刷（无限之釜线不因此重刷）。</li>
+        <li>圣杯 4 个凑不齐 → 重刷。</li>
+        <li>血量节点② 奇迹代偿因 hp&lt;88 图标不可点、另一试炼也换不到想要的 → 重刷。</li>
+        <li>金币花完而目标5费本体仍未到手 → 重刷。</li>
+        <li>B 全员续追中途无力维持 → 重刷。</li>
+      </ul>
+    </div>
+    <div class="node" style="background:#fff;border-color:#33415c;border-width:2px"><span class="n-title">约束（硬边界）</span>
+      <ul>
+        <li>全部流程必须在 <b>1-3 节点备战页</b> 内完成；<b>到达 1-3 后不再开战</b>，任何遗漏/未满足 → 直接判本局不成 → 退出结算重刷，不把战斗带出 1-3。</li>
+        <li>不检测难度档；只检测血量两节点即可。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 汇总对照表 -->
+  <div class="card">
+    <h2>附 · 关键事实 / 组件表（决策树依赖，勿胡扯）</h2>
+    <table>
+      <tr><th>项</th><th>取值 / 说明</th></tr>
+      <tr><td>英雄登场</td><td>ENV067：送 2星5费昔涟（19节点后上场，连胜提前）</td></tr>
+      <tr><td>二极管</td><td>STR276 银色：+10血+10上限，位面1</td></tr>
+      <tr><td>健康充值</td><td>STR139：+30，仅二三位面，1-3拿不到（二极管替代）</td></tr>
+      <tr><td>采购专员·金/彩</td><td>051/238：每7/5次刷新出5张同费用角色（补目标5费/角色；同费≠同角色）</td></tr>
+      <tr><td>专家招募 / 行为限制</td><td>167/236 聘书；「令咒决议·行为限制」=3圣杯2张5费聘书</td></tr>
+      <tr><td>生命统一</td><td>所有难度开局 80 血；每过1节点+2 → 1-3备战=84</td></tr>
+      <tr><td>奇迹代偿</td><td>令人决议·奇迹代偿：4圣杯+≥88血 → 扣88血+全金币 → 8完美投影仪</td></tr>
+      <tr><td>完美投影仪</td><td>通用复制器：拖到任意角色→复制1张1星；8投影+1本体=9=三星5费</td></tr>
+      <tr><td>无限之釜</td><td>诅咒，4圣杯可出：直接给1个三星5费 Archer</td></tr>
+      <tr><td>银狼LV.999</td><td>character_05，costs=[3,4,5]，5费目标；普通银狼=4费，别混</td></tr>
+      <tr><td>三重目标</td><td>A=1个三星5费（任意5费）；B=全员（先昔涟，不必定追银狼）</td></tr>
+    </table>
+  </div>
+
+  <div style="text-align:center;color:var(--muted);font-size:12.5px;margin-top:18px">1-3 三星五费自动刷 · 决策树逻辑版 · 供用户审核（未写代码 / 未做适配：爽点拖拽 + 8投影界面由用户手动）</div>
+</div>
+</body>
+</html>

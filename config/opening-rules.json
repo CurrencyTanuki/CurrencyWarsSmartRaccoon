@@ -1,0 +1,20 @@
+{
+  "minimumConfidence": 0.88,
+  "keepUnknownInvestmentEnvironment": false,
+  "acceptedInvestmentEnvironments": [],
+  "rejectedInvestmentEnvironments": [],
+  "rejectedCompetitors": [],
+  "rejectedEnemyModifiers": [],
+  "rejectedEnemyCombinations": [
+    {
+      "id": "death_dragon_plus_extra_strike",
+      "displayName": "死龙 + 额外打击",
+      "requiredCompetitors": [
+        "competitor_12"
+      ],
+      "requiredModifiers": [
+        "enemy_affix_t2_16"
+      ]
+    }
+  ]
+}

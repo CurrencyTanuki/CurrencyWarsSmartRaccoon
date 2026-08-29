@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "1.0.0",
+  "archiveVersion": 1,
+  "runId": "run-issue009-archive",
+  "completedAt": "2026-08-09T23:52:39+08:00",
+  "isFinal": true,
+  "completionPageId": "challenge_success",
+  "completionNodeId": "2-2",
+  "nodes": [
+    {
+      "nodeId": "2-2",
+      "finalPreparationSnapshot": {
+        "schemaVersion": "1.0.0",
+        "runId": "run-issue009-archive",
+        "asOf": "2026-08-09T23:52:39+08:00",
+        "stage": {
+          "status": "known",
+          "value": "2-2",
+          "confidence": 0.99,
+          "evidence": [],
+          "uncertainty": []
+        },
+        "health": {
+          "status": "known",
+          "value": 98,
+          "confidence": 0.99,
+          "evidence": [],
+          "uncertainty": []
+        },
+        "storeLevel": {
+          "status": "known",
+          "value": 7,
+          "confidence": 0.99,
+          "evidence": [],
+          "uncertainty": []
+        }
+      },
+      "finalPreparationState": {
+        "pageFamily": "preparation",
+        "pageId": "preparation_generic",
+        "nodeId": {
+          "status": "known",
+          "value": "2-2",
+          "confidence": 0.99,
+          "evidence": [],
+          "uncertainty": []
+        },
+        "health": {
+          "status": "known",
+          "value": 98,
+          "confidence": 0.99,
+          "evidence": [],
+          "uncertainty": []
+        },
+        "storeLevel": {
+          "status": "known",
+          "value": 7,
+          "confidence": 0.99,
+          "evidence": [],
+          "uncertainty": []
+        },
+        "population": {
+          "status": "known",
+          "value": 8,
+          "confidence": 0.99,
+          "evidence": [
+            {
+              "sourceId": "fixture:user_ref_000032",
+              "locator": "ocr:population",
+              "summary": "真实截图 000032 识别人口 8/8"
+            }
+          ],
+          "uncertainty": []
+        }
+      },
+      "finalBattle": null,
+      "preparationAnalysisFile": "fixture:user_ref_000032",
+      "finalBattleFile": null
+    }
+  ],
+  "sourceAnalysisFiles": [
+    "fixture:user_ref_000032"
+  ],
+  "identityEvidence": {
+    "investmentStrategyIds": [],
+    "enemyAffixIds": [],
+    "enemyIds": []
+  },
+  "uncertainty": []
+}

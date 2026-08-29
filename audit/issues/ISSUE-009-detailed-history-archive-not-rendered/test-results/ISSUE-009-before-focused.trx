@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="301b0d44-6c56-4fba-acc2-a0439d995a0f" name="zzz81@ZZZ的电脑 2026-08-09 04:31:38" runUser="ZZZ的电脑\zzz81" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-08-09T04:31:38.3300481+08:00" queuing="2026-08-09T04:31:38.3300483+08:00" start="2026-08-09T04:31:35.5137904+08:00" finish="2026-08-09T04:31:38.3352988+08:00" />
+  <TestSettings name="default" id="9d18e7ef-c615-4ee5-b0be-fa98346d8c05">
+    <Deployment runDeploymentRoot="zzz81_ZZZ的电脑_2026-08-09_04_31_38" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="e3121d62-b305-46da-9424-df9ab77a57ca" testId="94a1e701-3c3c-b7c1-1e31-f21529de1a34" testName="CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.ActiveRealtimeWithoutFinalBattleDoesNotShowOldArchive" computerName="ZZZ的电脑" duration="00:00:00.0026899" startTime="2026-08-09T04:31:38.2758489+08:00" endTime="2026-08-09T04:31:38.2758597+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e3121d62-b305-46da-9424-df9ab77a57ca">
+      <Output>
+        <ErrorInfo>
+          <Message>Detailed-history report source selector is missing.</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.GetSelectorType() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs:line 104&#xD;
+   at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.Select(Boolean hasRealtimeActivity, String realtimeDirectory, IReadOnlyList`1 archiveRunIds) in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs:line 70&#xD;
+   at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.ActiveRealtimeWithoutFinalBattleDoesNotShowOldArchive() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs:line 36&#xD;
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8a094d8d-1ed7-4ca2-9979-67309d2e8e43" testId="92ef74a0-5ba5-25e2-1b97-495018650ff5" testName="CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.CompletedRealtimeReportTakesPriorityOverArchive" computerName="ZZZ的电脑" duration="00:00:00.0000906" startTime="2026-08-09T04:31:38.2784009+08:00" endTime="2026-08-09T04:31:38.2784009+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8a094d8d-1ed7-4ca2-9979-67309d2e8e43">
+      <Output>
+        <ErrorInfo>
+          <Message>Detailed-history report source selector is missing.</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.GetSelectorType() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs:line 104&#xD;
+   at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.Select(Boolean hasRealtimeActivity, String realtimeDirectory, IReadOnlyList`1 archiveRunIds) in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs:line 70&#xD;
+   at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.CompletedRealtimeReportTakesPriorityOverArchive() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs:line 24&#xD;
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1c7765b6-e07f-4eef-9f50-f92fc9854fd5" testId="0cb9400c-c7c0-1fd8-7356-270f5aaba37d" testName="CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.NoRealtimeUsesFirstArchiveFromCanonicalOrder" computerName="ZZZ的电脑" duration="00:00:00.0002289" startTime="2026-08-09T04:31:38.2788147+08:00" endTime="2026-08-09T04:31:38.2788147+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1c7765b6-e07f-4eef-9f50-f92fc9854fd5">
+      <Output>
+        <ErrorInfo>
+          <Message>Detailed-history report source selector is missing.</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.GetSelectorType() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs:line 104&#xD;
+   at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.Select(Boolean hasRealtimeActivity, String realtimeDirectory, IReadOnlyList`1 archiveRunIds) in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs:line 70&#xD;
+   at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.NoRealtimeUsesFirstArchiveFromCanonicalOrder() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs:line 12&#xD;
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="bfee01b8-96ae-4566-9e2e-77df10908aaf" testId="936e2e6c-2cc2-5c09-58d4-9dc63a459498" testName="CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.NoRealtimeAndNoArchiveReturnsNoData" computerName="ZZZ的电脑" duration="00:00:00.0000748" startTime="2026-08-09T04:31:38.2786175+08:00" endTime="2026-08-09T04:31:38.2786175+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bfee01b8-96ae-4566-9e2e-77df10908aaf">
+      <Output>
+        <ErrorInfo>
+          <Message>Detailed-history report source selector is missing.</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.GetSelectorType() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs:line 104&#xD;
+   at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.Select(Boolean hasRealtimeActivity, String realtimeDirectory, IReadOnlyList`1 archiveRunIds) in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs:line 70&#xD;
+   at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.NoRealtimeAndNoArchiveReturnsNoData() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs:line 48&#xD;
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="3aaa5144-43cd-4007-bed2-7f751b40d0ca" testId="33a60306-a3db-c5c0-a7f2-4074a1922844" testName="CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.SameArchiveRunIsNotRenderedTwice" computerName="ZZZ的电脑" duration="00:00:00.0001739" startTime="2026-08-09T04:31:38.2779252+08:00" endTime="2026-08-09T04:31:38.2779253+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3aaa5144-43cd-4007-bed2-7f751b40d0ca">
+      <Output>
+        <ErrorInfo>
+          <Message>Detailed-history report source selector is missing.</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.GetSelectorType() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs:line 104&#xD;
+   at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.ShouldRenderArchive(String renderedArchiveRunId, String candidateArchiveRunId) in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs:line 90&#xD;
+   at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.SameArchiveRunIsNotRenderedTwice() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs:line 60&#xD;
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.NoRealtimeUsesFirstArchiveFromCanonicalOrder" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="0cb9400c-c7c0-1fd8-7356-270f5aaba37d">
+      <Execution id="1c7765b6-e07f-4eef-9f50-f92fc9854fd5" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests" name="NoRealtimeUsesFirstArchiveFromCanonicalOrder" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.SameArchiveRunIsNotRenderedTwice" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="33a60306-a3db-c5c0-a7f2-4074a1922844">
+      <Execution id="3aaa5144-43cd-4007-bed2-7f751b40d0ca" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests" name="SameArchiveRunIsNotRenderedTwice" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.CompletedRealtimeReportTakesPriorityOverArchive" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="92ef74a0-5ba5-25e2-1b97-495018650ff5">
+      <Execution id="8a094d8d-1ed7-4ca2-9979-67309d2e8e43" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests" name="CompletedRealtimeReportTakesPriorityOverArchive" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.NoRealtimeAndNoArchiveReturnsNoData" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="936e2e6c-2cc2-5c09-58d4-9dc63a459498">
+      <Execution id="bfee01b8-96ae-4566-9e2e-77df10908aaf" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests" name="NoRealtimeAndNoArchiveReturnsNoData" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.ActiveRealtimeWithoutFinalBattleDoesNotShowOldArchive" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="94a1e701-3c3c-b7c1-1e31-f21529de1a34">
+      <Execution id="e3121d62-b305-46da-9424-df9ab77a57ca" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests" name="ActiveRealtimeWithoutFinalBattleDoesNotShowOldArchive" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="94a1e701-3c3c-b7c1-1e31-f21529de1a34" executionId="e3121d62-b305-46da-9424-df9ab77a57ca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="92ef74a0-5ba5-25e2-1b97-495018650ff5" executionId="8a094d8d-1ed7-4ca2-9979-67309d2e8e43" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0cb9400c-c7c0-1fd8-7356-270f5aaba37d" executionId="1c7765b6-e07f-4eef-9f50-f92fc9854fd5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="936e2e6c-2cc2-5c09-58d4-9dc63a459498" executionId="bfee01b8-96ae-4566-9e2e-77df10908aaf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="33a60306-a3db-c5c0-a7f2-4074a1922844" executionId="3aaa5144-43cd-4007-bed2-7f751b40d0ca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="5" executed="5" passed="0" failed="5" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.29)&#xD;
+[xUnit.net 00:00:02.34]   Discovering: CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:02.43]   Discovered:  CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:02.43]   Starting:    CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:02.46]       Detailed-history report source selector is missing.&#xD;
+[xUnit.net 00:00:02.46]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.46]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs(104,0): at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.GetSelectorType()&#xD;
+[xUnit.net 00:00:02.46]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs(70,0): at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.Select(Boolean hasRealtimeActivity, String realtimeDirectory, IReadOnlyList`1 archiveRunIds)&#xD;
+[xUnit.net 00:00:02.47]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs(36,0): at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.ActiveRealtimeWithoutFinalBattleDoesNotShowOldArchive()&#xD;
+[xUnit.net 00:00:02.47]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)&#xD;
+[xUnit.net 00:00:02.47]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:02.47]       Detailed-history report source selector is missing.&#xD;
+[xUnit.net 00:00:02.47]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.47]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs(104,0): at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.GetSelectorType()&#xD;
+[xUnit.net 00:00:02.47]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs(90,0): at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.ShouldRenderArchive(String renderedArchiveRunId, String candidateArchiveRunId)&#xD;
+[xUnit.net 00:00:02.47]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs(60,0): at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.SameArchiveRunIsNotRenderedTwice()&#xD;
+[xUnit.net 00:00:02.47]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)&#xD;
+[xUnit.net 00:00:02.47]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:02.47]       Detailed-history report source selector is missing.&#xD;
+[xUnit.net 00:00:02.47]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.47]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs(104,0): at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.GetSelectorType()&#xD;
+[xUnit.net 00:00:02.47]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs(70,0): at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.Select(Boolean hasRealtimeActivity, String realtimeDirectory, IReadOnlyList`1 archiveRunIds)&#xD;
+[xUnit.net 00:00:02.47]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs(24,0): at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.CompletedRealtimeReportTakesPriorityOverArchive()&#xD;
+[xUnit.net 00:00:02.47]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)&#xD;
+[xUnit.net 00:00:02.47]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:02.47]       Detailed-history report source selector is missing.&#xD;
+[xUnit.net 00:00:02.47]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.47]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs(104,0): at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.GetSelectorType()&#xD;
+[xUnit.net 00:00:02.47]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs(70,0): at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.Select(Boolean hasRealtimeActivity, String realtimeDirectory, IReadOnlyList`1 archiveRunIds)&#xD;
+[xUnit.net 00:00:02.47]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs(48,0): at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.NoRealtimeAndNoArchiveReturnsNoData()&#xD;
+[xUnit.net 00:00:02.47]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)&#xD;
+[xUnit.net 00:00:02.47]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:02.47]       Detailed-history report source selector is missing.&#xD;
+[xUnit.net 00:00:02.47]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.47]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs(104,0): at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.GetSelectorType()&#xD;
+[xUnit.net 00:00:02.47]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs(70,0): at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.Select(Boolean hasRealtimeActivity, String realtimeDirectory, IReadOnlyList`1 archiveRunIds)&#xD;
+[xUnit.net 00:00:02.47]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\DetailedHistoryReportSourceSelectorTests.cs(12,0): at CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.NoRealtimeUsesFirstArchiveFromCanonicalOrder()&#xD;
+[xUnit.net 00:00:02.47]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)&#xD;
+[xUnit.net 00:00:02.47]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:02.47]   Finished:    CurrencyWarsAssistant.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-09T04:31:38.2820957+08:00">
+        <Text>[xUnit.net 00:00:02.46]     CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.ActiveRealtimeWithoutFinalBattleDoesNotShowOldArchive [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-09T04:31:38.2823090+08:00">
+        <Text>[xUnit.net 00:00:02.47]     CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.SameArchiveRunIsNotRenderedTwice [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-09T04:31:38.2823539+08:00">
+        <Text>[xUnit.net 00:00:02.47]     CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.CompletedRealtimeReportTakesPriorityOverArchive [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-09T04:31:38.2824942+08:00">
+        <Text>[xUnit.net 00:00:02.47]     CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.NoRealtimeAndNoArchiveReturnsNoData [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-09T04:31:38.2828266+08:00">
+        <Text>[xUnit.net 00:00:02.47]     CurrencyWarsAssistant.Tests.DetailedHistoryReportSourceSelectorTests.NoRealtimeUsesFirstArchiveFromCanonicalOrder [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

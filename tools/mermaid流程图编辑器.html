@@ -1,0 +1,2213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPA-Q 流程图编辑器</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js"></script>
+<style>
+*,
+*::before,
+*::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "微软雅黑", sans-serif;
+  background: #f1f2f4;
+  color: #111827;
+  height: 100vh;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.topbar {
+  height: 76px;
+  padding: 0 18px;
+  background: linear-gradient(180deg, #0f172a 0%, #0b1324 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.brand-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.brand-sub {
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mode-select,
+.help-btn {
+  height: 34px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.mode-select {
+  min-width: 104px;
+  padding: 0 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #e5eefc;
+}
+
+.help-btn {
+  width: 34px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #d7e3fb;
+  cursor: pointer;
+}
+
+.help-btn:hover {
+  filter: brightness(1.04);
+}
+
+.workspace {
+  height: calc(100vh - 76px);
+  display: flex;
+  min-height: 0;
+}
+
+.sidebar-left {
+  width: 224px;
+  background: #fff;
+  border-right: 1px solid #d6d6d6;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-block {
+  padding: 16px;
+  border-bottom: 1px solid #d6d6d6;
+  background: #f9fafb;
+}
+
+.sidebar-fill {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7280;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.sidebar-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.sidebar-btn {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #334155;
+  cursor: pointer;
+}
+
+.sidebar-btn.primary {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: #fff;
+}
+
+.sidebar-btn:hover {
+  filter: brightness(1.02);
+}
+
+.text-input {
+  width: 100%;
+  height: 34px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 0 10px;
+  background: #fff;
+  color: #111827;
+  outline: none;
+}
+
+.text-input:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.14);
+}
+
+.saved-list {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.saved-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 10px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #ececec;
+}
+
+.saved-item:hover {
+  background: rgba(255, 255, 255, 0.66);
+}
+
+.saved-meta {
+  min-width: 0;
+}
+
+.saved-name {
+  font-size: 13px;
+  color: #374151;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.saved-delete {
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.saved-delete:hover {
+  color: #ef4444;
+}
+
+.saved-empty {
+  color: #9ca3af;
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 10px 2px;
+}
+
+.center-stage {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #d6d6d6;
+}
+
+.toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  background: #f3f4f6;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.toolbar-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.toolbar-title {
+  margin-right: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.shape-chip {
+  height: 36px;
+  min-width: 52px;
+  padding: 0 14px;
+  border-radius: 6px;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  user-select: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.shape-chip:active {
+  cursor: grabbing;
+}
+
+.shape-chip-rect { background: #3b82f6; }
+.shape-chip-diamond { background: #facc15; color: #ffffff; }
+.shape-chip-start { background: #22c55e; }
+.shape-chip-end { background: #ef4444; }
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tool-btn {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: #f3f4f6;
+  color: #374151;
+  cursor: pointer;
+}
+
+.tool-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.tool-btn:hover:not(:disabled),
+.tool-btn.active {
+  background: #e5e7eb;
+}
+
+.canvas-card {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: #fff;
+  border-top: 1px solid #d6d6d6;
+  overflow: hidden;
+}
+
+.canvas-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 60;
+  display: flex;
+  gap: 8px;
+}
+
+.canvas-action-btn {
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #4b5563;
+  cursor: pointer;
+}
+
+.canvas-wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: auto;
+  background-color: #f7f8fa;
+  background-image: radial-gradient(circle, #d9dde5 1.05px, transparent 1.05px);
+  background-size: 28px 28px;
+}
+
+.canvas-wrap.drag-over {
+  background-color: #edf5ff;
+}
+
+.canvas-wrap.grid-off {
+  background-image: none;
+}
+
+#canvas {
+  width: 3200px;
+  height: 2200px;
+  position: relative;
+  transform-origin: 0 0;
+}
+
+.canvas-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #a1a1aa;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.canvas-empty .icon {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.canvas-empty .title {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.canvas-empty .sub {
+  font-size: 13px;
+}
+
+#edgeLayer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.edge-group {
+  pointer-events: none;
+}
+
+.edge-line {
+  stroke: #94a3b8;
+  stroke-width: 2;
+  fill: none;
+  marker-end: url(#arrowhead);
+  pointer-events: stroke;
+  cursor: pointer;
+}
+
+.edge-line:hover {
+  stroke: #64748b;
+}
+
+.edge-label-bg {
+  fill: rgba(255, 255, 255, 0.96);
+  stroke: #d1d5db;
+  stroke-width: 1;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.edge-label {
+  fill: #4b5563;
+  font-size: 12px;
+  font-family: inherit;
+  pointer-events: none;
+}
+
+.edge-label-placeholder {
+  fill: #9ca3af;
+  font-style: italic;
+}
+
+.edge-editor {
+  position: absolute;
+  z-index: 80;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+}
+
+.edge-editor input {
+  width: 132px;
+  height: 30px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0 8px;
+  outline: none;
+}
+
+.edge-editor button {
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: #f8fafc;
+  color: #374151;
+  cursor: pointer;
+}
+
+.edge-editor button.primary {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: #fff;
+}
+
+.node {
+  position: absolute;
+  min-width: 112px;
+  min-height: 48px;
+  padding: 12px 18px;
+  background: #fff;
+  border: 3px solid #475569;
+  color: #111827;
+  text-align: center;
+  cursor: move;
+  user-select: none;
+  z-index: 20;
+  transition: box-shadow 0.12s ease, border-color 0.12s ease;
+}
+
+.node:hover {
+  z-index: 40;
+}
+
+.node.selected {
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.18);
+  border-color: #2563eb !important;
+}
+
+.node-rect {
+  border-radius: 14px;
+}
+
+.node-start,
+.node-end {
+  border-radius: 999px;
+  color: #fff;
+}
+
+.node-start {
+  background: #22c55e;
+  border-color: #16a34a;
+}
+
+.node-end {
+  background: #ef4444;
+  border-color: #dc2626;
+}
+
+.node-diamond {
+  width: 98px;
+  height: 98px;
+  min-width: 98px;
+  min-height: 98px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(45deg);
+  border-radius: 16px;
+}
+
+.node-diamond .node-text,
+.node-diamond .edit-input {
+  width: 76px;
+  transform: rotate(-45deg);
+}
+
+.node-diamond .delete-btn {
+  transform: rotate(-45deg);
+}
+
+.node .node-text {
+  pointer-events: none;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.node .delete-btn {
+  position: absolute;
+  top: -11px;
+  right: -11px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: #ef4444;
+  color: #fff;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  opacity: 0;
+  box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+}
+
+.node:hover .delete-btn {
+  opacity: 1;
+}
+
+.node .edit-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: inherit;
+}
+
+.theme-blue { background: #3b82f6 !important; border-color: #2563eb !important; color: #ffffff !important; }
+.theme-green { background: #22c55e !important; border-color: #16a34a !important; color: #ffffff !important; }
+.theme-yellow { background: #facc15 !important; border-color: #eab308 !important; color: #111827 !important; }
+.theme-red { background: #ef4444 !important; border-color: #dc2626 !important; color: #ffffff !important; }
+.theme-purple { background: #a78bfa !important; border-color: #8b5cf6 !important; color: #ffffff !important; }
+
+.right-panel {
+  width: 400px;
+  background: #f3f4f6;
+  display: grid;
+  grid-template-rows: 40% 60%;
+  min-height: 0;
+}
+
+.result-card {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-left: 1px solid #d6d6d6;
+  border-bottom: 1px solid #d6d6d6;
+}
+
+.result-card:last-child {
+  border-bottom: none;
+}
+
+.card-head {
+  height: 36px;
+  padding: 0 10px;
+  border-bottom: 1px solid #d6d6d6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: #fafafa;
+}
+
+.card-head-title {
+  font-size: 12px;
+  color: #4b5563;
+  display: flex;
+  align-items: center;
+}
+
+.card-head-title strong {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.card-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.card-actions button {
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #334155;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.card-actions button.primary {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: #fff;
+}
+
+.card-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: #fff;
+}
+
+.code-body {
+  padding: 16px;
+  background: #f3f4f6;
+}
+
+.code-body pre {
+  font-family: "Cascadia Code", "Consolas", monospace;
+  font-size: 12px;
+  color: #0f172a;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.55;
+}
+
+.preview-body {
+  padding: 16px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-body .mermaid {
+  width: 100%;
+}
+
+.empty-state {
+  color: #9ca3af;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+  padding: 28px 16px;
+}
+
+.context-menu {
+  position: fixed;
+  min-width: 170px;
+  background: #fff;
+  border: 1px solid #d6d6d6;
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16);
+  padding: 6px;
+  display: none;
+  z-index: 2000;
+}
+
+.menu-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 13px;
+  color: #374151;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background: #f3f4f6;
+}
+
+.menu-item.danger {
+  color: #dc2626;
+}
+
+.menu-item.danger:hover {
+  background: #fef2f2;
+}
+
+.divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 6px 8px;
+}
+
+.zoom-ctrl {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.zoom-ctrl button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-bottom: 1px solid #e5e7eb;
+  background: transparent;
+  color: #4b5563;
+  cursor: pointer;
+}
+
+.zoom-ctrl button:last-child {
+  border-bottom: none;
+}
+
+.zoom-ctrl button:hover {
+  background: #f3f4f6;
+}
+
+.mini-map {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 140px;
+  height: 96px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  z-index: 55;
+}
+
+.mini-map svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.modal-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.42);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2500;
+}
+
+.modal-mask.show {
+  display: flex;
+}
+
+.modal-card {
+  width: 440px;
+  max-width: 92vw;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.22);
+  padding: 18px;
+}
+
+.modal-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 12px;
+}
+
+.modal-card textarea {
+  width: 100%;
+  height: 180px;
+  resize: vertical;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: "Cascadia Code", "Consolas", monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  outline: none;
+}
+
+.modal-card textarea:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.14);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.modal-actions button {
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #334155;
+  cursor: pointer;
+}
+
+.modal-actions button.primary {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: #fff;
+}
+
+.help-body {
+  font-size: 13px;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.help-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 2px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.help-row:last-child {
+  border-bottom: none;
+}
+
+.help-key {
+  color: #64748b;
+  white-space: nowrap;
+  font-family: "Cascadia Code", "Consolas", monospace;
+  font-size: 12px;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  padding: 11px 18px;
+  border-radius: 12px;
+  background: #111827;
+  color: #fff;
+  font-size: 13px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 3000;
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+@media (max-width: 1360px) {
+  .sidebar-left {
+    width: 210px;
+  }
+
+  .right-panel {
+    width: 340px;
+  }
+
+  .shape-chip {
+    min-width: 70px;
+    padding: 0 10px;
+  }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-title">CPA-Q</div>
+    <div class="brand-sub">流程图编辑器</div>
+  </div>
+  <div class="header-right">
+    <select class="mode-select" disabled>
+      <option>流程图</option>
+    </select>
+    <button class="help-btn" title="查看操作说明" onclick="showHelp()">?</button>
+  </div>
+</header>
+
+<div class="workspace">
+  <aside class="sidebar-left">
+    <div class="sidebar-block">
+      <div class="sidebar-actions">
+        <button class="sidebar-btn" onclick="newDiagram()">新建</button>
+        <button class="sidebar-btn primary" onclick="saveDiagram()">保存</button>
+      </div>
+      <input class="text-input" id="diagramNameInput" type="text" placeholder="图表名称">
+    </div>
+
+    <div class="sidebar-block sidebar-fill">
+      <div class="sidebar-title">已保存图表</div>
+      <div class="saved-list" id="savedItems"></div>
+      <div class="saved-empty" id="savedEmpty">还没有已保存的图表</div>
+    </div>
+  </aside>
+
+  <main class="center-stage">
+    <div class="toolbar">
+      <div class="toolbar-main">
+        <div class="toolbar-title">拖拽添加</div>
+        <div class="shape-chip shape-chip-rect" draggable="true" data-type="rect">处理步骤</div>
+        <div class="shape-chip shape-chip-diamond" draggable="true" data-type="diamond">条件判断</div>
+        <div class="shape-chip shape-chip-start" draggable="true" data-type="start">开始</div>
+        <div class="shape-chip shape-chip-end" draggable="true" data-type="end">结束</div>
+      </div>
+      <div class="toolbar-actions">
+        <button class="tool-btn" id="btnUndo" onclick="undo()" disabled>撤销</button>
+        <button class="tool-btn" id="btnRedo" onclick="redo()" disabled>重做</button>
+      </div>
+    </div>
+
+    <section class="canvas-card">
+      <div class="canvas-actions">
+        <button class="canvas-action-btn" onclick="autoLayout()">自动排列</button>
+        <button class="canvas-action-btn" id="btnGrid" onclick="toggleGrid()">网格：开</button>
+      </div>
+      <div class="canvas-wrap" id="canvasWrap">
+        <div id="canvas">
+          <svg id="edgeLayer"></svg>
+          <div class="canvas-empty" id="canvasEmpty">
+            <div class="icon">📐</div>
+            <div class="title">把节点拖进来开始画图</div>
+            <div class="sub">双击节点改字，点击线上标签改连线文字</div>
+          </div>
+        </div>
+        <div class="edge-editor" id="edgeEditor">
+          <input id="edgeEditorInput" type="text" placeholder="输入连线文字">
+          <button class="primary" onclick="saveEdgeEditor()">确定</button>
+          <button onclick="deleteEditingEdge()">删除</button>
+        </div>
+        <div class="zoom-ctrl">
+          <button onclick="zoomIn()">+</button>
+          <button onclick="zoomOut()">−</button>
+          <button onclick="zoomReset()" title="重置">⤢</button>
+        </div>
+        <div class="mini-map" id="miniMap"></div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="right-panel">
+    <section class="result-card">
+      <div class="card-head">
+        <div class="card-head-title"><strong>Mermaid 代码</strong></div>
+        <div class="card-actions">
+          <button onclick="openImportModal()">导入</button>
+          <button class="primary" onclick="copyCode()">复制</button>
+        </div>
+      </div>
+      <div class="card-body code-body">
+        <pre id="codeDisplay"></pre>
+      </div>
+    </section>
+
+    <section class="result-card">
+      <div class="card-head">
+        <div class="card-head-title"><strong>预览</strong></div>
+        <div class="card-actions">
+          <button class="primary" onclick="exportPNG()">导出 PNG</button>
+        </div>
+      </div>
+      <div class="card-body preview-body" id="previewBody"></div>
+    </section>
+  </aside>
+</div>
+
+<div class="modal-mask" id="importModal">
+  <div class="modal-card">
+    <div class="modal-title">导入 Mermaid 代码</div>
+    <textarea id="importTextarea" placeholder="粘贴本工具生成的 flowchart 代码，导入后会自动排列"></textarea>
+    <div class="modal-actions">
+      <button onclick="closeModal('importModal')">取消</button>
+      <button class="primary" onclick="runImport()">导入</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-mask" id="helpModal">
+  <div class="modal-card">
+    <div class="modal-title">操作说明</div>
+    <div class="help-body">
+      <div class="help-row"><span>编辑节点文字</span><span class="help-key">双击节点</span></div>
+      <div class="help-row"><span>更多操作（连线 / 颜色 / 删除）</span><span class="help-key">右键节点</span></div>
+      <div class="help-row"><span>改连线文字</span><span class="help-key">点击线上标签</span></div>
+      <div class="help-row"><span>删除连线</span><span class="help-key">双击连线</span></div>
+      <div class="help-row"><span>删除选中节点</span><span class="help-key">Delete</span></div>
+      <div class="help-row"><span>撤销 / 重做</span><span class="help-key">Ctrl + Z / Ctrl + Y</span></div>
+      <div class="help-row"><span>退出连线 / 关闭弹窗</span><span class="help-key">Esc</span></div>
+      <div class="help-row"><span>缩放画布</span><span class="help-key">Ctrl + 滚轮</span></div>
+    </div>
+    <div class="modal-actions">
+      <button class="primary" onclick="closeModal('helpModal')">知道了</button>
+    </div>
+  </div>
+</div>
+
+<div class="context-menu" id="contextMenu">
+  <button class="menu-item" onclick="editNodeText()">编辑文字</button>
+  <button class="menu-item" onclick="changeNodeColor()">切换颜色</button>
+  <button class="menu-item" onclick="addEdgeFromNode()">从这里开始连线</button>
+  <div class="divider"></div>
+  <button class="menu-item danger" onclick="deleteContextNode()">删除节点</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// 预览组件加载失败（如断网）时不让整页瘫痪，仅禁用预览和导出
+const mermaidAvailable = typeof mermaid !== 'undefined';
+if (mermaidAvailable) {
+  mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+}
+
+let nodes = [];
+let edges = [];
+let nodeIdCounter = 0;
+let selectedNodeId = null;
+let connectMode = false;
+let connectSourceId = null;
+let contextNodeId = null;
+let zoomLevel = 1;
+let undoStack = [];
+let redoStack = [];
+let currentDiagramName = '';
+let dragNodeId = null;
+let dragStartPos = null;
+let nodeStartPos = null;
+let dragHasSnapshot = false;
+let editingEdgeKey = null;
+let gridVisible = true;
+let previewSeq = 0;
+let previewTimer = null;
+
+const canvas = document.getElementById('canvas');
+const canvasWrap = document.getElementById('canvasWrap');
+const edgeLayer = document.getElementById('edgeLayer');
+const canvasEmpty = document.getElementById('canvasEmpty');
+const diagramNameInput = document.getElementById('diagramNameInput');
+const edgeEditor = document.getElementById('edgeEditor');
+const edgeEditorInput = document.getElementById('edgeEditorInput');
+const miniMap = document.getElementById('miniMap');
+
+function cloneState() {
+  return {
+    nodes: JSON.parse(JSON.stringify(nodes)),
+    edges: JSON.parse(JSON.stringify(edges)),
+    nodeIdCounter,
+    currentDiagramName
+  };
+}
+
+function saveState() {
+  undoStack.push(cloneState());
+  if (undoStack.length > 60) undoStack.shift();
+  redoStack = [];
+  updateUndoUI();
+}
+
+function restoreState(state) {
+  nodes = state.nodes;
+  edges = state.edges;
+  nodeIdCounter = state.nodeIdCounter;
+  currentDiagramName = state.currentDiagramName || '';
+  diagramNameInput.value = currentDiagramName;
+  selectedNodeId = null;
+  connectSourceId = null;
+}
+
+function undo() {
+  if (!undoStack.length) return;
+  redoStack.push(cloneState());
+  restoreState(undoStack.pop());
+  updateAll();
+}
+
+function redo() {
+  if (!redoStack.length) return;
+  undoStack.push(cloneState());
+  restoreState(redoStack.pop());
+  updateAll();
+}
+
+function updateUndoUI() {
+  document.getElementById('btnUndo').disabled = !undoStack.length;
+  document.getElementById('btnRedo').disabled = !redoStack.length;
+}
+
+function createNode(type, x, y) {
+  saveState();
+  nodeIdCounter += 1;
+  const id = 'N' + nodeIdCounter;
+  const defaults = {
+    rect: '处理步骤',
+    diamond: '条件判断',
+    start: '开始',
+    end: '结束'
+  };
+  const defaultTheme = {
+    rect: 'theme-blue',
+    diamond: 'theme-yellow',
+    start: '',
+    end: ''
+  };
+  nodes.push({ id, type, x, y, text: defaults[type] || '节点', theme: defaultTheme[type] || '' });
+  selectedNodeId = id;
+  updateAll();
+  return id;
+}
+
+function deleteNodeById(id) {
+  saveState();
+  nodes = nodes.filter(node => node.id !== id);
+  edges = edges.filter(edge => edge.from !== id && edge.to !== id);
+  if (selectedNodeId === id) selectedNodeId = null;
+  if (connectSourceId === id) connectSourceId = null;
+  closeEdgeEditor();
+  updateAll();
+}
+
+const shapeClassMap = {
+  rect: 'node-rect',
+  diamond: 'node-diamond',
+  start: 'node-start',
+  end: 'node-end'
+};
+
+function renderAll() {
+  renderNodes();
+  renderEdges();
+  updateCode();
+  schedulePreview();
+  updateEmptyState();
+  updateMiniMap();
+}
+
+function updateAll() {
+  renderAll();
+  updateUndoUI();
+}
+
+// 预览渲染开销大，拖动等高频操作统一防抖 250ms
+function schedulePreview() {
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(updatePreview, 250);
+}
+
+function renderNodes() {
+  canvas.querySelectorAll('.node').forEach(el => el.remove());
+  nodes.forEach(node => {
+    const el = document.createElement('div');
+    const themeClass = node.theme ? ' ' + node.theme : '';
+    el.className = `node ${shapeClassMap[node.type] || 'node-rect'}${themeClass}`;
+    if (node.id === selectedNodeId) el.classList.add('selected');
+    el.style.left = node.x + 'px';
+    el.style.top = node.y + 'px';
+    el.dataset.nodeId = node.id;
+    el.innerHTML = `<div class="delete-btn">×</div><span class="node-text">${esc(node.text)}</span>`;
+    el.addEventListener('mousedown', event => onNodeDown(event, node.id));
+    el.querySelector('.delete-btn').addEventListener('click', event => {
+      event.stopPropagation();
+      deleteNodeById(node.id);
+    });
+    el.addEventListener('dblclick', event => {
+      event.stopPropagation();
+      startEdit(el, node);
+    });
+    el.addEventListener('contextmenu', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      contextNodeId = node.id;
+      showContextMenu(event.clientX, event.clientY);
+    });
+    el.addEventListener('click', event => {
+      if (event.target.classList.contains('delete-btn')) return;
+      event.stopPropagation();
+      if (connectMode) {
+        handleConnect(node.id);
+        return;
+      }
+      selectedNodeId = node.id;
+      renderNodes();
+    });
+    canvas.appendChild(el);
+  });
+}
+
+function onNodeDown(event, id) {
+  if (event.button !== 0 || event.target.classList.contains('delete-btn')) return;
+  event.preventDefault();
+  dragNodeId = id;
+  dragHasSnapshot = false;
+  dragStartPos = { x: event.clientX, y: event.clientY };
+  const node = nodes.find(item => item.id === id);
+  if (node) nodeStartPos = { x: node.x, y: node.y };
+}
+
+document.addEventListener('mousemove', event => {
+  if (!dragNodeId) return;
+  const node = nodes.find(item => item.id === dragNodeId);
+  if (!node) return;
+  const dx = event.clientX - dragStartPos.x;
+  const dy = event.clientY - dragStartPos.y;
+  if (!dragHasSnapshot && (Math.abs(dx) > 2 || Math.abs(dy) > 2)) {
+    saveState();
+    dragHasSnapshot = true;
+  }
+  if (!dragHasSnapshot) return;
+  node.x = nodeStartPos.x + dx / zoomLevel;
+  node.y = nodeStartPos.y + dy / zoomLevel;
+  renderAll();
+});
+
+document.addEventListener('mouseup', () => {
+  dragNodeId = null;
+  dragStartPos = null;
+  nodeStartPos = null;
+  dragHasSnapshot = false;
+});
+
+function renderEdges() {
+  edgeLayer.innerHTML = '<defs><marker id="arrowhead" markerWidth="12" markerHeight="8" refX="9" refY="4" orient="auto"><polygon points="0 0, 12 4, 0 8" fill="#94a3b8"></polygon></marker></defs>';
+  edges.forEach(edge => {
+    const fromNode = nodes.find(node => node.id === edge.from);
+    const toNode = nodes.find(node => node.id === edge.to);
+    if (!fromNode || !toNode) return;
+    const fromCenter = center(fromNode);
+    const toCenter = center(toNode);
+    const startPoint = edgeBoundaryPoint(fromNode, toCenter);
+    const rawEndPoint = edgeBoundaryPoint(toNode, fromCenter);
+    const dx = rawEndPoint.x - startPoint.x;
+    const dy = rawEndPoint.y - startPoint.y;
+    const distance = Math.hypot(dx, dy) || 1;
+    const x1 = startPoint.x;
+    const y1 = startPoint.y;
+    const x2 = rawEndPoint.x - dx / distance * 8;
+    const y2 = rawEndPoint.y - dy / distance * 8;
+    const key = getEdgeKey(edge);
+    const midX = (x1 + x2) / 2;
+    const midY = (y1 + y2) / 2 - 12;
+    const labelText = edge.label || '+ 标签';
+    const width = Math.max(40, [...labelText].reduce((sum, ch) => sum + (ch.charCodeAt(0) > 255 ? 13 : 7), 16));
+    const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    group.setAttribute('class', 'edge-group');
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    Object.entries({ x1, y1, x2, y2 }).forEach(([key, value]) => line.setAttribute(key, value));
+    line.setAttribute('class', 'edge-line');
+    line.addEventListener('click', event => {
+      event.stopPropagation();
+      openEdgeEditor(edge, midX, midY);
+    });
+    line.addEventListener('dblclick', event => {
+      event.stopPropagation();
+      deleteEdgeByKey(key);
+    });
+    group.appendChild(line);
+    const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    bg.setAttribute('x', midX - width / 2);
+    bg.setAttribute('y', midY - 11);
+    bg.setAttribute('width', width);
+    bg.setAttribute('height', 22);
+    bg.setAttribute('rx', 6);
+    bg.setAttribute('class', 'edge-label-bg');
+    bg.addEventListener('click', event => {
+      event.stopPropagation();
+      openEdgeEditor(edge, midX, midY);
+    });
+    group.appendChild(bg);
+    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text.setAttribute('x', midX);
+    text.setAttribute('y', midY + 4);
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('class', 'edge-label' + (edge.label ? '' : ' edge-label-placeholder'));
+    text.textContent = labelText;
+    group.appendChild(text);
+    edgeLayer.appendChild(group);
+  });
+}
+
+function getNodeSize(node) {
+  const sizes = {
+    rect: { w: 120, h: 54 },
+    diamond: { w: 98, h: 98 },
+    start: { w: 120, h: 54 },
+    end: { w: 120, h: 54 }
+  };
+  return sizes[node.type] || sizes.rect;
+}
+
+function center(node) {
+  const size = getNodeSize(node);
+  return { x: node.x + size.w / 2, y: node.y + size.h / 2 };
+}
+
+function edgeBoundaryPoint(node, targetPoint) {
+  const size = getNodeSize(node);
+  const c = center(node);
+  const dx = targetPoint.x - c.x || 0.001;
+  const dy = targetPoint.y - c.y || 0.001;
+  const halfW = size.w / 2;
+  const halfH = size.h / 2;
+
+  if (node.type === 'diamond') {
+    const scale = 1 / ((Math.abs(dx) / halfW) + (Math.abs(dy) / halfH));
+    return {
+      x: c.x + dx * scale,
+      y: c.y + dy * scale
+    };
+  }
+
+  const scale = 1 / Math.max(Math.abs(dx) / halfW, Math.abs(dy) / halfH);
+  return {
+    x: c.x + dx * scale,
+    y: c.y + dy * scale
+  };
+}
+
+function getEdgeKey(edge) {
+  return edge.from + '->' + edge.to;
+}
+
+function updateMiniMap() {
+  if (!miniMap) return;
+  if (!nodes.length) {
+    miniMap.innerHTML = '';
+    return;
+  }
+  const padding = 12;
+  const bounds = nodes.reduce((acc, node) => {
+    const size = getNodeSize(node);
+    acc.minX = Math.min(acc.minX, node.x);
+    acc.minY = Math.min(acc.minY, node.y);
+    acc.maxX = Math.max(acc.maxX, node.x + size.w);
+    acc.maxY = Math.max(acc.maxY, node.y + size.h);
+    return acc;
+  }, { minX: Infinity, minY: Infinity, maxX: 0, maxY: 0 });
+  const width = Math.max(1, bounds.maxX - bounds.minX);
+  const height = Math.max(1, bounds.maxY - bounds.minY);
+  const scale = Math.min((140 - padding * 2) / width, (96 - padding * 2) / height);
+  const svg = [];
+  svg.push(`<svg viewBox="0 0 140 96" xmlns="http://www.w3.org/2000/svg">`);
+  svg.push('<rect x="0" y="0" width="140" height="96" fill="#ffffff"/>');
+  edges.forEach(edge => {
+    const fromNode = nodes.find(node => node.id === edge.from);
+    const toNode = nodes.find(node => node.id === edge.to);
+    if (!fromNode || !toNode) return;
+    const a = center(fromNode);
+    const b = center(toNode);
+    const x1 = padding + (a.x - bounds.minX) * scale;
+    const y1 = padding + (a.y - bounds.minY) * scale;
+    const x2 = padding + (b.x - bounds.minX) * scale;
+    const y2 = padding + (b.y - bounds.minY) * scale;
+    svg.push(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#cbd5e1" stroke-width="1.2"/>`);
+  });
+  nodes.forEach(node => {
+    const size = getNodeSize(node);
+    const x = padding + (node.x - bounds.minX) * scale;
+    const y = padding + (node.y - bounds.minY) * scale;
+    const w = Math.max(10, size.w * scale);
+    const h = Math.max(10, size.h * scale);
+    const theme = node.type === 'start' ? ['#22c55e', '#16a34a'] :
+      node.type === 'end' ? ['#ef4444', '#dc2626'] :
+      node.type === 'diamond' ? ['#facc15', '#eab308'] :
+      ['#3b82f6', '#2563eb'];
+    if (node.type === 'diamond') {
+      const cx = x + w / 2;
+      const cy = y + h / 2;
+      svg.push(`<polygon points="${cx},${y} ${x + w},${cy} ${cx},${y + h} ${x},${cy}" fill="${theme[0]}" stroke="${theme[1]}" stroke-width="1"/>`);
+    } else {
+      const rx = node.type === 'start' || node.type === 'end' ? Math.min(h / 2, 12) : 3;
+      svg.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${theme[0]}" stroke="${theme[1]}" stroke-width="1"/>`);
+    }
+  });
+  svg.push('</svg>');
+  miniMap.innerHTML = svg.join('');
+}
+
+function findEdgeByKey(key) {
+  return edges.find(edge => getEdgeKey(edge) === key);
+}
+
+function getEdgeMidpoint(edge) {
+  const fromNode = nodes.find(node => node.id === edge.from);
+  const toNode = nodes.find(node => node.id === edge.to);
+  if (!fromNode || !toNode) return { x: 0, y: 0 };
+  const startPoint = edgeBoundaryPoint(fromNode, center(toNode));
+  const endPoint = edgeBoundaryPoint(toNode, center(fromNode));
+  return {
+    x: (startPoint.x + endPoint.x) / 2,
+    y: (startPoint.y + endPoint.y) / 2 - 12
+  };
+}
+
+function openEdgeEditor(edge, x, y) {
+  editingEdgeKey = getEdgeKey(edge);
+  edgeEditorInput.value = edge.label || '';
+  edgeEditor.style.display = 'flex';
+  edgeEditor.style.left = Math.max(12, x * zoomLevel - 76) + 'px';
+  edgeEditor.style.top = Math.max(12, y * zoomLevel - 12) + 'px';
+  edgeEditorInput.focus();
+  edgeEditorInput.select();
+}
+
+function closeEdgeEditor() {
+  editingEdgeKey = null;
+  edgeEditor.style.display = 'none';
+}
+
+function saveEdgeEditor() {
+  if (!editingEdgeKey) return;
+  const edge = findEdgeByKey(editingEdgeKey);
+  if (!edge) {
+    closeEdgeEditor();
+    return;
+  }
+  saveState();
+  edge.label = edgeEditorInput.value.trim();
+  closeEdgeEditor();
+  updateAll();
+}
+
+function deleteEdgeByKey(key) {
+  const edge = findEdgeByKey(key);
+  if (!edge) return;
+  saveState();
+  edges = edges.filter(item => getEdgeKey(item) !== key);
+  if (editingEdgeKey === key) closeEdgeEditor();
+  updateAll();
+}
+
+function deleteEditingEdge() {
+  if (!editingEdgeKey) return;
+  deleteEdgeByKey(editingEdgeKey);
+}
+
+function toggleConnectMode() {
+  connectMode = !connectMode;
+  connectSourceId = null;
+  selectedNodeId = null;
+  renderNodes();
+  toast(connectMode ? '请先点起点，再点目标节点' : '已退出连线模式');
+}
+
+function handleConnect(id) {
+  if (!connectSourceId) {
+    connectSourceId = id;
+    selectedNodeId = id;
+    renderNodes();
+    toast('已选起点：' + getText(id) + '，请再点目标节点');
+    return;
+  }
+  if (id === connectSourceId) {
+    connectSourceId = null;
+    selectedNodeId = null;
+    renderNodes();
+    toast('不能连到自己');
+    return;
+  }
+  if (edges.some(edge => edge.from === connectSourceId && edge.to === id)) {
+    toast('这两个节点已经连过线了');
+    return;
+  }
+  saveState();
+  const newEdge = {
+    from: connectSourceId,
+    to: id,
+    label: ''
+  };
+  edges.push(newEdge);
+  const sourceId = connectSourceId;
+  connectSourceId = null;
+  selectedNodeId = null;
+  updateAll();
+  toast('已连线：' + getText(sourceId) + ' → ' + getText(id));
+  const midpoint = getEdgeMidpoint(newEdge);
+  openEdgeEditor(newEdge, midpoint.x, midpoint.y);
+}
+
+function addEdgeFromNode() {
+  if (!contextNodeId) return;
+  hideMenu();
+  if (!connectMode) toggleConnectMode();
+  connectSourceId = contextNodeId;
+  selectedNodeId = contextNodeId;
+  renderNodes();
+  toast('已选起点：' + getText(contextNodeId) + '，请再点目标节点');
+}
+
+function startEdit(el, node) {
+  const textNode = el.querySelector('.node-text');
+  const input = document.createElement('input');
+  let cancelled = false;
+  input.type = 'text';
+  input.className = 'edit-input';
+  input.value = node.text;
+  textNode.replaceWith(input);
+  input.focus();
+  input.select();
+  const done = () => {
+    if (!cancelled) {
+      const nextText = input.value.trim();
+      if (nextText && nextText !== node.text) {
+        saveState();
+        node.text = nextText;
+      }
+    }
+    updateAll();
+  };
+  input.addEventListener('blur', done);
+  input.addEventListener('keydown', event => {
+    if (event.key === 'Enter') input.blur();
+    if (event.key === 'Escape') {
+      cancelled = true;
+      input.blur();
+    }
+  });
+}
+
+function editNodeText() {
+  if (!contextNodeId) return;
+  hideMenu();
+  const node = nodes.find(item => item.id === contextNodeId);
+  const el = canvas.querySelector(`[data-node-id="${contextNodeId}"]`);
+  if (el && node) startEdit(el, node);
+}
+
+function changeNodeColor() {
+  if (!contextNodeId) return;
+  hideMenu();
+  const node = nodes.find(item => item.id === contextNodeId);
+  if (!node) return;
+  const themes = ['', 'theme-blue', 'theme-green', 'theme-yellow', 'theme-red', 'theme-purple'];
+  const names = ['默认', '蓝色', '绿色', '黄色', '红色', '紫色'];
+  const currentIndex = themes.indexOf(node.theme || '');
+  const nextIndex = (currentIndex + 1) % themes.length;
+  saveState();
+  node.theme = themes[nextIndex];
+  updateAll();
+  toast('已切换为' + names[nextIndex] + '主题');
+}
+
+function deleteContextNode() {
+  if (!contextNodeId) return;
+  hideMenu();
+  deleteNodeById(contextNodeId);
+}
+
+function showContextMenu(x, y) {
+  const menu = document.getElementById('contextMenu');
+  menu.style.display = 'block';
+  menu.style.left = x + 'px';
+  menu.style.top = y + 'px';
+}
+
+function hideMenu() {
+  document.getElementById('contextMenu').style.display = 'none';
+}
+
+document.addEventListener('click', () => hideMenu());
+
+// 节点文字里的特殊符号先转成实体编码，防止生成的代码被截断或解析错
+function escapeLabel(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function generateCode() {
+  if (!nodes.length) return '';
+  let code = 'flowchart TD\n';
+  const shapes = {
+    rect: ['[', ']'],
+    diamond: ['{', '}'],
+    start: ['([', '])'],
+    end: ['([', '])']
+  };
+  nodes.forEach(node => {
+    const bracket = shapes[node.type] || ['[', ']'];
+    code += `    ${node.id}${bracket[0]}"${escapeLabel(node.text)}"${bracket[1]}\n`;
+  });
+  edges.forEach(edge => {
+    const label = edge.label ? `|"${escapeLabel(edge.label)}"|` : '';
+    code += `    ${edge.from} -->${label} ${edge.to}\n`;
+  });
+  return code;
+}
+
+function updateCode() {
+  const code = generateCode();
+  document.getElementById('codeDisplay').textContent = code || '画布为空，先拖一个节点进来。';
+}
+
+async function updatePreview() {
+  const body = document.getElementById('previewBody');
+  if (!mermaidAvailable) {
+    body.innerHTML = '<div class="empty-state">预览组件没加载成功<br>检查网络后刷新页面即可，画图和保存不受影响</div>';
+    return;
+  }
+  const code = generateCode();
+  if (!code) {
+    body.innerHTML = '<div class="empty-state">这里会实时显示流程图预览<br>先在中间画布里搭出你的流程</div>';
+    return;
+  }
+  // 用 textContent 注入代码，防止节点文字里的 HTML 被解析
+  const holder = document.createElement('div');
+  holder.className = 'mermaid';
+  holder.id = 'preview-' + (++previewSeq);
+  holder.textContent = code;
+  body.innerHTML = '';
+  body.appendChild(holder);
+  try {
+    await mermaid.run({ nodes: [holder] });
+  } catch (error) {
+    body.innerHTML = `<div class="empty-state">预览失败<br><span style="font-size:11px;color:#ef4444">${esc(error.message)}</span></div>`;
+  }
+}
+
+function updateEmptyState() {
+  canvasEmpty.style.display = nodes.length ? 'none' : '';
+}
+
+function openModal(id) {
+  document.getElementById(id).classList.add('show');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+function showHelp() {
+  openModal('helpModal');
+}
+
+function openImportModal() {
+  document.getElementById('importTextarea').value = '';
+  openModal('importModal');
+  setTimeout(() => document.getElementById('importTextarea').focus(), 0);
+}
+
+function decodeEntities(text) {
+  return text
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&');
+}
+
+// 只承诺还原本工具生成的 flowchart 代码，兼容 -- 文字 --> 写法；不是通用 Mermaid 解析器
+function parseMermaidCode(code) {
+  const idMap = {};
+  const newNodes = [];
+  const rawEdges = [];
+  let skipped = 0;
+  const ensureNode = (rawId, text, type) => {
+    if (idMap[rawId]) return;
+    const theme = type === 'rect' ? 'theme-blue' : type === 'diamond' ? 'theme-yellow' : '';
+    newNodes.push({ id: 'N' + (newNodes.length + 1), type, x: 0, y: 0, text, theme });
+    idMap[rawId] = newNodes[newNodes.length - 1].id;
+  };
+  code.split(/\r?\n/).forEach(line => {
+    const s = line.trim();
+    if (!s || s.startsWith('%%') || /^(flowchart|graph)\b/i.test(s)) return;
+    let m = s.match(/^([\w-]+)\s*-->\s*\|"?([^"|]*?)"?\|\s*([\w-]+)$/);
+    if (m) { rawEdges.push({ from: m[1], to: m[3], label: decodeEntities(m[2]) }); return; }
+    m = s.match(/^([\w-]+)\s*--\s*"?([^->]+?)"?\s*-->\s*([\w-]+)$/);
+    if (m) { rawEdges.push({ from: m[1], to: m[3], label: decodeEntities(m[2].trim()) }); return; }
+    m = s.match(/^([\w-]+)\s*-->\s*([\w-]+)$/);
+    if (m) { rawEdges.push({ from: m[1], to: m[2], label: '' }); return; }
+    m = s.match(/^([\w-]+)\s*\(\[\s*"?(.*?)"?\s*\]\)$/);
+    if (m) {
+      const text = decodeEntities(m[2]);
+      ensureNode(m[1], text, /结束|终止|end/i.test(text) ? 'end' : 'start');
+      return;
+    }
+    m = s.match(/^([\w-]+)\s*\[\s*"?(.*?)"?\s*\]$/);
+    if (m) { ensureNode(m[1], decodeEntities(m[2]), 'rect'); return; }
+    m = s.match(/^([\w-]+)\s*\{\s*"?(.*?)"?\s*\}$/);
+    if (m) { ensureNode(m[1], decodeEntities(m[2]), 'diamond'); return; }
+    skipped += 1;
+  });
+  // 连线引用了未显式声明的节点时，按处理步骤补建
+  rawEdges.forEach(edge => {
+    ensureNode(edge.from, edge.from, 'rect');
+    ensureNode(edge.to, edge.to, 'rect');
+  });
+  const newEdges = [];
+  rawEdges.forEach(edge => {
+    const from = idMap[edge.from];
+    const to = idMap[edge.to];
+    if (from && to && from !== to && !newEdges.some(item => item.from === from && item.to === to)) {
+      newEdges.push({ from, to, label: edge.label });
+    }
+  });
+  return { nodes: newNodes, edges: newEdges, count: newNodes.length, skipped };
+}
+
+function runImport() {
+  const code = document.getElementById('importTextarea').value;
+  if (!code || !code.trim()) {
+    toast('请先粘贴 Mermaid 代码');
+    return;
+  }
+  const result = parseMermaidCode(code);
+  if (!result.nodes.length) {
+    toast('没有识别到有效节点，请检查代码格式');
+    return;
+  }
+  saveState();
+  nodes = result.nodes;
+  edges = result.edges;
+  nodeIdCounter = result.count;
+  selectedNodeId = null;
+  connectSourceId = null;
+  if (!currentDiagramName) {
+    currentDiagramName = '导入的流程图';
+    diagramNameInput.value = currentDiagramName;
+  }
+  closeModal('importModal');
+  closeEdgeEditor();
+  layoutNodes();
+  updateAll();
+  toast(result.skipped ? `已导入 ${result.nodes.length} 个节点，跳过 ${result.skipped} 行` : '导入完成，已自动排列');
+}
+
+function getSavedDiagrams() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem('mermaid_diagrams') || '[]');
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    // 存档数据损坏时当作没有存档，避免整个页面打不开
+    return [];
+  }
+}
+
+function setSavedDiagrams(items) {
+  try {
+    localStorage.setItem('mermaid_diagrams', JSON.stringify(items));
+    return true;
+  } catch (error) {
+    toast('保存失败：浏览器存储空间不足或被禁用');
+    return false;
+  }
+}
+
+function saveDiagram() {
+  if (!nodes.length) {
+    toast('画布还是空的，先画一点内容再保存吧');
+    return;
+  }
+  const fallbackName = '流程图_' + new Date().toISOString().slice(0, 10);
+  const inputName = diagramNameInput.value.trim();
+  const name = inputName || currentDiagramName || fallbackName;
+  currentDiagramName = name;
+  diagramNameInput.value = name;
+  const saved = getSavedDiagrams();
+  const payload = {
+    name,
+    nodes: JSON.parse(JSON.stringify(nodes)),
+    edges: JSON.parse(JSON.stringify(edges)),
+    nodeIdCounter,
+    date: new Date().toISOString()
+  };
+  const existingIndex = saved.findIndex(item => item.name === name);
+  if (existingIndex >= 0) saved[existingIndex] = payload;
+  else saved.unshift(payload);
+  if (!setSavedDiagrams(saved)) return;
+  renderSavedList();
+  toast('已保存：' + name);
+}
+
+function loadDiagram(index) {
+  const saved = getSavedDiagrams();
+  if (!saved[index]) return;
+  saveState();
+  const item = saved[index];
+  nodes = item.nodes;
+  edges = item.edges;
+  nodeIdCounter = item.nodeIdCounter;
+  currentDiagramName = item.name || '';
+  diagramNameInput.value = currentDiagramName;
+  selectedNodeId = null;
+  connectSourceId = null;
+  updateAll();
+  toast('已加载：' + item.name);
+}
+
+function deleteSaved(index) {
+  const saved = getSavedDiagrams();
+  if (!saved[index]) return;
+  const name = saved[index].name;
+  saved.splice(index, 1);
+  setSavedDiagrams(saved);
+  renderSavedList();
+  toast('已删除：' + name);
+}
+
+function renderSavedList() {
+  const container = document.getElementById('savedItems');
+  const empty = document.getElementById('savedEmpty');
+  const saved = getSavedDiagrams();
+  if (!saved.length) {
+    container.innerHTML = '';
+    empty.style.display = '';
+    return;
+  }
+  empty.style.display = 'none';
+  container.innerHTML = saved.map((item, index) => `
+    <div class="saved-item" onclick="loadDiagram(${index})" title="${item.date ? new Date(item.date).toLocaleString() : ''}">
+      <div class="saved-meta">
+        <span class="saved-name">${esc(item.name)}</span>
+      </div>
+      <button class="saved-delete" onclick="event.stopPropagation(); deleteSaved(${index});">×</button>
+    </div>
+  `).join('');
+}
+
+function loadSample() {
+  saveState();
+  nodes = [];
+  edges = [];
+  nodeIdCounter = 0;
+  selectedNodeId = null;
+  connectSourceId = null;
+  currentDiagramName = '示例流程';
+  diagramNameInput.value = currentDiagramName;
+  const mk = (type, x, y, text) => {
+    nodeIdCounter += 1;
+    const id = 'N' + nodeIdCounter;
+    const theme = type === 'rect' ? 'theme-blue' : type === 'diamond' ? 'theme-yellow' : '';
+    nodes.push({ id, type, x, y, text, theme });
+    return id;
+  };
+  const a = mk('start', 300, 70, '开始');
+  const b = mk('rect', 260, 190, '初始化系统');
+  const c = mk('diamond', 270, 330, '准备完成？');
+  const d = mk('rect', 260, 490, '执行任务');
+  const e = mk('end', 300, 650, '结束');
+  edges = [
+    { from: a, to: b, label: '开始' },
+    { from: b, to: c, label: '' },
+    { from: c, to: d, label: '是' },
+    { from: c, to: e, label: '否' },
+    { from: d, to: e, label: '完成' }
+  ];
+  updateAll();
+}
+
+// 有连线时按拓扑深度分层排列，无连线时退化为网格排列
+function layoutNodes() {
+  if (!nodes.length) return;
+  if (!edges.length) {
+    const columns = Math.ceil(Math.sqrt(nodes.length) * 1.6);
+    nodes.forEach((node, index) => {
+      node.x = 100 + (index % columns) * 220;
+      node.y = 80 + Math.floor(index / columns) * 140;
+    });
+    return;
+  }
+  const indegree = {};
+  const adjacency = {};
+  const depth = {};
+  nodes.forEach(node => {
+    indegree[node.id] = 0;
+    adjacency[node.id] = [];
+    depth[node.id] = 0;
+  });
+  edges.forEach(edge => {
+    if (adjacency[edge.from]) adjacency[edge.from].push(edge.to);
+    if (indegree[edge.to] !== undefined) indegree[edge.to] += 1;
+  });
+  const queue = nodes.filter(node => indegree[node.id] === 0).map(node => node.id);
+  const inOrder = new Set();
+  let maxDepth = 0;
+  while (queue.length) {
+    const id = queue.shift();
+    inOrder.add(id);
+    maxDepth = Math.max(maxDepth, depth[id]);
+    adjacency[id].forEach(next => {
+      depth[next] = Math.max(depth[next], depth[id] + 1);
+      indegree[next] -= 1;
+      if (indegree[next] === 0) queue.push(next);
+    });
+  }
+  // 成环的节点追加到最后一层
+  nodes.forEach(node => {
+    if (!inOrder.has(node.id)) depth[node.id] = maxDepth + 1;
+  });
+  const layers = {};
+  nodes.forEach(node => {
+    (layers[depth[node.id]] = layers[depth[node.id]] || []).push(node);
+  });
+  Object.keys(layers).forEach(key => {
+    const row = layers[key];
+    const startX = Math.max(80, 460 - (row.length - 1) * 110);
+    row.forEach((node, index) => {
+      node.x = startX + index * 220;
+      node.y = 80 + Number(key) * 150;
+    });
+  });
+}
+
+function autoLayout() {
+  if (!nodes.length) return;
+  saveState();
+  layoutNodes();
+  updateAll();
+  toast('已自动整理节点位置');
+}
+
+async function exportPNG() {
+  if (!mermaidAvailable) {
+    toast('预览组件没加载成功，检查网络后刷新页面再导出');
+    return;
+  }
+  const code = generateCode();
+  if (!code) {
+    toast('画布为空，没有可以导出的内容');
+    return;
+  }
+  const temp = document.createElement('div');
+  temp.style.cssText = 'position:fixed;left:-9999px;top:0;background:#fff;padding:24px;';
+  // 用 textContent 注入代码，防止节点文字里的 HTML 被解析
+  const holder = document.createElement('div');
+  holder.className = 'mermaid';
+  holder.textContent = code;
+  temp.appendChild(holder);
+  document.body.appendChild(temp);
+  try {
+    await mermaid.run({ nodes: [holder] });
+    const svg = temp.querySelector('svg');
+    if (!svg) throw new Error('未生成 SVG');
+    // 显式写入宽高，否则导出的图片尺寸可能异常
+    const viewBox = svg.viewBox && svg.viewBox.baseVal;
+    if (viewBox && viewBox.width && viewBox.height) {
+      svg.setAttribute('width', viewBox.width);
+      svg.setAttribute('height', viewBox.height);
+    }
+    const svgString = new XMLSerializer().serializeToString(svg);
+    const canvasEl = document.createElement('canvas');
+    const context = canvasEl.getContext('2d');
+    const image = new Image();
+    await new Promise((resolve, reject) => {
+      image.onload = () => {
+        if (!image.width || !image.height) {
+          reject(new Error('图片尺寸异常'));
+          return;
+        }
+        canvasEl.width = image.width * 2;
+        canvasEl.height = image.height * 2;
+        context.scale(2, 2);
+        context.fillStyle = '#ffffff';
+        context.fillRect(0, 0, canvasEl.width, canvasEl.height);
+        context.drawImage(image, 0, 0);
+        // 文件名去掉 Windows 不允许的字符
+        const safeName = ((currentDiagramName || '流程图').replace(/[\\/:*?"<>|]/g, '_').trim()) || '流程图';
+        const link = document.createElement('a');
+        link.download = safeName + '.png';
+        link.href = canvasEl.toDataURL('image/png');
+        link.click();
+        resolve();
+      };
+      image.onerror = reject;
+      image.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
+    });
+    toast('PNG 已导出');
+  } catch (error) {
+    toast('导出失败：' + error.message);
+  } finally {
+    document.body.removeChild(temp);
+  }
+}
+
+function copyCode() {
+  const code = generateCode();
+  if (!code) {
+    toast('目前没有可复制的代码');
+    return;
+  }
+  navigator.clipboard.writeText(code)
+    .then(() => toast('代码已复制到剪贴板'))
+    .catch(() => toast('复制失败，请手动选中复制'));
+}
+
+// 缩放时尽量让鼠标指着的内容停在原地；不传 origin 就以画布可视区中心为基准
+function setZoom(next, origin) {
+  const old = zoomLevel;
+  zoomLevel = Math.min(2, Math.max(0.3, next));
+  if (zoomLevel === old) return;
+  const wrapRect = canvasWrap.getBoundingClientRect();
+  const ox = origin ? origin.x - wrapRect.left : canvasWrap.clientWidth / 2;
+  const oy = origin ? origin.y - wrapRect.top : canvasWrap.clientHeight / 2;
+  const contentX = (canvasWrap.scrollLeft + ox) / old;
+  const contentY = (canvasWrap.scrollTop + oy) / old;
+  canvas.style.transform = `scale(${zoomLevel})`;
+  canvasWrap.scrollLeft = contentX * zoomLevel - ox;
+  canvasWrap.scrollTop = contentY * zoomLevel - oy;
+}
+
+function zoomIn(origin) {
+  setZoom(zoomLevel + 0.1, origin);
+}
+
+function zoomOut(origin) {
+  setZoom(zoomLevel - 0.1, origin);
+}
+
+function zoomReset() {
+  setZoom(1);
+}
+
+function toggleGrid() {
+  gridVisible = !gridVisible;
+  canvasWrap.classList.toggle('grid-off', !gridVisible);
+  document.getElementById('btnGrid').textContent = gridVisible ? '网格：开' : '网格：关';
+}
+
+canvasWrap.addEventListener('wheel', event => {
+  if (!event.ctrlKey) return;
+  event.preventDefault();
+  const origin = { x: event.clientX, y: event.clientY };
+  event.deltaY < 0 ? zoomIn(origin) : zoomOut(origin);
+}, { passive: false });
+
+function esc(value) {
+  const div = document.createElement('div');
+  div.textContent = value;
+  return div.innerHTML;
+}
+
+function getText(id) {
+  const node = nodes.find(item => item.id === id);
+  return node ? node.text : '未知节点';
+}
+
+function toast(message) {
+  const el = document.getElementById('toast');
+  el.textContent = message;
+  el.classList.add('show');
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+function resetDiagramState() {
+  nodes = [];
+  edges = [];
+  nodeIdCounter = 0;
+  selectedNodeId = null;
+  connectSourceId = null;
+  currentDiagramName = '';
+  diagramNameInput.value = '';
+}
+
+function newDiagram() {
+  if (nodes.length && !confirm('确定新建吗？当前内容建议先保存。')) return;
+  saveState();
+  resetDiagramState();
+  closeEdgeEditor();
+  updateAll();
+  toast('已新建空白流程图');
+}
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    closeModal('importModal');
+    closeModal('helpModal');
+    if (connectMode) toggleConnectMode();
+    hideMenu();
+    return;
+  }
+  // 输入框内不响应全局快捷键，防止误删节点、抢撤销
+  const target = event.target;
+  if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return;
+  if (event.ctrlKey && event.key === 'z') {
+    event.preventDefault();
+    undo();
+  }
+  if (event.ctrlKey && event.key === 'y') {
+    event.preventDefault();
+    redo();
+  }
+  if (event.key === 'Delete' && selectedNodeId) {
+    event.preventDefault();
+    deleteNodeById(selectedNodeId);
+  }
+});
+
+document.querySelectorAll('.shape-chip').forEach(button => {
+  button.addEventListener('dragstart', event => {
+    event.dataTransfer.setData('text/plain', button.dataset.type);
+    event.dataTransfer.effectAllowed = 'copy';
+  });
+});
+
+canvasWrap.addEventListener('dragover', event => {
+  event.preventDefault();
+  event.dataTransfer.dropEffect = 'copy';
+  canvasWrap.classList.add('drag-over');
+});
+
+canvasWrap.addEventListener('dragleave', () => {
+  canvasWrap.classList.remove('drag-over');
+});
+
+canvasWrap.addEventListener('drop', event => {
+  event.preventDefault();
+  canvasWrap.classList.remove('drag-over');
+  const type = event.dataTransfer.getData('text/plain');
+  if (!['rect', 'diamond', 'start', 'end'].includes(type)) return;
+  const rect = canvas.getBoundingClientRect();
+  createNode(
+    type,
+    Math.max(0, (event.clientX - rect.left) / zoomLevel - 60),
+    Math.max(0, (event.clientY - rect.top) / zoomLevel - 26)
+  );
+});
+
+diagramNameInput.addEventListener('input', () => {
+  currentDiagramName = diagramNameInput.value.trim();
+});
+
+canvas.addEventListener('click', () => {
+  if (connectMode) {
+    if (connectSourceId) {
+      connectSourceId = null;
+      selectedNodeId = null;
+      renderNodes();
+      toast('已取消起点，点节点可重新开始连线');
+    } else {
+      toggleConnectMode();
+    }
+    return;
+  }
+  selectedNodeId = null;
+  closeEdgeEditor();
+  renderNodes();
+});
+
+canvasWrap.addEventListener('click', event => {
+  if (event.target === canvasWrap) closeEdgeEditor();
+});
+
+edgeEditorInput.addEventListener('keydown', event => {
+  if (event.key === 'Enter') saveEdgeEditor();
+  if (event.key === 'Escape') closeEdgeEditor();
+});
+
+document.querySelectorAll('.modal-mask').forEach(mask => {
+  mask.addEventListener('click', event => {
+    if (event.target === mask) mask.classList.remove('show');
+  });
+});
+
+renderAll();
+updateUndoUI();
+renderSavedList();
+loadSample();
+// 示例流程就是初始状态，清掉加载过程产生的撤销记录
+undoStack = [];
+redoStack = [];
+updateUndoUI();
+if (!mermaidAvailable) {
+  toast('预览组件没加载成功：检查网络后刷新页面');
+}
+</script>
+</body>
+</html>

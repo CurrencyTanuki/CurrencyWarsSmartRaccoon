@@ -1,0 +1,72 @@
+{
+  "generatedAt": "2026-08-09T00:55:19.364Z",
+  "workbookPath": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-015-equipment-icon-name-source-audit\\outputs\\019fe1b0-c12f-7373-b6f1-e42697b1805d\\货币战争装备图标名称来源核对清单.xlsx",
+  "workbookSha256": "ddac4ed99338d455716bc9730874d11c9ea9414179f6a9fbbafb9b29444c54ff",
+  "workbookBytes": 74084,
+  "csvPath": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-015-equipment-icon-name-source-audit\\outputs\\019fe1b0-c12f-7373-b6f1-e42697b1805d\\货币战争装备图标名称来源核对清单.csv",
+  "csvSha256": "6e894ccc19743333bc6adecb920ae01874e78877fe5903cce675d9cd9ba96f4b",
+  "csvBytes": 158953,
+  "equipmentRecords": 157,
+  "uniqueIconHashes": 97,
+  "duplicateClusters": 47,
+  "duplicateMembers": 107,
+  "remoteExactMatches": 157,
+  "individualPageVerified": 9,
+  "categoryConflicts": 2,
+  "hardConflicts": 0,
+  "datasetCoverageConflicts": 1,
+  "unresolvedSourceRows": 2,
+  "summaryFormulaValues": [
+    157,
+    157,
+    157,
+    97,
+    47,
+    107,
+    9,
+    2
+  ],
+  "categoryFormulaTotal": [
+    157,
+    1
+  ],
+  "formulaErrors": [],
+  "previews": [
+    {
+      "name": "审计摘要",
+      "path": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-015-equipment-icon-name-source-audit\\workbook-build\\previews\\审计摘要.png",
+      "sha256": "c26083d1c4a3b5bf4bd6a1468045294a9ad0a55d2deb127c66cd94552c32b948",
+      "bytes": 81596
+    },
+    {
+      "name": "装备清单",
+      "path": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-015-equipment-icon-name-source-audit\\workbook-build\\previews\\装备清单.png",
+      "sha256": "2378a303b01120fbdb328ef97b30c9bfe161e5bf94dc7e003bf789417d19085f",
+      "bytes": 2285839
+    },
+    {
+      "name": "重复图标簇",
+      "path": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-015-equipment-icon-name-source-audit\\workbook-build\\previews\\重复图标簇.png",
+      "sha256": "f2092c6b5ea37ab53227215348c3685b0cea6ff32156939c12dbb3688b1ea20e",
+      "bytes": 703650
+    },
+    {
+      "name": "分类统计",
+      "path": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-015-equipment-icon-name-source-audit\\workbook-build\\previews\\分类统计.png",
+      "sha256": "abdfeec1afc646effc0fd3ba934fbd0703041727f09fcb2f1a8560c7be69d45e",
+      "bytes": 25027
+    },
+    {
+      "name": "来源与边界",
+      "path": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-015-equipment-icon-name-source-audit\\workbook-build\\previews\\来源与边界.png",
+      "sha256": "02b4c65909d243b1e071b3dcba75862ad762ab618b4a622f943d8f16e8f703b3",
+      "bytes": 157572
+    },
+    {
+      "name": "视觉证据",
+      "path": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-015-equipment-icon-name-source-audit\\workbook-build\\previews\\视觉证据.png",
+      "sha256": "668d0fec2a1de005f0c9cff59360933a33583a339e421e6ffcd6ea2d5b351b73",
+      "bytes": 150652
+    }
+  ]
+}

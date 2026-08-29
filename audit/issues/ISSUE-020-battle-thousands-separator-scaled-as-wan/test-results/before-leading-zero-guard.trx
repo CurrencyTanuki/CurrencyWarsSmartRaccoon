@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="52f6ea85-cb5a-4a69-85e6-02d7514830ab" name="zzz81@ZZZ的电脑 2026-08-09 14:38:08" runUser="ZZZ的电脑\zzz81" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-08-09T14:38:08.6875985+08:00" queuing="2026-08-09T14:38:08.6875987+08:00" start="2026-08-09T14:38:06.3019531+08:00" finish="2026-08-09T14:38:08.6930887+08:00" />
+  <TestSettings name="default" id="9a4b6ca0-f8ec-41d1-96f6-753412d0aa9b">
+    <Deployment runDeploymentRoot="zzz81_ZZZ的电脑_2026-08-09_14_38_08" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="50ef3259-195b-432f-8e4f-1a91bd7cf195" testId="324701a6-e2c6-7833-40c9-b7325b2c7bec" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(text: &quot;9215万&quot;, expected: True)" computerName="ZZZ的电脑" duration="00:00:00.0000198" startTime="2026-08-09T14:38:08.6366131+08:00" endTime="2026-08-09T14:38:08.6366131+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="50ef3259-195b-432f-8e4f-1a91bd7cf195" />
+    <UnitTestResult executionId="7c92d2a8-1d4c-47b9-a379-1d432fca6d2b" testId="cc42d316-51b6-1b28-d31a-ee4f1ff7be48" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(text: &quot;1,001&quot;, expected: True)" computerName="ZZZ的电脑" duration="00:00:00.0055362" startTime="2026-08-09T14:38:08.6283025+08:00" endTime="2026-08-09T14:38:08.6283133+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7c92d2a8-1d4c-47b9-a379-1d432fca6d2b" />
+    <UnitTestResult executionId="488cfb19-c8c4-4a71-9e87-840ff6ab78af" testId="7d6436e3-ed97-25e8-c76b-de8a4d47efe1" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(text: &quot;01,234&quot;, expected: False)" computerName="ZZZ的电脑" duration="00:00:00.0001165" startTime="2026-08-09T14:38:08.6368901+08:00" endTime="2026-08-09T14:38:08.6368901+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="488cfb19-c8c4-4a71-9e87-840ff6ab78af">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ&#xD;
+Expected: False&#xD;
+Actual:   True</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(String text, Boolean expected) in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs:line 2288&#xD;
+   at InvokeStub_Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="39be9578-b949-48fb-a5fb-1cc47784e78a" testId="58c9f801-78e8-1088-838c-fdc87704d6cc" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(text: &quot;01&quot;, expected: False)" computerName="ZZZ的电脑" duration="00:00:00.0002268" startTime="2026-08-09T14:38:08.6300029+08:00" endTime="2026-08-09T14:38:08.6300030+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="39be9578-b949-48fb-a5fb-1cc47784e78a" />
+    <UnitTestResult executionId="3c0f6323-23e2-4019-87d8-50813d66aece" testId="678b9d6d-c1a5-edef-c483-35cea4346541" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(text: &quot;1,001 (settlement unit inferred as 万)&quot;, expected: False)" computerName="ZZZ的电脑" duration="00:00:00.0000037" startTime="2026-08-09T14:38:08.6369358+08:00" endTime="2026-08-09T14:38:08.6369359+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3c0f6323-23e2-4019-87d8-50813d66aece" />
+    <UnitTestResult executionId="18316cc5-36e3-45ae-bb72-d1e3aa31adce" testId="7ff0617a-0762-fbb0-20b0-6912600038f5" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(text: &quot;337018.1万&quot;, expected: True)" computerName="ZZZ的电脑" duration="00:00:00.0000076" startTime="2026-08-09T14:38:08.6369182+08:00" endTime="2026-08-09T14:38:08.6369182+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="18316cc5-36e3-45ae-bb72-d1e3aa31adce" />
+    <UnitTestResult executionId="6d104d32-820a-4bee-94fc-7cb92891cc2f" testId="58e3e54b-7e59-ba55-d4f6-120d4b620969" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(text: &quot;0,001&quot;, expected: False)" computerName="ZZZ的电脑" duration="00:00:00.0010203" startTime="2026-08-09T14:38:08.6365222+08:00" endTime="2026-08-09T14:38:08.6365224+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6d104d32-820a-4bee-94fc-7cb92891cc2f">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ&#xD;
+Expected: False&#xD;
+Actual:   True</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(String text, Boolean expected) in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs:line 2288&#xD;
+   at InvokeStub_Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(text: &quot;1,001&quot;, expected: True)" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="cc42d316-51b6-1b28-d31a-ee4f1ff7be48">
+      <Execution id="7c92d2a8-1d4c-47b9-a379-1d432fca6d2b" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="BattleDamageRequiresExplicitScaleBeforeReliableSummation" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(text: &quot;01&quot;, expected: False)" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="58c9f801-78e8-1088-838c-fdc87704d6cc">
+      <Execution id="39be9578-b949-48fb-a5fb-1cc47784e78a" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="BattleDamageRequiresExplicitScaleBeforeReliableSummation" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(text: &quot;1,001 (settlement unit inferred as 万)&quot;, expected: False)" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="678b9d6d-c1a5-edef-c483-35cea4346541">
+      <Execution id="3c0f6323-23e2-4019-87d8-50813d66aece" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="BattleDamageRequiresExplicitScaleBeforeReliableSummation" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(text: &quot;01,234&quot;, expected: False)" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="7d6436e3-ed97-25e8-c76b-de8a4d47efe1">
+      <Execution id="488cfb19-c8c4-4a71-9e87-840ff6ab78af" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="BattleDamageRequiresExplicitScaleBeforeReliableSummation" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(text: &quot;9215万&quot;, expected: True)" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="324701a6-e2c6-7833-40c9-b7325b2c7bec">
+      <Execution id="50ef3259-195b-432f-8e4f-1a91bd7cf195" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="BattleDamageRequiresExplicitScaleBeforeReliableSummation" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(text: &quot;0,001&quot;, expected: False)" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="58e3e54b-7e59-ba55-d4f6-120d4b620969">
+      <Execution id="6d104d32-820a-4bee-94fc-7cb92891cc2f" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="BattleDamageRequiresExplicitScaleBeforeReliableSummation" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(text: &quot;337018.1万&quot;, expected: True)" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="7ff0617a-0762-fbb0-20b0-6912600038f5">
+      <Execution id="18316cc5-36e3-45ae-bb72-d1e3aa31adce" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="BattleDamageRequiresExplicitScaleBeforeReliableSummation" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="324701a6-e2c6-7833-40c9-b7325b2c7bec" executionId="50ef3259-195b-432f-8e4f-1a91bd7cf195" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cc42d316-51b6-1b28-d31a-ee4f1ff7be48" executionId="7c92d2a8-1d4c-47b9-a379-1d432fca6d2b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7d6436e3-ed97-25e8-c76b-de8a4d47efe1" executionId="488cfb19-c8c4-4a71-9e87-840ff6ab78af" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="58c9f801-78e8-1088-838c-fdc87704d6cc" executionId="39be9578-b949-48fb-a5fb-1cc47784e78a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="678b9d6d-c1a5-edef-c483-35cea4346541" executionId="3c0f6323-23e2-4019-87d8-50813d66aece" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7ff0617a-0762-fbb0-20b0-6912600038f5" executionId="18316cc5-36e3-45ae-bb72-d1e3aa31adce" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="58e3e54b-7e59-ba55-d4f6-120d4b620969" executionId="6d104d32-820a-4bee-94fc-7cb92891cc2f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="7" executed="7" passed="5" failed="2" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.29)&#xD;
+[xUnit.net 00:00:01.92]   Discovering: CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:02.01]   Discovered:  CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:02.01]   Starting:    CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:02.05]       Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:02.05]       Expected: False&#xD;
+[xUnit.net 00:00:02.05]       Actual:   True&#xD;
+[xUnit.net 00:00:02.05]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.05]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs(2288,0): at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(String text, Boolean expected)&#xD;
+[xUnit.net 00:00:02.05]            at InvokeStub_Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(Object, Span`1)&#xD;
+[xUnit.net 00:00:02.05]            at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)&#xD;
+[xUnit.net 00:00:02.05]       Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:02.05]       Expected: False&#xD;
+[xUnit.net 00:00:02.05]       Actual:   True&#xD;
+[xUnit.net 00:00:02.05]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.05]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs(2288,0): at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(String text, Boolean expected)&#xD;
+[xUnit.net 00:00:02.05]            at InvokeStub_Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(Object, Span`1)&#xD;
+[xUnit.net 00:00:02.05]            at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)&#xD;
+[xUnit.net 00:00:02.05]   Finished:    CurrencyWarsAssistant.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-09T14:38:08.6370489+08:00">
+        <Text>[xUnit.net 00:00:02.05]     CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(text: "0,001", expected: False) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-09T14:38:08.6372571+08:00">
+        <Text>[xUnit.net 00:00:02.05]     CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleDamageRequiresExplicitScaleBeforeReliableSummation(text: "01,234", expected: False) [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

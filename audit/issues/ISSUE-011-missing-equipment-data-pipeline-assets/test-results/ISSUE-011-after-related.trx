@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="28da98d2-3915-4df1-9b84-63e678f574db" name="zzz81@ZZZ的电脑 2026-08-09 06:21:49" runUser="ZZZ的电脑\zzz81" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-08-09T06:21:49.1044399+08:00" queuing="2026-08-09T06:21:49.1044402+08:00" start="2026-08-09T06:21:47.2976995+08:00" finish="2026-08-09T06:22:06.0523844+08:00" />
+  <TestSettings name="default" id="96c5d78e-f223-4520-8716-f74c6e148bdb">
+    <Deployment runDeploymentRoot="zzz81_ZZZ的电脑_2026-08-09_06_21_49" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="43ae5f6b-aa29-46a7-839d-882f363b47e5" testId="e28afa66-f51c-6a9f-368e-831605d64a97" testName="CurrencyWarsAssistant.Tests.GameDataCatalogTests.FirstPlaneInvestmentStrategyPoolContainsOnlyEligibleEntries" computerName="ZZZ的电脑" duration="00:00:00.0280405" startTime="2026-08-09T06:21:47.9215658+08:00" endTime="2026-08-09T06:21:47.9215662+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="43ae5f6b-aa29-46a7-839d-882f363b47e5" />
+    <UnitTestResult executionId="54a672b0-4751-4e30-981b-a5109faa9f48" testId="e18173bb-1f4a-78ca-ea92-85bf253382b8" testName="CurrencyWarsAssistant.Tests.EquipmentDataPipelineTests.IncompatibleSchemaVersionIsRejectedWithoutRuntimeOutput" computerName="ZZZ的电脑" duration="00:00:00.5783328" startTime="2026-08-09T06:21:48.3612445+08:00" endTime="2026-08-09T06:21:48.3612448+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="54a672b0-4751-4e30-981b-a5109faa9f48" />
+    <UnitTestResult executionId="2cf71a02-25bf-41fa-87f0-dbae97f3ccf2" testId="d21ab79a-770b-997b-fb71-cca492fe1ee9" testName="CurrencyWarsAssistant.Tests.EquipmentDataPipelineTests.MissingCrossFileReferenceIsRejectedWithoutRuntimeOutput" computerName="ZZZ的电脑" duration="00:00:03.9083422" startTime="2026-08-09T06:22:06.0092747+08:00" endTime="2026-08-09T06:22:06.0092752+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2cf71a02-25bf-41fa-87f0-dbae97f3ccf2" />
+    <UnitTestResult executionId="8d9b4e93-484e-416a-a160-e59b7605777e" testId="d06cd3d8-ea91-bd12-0efc-680f4214aaca" testName="CurrencyWarsAssistant.Tests.EquipmentDataPipelineTests.UnknownEnumIsRejectedWithoutRuntimeOutput" computerName="ZZZ的电脑" duration="00:00:01.8262188" startTime="2026-08-09T06:21:58.3175877+08:00" endTime="2026-08-09T06:21:58.3175881+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8d9b4e93-484e-416a-a160-e59b7605777e" />
+    <UnitTestResult executionId="d11403a1-b5d2-4af1-a859-0a4158bb4a52" testId="a9d337e4-c59f-7cbb-e15c-033333ffde10" testName="CurrencyWarsAssistant.Tests.EquipmentDataPipelineTests.SameRawInputProducesByteStableRuntimeAndReportAndPreservesUnknownFields" computerName="ZZZ的电脑" duration="00:00:08.1297999" startTime="2026-08-09T06:21:56.4912059+08:00" endTime="2026-08-09T06:21:56.4912063+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d11403a1-b5d2-4af1-a859-0a4158bb4a52" />
+    <UnitTestResult executionId="eee2f9c7-a95b-497e-95aa-b942552f85ce" testId="219646bb-581f-526c-6575-f39e8084ca40" testName="CurrencyWarsAssistant.Tests.GameDataCatalogTests.LoadsCompleteVersion44DataSet" computerName="ZZZ的电脑" duration="00:00:00.0332531" startTime="2026-08-09T06:21:47.8934001+08:00" endTime="2026-08-09T06:21:47.8934005+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eee2f9c7-a95b-497e-95aa-b942552f85ce" />
+    <UnitTestResult executionId="2cbae514-340c-4765-92e7-ebf85fba0e83" testId="23aa89b2-e8e4-6db8-1172-5211c32706f5" testName="CurrencyWarsAssistant.Tests.EquipmentDataPipelineTests.DuplicateStableIdIsRejectedWithoutRuntimeOutput" computerName="ZZZ的电脑" duration="00:00:03.7830210" startTime="2026-08-09T06:22:02.1007528+08:00" endTime="2026-08-09T06:22:02.1007532+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2cbae514-340c-4765-92e7-ebf85fba0e83" />
+    <UnitTestResult executionId="b4dad5bf-327c-42eb-8a46-183aa7a96136" testId="dd9fada3-3c07-a899-ee5d-76ad5a809d5b" testName="CurrencyWarsAssistant.Tests.GameDataCatalogTests.InvestmentStrategyVersionsMatchBwWikiAppendBatches" computerName="ZZZ的电脑" duration="00:00:00.0756355" startTime="2026-08-09T06:21:47.8605157+08:00" endTime="2026-08-09T06:21:47.8605273+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b4dad5bf-327c-42eb-8a46-183aa7a96136" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="CurrencyWarsAssistant.Tests.EquipmentDataPipelineTests.IncompatibleSchemaVersionIsRejectedWithoutRuntimeOutput" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="e18173bb-1f4a-78ca-ea92-85bf253382b8">
+      <Execution id="54a672b0-4751-4e30-981b-a5109faa9f48" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.EquipmentDataPipelineTests" name="IncompatibleSchemaVersionIsRejectedWithoutRuntimeOutput" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.EquipmentDataPipelineTests.DuplicateStableIdIsRejectedWithoutRuntimeOutput" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="23aa89b2-e8e4-6db8-1172-5211c32706f5">
+      <Execution id="2cbae514-340c-4765-92e7-ebf85fba0e83" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.EquipmentDataPipelineTests" name="DuplicateStableIdIsRejectedWithoutRuntimeOutput" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.EquipmentDataPipelineTests.UnknownEnumIsRejectedWithoutRuntimeOutput" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="d06cd3d8-ea91-bd12-0efc-680f4214aaca">
+      <Execution id="8d9b4e93-484e-416a-a160-e59b7605777e" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.EquipmentDataPipelineTests" name="UnknownEnumIsRejectedWithoutRuntimeOutput" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.GameDataCatalogTests.InvestmentStrategyVersionsMatchBwWikiAppendBatches" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="dd9fada3-3c07-a899-ee5d-76ad5a809d5b">
+      <Execution id="b4dad5bf-327c-42eb-8a46-183aa7a96136" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.GameDataCatalogTests" name="InvestmentStrategyVersionsMatchBwWikiAppendBatches" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.EquipmentDataPipelineTests.MissingCrossFileReferenceIsRejectedWithoutRuntimeOutput" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="d21ab79a-770b-997b-fb71-cca492fe1ee9">
+      <Execution id="2cf71a02-25bf-41fa-87f0-dbae97f3ccf2" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.EquipmentDataPipelineTests" name="MissingCrossFileReferenceIsRejectedWithoutRuntimeOutput" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.EquipmentDataPipelineTests.SameRawInputProducesByteStableRuntimeAndReportAndPreservesUnknownFields" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="a9d337e4-c59f-7cbb-e15c-033333ffde10">
+      <Execution id="d11403a1-b5d2-4af1-a859-0a4158bb4a52" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.EquipmentDataPipelineTests" name="SameRawInputProducesByteStableRuntimeAndReportAndPreservesUnknownFields" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.GameDataCatalogTests.LoadsCompleteVersion44DataSet" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="219646bb-581f-526c-6575-f39e8084ca40">
+      <Execution id="eee2f9c7-a95b-497e-95aa-b942552f85ce" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.GameDataCatalogTests" name="LoadsCompleteVersion44DataSet" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.GameDataCatalogTests.FirstPlaneInvestmentStrategyPoolContainsOnlyEligibleEntries" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="e28afa66-f51c-6a9f-368e-831605d64a97">
+      <Execution id="43ae5f6b-aa29-46a7-839d-882f363b47e5" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.GameDataCatalogTests" name="FirstPlaneInvestmentStrategyPoolContainsOnlyEligibleEntries" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="e28afa66-f51c-6a9f-368e-831605d64a97" executionId="43ae5f6b-aa29-46a7-839d-882f363b47e5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e18173bb-1f4a-78ca-ea92-85bf253382b8" executionId="54a672b0-4751-4e30-981b-a5109faa9f48" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d21ab79a-770b-997b-fb71-cca492fe1ee9" executionId="2cf71a02-25bf-41fa-87f0-dbae97f3ccf2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d06cd3d8-ea91-bd12-0efc-680f4214aaca" executionId="8d9b4e93-484e-416a-a160-e59b7605777e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a9d337e4-c59f-7cbb-e15c-033333ffde10" executionId="d11403a1-b5d2-4af1-a859-0a4158bb4a52" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="219646bb-581f-526c-6575-f39e8084ca40" executionId="eee2f9c7-a95b-497e-95aa-b942552f85ce" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="23aa89b2-e8e4-6db8-1172-5211c32706f5" executionId="2cbae514-340c-4765-92e7-ebf85fba0e83" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dd9fada3-3c07-a899-ee5d-76ad5a809d5b" executionId="b4dad5bf-327c-42eb-8a46-183aa7a96136" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="8" executed="8" passed="8" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.29)&#xD;
+[xUnit.net 00:00:00.06]   Discovering: CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:00.15]   Discovered:  CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:00.15]   Starting:    CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:18.41]   Finished:    CurrencyWarsAssistant.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

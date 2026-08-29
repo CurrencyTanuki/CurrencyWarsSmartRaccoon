@@ -1,0 +1,169 @@
+{
+  "captured_at_utc": "2026-08-09T00:22:42Z",
+  "bwiki_api": {
+    "url": "https://wiki.biligame.com/sr/api.php?action=parse&format=json&oldid=99085&prop=text%7Ctitle%7Crevid",
+    "file": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-015-equipment-icon-name-source-audit\\web-evidence\\bwiki-equipment-oldid-99085.json",
+    "bytes": 918018,
+    "sha256": "70A3133BADECC7D414957DEEA8D8CBC332C69BC3CC450649CF015B1F06BFEB87"
+  },
+  "bwiki_parse": {
+    "revision_id": 99085,
+    "title": "装备一览",
+    "divsort_row_count": 159,
+    "wealth_row_count": 2,
+    "wealth_rows": [
+      "财富\n\n财富\n\n命运改件\n\n  命运改件  \n\n前台强度10%\n后台强度10%\n\n进入新节点时，提供4金币。\n\n\n\n4.4",
+      "财富\n\n财富\n\n其他\n\n无\n\n无\n\n狸财经理教你理财，好好学好好看。\n\n\n\n4.4"
+    ],
+    "expert_invitation_row_count": 1,
+    "expert_invitation_rows": [
+      "专家邀请函\n\n专家邀请函\n\n邀请函\n\n无\n\n无\n\n点击后开启专家邀请函，从至多四名【专家顾问】或【金币】中选择一个获得。\n该道具使用后消失。\n\n投资环境\n\n投资策略\n\n开启晶矿\n\n\n\n4.0"
+    ],
+    "contains_star_emblem_tome": true
+  },
+  "fandom_api": {
+    "url": "https://honkai-star-rail.fandom.com/api.php?action=parse&page=Currency_Wars%3A_Zero-Sum_Game%2FEquipment&prop=text%7Cdisplaytitle%7Crevid&format=json&origin=*",
+    "file": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-015-equipment-icon-name-source-audit\\web-evidence\\fandom-equipment-current.json",
+    "bytes": 2038394,
+    "sha256": "C94A71D7BDF24E73DE4563CBDC62C55996C315DE5A9807A684BF9BE4C6C292F7"
+  },
+  "fandom_parse": {
+    "revision_id": 459160,
+    "display_title": "<span class=\"mw-page-title-main\">Currency Wars: Zero-Sum Game/Equipment</span>",
+    "wealth_occurrences": 2,
+    "contains_destiny_component": true,
+    "contains_other": true
+  },
+  "miyoushe_official": {
+    "v3.8": {
+      "url": "https://www.miyoushe.com/sr/article/71454150",
+      "api_url": "https://bbs-api.miyoushe.com/post/wapi/getPostFull?post_id=71454150",
+      "file": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-015-equipment-icon-name-source-audit\\web-evidence\\miyoushe-v3.8-71454150.json",
+      "bytes": 40428,
+      "sha256": "F1AFA5EA960C351E05C406D849A94F87B05752AC4D50DFF4E3331C2F76F882FA",
+      "author_name": "崩坏星穹铁道",
+      "certification": {
+        "type": 1,
+        "label": "崩坏：星穹铁道官方账号"
+      },
+      "is_official": true,
+      "contains": {
+        "命运圣杯星徽": false,
+        "装备者加入命运圣杯羁绊": false,
+        "垃圾袋": false,
+        "金垃圾袋": false,
+        "专家邀请函": false,
+        "战利品": false,
+        "骇客改件": false,
+        "不占装备栏": false,
+        "欢愉星徽": false,
+        "简易装备": false,
+        "进阶装备": true
+      }
+    },
+    "v4.4": {
+      "url": "https://www.miyoushe.com/sr/article/76641553",
+      "api_url": "https://bbs-api.miyoushe.com/post/wapi/getPostFull?post_id=76641553",
+      "file": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-015-equipment-icon-name-source-audit\\web-evidence\\miyoushe-v4.4-76641553.json",
+      "bytes": 68089,
+      "sha256": "3C788DBEFA3C4EA8F0C6B8146AD4BB7D817207C9E4B1AE3A33A7ED89927A0389",
+      "author_name": "崩坏星穹铁道",
+      "certification": {
+        "type": 1,
+        "label": "崩坏：星穹铁道官方账号"
+      },
+      "is_official": true,
+      "contains": {
+        "命运圣杯星徽": true,
+        "装备者加入命运圣杯羁绊": true,
+        "垃圾袋": false,
+        "金垃圾袋": false,
+        "专家邀请函": false,
+        "战利品": false,
+        "骇客改件": false,
+        "不占装备栏": false,
+        "欢愉星徽": false,
+        "简易装备": false,
+        "进阶装备": true
+      }
+    },
+    "v4.0": {
+      "url": "https://www.miyoushe.com/sr/article/73128301",
+      "api_url": "https://bbs-api.miyoushe.com/post/wapi/getPostFull?post_id=73128301",
+      "file": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-015-equipment-icon-name-source-audit\\web-evidence\\miyoushe-v4.0-73128301.json",
+      "bytes": 58224,
+      "sha256": "707964B83BC4800688076B92F7AC89E17E0883EF78AC41ADE353519D0BC1B84D",
+      "author_name": "崩坏星穹铁道",
+      "certification": {
+        "type": 1,
+        "label": "崩坏：星穹铁道官方账号"
+      },
+      "is_official": true,
+      "contains": {
+        "命运圣杯星徽": false,
+        "装备者加入命运圣杯羁绊": false,
+        "垃圾袋": true,
+        "金垃圾袋": true,
+        "专家邀请函": true,
+        "战利品": true,
+        "骇客改件": false,
+        "不占装备栏": false,
+        "欢愉星徽": false,
+        "简易装备": false,
+        "进阶装备": false
+      }
+    },
+    "v4.2": {
+      "url": "https://www.miyoushe.com/sr/article/74751748",
+      "api_url": "https://bbs-api.miyoushe.com/post/wapi/getPostFull?post_id=74751748",
+      "file": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-015-equipment-icon-name-source-audit\\web-evidence\\miyoushe-v4.2-74751748.json",
+      "bytes": 67236,
+      "sha256": "C8C1A7C8D39D419CDBA603662346AA3B5BB0ACD3C5189148BE2D6E6D9E1C0364",
+      "author_name": "崩坏星穹铁道",
+      "certification": {
+        "type": 1,
+        "label": "崩坏：星穹铁道官方账号"
+      },
+      "is_official": true,
+      "contains": {
+        "命运圣杯星徽": false,
+        "装备者加入命运圣杯羁绊": false,
+        "垃圾袋": true,
+        "金垃圾袋": false,
+        "专家邀请函": false,
+        "战利品": false,
+        "骇客改件": true,
+        "不占装备栏": false,
+        "欢愉星徽": true,
+        "简易装备": true,
+        "进阶装备": true
+      }
+    },
+    "gameplay_guide": {
+      "url": "https://www.miyoushe.com/sr/article/70242029",
+      "api_url": "https://bbs-api.miyoushe.com/post/wapi/getPostFull?post_id=70242029",
+      "file": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-015-equipment-icon-name-source-audit\\web-evidence\\miyoushe-gameplay_guide-70242029.json",
+      "bytes": 30325,
+      "sha256": "AA56B59721E2E5AE996CBE61EBEB5A9AD06A08EE4A3406DD697B3BC10881C632",
+      "author_name": "崩坏星穹铁道",
+      "certification": {
+        "type": 1,
+        "label": "崩坏：星穹铁道官方账号"
+      },
+      "is_official": true,
+      "contains": {
+        "命运圣杯星徽": false,
+        "装备者加入命运圣杯羁绊": false,
+        "垃圾袋": false,
+        "金垃圾袋": false,
+        "专家邀请函": false,
+        "战利品": false,
+        "骇客改件": false,
+        "不占装备栏": false,
+        "欢愉星徽": false,
+        "简易装备": true,
+        "进阶装备": true
+      }
+    }
+  }
+}

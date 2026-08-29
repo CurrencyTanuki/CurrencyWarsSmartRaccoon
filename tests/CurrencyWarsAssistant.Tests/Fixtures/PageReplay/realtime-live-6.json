@@ -1,0 +1,279 @@
+﻿{
+  "schemaVersion": "1.0.0",
+  "applicationVersion": "0.2.833\u002B6cee296a8d65e4d991cecb63a1c5b43847d9a70e",
+  "analysisId": "20260806-050144463-d4af2d03696147e49bfdd82d8f3068d9",
+  "snapshot": {
+    "schemaVersion": "1.0.0",
+    "runId": "run-20260806-125919",
+    "asOf": "2026-08-06T05:01:44.4632905+00:00",
+    "pageId": {
+      "status": "known",
+      "value": "investment_strategy",
+      "confidence": 0.9352877140045166,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050144463.png",
+          "locator": "page-classifier:investment_strategy_title=0.935",
+          "summary": "\u5F53\u524D\u5206\u6790\u6240\u7528\u7684\u539F\u59CB\u622A\u56FE\u3002",
+          "capturedAt": "2026-08-06T05:01:44.4632905+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:01:44.4632905+00:00"
+    },
+    "stage": {
+      "status": "known",
+      "value": "investment_strategy_selection",
+      "confidence": 0.9352877140045166,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050144463.png",
+          "locator": "page-classifier:investment_strategy_title=0.935",
+          "summary": "\u5F53\u524D\u5206\u6790\u6240\u7528\u7684\u539F\u59CB\u622A\u56FE\u3002",
+          "capturedAt": "2026-08-06T05:01:44.4632905+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:01:44.4632905+00:00"
+    },
+    "economy": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "cumulativeSpend": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "\u5355\u5F20\u622A\u56FE\u65E0\u6CD5\u5EFA\u7ACB\u7D2F\u8BA1\u82B1\u8D39\u5386\u53F2"
+      ],
+      "observedAt": "2026-08-06T05:01:44.4632905+00:00"
+    },
+    "health": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "actionPoints": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "currentNodeDamage": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "boardCharacterIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "benchCharacterIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "shopCharacterIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "lineupIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "synergyIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "investmentEnvironmentId": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "investmentStrategyIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "equipmentIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "specialItemIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "inventorySlots": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "expertAdvisorIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "enemyIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "nodes": [],
+    "appliedEventIds": [],
+    "diagnostics": []
+  },
+  "routeCandidates": [
+    {
+      "guideId": "guide-taptap-828363891523190942",
+      "archetypeId": "archetype-himeko-train-shield",
+      "archetypeName": "\u59EC\u5B50\u00B7\u542F\u884C\uFF1A\u5217\u8F66\u540C\u884C\u62A4\u76FE\u6302\u673A\u6D41",
+      "eligible": true,
+      "score": 9,
+      "confidence": 0.15,
+      "components": [
+        {
+          "name": "eligible",
+          "score": 25,
+          "weight": 1,
+          "explanation": "\u901A\u8FC7\u76EE\u6807\u548C\u7248\u672C\u786C\u8FC7\u6EE4"
+        },
+        {
+          "name": "version",
+          "score": 10,
+          "weight": 1,
+          "explanation": "\u653B\u7565\u4E0E\u5F53\u524D\u7248\u672C\u4E00\u81F4"
+        },
+        {
+          "name": "lineup",
+          "score": -8,
+          "weight": 1,
+          "explanation": "\u9635\u5BB9\u672A\u77E5"
+        },
+        {
+          "name": "synergy",
+          "score": -5,
+          "weight": 1,
+          "explanation": "\u7F81\u7ECA\u672A\u77E5"
+        },
+        {
+          "name": "best_rule",
+          "score": -13,
+          "weight": 1,
+          "explanation": "\u7B2C\u4E00\u4F4D\u9762\u5148\u7528\u4F4E\u8D39\u6DF7\u5408\u7F81\u7ECA\u7A33\u5B9A\u8FC7\u6E21"
+        }
+      ],
+      "warnings": [],
+      "missingInformation": [
+        "lineup",
+        "synergy"
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "recommendationId": "no-action",
+      "guideId": "none",
+      "priority": 1,
+      "action": "\u6682\u4E0D\u5EFA\u8BAE\u64CD\u4F5C",
+      "isNoAction": true,
+      "confidence": 1,
+      "reasons": [
+        "\u5F53\u524D\u8BC1\u636E\u4E0D\u8DB3\u4EE5\u652F\u6301\u653B\u7565\u4E2D\u7684\u5177\u4F53\u52A8\u4F5C\u3002"
+      ],
+      "benefits": [],
+      "costs": [],
+      "risks": [
+        "\u5728\u8BC1\u636E\u4E0D\u8DB3\u65F6\u64CD\u4F5C\u53EF\u80FD\u9020\u6210\u4E0D\u53EF\u9006\u7684\u8D44\u6E90\u635F\u5931\u3002"
+      ],
+      "preconditions": [],
+      "invalidatesWhen": [
+        "\u83B7\u5F97\u65B0\u7684\u53EF\u9760\u8BC6\u522B\u8BC1\u636E\u3002"
+      ],
+      "missingInformation": [
+        "lineup",
+        "synergy"
+      ],
+      "sources": []
+    }
+  ],
+  "warnings": [
+    "\u4EE5\u4E0B\u5B57\u6BB5\u5728\u8FD9\u5F20\u622A\u56FE\u4E2D\u4E0D\u53EF\u53EF\u9760\u786E\u5B9A\uFF1Aeconomy(Unknown)\u3001cumulativeSpend(Unknown)\u3001health(Unknown)\u3001actionPoints(Unknown)\u3001damage(Unknown)\u3001board(Unknown)\u3001bench(Unknown)\u3001shop(Unknown)\u3001investmentEnvironment(Unknown)\u3001investmentStrategies(Unknown)\u3001equipment(Unknown)\u3001inventorySlots(Unknown)\u3001specialItems(Unknown)\u3001expertAdvisors(Unknown)\u3001enemies(Unknown)"
+  ],
+  "unknownFields": [
+    "economy(Unknown)",
+    "cumulativeSpend(Unknown)",
+    "health(Unknown)",
+    "actionPoints(Unknown)",
+    "damage(Unknown)",
+    "board(Unknown)",
+    "bench(Unknown)",
+    "shop(Unknown)",
+    "investmentEnvironment(Unknown)",
+    "investmentStrategies(Unknown)",
+    "equipment(Unknown)",
+    "inventorySlots(Unknown)",
+    "specialItems(Unknown)",
+    "expertAdvisors(Unknown)",
+    "enemies(Unknown)"
+  ]
+}

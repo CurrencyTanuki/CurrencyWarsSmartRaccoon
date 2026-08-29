@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="415d2001-39f5-4b5b-9cff-2a5e00174457" name="zzz81@ZZZ的电脑 2026-08-09 16:56:28" runUser="ZZZ的电脑\zzz81" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-08-09T16:56:28.9075112+08:00" queuing="2026-08-09T16:56:28.9075115+08:00" start="2026-08-09T16:56:27.1136276+08:00" finish="2026-08-09T16:56:39.4250034+08:00" />
+  <TestSettings name="default" id="8c9cf2a3-3e10-4ccf-9fec-33e9912ce63e">
+    <Deployment runDeploymentRoot="zzz81_ZZZ的电脑_2026-08-09_16_56_28" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="3c4c3f6f-6d8e-4875-88d8-c74ff4c3f17f" testId="c7b5e68d-74e8-c52a-03ca-f91b9b457d39" testName="CurrencyWarsAssistant.Tests.SilverWolfMatchDiagnosisTests.DiagnoseSilverWolfTemplateMatch" computerName="ZZZ的电脑" duration="00:00:11.7303304" startTime="2026-08-09T16:56:39.3213905+08:00" endTime="2026-08-09T16:56:39.3213906+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3c4c3f6f-6d8e-4875-88d8-c74ff4c3f17f" />
+    <UnitTestResult executionId="fa2aea39-d03b-41f0-b013-3ea5483ab907" testId="e3fc7c71-890e-2979-c8f1-66042bfa62bc" testName="CurrencyWarsAssistant.Tests.SilverWolfSlotLevelDiagnosisTests.DumpFront0SlotMatchScores" computerName="ZZZ的电脑" duration="00:00:00.2580084" startTime="2026-08-09T16:56:27.8482134+08:00" endTime="2026-08-09T16:56:27.8482242+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fa2aea39-d03b-41f0-b013-3ea5483ab907" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="CurrencyWarsAssistant.Tests.SilverWolfMatchDiagnosisTests.DiagnoseSilverWolfTemplateMatch" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="c7b5e68d-74e8-c52a-03ca-f91b9b457d39">
+      <Execution id="3c4c3f6f-6d8e-4875-88d8-c74ff4c3f17f" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.SilverWolfMatchDiagnosisTests" name="DiagnoseSilverWolfTemplateMatch" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.SilverWolfSlotLevelDiagnosisTests.DumpFront0SlotMatchScores" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="e3fc7c71-890e-2979-c8f1-66042bfa62bc">
+      <Execution id="fa2aea39-d03b-41f0-b013-3ea5483ab907" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.SilverWolfSlotLevelDiagnosisTests" name="DumpFront0SlotMatchScores" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="c7b5e68d-74e8-c52a-03ca-f91b9b457d39" executionId="3c4c3f6f-6d8e-4875-88d8-c74ff4c3f17f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e3fc7c71-890e-2979-c8f1-66042bfa62bc" executionId="fa2aea39-d03b-41f0-b013-3ea5483ab907" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.29)&#xD;
+[xUnit.net 00:00:00.06]   Discovering: CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:00.15]   Discovered:  CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:00.15]   Starting:    CurrencyWarsAssistant.Tests&#xD;
+Front#0 state=Recognized conf=0.465 runnerup=0.286 char=currency_wars_character_05 runnerupChar=currency_wars_character_19&#xD;
+����ģ����: 4&#xD;
+[DetectBackSlotCount] centers=754,935,1040,1166&#xD;
+Front#0 char=currency_wars_character_05 conf=0.465 cand=&#xD;
+[xUnit.net 00:00:11.92]   Finished:    CurrencyWarsAssistant.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

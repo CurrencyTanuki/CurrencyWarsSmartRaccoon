@@ -1,0 +1,2014 @@
+# HANDOFF 20260815_0.2.855fix（精简版）
+
+> 工作区 `D:\CWAFix-20260814`，基线 0.2.842。完整过程历史见
+> `ARCHIVE_HANDOFF_20260815_0.2.855fix_完整历史.md`。
+> 本精简版 = 状态快照 + 行动总览。**第七节（总体计划与待办总览）是
+> 识别修复完成后的下一步操作清单，读它就知道接下来做什么。**
+
+---
+## ⛔ 永久红线（用户 2026-08-18 反复强调，禁止再犯）
+1. **佩佩、狸猫、叽米这类特殊单位，在游戏里只可能出现在「后台 6-9 格」，绝不可能在前台/备战席/其它位置。**
+2. **右上角坐标约 (340,295)（1920 参考）那一处出现的单位，是「命途羁绊（欢愉）激活的特殊单位」（如"阿哈"等），
+   该位置【我们目前还没有做适配】——它不是佩佩。** 用户多次指出：即使弹图里那格被识别成佩佩，真相是那是未适配的命途/阿哈单位，不是佩佩。
+3. **识别特殊单位不得"在整个页面到处找"**；佩佩/狸猫只能**由后台阵容识别那条管线**在后台格子内识别（与后台识别齿轮重合），报告里也只能标在后台这一个位置。
+4. 特列（武装箱/聘用书/专家邀请函等特殊物品）只可能出现在备战席，不可能在后台。
+
+---
+## 一、当前状态（2026-08-17）
+
+**4 帧验收修复（A 装备 / B 商店等级 / C 星级 / D 武装箱）已全部完成 ✅**
+
+| 主线 | 内容 | 状态 |
+|---|---|---|
+| A 装备识别 | 三处根因（Back 装备带、槽位 y 对齐、特权同视觉）+ 种类判别 + pHash + 042 和平手枪 `__live` 变体 | ✅ |
+| B 商店等级 | 双布局双候选区 → 密度判别 → 4 字形 → 字形模板 → 14/14 → **OCR 路线定稿**（PpOcr 优先） | ✅ |
+| C 星级 | 三月七 1星被认2星 → `yRatio>=0.5`（仅 BackRight warp 路径） | ✅ |
+| D 武装箱/聘书 | 6 张实机模板 `__live` 接入 + FullFrameColor，005 帧识别成功 conf 0.83/0.85 | ✅ |
+| 槽数派生 | 6+人口-商店等级（用户拍板） | ✅ |
+| 后台识别 | 去 WarpBackRow 同前台路径、那可夏应援索引空间 | ✅ |
+
+**回归基线**：全量 ~892/908（失败全为基线既有：性能预算/HTML/装备旧契约 Prep16/
+特权识别/难度120-123/ExpandedShop/EndToEnd）。星级 47 项、AB 装备、商店等级保持。
+
+---
+
+## 二、历次修复一行摘要（详情见归档）
+
+| 主题 | commit | 结论 |
+|---|---|---|
+| 槽数派生（6+人口-等级） | 2b6b468 | ✅ |
+| 商店等级双布局双候选区 | c900281 | ✅ |
+| 后台识别路径修正（warp 与非 warp 并存、按路径分叉） | cb04333/2709487/bbb355d | ✅ 三帧20格全对 |
+| 槽位矩形间距/起点 bug | 0114206 | ✅ |
+| 爻光星级 2→3 回归修复 | 582fe7f | ✅ |
+| 那可夏 unknown + 应援索引空间 | 88d667d/de04ddd | ✅ 20/20 |
+| 装备三处根因 | 68fa259/50639f7 | ✅ |
+| 装备种类判别 | 978dd21/c3967b8 | ✅ |
+| 装备 pHash 组合距离 | 8ce5123/fad8c28 | ✅ |
+| 042 和平手枪 `__live` 变体 | 33ebec8/2e00275 | ✅ A 类全完成 |
+| 商店等级 0/1→10 误伤 / 4 字形 | a1e384d/34def4c, 0dcf340/a2a3546 | ✅ |
+| 商店等级字形模板 / 3-10 / 14/14 | 50362d5, 3215430/23a0752, 3932fe8 | ✅ |
+| **商店等级 OCR 路线定稿** | 81d5bc8/dd0cfa0 | ✅ 6张真值全对 |
+| C 步三月七星级 2→1 | （C 步） | ✅ yRatio>=0.5 |
+| **D 步武装箱/聘书实机模板** | 375898c/a02c924 | ✅ 005 帧识别成功 |
+
+---
+
+## 三、金标准素材（用户逐格标定）
+
+- 000032（7格 旧版UI）：空/千冶刃/开拓者/爻光/空/空/佩佩；爻光=2星
+- 00023（6格）：丹恒/阮梅/黑塔/真理医生/空/空
+- 01433（7格）：那可夏/阮梅/黑塔/真理医生/银枝/翡翠/空
+- 8/9 槽：用户已验证（9 槽行为与旧代码严格等价）
+- **D 步 005 帧**（fixture `armament_box_bench_05_user_marked.png`）：Bench0/5 = 简易武装箱
+- **验收 4 帧**：clipboard-20260816-132530（远坂凛无装备）、-132957（3a/3b/3c）、
+  -133831（4a等级/4b幸运星/4c乱破/4d武装箱）
+
+---
+
+## 四、关键教训（务必记住）
+
+1. **识别类功能先走 OCR/简单可靠路线**，模板匹配仅作兜底（用户"搞个蛋"；字形模板
+   1.5 天全弃 vs OCR 半天见效）。
+2. **诊断环境必须与生产一致**（Windows OCR vs PpOcr 曾误导结论）。
+3. **不要用千问验证装备种类名称**——千问只描述形状颜色，真值以用户口述/官方数据为准。
+4. **简易装备实机渲染黑底蓝图案 ≠ 官方 wiki 彩色模板**——040-047 basic 装备遇漏
+   识别按 042 同法补 `__live` 变体模板。
+5. **catalog special_item canonical 改写陷阱**："替换原文件"不能让带背景完整卡片作为
+   独立模板被选中（022 聘书图碰巧 0.71 干扰）；必须用 `__live` 变体独立模板路径。
+6. **上下文丢失（用户 2026-08-17 原话）**：软件有时丢最后一段上下文、模型"失忆"——
+   任何重要进展立即写 HANDOFF + remember，新会话先读最新 HANDOFF 再动手。
+7. **全量测试卡炸用户电脑**：只在任务最后跑一次 + 低优先级 + 低并发（`start /low`,
+   `MaxCpuCount=1`）+ 确认用户不用电脑；期间只跑轻量子集。
+8. 全量回归 ~892/908：**基线对照法**（git worktree 检出基线对照）判断是否新回归。
+
+---
+
+## 五、归档与领域说明
+
+- 完整过程（各节根因/修复细节/剩余）：`ARCHIVE_HANDOFF_20260815_0.2.855fix_完整历史.md`
+- 功能领域文档在 `docs/handoffs/`（opening-reroll / reward-stage / vision-recognition /
+  ui-overlay / project-control 等），按领域分离已就位。
+- 更早版本交接（0.2.825/0.2.836/0.2.838/0.2.839/0.2.842）为已交付版本快照，未删。
+
+---
+
+## 六、本章节对照（旧编号 → 新位置）
+
+- 旧文档各节（一~二十）的完整内容 → 归档文档同名节，编号不变。
+- 旧"修复过程"类节（五~十九）→ 压缩为上文第二节一行摘要。
+- **旧第七节"总体计划与待办总览" → 下文第七节，原样保留并更新到最新状态。**
+- nit 级清理项（backSlotCount 死参数、big-digit 诊断证据合并、BackRowPerspectiveGeometry
+  死代码+死测试删除、诊断测试无断言→Skip）未列入待办，见归档对应节。
+
+---
+
+## 六·五、增量识别（帧变化对比）实现程度核查（2026-08-18 新会话接手第一步）
+
+> 用户问"通过对比不同帧之间变化的功能（增量识别）实现了多少"。对当前工作副本
+> `D:\CWAFix-20260814`（基线 0.2.842 重建版）逐行核查 + 与 0.2.854 参照版对比。
+
+**已实现（分析器/接口层，这一层是好的）**：
+1. 帧签名+相似度去重：`Phase2RealtimeFrameSelector.Observe`，`DuplicateFrameThreshold=0.05`。
+2. `ChangeKind`（Unchanged/RegionalChange/SceneTransition）驱动分析间隔。
+3. 心跳复用：`IsRevalidated = diff<0.035` 画面未变则复用上次识别结果。
+4. 分析器字段级跳过：`Phase2IncrementalSelection`（StoreLevel/Health/Population/
+   Formation/Synergy）——`Phase2OperationalScreenshotAnalyzer`。
+5. 增量跳过全量分类：`SituationScreenshotAnalysis` `incremental.KnownPageId` 复用页面。
+6. 阵型槽专用增量重试：`Phase2FormationSlotRetry.BuildSelection`。
+
+**未实现/未接线（缺的主循环驱动层=核心）**：
+1. 帧选择器增量时钟（`IncrementalAnalysisInterval=1500ms`、`lastFullAnalysisAt`、
+   `lastIncrementalAnalysisAt`、`incrementalDue`）——0.2.854 参照版 833-970 行**当前缺失**。
+2. `Phase2SelectedFrame.IsIncremental` 字段——缺失。
+3. worker 失败字段计算 `BuildIncrementalSelection` + `_fieldFailStreaks` 降频
+   （连续3次失败→增量不再重试）——0.2.854 参照版 2306-2363 行**缺失**。
+4. `Phase2RecognitionWorkItem.IncrementalSelection` 入队传参——缺失。
+5. 配套增量时钟测试（`FullRefreshAtTwoSecondCadence` 等）——缺失。
+
+**净效果**：帧变化检测只到"帧级去重 + 分析器有字段级跳过能力"，但"静止画面只补
+上次失败字段"这条增量识别主循环**没真正接起**——静止帧仍走全量识别。8-11 用户验收
+过的阶段4增量识别在重建时**只搬了分析器/接口层，pipeline 驱动层没搬回**。
+这就是第7节待办⑤③（主循环拆阶段/增量识别）仍需做的实际根因。
+
+---
+
+## 六·六、增量识别 pipeline 驱动层搬回实现（2026-08-18，用户拍板"主要就做帧变化检测"）
+
+用户拍板：主要做"不同帧变化检测"（增量识别），其他大改动可不做，可顺带做低风险改动。
+本会话补全缺失的 pipeline 主循环增量驱动层（最小移植，省略 0.2.855 的 generation/
+hybrid/阵容事务保护——当前副本单 worker 串行 + 仅静止帧增量无并发覆盖，安全）。
+
+**改动（src/CurrencyWarsAssistant.Tasks/Phase2RealtimeRecognitionPipeline.cs）**：
+1. `Phase2SelectedFrame`/`Phase2RecognitionWorkItem` 加 `IsIncremental`；
+   `Phase2RecognitionWorkItem` 加 `IncrementalSelection`。
+2. 帧选择器：加 `IncrementalAnalysisInterval=1500ms` + `lastFullAnalysisAt`/
+   `lastIncrementalAnalysisAt` 时钟 + `fullDue`/`incrementalDue` 判定 + 早退分支
+   豁免到期帧；静止帧(ChangeKind==Unchanged)满 1.5s 出增量帧，2s 全量兜底不丢，
+   页面变化(fastPageChanged)走全量非增量。
+3. worker：`BuildIncrementalSelection`（从 LastCompleted 的 OperationalState 算失败
+   字段识别集 + `_fieldFailStreaks` 降频阈值3 + 页面未知/null 哨兵返回 null）；
+   `UpdateFieldFailStreaks`；`AnalyzeAsync(incremental)` 传参。
+4. **review 修正（采纳）**：
+   - 增量帧**不回写** `shared.LastCompleted`/LastPageReliable/LastKnownPage（跳过
+     字段是 Unknown，覆盖会劣化成功字段 → 心跳瞬态未知 + 下一增量重复识别）；最近
+     全量恒为权威；增量结果经 output 广播供下游消费。
+   - 增量识别集**入队时捕获**（基于入队当时 LastCompleted），worker 只用 item 携带的
+     selection；入队为 null 直接跳过（避免出队时 LastCompleted 被后入队关键帧更新、
+     用新页面 KnownPageId 分析旧画面）。
+   - `Phase2IncrementalSelection.BackSlotCount` 由 `int`(默认6) 改 **`int?`(默认null)**，
+     让分析器在增量时走 `Phase2SlotDetector.DetectBackSlotCount(frame)` 现场检测正确
+     槽数（7-9 槽不错位）。
+   - **不采纳** review #3（formation 字段降频不区分槽位）：formation 有专门
+     `formationRetrySlots` 槽位级重试通道，字段级降频不适用（阵容必须补齐才能显示），
+     与参照版一致。
+
+**验证**：数据流 0.811s。新增 3 增量测试（Phase2IncrementalSelectorTests.cs）全绿；
+更新 `StableFiveFpsStreamQueuesAFullRefreshAtTwoSecondCadence`（4→7 帧：4 全量
+[0,2,4,6] + 3 增量，全量节律不破）；轻量 pipeline/queue 单测全绿。`UnclassifiedSettlement
+PredecessorSurvivesQueueStaleDropAtPreparationBoundary` 已用 git worktree 干净 HEAD
+对照确凿证明为 **HEAD 基线既有失败**（与增量无关），全量回归按基线对照计。
+全量回归放本会话最后（低优先级低并发）跑，待出结果更新本节。
+
+**全量回归（2026-08-18，低并发）**：**898 通过 / 15 失败 / 2 跳过**。15 失败全部经
+git worktree 干净 HEAD 基线对照确凿归属既有失败组（Prep16/EndToEnd/Unclassified
+Settlement/Prep37Slot/battle-1-4 伤害/ExpandedShop/UnknownFormation/VisibleStandard
+Equipment/VerifiedPrivilege/PreparationReferences 120&123/LiveCapturedPreparation/
+VisibleShopEquipment/RepeatedPrep 性能预算/KnownSpecialFormationUnit）——**零新增回归**。
+全量回归日志 `_full-regression-20260818.log`。
+
+**交付（2026-08-18，review 已做——子代理 sa_ac8eb3fa6faa 返回 4 should-fix，采纳 3 项
+修正 + 说明 1 项不采纳）**：
+- 运行目录：`D:\CWAFix-20260814\artifacts\publish-0.2.842-fix7\CurrencyWarsAssistant-win-x64\CurrencyWarsAssistant.App.exe`（375MB self-contained，含 coreclr/hostfxr）
+- 已启动（cmd /c start 独立宿主启动，进程稳定存活）
+- 待用户实机验收：增量识别性能（备战/战斗画面静止停留时后台应只补失败字段、识别间隔
+  更快，1.5s 增量 + 2s 全量兜底；页面变化仍全量捕捉），对局识别字段不回归。
+
+**用户实机反馈（2026-08-18，启动报"使用降级识别器"）——非 fix7 引入，既有问题**：
+- 日志 `test-session-20260817-185804/192903.jsonl`（8-17，fix6 时代）已有相同报错：
+  「PP-OCR 预热失败；收集器将继续使用现有有界降级识别器：One or more errors occurred.
+  (> Invalid number of channels in input image: 'VScn::contains(scn)' where 'scn' is 1)」
+- **根因**：OpenCV `VScn::contains(scn)` 报"输入通道数无效，scn=1"——PP-OCR 预热时拿到
+  单通道(BGR→灰度?)图而非 3 通道 BGR。**8-17 fix6 就在，非 fix7（增量识别）引入**。
+- **影响判断**：这是**预热失败**，非识别主流程失败——代码明确"收集器继续用现有有界降级
+  识别器"。8-17 日志证明降级识别器下对局识别仍正常（进入备战节点 1-1、战斗结束检测ok）。
+  依赖 PpOcr 的商店等级等识别走降级路径；增量识别本身（管线调度/只补失败字段/降频）
+  与 PpOcr 无关，仍正常工作，且对"PP-OCR 不可用字段持续失败"有降频兜底。
+- 用户所见"九界降级识别器" = "有界(降级识别器)"的约音记忆。
+- **结论**：可以继续测试（识别走降级路径，功能整体可用）；PP-OCR 预热通道数 bug 是另一
+  个既有问题，单列待修（查 Phase2RecognitionWarmUpService/PpOcrOverload 预热喂图通道数）。
+
+**用户首次实机实测（2026-08-18 晚，run-20260817-193442，fix7）排查结论**：
+- **现象①延迟巨大**：用户打到 1-2 软件仍停 1-1，过一会才批量同步。复盘 events.jsonl：
+  页面事件间隔 19-72s（正常 1.5-2s）；6 分钟仅 16 帧分析；**单帧分析耗时 19-72s**。
+  关键：first 帧(19:34:54)即 `incremental:reused-page`（增量帧）后 19s 才有下一帧——
+  **连增量帧都慢，证明慢是识别/OCR 共性，与增量逻辑本身无关**。根因指向 PP-OCR 预热
+  失败后的慢降级路径（OCR 每字段都慢，全量帧累积几十秒）。节点 1-1、1-2 最终都封存
+  （finalizedNodeIds=[1-1,1-2]，missing=[ ]），无遗漏，纯 UI/封存滞后。
+- **现象②白厄"后台未记录"**：白厄=currency_wars_character_40。复盘 entire run，白厄
+  从未识别成功（bench/board/back 事件均无 c40）；19:37:00 备战席出现 UNKNOWN-1/2 槽，
+  checkpoint formation back 10=unknown-formation-unit-59。**是白厄卡面识别为 unknown
+  （显示"未记录"），非"无人"**——用户看到的槽位实际有白厄但模板匹配失败。待进一步
+  确认白厄实际所在槽位与模板匹配（可能缺白厄 __live 模板/识别率低）。
+- **对增量识别的判断**：延迟根因在 OCR 慢（PP-OCR 挂），非增量识别算法；增量识别无用
+  武之地是因为 worker 被几十秒的全量帧占满。需先解决 PP-OCR 预热/慢 OCR，再谈增量提速。
+
+**问题分类总结（识别 vs 性能，用户点名分开）**：
+- **性能问题（one 根因）**：PP-OCR 预热失败(`Phase2OfflineOcrSet.WarmUpAsync` 喂全 0 哑帧
+  → OpenCV scn=1 错）→ OCR 降级慢 → 单帧 19-72s → 识别积压、UI 滞后、批量补同步。
+  节点封存本身不丢(run 封存 1-1~1-8 零遗漏)。
+- **识别正确性问题（用户实机揪出，多为既有识别率，增量有叠加）**：
+  1. 狸猫 tanuki_112→佩佩 peipei：特殊单位识别某帧起漂移到 peipei，增量帧(INC)复用
+     错误的 peipei 固化并覆盖正确 tanuki——增量复用是帮凶，需防护"错误旧值覆盖正确新值"。
+  2. 前台漏霍霍(c69)：1-7 结算头像 unknown-69、候选误填大黑塔22、conf 0.48，头像无法唯一识别。
+  3. 1-7 多角色头像 unknown（rank3/4/6/7 全 unknown，conf 0.4-0.7），"记成望归人(c41)"=头像错填。
+  4. 后台/备战席区域错乱：checkpoint bench 出现 c55×2+c10（真实是后台位）。
+  5. 冶金炉 special_item_004 全程仅记 1 次（丢失）；普通装备 equipment_153 记 70 次——装备去重/落盘偏。
+- **共性**：头像匹配置信度大面积偏低→大量 unknown/错填；特殊单位识别漂移；装备特殊物品持久化弱。
+
+**下一步**：（用户拍板 A/B/C/D 分步修复，累积制单变量+review）
+- **A【性能恢复·最大拦路虎】PP-OCR 预热 bug**：根因 `Phase2OfflineOcrSet.WarmUpAsync`
+  喂全 0 哑帧→OpenCV `scn=1` 通道错→预热失败→OCR 走慢降级→单帧 19-72s。验收：启动无
+  报错、单帧回 1.5-2s、延迟消失。
+  - **已完成（2026-08-18，真正根因）**：经临时诊断(逐个预热组件抓堆栈)确凿定位
+    `VScn::contains(scn=1)` 真源在 **`OpenCvPhase2IconRecognizer.Prepare`
+    (Phase2IconRecognition.cs:2040 `CvtColor(..., BGR2GRAY)`)**——图标模板用
+    `ImreadModes.Unchanged` 加载，某模板为灰度 PNG(单通道) → 原 `else source.CopyTo(bgr)`
+    保留 1 通道 → BGR2GRAY 对 1 通道抛 OpenCV 通道错 → 图标预热失败(进而整体失败)。
+    **修复**：`Prepare` 通道归一化——4→BGRA2BGR、3→CopyTo、1(灰)→`GRAY2BGR`。
+    曾误诊 PpOcr 哑帧已撤销。编译 0 错误；特殊装备/图标候选测试 8/8 绿。
+    **待用户实机验收：启动不再报"PP-OCR 预热失败/降级识别器" + 打一局不卡**。
+- **B【增量识别副作用防护】**：根因 增量帧"失败字段补认 + 复用上次"把一次识别错误
+  （如狸猫→佩佩）当可靠新值持久化进 tracker/checkpoint，覆盖正确值（LocalRunStore 的
+  collect 主循环对非 heartbeat 帧(含增量帧)都走 tracker+checkpoint 落盘）。修复：增量
+  帧结果不作为"可靠新值"覆盖已确认 Known 值/特殊单位需更高确认。验收：狸猫不被
+  peipei 覆盖、字段稳定。
+- **C【识别正确性逐项】**：C1 头像置信度低→大量 unknown/错填（漏霍霍/1-7望归人），
+  C2 特殊单位狸猫/佩佩漂移(pHash/__live)，C3 后台/备战席区域错乱(坐标/归类校准)，
+  C4 装备去重/冶金炉 special_item_004 丢失。逐条单变量修复。
+- **D【回归+交付】**：全量回归零新增 + review + publish + 实机验收。
+
+**待办/已知**：`Phase2CapturedDatasetReplayTests`(146 行)帧数上限断言可能被增量帧推高，
+全量回归时观察；未跟踪 probe 文件（BatchAllRunsProbe 等）非本会话改动，未动。
+增量识别性能实测收益（静止画面只补失败字段 vs 全量）需用户实机验收：备战/战斗页面
+静止停留时后台应只跑失败字段识别、识别间隔更快（1.5s 增量 + 2s 全量兜底）。
+
+---
+
+## 七、总体计划与待办总览（2026-08-17 更新）
+
+> 识别修复（A装备/B商店等级/C星级/D武装箱）**已全部完成**。以下为
+> **接下来的下一步操作**，按优先级顺序执行。
+
+### 已完成（含 8/16-8/17 链，10 个提交）
+1. 2b6b468 槽数派生公式（6+人口-等级，用户拍板）
+2. c900281 商店等级双布局双候选区
+3. cb04333/2709487 透视矫正路径保留（用户几何未动）
+4. 0114206 透视矫正槽位矩形间距/起点 bug（6/7/8/9 槽套准）
+5. 582fe7f 爻光星级回归修复（星核形状判别）
+6. 88d667d/de04ddd 那可夏 + 应援索引空间
+7. 68fa259/50639f7/978dd21/c3967b8/8ce5123/fad8c28/33ebec8/2e00275 A 类装备全完成
+8. a1e384d/34def4c/0dcf340/a2a3546/50362d5/3215430/23a0752/3932fe8/81d5bc8 B 类商店等级全完成
+9. （C 步）三月七星级 2→1
+10. 375898c/a02c924 D 步武装箱/聘书实机模板
+
+### 待办总览【2026-08-18 已刷新为 1234 步计划】
+**当前执行（用户 2026-08-18 确认的 1234 步 B+C+D 计划）：**
+- **第1步（in_progress）**：P50/P95 回放耗时测量工具已建（tests/Phase2ReplayPerfProbe.cs），
+  用 Fast 分类器贴近生产。备战帧 perf 分阶段：node 237ms/difficulty 257/interest 95/spend 103/
+  **progress 575/named 515/tools 536**/formation 295/equipment 229/总 2356ms。
+  瓶颈：备战帧 progress+named+tools 合计 ~1.6s 占大头。
+- **第2步（pending）**：按数据挑瓶颈落地提速。
+- **第3步（pending）**：C 功能/清理。**第4步（pending）**：全量回归+review+发布。
+
+**已完成（积累到 fix9 已发布，2026-08-18）**：
+C1 伤害榜头像区域90px+只记前6行 / C2+C3 佩佩只在后台+特殊物品只在备战席 /
+C4 冶金炉模板 / A装备 / B商店等级 / C(三月七)星级 / D武装箱 / 灰度预热修复 / 增量识别。
+fix9 交付路径 artifacts/publish-0.2.842-fix9/...exe。
+
+**下方【待办】为历史旧计划（A后台收尾/B提速/C功能/D发布），已并入上方 1234 步，保留备查：**
+
+### 待办（下一步操作，按优先级）
+【A 后台识别收尾】
+1. DetectCallEffect 误判应援（000032 前台 2 槽；阈值 0.10 偏宽 → 0.12-0.15 待收紧）
+2. 星核长条切分防护（review should-fix：warp 桥接真星→长条被误杀；yRatio 仅 2 样本撑）
+【B 识别提速专项（8/11 用户点名最高优先）】
+3. 分析器主循环拆阶段（采集/识别/写入）
+4. 投影 Observe 节流
+5. P50/P95 回放对比工具 + 分类器 300-530ms 优化核实
+【C 功能/清理】
+6. 快速跳过结算→金币/奖励/血量Δ差分回填算法
+7. 3-5 伤害位数（框窄+1000亿上限）
+8. 备战节点号 miss + 1-4 战后血量 None
+9. 冗余"备战行动值"字段+死代码清理（ActionPointsOcrRegion）
+10. 槽位编号呈现（3a：内部绝对索引直接暴露给用户）
+11. 基线失败测试逐项定性（Prep16/特权/难度120-123/ExpandedShop/EndToEnd 等）
+12. 商店等级 10 的 OCR 误读 3（无信号区分，需 10 样本辅助）
+13. D 步扩展：3 档武装箱/聘书区分度仅 1 帧（005）校样，需多帧防互踩
+【D 发布】
+14. 全量回归 + review + 交付验证
+【E 下版本】云游戏适配（本版本不做）
+
+### 金标准素材（用户逐格标定）
+- 000032（7格 旧版UI）：空/千冶刃/开拓者/爻光/空/空/佩佩；爻光=2星
+- 00023（6格）：丹恒/阮梅/黑塔/真理医生/空/空
+- 01433（7格）：那可夏/阮梅/黑塔/真理医生/银枝/翡翠/空
+- 8/9 槽：用户已验证（9 槽行为与旧代码严格等价）
+- D 步 005 帧 fixture（Bench0/5 = 简易武装箱）
+
+---
+
+## 八、C2 特殊单位（狸猫→佩佩）双根因排查定论（2026-08-18）
+
+> 交互背景：用户指出 340,295 那个横向面板位置是**游戏里另一个特殊单位（激活特定羁绊时出现）**，
+> 不是佩佩。要求搞清楚：①软件把狸猫识别成佩佩？②本应在后台的佩佩为何显示到备战席？
+> **结论基于真实 run `run-20260817-193442` 的 completed-run.v1.json 数据 + 代码，非猜测。**
+
+### 数据事实（completed-run.v1.json 导出）
+- 每个相关节点 formation **同时**含：正确的 `special_unit_tanuki_112`（狸猫，多次）
+  **加一个** `zone=special / slotIndex=0 / temporaryId=special-formation-unit-Special-1 / confidence=0.9935` 的
+  `special_unit_peipei`（佩佩）。
+- 该 peipei **不是狸猫变身**，而是识别层**额外多识别出一个**佩佩，与狸猫并存。
+
+### 根因1（识别层，Why1）
+- 独立横向识别器 `OpenCvHorizontalSpecialUnitRecognizer`（Vision）在**固定区域**
+  `PeipeiPanelReferenceBounds=(340,295,240,90)`（参考 1920×1080；实机 2560×1440→约 453,393,320,120）
+  **无条件**搜索 peipei 模板（conf≥0.75 + 粉色面板比≥0.20 即返回佩佩）。
+- 但该位置是**另一个特殊单位**的合法出现位（激活羁绊时出现），识别器把它误判成佩佩（conf 高达 0.9935），
+  并由 `Phase2OperationalScreenshotAnalyzer.AppendHorizontalSpecialUnits` 追加成 `FormationZone.Special` 成员。
+- 每一节点都带 `zone=special` 的 peipei，因为该面板在该 run 持续存在。
+
+### 根因2（渲染层，Why2）——决定了你在节点详情 HTML 看到佩佩在"备战席"
+- 详细历史/实时 HTML 由 `src/CurrencyWarsAssistant.App/gen_report.py` 生成（App 调 python gen_report.py）。
+- line ~648 的 zone 显示区归一化表：
+  ```python
+  zone = {"Front":"Front","Back":"Back","Bench":"Bench","Special":"Bench"}.get(...)
+  ```
+  **`"Special": "Bench"`** → zone=Special 的成员（那个误判佩佩）被渲染进「备战席」栏。
+  于是每个节点详细 HTML 都看到佩佩出现在备战席位置。
+
+### 本轮结论
+- **B 步骤（增量防覆盖）判定不再需要**：该错误不是增量帧覆盖狸猫值，而是识别器在错误位置
+  误判出**多余**的 zone=Special peipei + 渲染层把它当备战席。B 治不了这个，正合用户"不是增量"判断。
+- **修复方向（待用户拍板后才动）**：
+  1. 根因2：gen_report.py 的 `"Special":"Bench"` 映射本身是错的——Special 不是备战席。应改为不落入角色区
+     （归"特殊单位/待定"或过滤），杜绝佩佩出现在备战席。
+  2. 根因1：横向佩佩识别器不应无条件在 (340,295) 找佩佩；应只在佩佩真实出现场景生效（该位置是另一
+     特殊单位，需避免互认）。方案待用户选。
+
+### 待办（下一步，等用户授权）
+- [ ] 用户拍板根因1/根因2 修复方向 → 修 gen_report.py zone 映射（隔离、低风险）
+- [ ] 或 一并处理根因1 识别器误判
+- 未动任何功能代码（本文件仅记录诊断结论）。探针 `tests/.../SpecialUnitPeipeiProbe.cs` 为诊断遗留，
+  提交前清理或转正式测试。
+
+### C2 修复执行进度（2026-08-18，用户授权"修复C"后已动手）
+**已完成的代码改动（工作区未提交，待用户确认 000032 决策点后定稿）**
+1. **显示层（根因2）`src/CurrencyWarsAssistant.App/gen_report.py`**：
+   zone 归一化表去掉 `"Special":"Bench"`，遇到 zone=Special 直接 `continue`（不当作角色渲染进备战席）。
+   **验证**：对真实 run `run-20260817-193442` 生成 HTML——修复前 peipei 3 次（全在"备战席"标签后），
+   修复后 0 次。✓
+2. **识别层（根因1）`src/CurrencyWarsAssistant.Tasks/Phase2OperationalScreenshotAnalyzer.cs`**：
+   移除 789-796 对 `AppendHorizontalSpecialUnits/RecognizeHorizontalSpecialUnitsSafely` 的调用
+   （不再由横向识别器在(340,295)追加 zone=Special 成员）。
+   **验证**：关键帧 114638890 回放（不注入横向识别器）——formation 从 9→8（少了假佩佩），
+   Back slot=10 的狸猫 tanuki_112 仍正确保留。✓
+3. **测试契约同步**（这些测试旧断言锁定被修复的错误行为，已更新为新契约）：
+   - `EndToEndRealFrameRecognitionTests`：`Assert.Contains(formation, Special+peipei)` → `DoesNotContain`。✓
+     （该测试另因**装备识别**基线失败，与本改动无关，属已知基线 EndToEnd 失败）
+   - `UserReferenceGroundTruthTests.HorizontalAndVerticalPeipeiCoexist...` → `BackPeipeiOnlyNoHorizontalSpecialMember`
+     （断言 peipei 只在 Back zone，无 Special）。✓
+   - `HistoricalEquipmentHtmlContractTests`：payload 佩佩 zone "special"→"back"（合法后台竖佩佩仍应在后台区渲染图标）。✓
+
+**⚠️ 阻塞点（需用户拍板后才能定稿 + 决定 USER-REFERENCE 改动去留）**
+- 000032 金标准测试原断言"后台竖佩佩 + 横向(z=Special)佩佩**两个共存**"，我当时建的。我关掉横向识别后它挂了。
+  改成了"只有后台竖佩佩"。
+- 已用 mspaint 弹 `artifacts\diag\000032_annotated.png`（红框标(340,295)横向区）给用户看，
+  请确认：**红框里那个东西到底是不是佩佩？**
+  - 若不是佩佩（是别的特殊单位）→ 移除横向识别正确，CurrentRun 改动定稿。
+  - 若是真佩佩 → 不能直接移除横向识别，需改"区分真佩佩 vs 另一特殊单位"方案（更复杂），UserReference 改动要回滚。
+- 在用户确认前，不继续改代码（避免把金标准改错）。
+
+**改动文件清单（工作区未提交）**：gen_report.py / Phase2OperationalScreenshotAnalyzer.cs /
+EndToEndRealFrameRecognitionTests.cs / HistoricalEquipmentHtmlContractTests.cs / UserReferenceGroundTruthTests.cs
++（上一轮未提交的增量识别/A 修复）Phase2RealtimeRecognitionPipeline.cs / Phase2IconRecognition.cs /
+Phase2RealtimeFrameBufferTests.cs / Phase2IncrementalSelectorTests.cs（untracked）。
+
+### 用户关键澄清 + 决策确认（2026-08-18）
+- 用户点明：**（340,295）那个位置如果出现东西，是「命途羁绊（欢愉）」激活的特殊单位（用户举例"啊哈"），
+  不是佩佩，而且那个位置我们还没做适配**。
+- 数据表查证：`data/4.4` 下无"啊哈/Aha"模板；欢愉命途相关条目为「欢愉星徽」「欢愉契约」（投资环境/策略），
+  与"该位置出现命途特殊单位"一致但不在现有模板中 → **确认该位置不应由横向佩佩识别器认成佩佩**。
+- **决策定稿**：移除横向佩佩识别器在(340,295)的误判是正确的（该位置未适配、目标非佩佩）。
+  gen_report.py 过滤 zone=Special = 正确。UserReference 的 000032 横向佩佩是旧错误假设产物，改 Back-only 正确。
+- 注：那个位置的"命途特殊单位识别"属于另一功能/需素材适配，**本次不扩scope**（用户此前说该位置未适配）。
+
+### review 触发情况 + 自验证兜底（2026-08-18）
+- review subagent 已触发但**定位到了全局工作区的另一仓库**（CodexHandoff-2026...），未能审到
+  D:\CWAFix-20260814 的真实 diff；其"gen_report.py 未加 continue"等具体结论与实际改动不符（我已加）。
+  以本工作区自验证为准。
+- 自验证（D:\CWAFix-20260814）：
+  1. 编译全解决方案 0 警告 0 错误 ✓
+  2. 真实 run(run-20260817-193442) HTML：修复前 peipei 3次全在备战席 → 修复后 0 次 ✓
+  3. 关键帧 114638890 回放（移除横向识别器）：formation 9→8，Back slot=10 狸猫 tanuki_112 保留 ✓
+  4. 000032(UserRef) BackPeipeiOnly 断言通过 ✓；相关识别测试 33 通过（UserRef/HistoricalEquipment/
+     HorizontalSpecial/EvidenceReview）✓；EndToEnd 全组仅剩 1 项既定【装备】基线失败（与peipei无关）✓
+
+### 关键帧回放 + "是否改坏" A/B 对照定论（2026-08-18）
+- **用户问三连**：①修复后能不能识别正确的狸猫？②它在后台几号位？③错误的配对（假佩佩）能不能消失？
+  → 用关键帧 **114638890** 修复后代码回放实测：`Back slot=10 = special_unit_tanuki_112`（狸猫，conf 0.68，
+  后台第 11 位），formation 9→8，**全帧 0 个 peipei**。①②③全部通过。✓
+- **用户质疑"是不是你写代码把它改坏了"**（4 张问题帧里 3 张全场 unknown）。→ A/B 对照实验铁证：
+  对 113811949 / 114638890 / 115536659 三帧，分别用「含横向佩佩识别器（改动前）」vs「不含（修复后）」
+  跑完整分析器，Front/Back/Bench 成员**逐项完全一致（True）**。证明：移除横向佩佩调用**对角色识别零影响**，
+  unknown 非本次改动引入。
+- **澄清**：recbugs-20260817 这批关键帧本来就是从"有问题 run"抽出的**问题帧**（README 已注明 115317510/
+  113811949 就是头像 unknown/区域错乱问题帧）→ 它们 unknown 是**存量 C1 头像置信度问题**（待修），不是改坏的。
+  而正常/金标准帧 **000032** 用修复后代码跑 **10/10 测试通过**（后台角色/佩佩仍正常识别）→ 没改坏正常场景。
+- **下一步（待用户指示）**：攻 **C1 头像置信度**（让 115317510/113811949 等问题帧的 unknown 认出来）——
+  这是回放暴露的现存大头。C3 区域/ C4 装备在 C1 后。
+
+### 关键纠偏：关键帧"全场 unknown"是探针用错页面的假象（2026-08-18）
+- **重大发现**：之前 CKeyframeReplayProbe 对所有关键帧一律用 `preparation_generic` 页面跑，
+  但查原 run analysis 元数据：`113811949` `115536659` 其实是 **reward_shop（商店页）**——
+  商店页本就不识别场上阵容/装备（只识别备战席）。用备战页面跑它们 → 必然全场 unknown（假象）。
+- **修正后用真实页面回放**（A/B 含/不含横向识别器一致）：
+  - `113811949 [reward_shop]`：3 个 Bench 角色正常（银翼/丹恒/帕拉钢）→ 识别正常 ✓
+  - `114638890 [preparation_generic]`：狸猫 Back#10 tanuki_112、银狼/绯英/忘归人/爻光 正常 ✓
+  - `115536659 [reward_shop]`：3 个 Bench 角色正常 ✓
+- **结论**：这批关键帧（用对页面）识别**与用户实测一致（正常）**，前端"全场 unknown"是探针假象。
+  - **C1"头像 unknown"在备战/商店页不是普遍问题**；真实 C1 点是**结算页**部分角色头像置信度不足
+    唯一识别（1-7 结算 rank1 霍霍 unknown-69、candidate 只有大黑塔22，node-1-7-final 真实数据）。
+  - C2/C3（佩佩/狸猫在后台）修复正确：狸猫 Back#10 保留、无横向误判。
+- **待办**：C1 收窄到**结算页头像**（霍霍等）核实/修；C4 冶金炉(equipment_149/010) 落盘核实；
+  C3 区域校验已加(特殊单位只在 Back)待回归。
+
+### 🔨 佩佩/狸猫特殊单位修复【最终完成】- 用户方案落地（2026-08-18）
+**方案（用户确认）**：佩佩/狸猫/叽米只可能出现在后台 → 去掉「全图找佩佩」的横向识别器，
+佩佩/狸猫统一由**后台阵容识别管线**(Back 槽 CharacterCard)识别；报告里只标后台。
+**最终改动**：
+1. `Phase2OperationalScreenshotAnalyzer.cs`：移除 `AppendHorizontalSpecialUnits`/`RecognizeHorizontalSpecialUnitsSafely`
+   的调用——不再由横向识别器在右上角(340,295)阿哈/命途位误判佩佩(conf~0.99)。
+2. `gen_report.py`：zone=Special/Horizontal 成员不再当作备战席角色渲染（历史/旧数据残留也旁路）。
+3. 测试契约同步：UserReference→`BackPeipeiOnlyNoHorizontalSpecialMember`(佩佩只在 Back)、
+   HistoricalEquipmentHtmlContractTests 佩佩 zone special→back、EndToEnd 断言反转为 DoesNotContain(Special 佩佩)。
+**验证**：
+- 关键帧 `114638890`(备战,真实页面)回放：狸猫 Back#10 tanuki_112 保留、**zone=Special peipei 消失**、其余角色/星级正常 ✓
+- 真实 run HTML：peipei 出现 3 次(备战席)→ 0 次 ✓
+- UserReference/HistoricalEquipment/Horizontal 21/21 通过；增量/帧缓冲 48 通过(1 既定基线失败)
+- review：core 正确，1 should-fix(EndToEnd 断言)已处理；nit(死代码/`backSlotCount??6` 冗余)可选清理
+- 全解决方案编译 0 错误
+**待用户实机验收**：备战刷出后台特殊单位时，后台格子里佩佩/狸猫正常显示、报告备战席不再冒出佩佩。
+### 🔨 C1 结算/战斗伤害榜头像区域修正【2026-08-18 用户校准后完成】
+**素材**：关键帧 `20260817-115317510.png`（1-7 战斗结算帧，用户肉标每行角色）。
+**真相**：伤害榜头像区域旧 `(0.852,0.232,0.030,0.050)` 偏左上，曾把 rank1 银狼LV999
+误判成大黑塔(conf 0.477<0.48)。用户复核中点=对、但"宽太宽、高太矮"。
+**改动**：
+1. `Phase2RecognitionRegions.BattleDamageAvatar` → 以实测圆心(0.8701,0.2621)为中心的
+   **90px 正方形** `(0.8523,0.2306,0.0352,0.0625)`。OpenCV 扫 70/80/90/100/110px，
+   90px 是波峰：银狼LV999(05) 0.881 大幅领先托帕(16)0.698/银狼(27)0.712，rank1 不再混淆。
+2. `Phase2OperationalScreenshotAnalyzer.ReadBattleDamageAsync` → 伤害榜**只记前 6 行**
+   `Range(0,7)→Range(0,6)`（用户确认：第7行超排行榜 UI 底部只显示半截头像、伤害<1%忽略）。
+**验证**：rank1 银狼LV999 conf 0.477→0.881 known ✓；row4 爻光/row6 忘归人 完全正确 ✓；
+row2 神君(仙舟羁绊召唤单位，无模板)/row3 绯英 诚实 unknown（不硬猜）✓；
+battle-damage 相关回归(Phase2BattleOutcomeHealth 等)44/44 通过 ✓。
+**神君机制（2026-08-18 上网确认）**：仙舟羁绊(3/5/7/10档) 召唤【神君】协助单位，
+随仙舟队员行动叠段数、攻击敌方全体造成伤害；**备战页不可见、不占阵容槽，只在战斗伤害榜出现**。
+软件无神君 avatar 模板 → row2 该格诚实显示 unknown（不误判为别的角色）。
+
+### ✅ C4 冶金炉落盘【2026-08-18 用户提供图标后完成】
+**素材**：用户提供 `C:\Users\zzz81\Desktop\冶金炉-BWiki原版.png`（128x128 RGBA 熔炉清晰图标）。
+**根因**：special-item 识别模板目录原仅 6 个（武装箱+聘书），无 special_item_010 → 备战席冶金炉
+识别 unknown → 不进 SpecialItemIds → 报告漏冶金炉。
+**改动**：
+1. 新建 `data/4.4/phase2-icon-templates/special-item/special_item_010__live.png`（冶金炉原图，
+   128x128，FullFrameColor 匹配，由 loader 目录扫描自动加载）。
+2. `Phase2OperationalScreenshotAnalyzer.BenchSpecialItemTemplateIds` 加 `special_item_010`；
+   `BenchSpecialItemCatalogNames` 加 `["special_item_010"]=("special_item_010","冶金炉")`。
+**验证**：临时探针 C4MetallFurnaceProbe —— ①catalog 加载到 special_item_010 ✓
+②bench-special-item 过滤后含 010 ✓ ③冶金炉原图自匹配 conf=**1.000** IsKnown ✓
+④区分 main 巨大：top1=1.000 vs 最近聘书022=0.481（margin 0.519，远超 0.025）→ 可靠唯一识别 ✓
+回归：特殊物品/武装箱/装备HTML契约/UserReference 24/24 通过 ✓（未破坏现有识别）。
+**待端到端验证**（局限，如实说明）：模板是 BWiki 原图(128x128 深褐底纯图标)，而现有 __live
+模板是游戏实机截图(182x155 蓝渐变+"开启"字)。冶金炉在**真实游戏备战席槽**是否能被该模板
+匹配，需一张实际出现冶金炉的截图端到端回放确认；暂无该图的 run。
+
+**review 处理（2026-08-18）**：子代理指出 ConfirmedRegionsScaleInsideSixteenByNineFrames 断言
+`avatar.Right<=damage.X` 因新头像框右缘 0.8875>数值区左缘 0.883 必红。经用户实机确认：伤害榜头像框
+与右侧数字本游戏就紧贴/微重叠约9px(OCR仍读全数字)。已按用户选择"保持贴合头像、同步测试断言"更新
+该断言为头像框右缘不越数字区右界。nit(横向识别器死代码、冶金炉保护栏)记录待办。C1 区域+只记6行
++Peipei修复全链路 compiled clean。
+### 📦 fix9 发布（2026-08-18）
+**完整交付路径**：`D:\CWAFix-20260814\artifacts\publish-0.2.842-fix9\CurrencyWarsAssistant-win-x64\CurrencyWarsAssistant.App.exe`
+（self-contained 375MB，297 文件，已验证含 special_item_010 冶金炉模板。）
+**本次包含**：佩佩/狸猫只在后台（移除横向识别器+报告只标后台）+ C1 伤害榜头像区域
+90px 正方形+只记前6行 + C4 冶金炉模板接入 + 灰度单通道预热修复(A) + 增量识别。
+**关键回归**：C 相关 63/64 通过（唯一失败=已知基线 prep37 银狼装备精度），
+BenchSpecialItem/ConfirmedRegions/UserReference/HistoricalEquipment/Incremental 全绿。
+**待用户实机验收**：①备战/伤害榜刷出后台特殊单位时后台格子显示正常、备战席不再冒假佩佩；
+②伤害榜 rank1-6 显示角色正确；③备战席出现冶金炉时报告能记录到。
+
+### 🚀 B 提速专项 + C 功能 + D 发布（1234 步计划，2026-08-18 启动）
+**用户确认计划**：1) P50/P95 回放耗时测量工具 → 2) 按数据挑瓶颈提速 → 3) C 功能/清理 →
+4) 全量回归+review+发布交付。第3步用户强调"B和C做完了才发布"。
+**1 步进度**：已建临时工具 `tests/Phase2ReplayPerfProbe.cs`（遍历 run-20260817-193442/
+screenshots 125 帧，逐帧 AnalyzeAsync 量总耗时，输出 P50/P95/MAX/avg，按页面分组）。
+**SMOKE 基线（12 帧，带 pageClassifier 贴近生产）**：avg 1567ms / P50 1821ms / P95 2480ms。
+初查：Battle 帧 800-990ms、Main 273ms(快)、Preparation 2172ms、**Unknown 页面帧 1820-2480ms(慢)
+为主要拖累**——页面分类成 Unknown 时分析器走慢兜底路径。全量 125 帧基线正在跑。
+**1 步全量基线（125 帧，run-20260817-193442，带 pageClassifier 贴近生产）**：
+- ALL：avg 1892ms / P50 2125ms / P95 3058ms / MAX 4676ms
+- 前40帧：avg 2218ms / P95 3697ms；40-80帧：avg 3161ms / P95 7142ms / MAX 8769ms（最慢段）
+- 页面分布：Battle 79 / Unknown 61 / Supply 49 / Prep 20 / BattleSettlement 5 / Main 3
+- **瓶颈指向：Unknown 页面帧(61次)普遍 1.8-2.5s 是主要拖累**（分类成 Unknown → 分析器慢兜底路径）；
+  正常帧不少也在 1.5-3s，P95 达 7.1s（40-80 段）。
+- **注**：此为逐帧冷测基线（无增量跳过/无状态复用）；真实软件运行时增量识别会跳过大量帧，体验可能优于此冷基线。
+**1 步最终基线（生产贴近：Fast 分类器预判页 + 传 pageId + analyzer 内 pageClassifier:null，125 帧）**：
+- ALL：avg 1724ms / P50 1757ms / P95 2786ms / MAX 5684ms
+- 按页面类型：unknown n=75 avg 2629ms(max5684) | preparation n=20 avg2229 | investment n=2 2218 |
+  enemy_overview n=6 2067 | reward_shop n=49 1663 | battle_generic n=57 **419** | challenge 280 | home 0
+- **瓶颈1（最大）**：unknown 帧 75 次 avg 2.6s——analyzer 对 unknown 页面走
+  pageClassifier=null 时触发 5 区域 OCR fallback 判页（SettlementTitle/BattleDamageHeader/
+  PreparationNode/BattleNodeIdentity/BattleActionIndicator）。生产 analyzer 实际注入了
+  IGamePageClassifier（App.xaml.cs:283）做 Template 兜底，unknown 帧是否仍 2.6s 需实测确认。
+- **瓶颈2**：可识别备战/商店帧全量成本 1.7-2.2s（preparation 最重，分阶段 progress575/
+  named515/tools536）。battle 帧识别成功仅 419ms（快）。
+- **第2步方向待用户拍板**：优化 unknown 帧判页（生产 pageClassifier 兜底是否已缓解/
+  5区域OCRfallback 是否应避免）+ 备战帧 progress/named/tools 三个 reader 降耗时。
+**1 步最终测量（125 帧生产贴近）：**
+- Fast 分类器独立耗时：avg 254ms / P50 252 / P95 284 / MAX 313 → **远低于 HANDOFF ⑦ 记的 300-530ms，
+  分类器本身已达标，无需为分类器提速**。
+- 全量识别（生产贴近，Fast 预判页 + analyzer 内 pageClassifier 兜底）：avg 1873ms / P50 1820 / P95 3258 / MAX 6040。
+- 各页面全量成本：unknown avg 3.0s(75帧) | preparation 2.34s | investment 2.73 | enemy 2.86 |
+  reward_shop 1.70 | battle 421ms | challenge 284ms。
+- **关键机制澄清**：pipeline 对 unknown 页增量帧直接 continue 跳过（Phase2RealtimeRecognitionPipeline
+  line 1268-1272），由 2s 全量兜底；所以 unknown 帧真实成本=每 2s 一次 ~3s，非每帧。
+- **第2步瓶颈结论**：瓶颈不在 Fast 分类器（已达标），而在"全量识别 1.8s/帧"内的高成本字段
+  （备战帧 progress≈575/named≈515/tools≈536ms 最重；battle 帧已快 421ms）。
+  优化动作（动识别器/字段）涉及识别正确性，待用户拍板方向再动手。
+
+### 🚀 2 步成果（2026-08-18）：增量识别覆盖补强【已完成并验证】
+**背景**：用户提出——局内不该每帧全量识别，应"低识别变化区域、只重识别变化/失败的字段"。
+**审计发现缺口**：`Phase2IncrementalFields` 原只有 5 字段(Health/StoreLevel/Population/Formation/
+Synergy)；而 node/difficulty/interest/spend/progress/tools 这 6 个 OCR 字段在增量帧仍每次全量
+重读(约 1.5s)，装备/库存/商店等级已跳但这几项没跳。
+**改动**：
+1. Phase2IncrementalFields 加 5 常量(difficulty/interest/spend/progress/tools)。
+2. `Phase2RealtimeRecognitionPipeline.BuildIncrementalSelection`：这 5 字段按"上次失败才加入
+   recognize 重试"；`UpdateFieldFailStreaks` 纳入 fail-streak。
+3. analyzer 各 reader 加 `ShouldSkipIncrementField`(增量帧&字段已成功 → SkipTimed 保留上次值)。
+4. **Node 不放增量跳过**（review 建议：Node 是 StateTracker 页面/战斗边界锚点、消费面广，
+   Stale 化风险高，保持全量读取）。
+**验证（探针）**：全量帧全字段读；增量帧 A(difficulty 失败)只重试 difficulty(37.9ms)、其余
+interest/progress/tools 全 0ms 跳过；增量帧 B(tools 失败)只重试 tools。**只读失败字段、成功跳过，
+符合用户"只识别变化/失败部分"目标。** 增量相关测试 37/38 通过(唯一失败=既有基线
+UnclassifiedSettlement)。review 已过(Node 保守处理)。
+
+**2 步 review 补强（2026-08-18）**：
+- **_fieldFailStreaks 并发锁修复**（review should-fix）：producer(Enqueue→BuildIncrementalSelection)
+  读 + worker(全量帧→UpdateFieldFailStreaks) 写同一个非并发 Dictionary，有枚举中修改/撕裂风险。
+  已加 `_fieldFailStreakLock` 保护两处读写。增量相关测试 37/38 通过(唯一失败=既有基线)。
+- **C11：删除 `SituationScreenshotAnalysis.ActionPointsOcrRegion` 死常量**（全仓无源码引用，
+  仅 HANDOFF 文档提及，删除零影响）。actionPoints 字段本身仍被 ChallengeReportModel/
+  HistoricalDashboardProjection/LiveCollectionService 消费，保留。
+- 注：SituationScreenshotAnalysis 整个类无调用者（旧即时分析器），但 HANDOFF 仅要求清该常量，
+  不扩大删类（避免隐藏依赖风险）。
+
+### ⚡ unknown 帧 OCR fallback 节流优化【2026-08-19 完成】
+**用户方案**：Fast 分类 unknown → 不做任何操作；确保 Fast 分类不把已知帧误选为 unknown。
+**审计结论**：
+- Fast 分类确实会误判：75 个 Fast-unknown 帧里 21 个是已知页面（Template 能救回）、54 个
+  Template 也 unknown，其中 18 个（33%）OCR fallback 能救回。→ 不能直接跳过（会漏识别）。
+- unknown 帧真实成本 = 两级判页：Template~120ms + OCR fallback~2.5s。真 unknown 帧(约2/3)
+  白花 2.5s OCR fallback —— 这是"分析跟不上进展/积压"主因。
+**改动**：`Phase2OperationalScreenshotAnalyzer.DetectPageFamilyAsync` 加 OCR fallback 节流
+（`OcrFallbackThrottle`=2s）：Template 判 unknown 的帧，2s 内只跑一次 OCR fallback，其余
+直接返回 Unknown 快速跳过。确保"挑战结束"等兜底判页最迟 2s 生效。
+**验证**：判页/结算/页面系列测试 56/57 通过(唯一失败=既有基线 UnclassifiedSettlement)；
+unknown 帧从"每帧 2.5s OCR fallback"降为"每 2s 一次"，连续帧前几帧 333-354ms（节流命中），
+2s 窗口过期帧仍做兜底识别（不丢正确性）。临时探针已删。
+
+### 📦 fix10 发布（2026-08-19）
+**完整交付路径**：`D:\CWAFix-20260814\artifacts\publish-0.2.842-fix10\CurrencyWarsAssistant-win-x64\CurrencyWarsAssistant.App.exe`
+（self-contained 375MB，297 文件，已验证含 special_item_010 冶金炉模板。）
+**本次新增（相对 fix9）**：
+1. B 提速增量覆盖补强：difficulty/interest/spend/progress/tools 5 字段接入"成功后跳过、
+   失败才重试"（Node 因消费面广保守不放）。实测增量帧只读失败字段，其余 0ms。
+2. unknown 帧 OCR fallback 判页节流（2s 一次）：Fix unknown 帧从每帧 2.5s→每 2s 一次。
+3. `_fieldFailStreaks` 并发锁修复（review should-fix：producer 读+worker 写竞态）。
+4. C11 死代码清理：删 `SituationScreenshotAnalysis.ActionPointsOcrRegion`。
+5. 附带先前改动：佩佩/狸猫只在后台、C1 伤害榜头像 90px、冶金炉模板、只记6行、灰度预热。
+**回归**：UserReference(000032)/HistoricalEquipment/BenchSpecialItem/KnownSpecial 48/49 通过
+（唯一失败=既有基线 KnownSpecial）。增量/判页/结算 56/57（唯一失败=既有基线）。
+**待用户实机验收**：①对局是否更流畅、不积压 ②备战/伤害榜识别正常 ③冶金炉出现时报告能记录。
+
+### 🔍 run-20260818-163242 全量根因审计（2026-08-19，用户打回重新审代码）
+用户实机 (fix10) 反馈 5 大类：前台误判白厄、后台0条、结算伤害丢了、物品栏重复、猎星人无中生有。
+**A/B/C/D 类（角色/装备/结算）修复——fix9/fix10 完全相同（未碰 CharacterCardRecognizer），回退 fix9 无用，须精修。**
+
+**S1/S2 前/后台角色误判白厄 — 根因 100% 闭环**（比"背景蓝"更深）：
+- 识别器 standard 路径 front0=阿格莱雅 conf0.57 ✓；excludeSides(应援) 路径 → 白厄 conf0.56 ✗
+- 生产 `Phase2OperationalScreenshotAnalyzer` line 759-765 **无条件**对 board 槽做 `DetectCallEffect(应援检测)`，**没设 `_callEffectEnabled` 门控**
+- `MeasureCallEffectStrength`(line 1776) 检测"卡槽左右两侧 20%宽 40-95%高"亮蓝 → **front0 左右两侧正是货币战争背景蓝** → 误判应援 → front0 走 excludeSides → Match detail 区被裁剪 → 阿格莱雅漂移成白厄
+- **修复方向（用户待确认）**：line759 应援检测加开拓者门控；或修 excludeSides Match detail 区；难点=_callEffectEnabled 在 ObserveFormation(line2116) 才设。
+
+**S3 结算伤害**：数字完整读入 rows(line1435-1453)，但 line1479 `rows.All(CanDriveDecisions)` 头像 unknown→false → 整榜 PartialUnknown → 不落盘。修复=伤害与头像解耦。
+
+**S4 物品栏**：现 `InventoryIconSlots`=EvenSlots(0.940,0.115,...) 右侧纵向7槽框错位→042和平手枪重复。已确认 v4 网格(用户"这版很好")：R列右5下5 + L列紧贴(与R同y) + 第一排特殊物品栏(5种)。待实施。
+
+**S5 猎星人**：`DetectHunterStar`(line1876) 全卡无条件检测(含备战席bench)，金色阈值`r>=150,g>=120,r>=b+40`且≥30% → 阿格莱雅(金色系)左上角金色36.8%>30% 误判猎星人；无 zone 约束、无星核猎手羁绊验证。修复=Bench 永不检测 + 徽章验证。
+
+**F 关键帧丢弃（已修）**：32张被丢帧 16 个 battle_generic + 14 个 miss(Unknown) + 1 settlement，fast 判非法关键 → 去重(或)interval 丢。已在 `Phase2RealtimeRecognitionPipeline` 去重(line 620)排除 `battle/结算` 帧 + `SceneTransition` 帧。37/38 帧测试通过(唯一失败=既有基线)。
+
+**S4(物品栏)5种特殊物品 id**：153拆装扳手、155精密拆装扳手、149冶金炉、151好运令牌、154特权赋予卡。
+
+### ✅ S1/S2 前台识别修复完成（2026-08-19，方向2 应援强门控）
+**问题**：front0(阿格莱雅) 被误判白厄/未知；后台0条。
+**根因（实测闭环）**：
+1. 识别器 standard 路径 front0=阿格莱雅(conf0.57)；excludeSides(应援) 路径→白厄(0.56)
+2. 生产 `AnalyzeAsync` line759 `DetectCallEffect`(应援检测) 把 front0 左右两侧背景蓝（left蓝12-26%）误判成应援棒（银狼真应援 14-18% 不可分）
+3. detect 应援→走 excludeSides→Match detail裁剪→阿格莱雅漂移成白厄
+**修复（方向2）**：应援检测改为【识别后强门控】——先标准识别(cheeredBoardIndices 恒空)→判断是否含开拓者欢愉→仅在【开拓者欢愉在场】才对该帧被 DetectCallEffect 检出的槽用 excludeSides 重识别。无开拓者→全程标准路径。
+**验证**：front0 083742=阿格莱雅 conf0.571、084211 0.579 恢复（fix10基线是白厄/未知）。UserReference/UserReferenceFull/SilverWolf 40/40 通过（fix10基线银狼应援测试本就失败属既基线，非本改引入）。临时验证测试已删。
+**后台(Back) conf 0.495-0.525<0.55 仍待处理**（独立问题，warp 后面识别 conf 不足）。
+**已在工作区**：Phase2OperationalScreenshotAnalyzer 两处（cheeredBoardIndices 恒空 + 应援 gate 重识别）。
+
+### ✅ S3 结算伤害数字与头像解耦（2026-08-19）
+**改动**：`Phase2OperationalScreenshotAnalyzer.ReadSettlementDamageAsync`——原 `identitiesKnown = rows.All(CanDriveDecisions); if (complete && identitiesKnown && !ambiguousScale)` 导致任一行头像 unknown → 整榜 PartialUnknown。改为 `damageScaleResolved = complete && !ambiguousScale`（不看头像），数字读到+尺度明确即 Known，头像 unknown 仅影响该行角色归属（CanDriveDecisions=false 保留 Damage 值），伤害数字照常进榜单/落盘。
+**验证**：Walter/Settlement/HistoricalEquipment/ChallengeReport 45/46 通过（唯一失败=既有基线 UnclassifiedSettlement，非本改）。端到端伤害值需生产 OCR——测试环境单帧 AnalyAsync 对结算帧判页 Unknown（判页依赖生产 OCR 流程），故用既有测试回归代替。
+
+### ✅ S4 物品栏 v4 网格 + 分区遇空停已完成（2026-08-19）
+**问题**：和平手枪(042) 被相邻槽重复识别 2 次（InventoryIconSlots 右列纵向7槽框选错位）。
+**改动**：
+1. `Phase2RecognitionRegions`：新增 v4 网格（InventoryRightColumn R1-7 右5下5 / InventoryLeftColumn L1-7 紧贴R同y / InventoryFirstRowExtras E1-4 第一排横向扩容）。
+2. `ObserveInventory` 重写：第一排特殊(R1+L1+E1.. 从右到左,遇空停,只认特殊) + 下面普通(R2-7 上→下 再 L2-7 上→下,遇空停)。MakeSlotState 按 _inventoryKindById 设 ItemKind。
+**验证（1-6/1-4 关键帧实测）**：SimpleEquipment=equipment_042 从 2 个变 1 个 ✓；SpecialItem=拆装扳手+special_item_004 正确分类。UserReferenceEquipment/HistoricalEquipment/EquipmentStateMerge/Shop/SpecialEquipment/BenchSpecialItem 32/32 回归通过。临时验证测试已删。
+**待实机**：v4 网格对准 + 特殊物品 id。
+
+### ✅ S5 猎星人（进行中）
+
+### ✅ S5 猎星人 zone 约束完成（2026-08-19）
+**改动**：`ObserveFormation` 的 IsHunterStar 赋值 → `zone is not FormationZone.Bench && DetectHunterStar(...)`。备战席(Bench)永不标猎星人（用户规则：后台可、备战席不可）；Front/Back 仍检测。
+**验证**：1-4/1-6 备战席 bench:3 阿格莱雅 hunter=True→False ✓。Prep37 失败=既基线(后台 Back conf0.525<0.55 recognized10, 非S5引入)，银狼Front0 hunter=True正确。
+
+### 📋 5 步修复全部完成（2026-08-19）——待用户验收 + 交付修复报告（不生成 exe）
+F(关键帧不丢) / S1S2(前台应援门控) / S3(结算伤害解耦) / S4(物品栏v4) / S5(猎星人zone) 全部代码完成 + 关键帧自查。
+**已知仍待（独立问题，非本轮引入）**：
+1. 后台(Back) conf 0.495-0.525<0.55 识别不足（S1 后台部分未解决，warp 后面）
+2. 银狼应援 IsCheered 标记错位到爻光（ObserveFormation 独立检测问题，既基线 fix10 就错）
+3. 测试环境单帧 AnalyAsync 结算帧判页 Unknown（判页依赖生产 OCR 流程），S3 端到端伤害值需生产/实机验证
+
+### 🔍 后台识别弱根因：商店等级 stale → 后台格数错（2026-08-19 用户提示验证）
+用户判断"后台槽位数量识别错（人口-商店等级）"正确。
+- run 1-6(084639)：人口=5(known)、storeLevel=stale/4(OCR读不出)、DeriveBackSlotCount=6+(5-4)=7格；DetectBackSlotCount 图像检测=6。
+- 真实若 storeLv=2 → 后台9格；warp 用错格数 → 槽位框错位 → 裁到槽间空隙/背景蓝 → conf低/0条。
+- storeLevel 生产走 PpOcr(storeLevelOcr, App.xaml.cs:282)，但实机 run readStoreLevel=stale(unc:"OCR 买经验/模板 No unambiguous digit")——实机 PpOcr 读不出商店等级。
+- 教训：测试环境若没传 storeLevelOcr 会走 WindowsOfflineOcr，与生产 PpOcr 行为不同(numericOcr/ocr fallback)。
+**待用户提供 run 该节点真实商店等级** → 确认格数差 → 修 storeLevel 识别或 DeriveBackSlotCount 兜底。
+
+### ✅ storeLevel 商店等级识别修复（2026-08-19，用户狠批"修过为何又坏"）
+**问题**：run 实机 storeLevel=stale/unknown（OCR"15/14"被拒）→ DeriveBackSlotCount(人口-storeLevel) 用 stale4 → 后台格数错 → 后台识别弱/0条。
+**根因（两重）**：
+1. PpOcr 把按钮 "Lv.5"→"15"（'L'→'1'），"15"∉3-10 被拒 → Unknown。
+2. 我加的 `StoreLevelMisreadPattern=1([3-6])`（匿名组）但代码用 `m.Groups["digit"]`（命名组）→ 空值 → 解析失败 → 修复不生效。已改命名组 `1(?<digit>[3-6])`。
+**修复**：`ReadStoreLevelAsync` 增加"Lv.x 误读还原"——OCR 读到 1[3-6]（十位1='L'误读，商店等级只有3-6）取个位还原。用普通 static Regex（GeneratedRegex partial 在此环境疑似不回填）存疑已用普通字段。
+**验证**：run 1-6 storeLevel=Known 5（原stale4）、1-3 Known 4。→ 后台格数=6+(5-5)=6（原本7）→ warp 正确 → 后台恢复。
+**教训**：小功能修复注意"错误想当然"（匿名/命名组）、GeneratedRegex vs 普通Regex、测试环境必须传/PpOcr/生产一致。
+
+### ⚠️ S4 物品栏 v4 网格重写已回滚（2026-08-19，引入物品栏回归）
+我的 S4 v4 网格 + ObserveInventory 重写（遇空停+特殊/普通分区）破坏了物品栏**空槽 Empty 标记 + 连续槽位索引**，导致 Phase2OperationalCollection 多个物品栏/装备测试失败（LivePreparationInventory 复现装备重复041丢失/空槽4丢失）。
+**已回滚**：ObserveInventory 恢复原版（HEAD 提取，occupiedIndices + Empty 槽逻辑），Phase2RecognitionRegions 的 v4 网格字段已删。LivePreparationInventory 通过。
+**教训**：用户红线"不把修好的改坏"——物品栏重写破坏了正常结构。和平手枪042重复问题**不能用整体重写解决**，需用不破坏结构的最小方式（后续单独修）。
+**当前 Phase2OperationalCollectionTests 仍 12 失败**（非 S4）：含 KnownSpecial/RepeatedPreparation 已知既基线 + Visible*Equipment/PreparationDifficulty/BattleFrames 等需确认是否既基线（装备/难度/战斗 fixture 类，或 S1/S2 应援门控引入，待对照确认）。
+
+### ✅ 和平手枪042 关键帧判断：已修好（用户指定验收标准）
+用 KeyframeReplayVerifyTests（生产 PpOcr analyzer 对 run-1-6/1-4 关键帧）判断：
+- run 1-6/1-4 SimpleEquipment=042 **count=1**（不再重复）→ 关键帧测试通过 → 和平手枪修好。
+- 同时 storeLevel=Known:5（商店等级修对）。
+### ❌ 后台(Back) 关键帧判断：未修好
+- run 1-6/1-4 Back 仍 back4=unknown conf0.52/0.50(<0.55)。storeLevel 已修(格数对)，但 warp 后台 conf 仍不足。→ 后台还需修（warp 对准/背景蓝，同前台 direction）。
+### 状态
+KeyframeReplayVerifyTests.cs 保留作关键帧判断工具。S4 已彻底回滚(ObserveInventory原版+v4网格删)。修复报告 docs/FIX_REPORT_20260819_5步修复.md。
+
+---
+
+## 🔧 后台颜色惩罚修复 ✅（2026-08-19，用户拍板：第一步 warp 对准 + 方案 A 后台专属降权）
+
+**问题**：后台(Back) warp 槽 conf 0.495~0.525 < 0.55 识别不足（HANDOFF 反复记录的硬骨头）；
+且霍霍被反复误判成开拓者（两个完全不同的角色 cross-角色并列）。
+
+**根因（生产链路 Rank 分解定论，REPORT_20260819_后台颜色惩罚分析.md v2）**：
+1. **warp 后台裁框含卡面边缘能量地块淡淡特效** → 结构分虚低(max 0.53) + 角色间趋同（开拓者 max0.533 vs 霍霍 0.526，跨角色仅差 0.0006）→ 霍霍被开拓者挤掉。
+2. **颜色惩罚雪上加霜**：colorSim 0.815~0.823 触发 grace 0.90 惩罚（扣 0.04），把贴线分压到 0.55 线下。
+3. **A/B 铁证**（生产 Recognizer 本体）：惩罚 0.50→0 只是 conf 0.499→0.542，仍 <0.55 —— **单一改惩罚救不了后台，必须配合内缩**。
+
+**实现（minimal，单变量）**：
+1. `CharacterCardRecognitionOptions` 加 `BackRow` 字段（仅后台 warp 传 true，前台/备战席 false）。
+2. `Recognize` 内：BackRow 时对后台槽用**内缩 6px matchRect** 做角色/模板匹配（剔除边缘特效），**星级检测仍用原 slot**（保护 000032 星级，probe 实证：rect 整体内缩会伤 stars，改为匹配内缩+星级原槽后 000032 星级恢复）。
+3. `Match` 加 backRow 参数：后台用宽松触发线 `BackRowColorSimilarityGrace=0.80`（只惩罚"明显不像"，前台/备战席保留 0.90）。
+4. review should-fix（已处理）：应援槽强制 `BackRow=false` 恢复原惩罚线，避免 0.80 削弱应援污染惩罚导致误判。
+
+**验证**：
+- probe（生产 Recognizer）：后台槽0 从「误判开拓者 0.499/lead0.001」→「正确霍霍 0.538/lead0.022」；两 StarBand 一致。
+- UserReferenceGroundTruthTests **10/10 全绿**（含爻光星级2、欢愉5、后台角色、佩佩无星级）——此前 rect 内缩伤星级问题已修复。
+- SilverWolf 16/16、CharacterCardRecognizer 8/8、KeyframeReplay ✓。
+- **全量 901 通过 / 16 失败 / 2 跳过**：16 失败全为 HANDOFF 既定失败组（EndToEnd/ExpandedShop/IconCatalog35↔36冶金炉/已知Special/性能预算×2/难度120&123/RepeatedPrep/UnknownFormation/特权/VisibleShop/VisibleStandard/Prep37Slot/UnclassifiedSettlement/Prep16）——**零新增回归**。
+
+**已回滚的弯路（勿重走）**：
+- 全局 `ColorSimilarityGrace 0.90→0.80` ❌ 伤金标准（爻光丢失、欢愉5→4）。
+- rect 整体内缩 6px ❌ 伤星级（000032 Back 全 null）→ 改「匹配内缩+星级原槽」。
+
+**已知**：keyframe analyze 后台 conf 仍 0.52（与探针 0.538 差：analyze 全链路含应援检测等,单帧未升至 0.55 线）——虽角色已纠正、金标准全绿，但**后台完整识别落地（analyze 线路）仍需用户实机验收**；若实机后台仍不足，下一步可在后台阈值/应援检测单独收尾。**我未提交 git（工作区保留，等用户实机验收后再提交/发布）。**
+
+---
+
+## 🔧 后台降阈值（2026-08-19 用户拍板"后台降一点阈值"）
+
+在后台内缩(第一步)+降权(方案A)基础上，进一步降后台置信度/区分度阈值：
+- 后台 warp 槽置信度阈值 `0.55 → 0.50`（仅后台 BackRow 生效，前台/备战席保持 0.55）。
+- 后台 runner-up 区分度门 `0.04 → 0.015`（实测内缩后霍霍 lead 实际 ~0.019 略低于 0.02 边界卡死；0.015 留足余量仍保留角色区分）。
+- 银狼变费专有 lenient 0.39 优先保留（后台银狼仍更低门槛 `Math.Min(0.50, 0.39)`）。
+- 应援槽仍强制 BackRow=false（review should-fix 保留，避免宽松惩罚削弱应援污染区分）。
+
+**验证**：
+- 生产 Recognizer 探针（THRESH 铁证）：BackRow=true → thr=0.50、霍霍 conf0.536≥0.5、lead≥0.015 → **判定成功**。
+- 关键帧 analyze 帧2(084211)：后台从 `unknown:0.54` → **`currency_wars_character_69 霍霍:0.54` 识别成功**。
+- 金标准 UserReference+SilverWolf **26/26**；全量 **901 通过/16 失败/2 跳过**（16 全为既有基线，**零新增回归**）。
+
+**已知（独立问题，非本轮阈值，用户指示"识别正确性其他不修"）**：
+- 关键帧 analyze 帧1(084639) 后台仍 unknown：该帧后台识别**未走 BackRow 路径**（THRESH 证实该帧 options.BackRow=false）——analyze 后台识别存在"部分帧传 BackRow、部分不传"的路径不统一（既有问题），导致降阈值只对走 BackRow 的帧生效。待后续统一 analyze 后台识别路径。
+
+**review**：warn（可发布）——0.50 阈值 vs 实测正确值 0.503 仅差 0.003 需实机盯分布；lead 0.015 对全部后台生效需盯 runner-up；nit 已修（:220 注释 0.02→0.015、:434/:787 缩进损坏）。
+
+---
+
+## 🔧 A1 前台1号位能量特效 + A3 猎星人三强校验（2026-08-19晚）
+
+### A1 前台 1 号位能量地块特效修复 ✅
+- **根因**：能量羁绊激活时，前台 1 号位(Slot0)被能量地块特效污染，识别分被压到 0.54<0.55 → unknown（用户控制实验实锤：关能量该格立即恢复）。诊断铁证：直连识别器该格 best conf 0.58 / runner-up 0.42 / lead 0.16（能量**只降分、不乱认**）。
+- **修复**：`CharacterCardRecognition.cs` 新增 `FrontSlotZeroConfidenceThreshold=0.52`，前台 1 号位(Slot0, index==0 && !backRow)置信度阈值 0.55→0.52（安全：lead 0.16 极清晰，不会误判；其他槽阈值不变）。
+- **验证**：第六张(133224, 能量激活) 前台1号位 unknown→`风堇 0.54` 识别成功。
+
+### A3 猎星人三强校验 ✅（用户 2026-08-19 规则）
+- **规则**：① 仅前台/后台（备战席永不）② 需激活星核猎手羁绊（场上星核猎手≥2）③ 只有**星核猎手羁绊成员**（千冶•刃/银狼LV.999/流萤/银狼/卡芙卡/刃）才能成为猎星人 ④ 全场**唯一**，最多 1 个；若多个候选 → 全不显示（治标兜底）。
+- **根因**：旧 `IsHunterStar` 只做"非Bench + 金像素≥30%"检测，无任何羁绊/成员/唯一校验 → 阿格莱雅(金黄卡面)被误标。
+- **修复**：`Phase2OperationalScreenshotAnalyzer.ObserveFormation` 新增预收集 `hunterStarSlotKey`（星核猎手成员 + 羁绊激活 + 唯一），IsHunterStar 改为对照该 key。
+- **验证**：第六张 阿格莱雅(非星核猎手、场上星核猎手仅1个) 猎星人误标**消失**。
+- **回归**：UserReference+SilverWolf+CharacterCardRecognizer **34/34 全绿（零回归）**。
+
+## 🔧 B 冶金炉识别 + 堆叠数量角标（2026-08-19）
+
+### 冶金炉识别 ✅
+- **根因**：备战页物品栏 = **两列**（右列 R + 左列 L）。现有 `InventoryIconSlots` 只扫右列单列，**冶金炉在左列 L0 从未被扫描** → 读不到/误认 040。叠加根因：冶金炉模板 `special_item_010` 是 BWiki 原图（深褐大炉），与实机（橙黄手摇炉）外观不符。
+- **修复**：
+  1. `Phase2OperationalScreenshotAnalyzer.ObserveInventory`（~4157）物品栏扫描框从"右列7格"扩展为"**左列7格 + 右列7格**"（左列=右列每格向左平移一格宽）。冶金炉 L0 被扫到。
+  2. 冶金炉实机模板替换 `data/4.4/phase2-icon-templates/special-item/special_item_010__live.png`（BWiki 备份在 `tools/diag/special_item_010__BWIKI_backup.png`）。实际识别走装备 catalog id `currency_wars_equipment_149`。
+- **验证**：133224(备战2-6) probe `特殊物品(去重2): 冶金炉,拆装扳手`，Slot0=冶金炉 conf0.84、Slot7=拆装扳手 conf0.89、Slot8=以太钻头 conf0.85。
+- **好运令牌/特权赋予卡/机密拆装扳手**：同为物品栏特殊物品，已在左列+右列扫描范围内，模板在池即识别。
+
+### 堆叠数量角标 ✅（用户规则 2026-08-19）
+- **规则**：只有**冶金炉/拆装扳手/机密拆装扳手**右下角有角标数字；好运令牌/特权赋予卡**不堆叠**无角标；**数量为 1 时无角标数字**（不显示"1"），只有**堆叠≥2**才显示数字（如扳手×4 → "4"）。
+- **修复**：`InventorySlotState` 新增 `int? Quantity`；`ObserveInventory` 改 async，只对命中可堆叠物品的格，读右下角角标区 `(0.50,0.44)-(1,1)`（用 `_storeLevelOcr` PpOcr，放大4x）；读到 `≥2` 才存 Quantity，`1` 视为无角标（null）。
+- **验证**：133224 probe：拆装扳手 **q4**（×4）、冶金炉 q-(数量1无角标✓×1)、以太钻头 q-(普通装备不读✓×1)。
+- **角标真实位置**：程序实测白像素密度 → 拆装扳手格右下138 vs 左下14、冶金炉右下72 vs 左1 → **角标在右下角**（匹配器注释"lower-left"已过时，勿再据此取角标区）。
+
+### 回归
+- 金标准 UserReference+SilverWolf+CharacterCardRecognizer **64/64 全绿（零回归）**。
+- review 子代理本次不可用（服务故障），用金标准回归 + 真实帧 + 旧右列 index7/8 仍正确识别 作替代证据。
+
+## 🔧 A45 后台装备漏识别（藿藿生命之花）+ 后台 CardRegion 定位 bug（2026-08-19补）
+
+### 后台装备漏识别 ✅
+- **根因**：后台霍霍卡装备带检测到 1 段（生命之花位置正确），但种类识别 dHash 匹配 `currency_wars_equipment_045`（生命之花）conf=0.00 —— **实机装备图标 vs BWiki 彩色原图差异过大匹配失败**（同冶金炉同类问题）。
+- **修复**：新增实机变体模板 `data/runtime/1.0.0/4.4/equipment/assets/currency_wars_equipment_icons/currency_wars_equipment_045__live.png`（从 133224 霍霍后台卡裁生命之花段 x=770-824/y=982-1032，54×50）。dHash 匹配取主模板+BWiki variant 与 live 变体最小距离（现有 {id}__live 机制）。
+- **验证**：133224 probe 霍霍 `无装备` → **`装备:生命之花 currency_wars_equipment_045:0.95`**。
+
+### 后台 CardRegion=(0,0) 展示定位 bug ✅（A45 附带修）
+- **根因**：后台槽在 warped 帧识别，`slot.ReferenceBounds` 是 warped 坐标系（probe 后台 card(0,0)），而装备识别已用 `equipmentOwner`（Back 时覆盖为原帧 `BackCharacterSlots1920`）。CardRegion 是可视化/报告定位用，错误地用 slot.ReferenceBounds → 后台角色显示在 (0,0)。
+- **修复**：`Phase2OperationalScreenshotAnalyzer` 角色填充 CardRegion 改用 `equipmentOwner.ReferenceBounds`（Back 时为原帧坐标）。
+- **验证**：probe 霍霍 card `(0,0)` → **card(710,799,173x193)**、千冶刃 card(904,799)。
+
+### 回归
+- 金标准 UserReference+SilverWolf+CharacterCardRecognizer **64/64 全绿（零回归）**。
+
+## ⏹ 2026-08-19 批次收尾（用户 8/19 晚指示"先停下来，等发测试图集再测"）
+- 本批 4 项全修好并提交：`4661d69`(B冶金炉+角标+A1/A3)、`b9a3f79`(A45后台装备+CardRegion)、`d21859c`(A1前台降阈+后台阈值+BackRow)。
+- 金标准回归 **64/64 全绿**。**全量回归尚未跑**（用户要停、且避免占用户测试资源）——待用户测试图集验证无回归后再跑全量+交付。
+- 下一步（等用户发图集）：用当前完整识别程序跑每张 → 结果原封贴出 → 记录问题 → 定位修复。确认所有 bug 修复后再全量回归 + 发布交付包。
+- git 剩余未提交 M 文件（gen_report.py / Phase2RealtimeRecognitionPipeline.cs / SituationScreenshotAnalysis.cs / Phase2IconRecognition.cs / 部分 tests）= 更早批次遗留，非本会话授权，勿擅动。
+
+## 🔧 A45 补充：011854 帧霍霍 unknown 根因修复（2026-08-20）
+
+### 根因（排查闭环）
+- **应援检测 ↔ 能量地块冲突**。`DetectCallEffect` 只判卡左右"亮蓝棒"，后台蓝紫色**能量地块特效会误报**：011854 霍霍位（Back abs4）右蓝棒 Det=0.118>0.10 → 误判应援（010639 同位置 Det=0.057 正常不误判，佐证是能量特效而非真应援）。
+- 应援前置检测（`RecognizeBoardWithBackRowPerspective`→`RecognizeCharactersSafely` 应援单槽分支）不看"欢愉开拓者在场"，被误判槽强制 `BackRow=false` → **失去内缩剔除能量特效** → 匹配从「藿藿 0.536」变「开拓者 ~0.52」→ 阈值回前台 0.55 卡掉 → unknown（端到端 `cand=[开拓者]`）。
+- 与"前台1号位"同根（能量特效污染 + 套了不合适阈值路径）。强校验 `ReconcileCallEffectFromCompleteFormation`（识别后 HasJoy 门控）放错了位置——救不了识别前已走的错误分支。
+- 证据探针：`tests/.../BackDiagProbe.cs`、`CallEffectStrengthProbe.cs`（untracked 诊断）。
+
+### 修复（单变量）
+- `Phase2OperationalScreenshotAnalyzer.cs`（~766）前置 `cheeredBoardIndices` 由裸 `DetectCallEffect` 改为**恒空集**。应援裁剪统一交给下方 2026-08-19 强门控（`hasJoyTrailblazer` 把关：无欢愉全程标准路径；银狼应援时用 ExcludeBottom/ExcludeSides 重识别）。
+- 删除前置后 `DetectCallEffect` 仍被强门控（835）与 IsCheered（2185+）使用，无死码。
+
+### 验证
+- 011854 端到端：`[4] unknown conf0.51 cand=[开拓者]` → **`[4] 藿藿 星2 conf0.54 装备:生命之花 045:0.95`**（恢复）。
+- 010639（正常帧）：藿藿 0.54 无回归。
+- 金标准 UserReference+SilverWolf+CharacterCardRecognizer **34/34 全绿**。
+- **隔离验证（关键）**：这 4 个失败——`prep37 银狼 Front#0 装备槽0 Unknown(CandidateEquipmentIds空)`、`VisibleStandardEquipment...`、`VisibleShopEquipment...`、`Prep16TwoEquipmentLayout...`——在"前置应援还原原逻辑"下**同样失败** → 均为**上轮非授权遗留改动**（`Phase2RealtimeRecruitmentPipeline.cs`+298 / `Phase2IconRecognition.cs`）引入的既有装备回归，**非本修复引入**，需另行排期。
+
+### 待办
+- 4 个既有装备失败（prep37 银狼/Visible* / Prep16）待用户指示是否纳入本轮排期。
+- B 堆叠数量：缇宝追逐星辰 `080__live` 实机模板、固定位置逐槽匹配方案待实现/验证。
+- 全部修复后跑全量回归 + review + 交付。
+
+## 🔧 缇宝追逐星尘（前台装备固定位置）修复（2026-08-20）
+
+### 根因
+- 缇宝 3 件装备 = 胜利之旗/追逐星尘/胜利之旗。**追逐星尘(080)是蓝色系图标，与蓝色备战页背景难分**：非蓝段检测与彩色连通域(LocateEquipmentIcons)两种都检不出它（011854 缇宝只数出 2 段 x1107/x1213，追逐星尘 x1156-1207 被漏）。
+- 段边界定位裁剪紧邻图标（间距仅~6px）偏差 → 追逐星尘种类 conf0.00。
+- 固定 3 件坐标(0.03/0.39/0.72、槽宽0.26)能对准 3 个图标（探针实测三槽全命中 075/080/075）。
+
+### 修复（用户选"固定位置逐槽匹配 + conf 过滤"）
+- `RecognizeEquipmentSlots` 改为**双路合并**：
+  1. 段边界 slot（`BuildEquipmentSlotsFromSegments`，对非蓝图标准确）——补阿格莱雅 051 这类段检能检的
+  2. 固定 3 件坐标 slot（内联 Front 0.03/0.39/0.72、Back 0.03/0.34/0.68、槽宽 0.26 卡宽）——补追逐星尘这类蓝色图标
+  3. 两路逐槽 dHash，conf≥0.90 收集，按帧像素 x 中心排序、相邻≤30px 去重（保留 conf 高者）
+- 用户担心的误检/漏检已被规避：011854 + 010639 两帧全角色实测——缇宝(075/080/075)✓、阿格莱雅(055/051/055 不漏)✓、星期日(064 1件不误报)✓、风堇/千冶刃(0件不误检)✓、藿藿(045)✓。
+
+### 验证
+- 金标准 UserReference+SilverWolf+CharacterCardRecognizer **64/64 全绿**。
+- **隔离实验（关键）**：把固定路临时禁用（只段路）跑 15 个装备/操作失败——失败集合**与双路完全一致** → 15 个失败均为**上轮非授权遗留改动**引入的既有失败（实时预算超时/物品栏/既有装备回归），**双路方案零新增回归**。
+  - 已确认既有（非双路引入）：Prep16TwoEquipmentLayout、RecognizesFormationEquipment(prep37银狼)、VisibleStandardEquipment、VisibleShopEquipment、LivePreparationInventory(独立路径) 等。
+- 待办：全量回归仍待所有项完成后再跑（用户约定最后跑一次）。
+
+### 变动文件
+- `src/CurrencyWarsAssistant.Tasks/Phase2OperationalScreenshotAnalyzer.cs`（RecognizeEquipmentSlots 双路合并 + 前置应援恒空集方案1）
+- 诊断探针（untracked）：TibaoSegmentDiagProbe / TibaoReviewProbe / TibaoFullScanProbe / TibaoColumnProbe / TibaoConnectivityProbe / TibaoFixed3Probe / TibaoNarrowProbe / Tibao3AllProbe / TibaoDualProbe / TibaoWholeFrameProbe / CallEffectStrengthProbe
+
+## 📋 审计：15 个上轮遗留失败（2026-08-20，用户流程：先审计根因→方法→子代理检验→再修）
+
+### 审计清单（错误消息初判，未动代码）
+| # | 失败 | 错误 | 根因初判 |
+|---|---|---|---|
+| 1 | IconCatalogLoads | Expected 9, Actual 10 | 图标模板 count 9 vs 10（新增 __live 模板使预期过时？） |
+| 2 | LiveCapturedBattle(battle-1-4) | 伤害 16335000 vs 16205013 | 行动值/伤害数值 OCR 差（差 129987） |
+| 3 | Prep16TwoEquipmentLayout | Expected 3, Actual 2 + INDEXOOR | **装备 3→2 漏检**（中间件双路都检不出，疑似偏蓝同缇宝类） |
+| 4 | RecognizesFormationEquipment(prep37银狼) | Expected 3, Actual 2 | **装备 3→2 漏检**（同类） |
+| 5 | ExpandedShopAnalyzer | （需查） | 紧凑布局装备/证据区 |
+| 6 | UnknownFormationEvidence | Single() 2 items | 重复证据 |
+| 7 | VisibleStandardEquipment | Empty→Equipped | **装备误检** |
+| 8 | VerifiedPrivilegeFrame | （需查） | 特权帧 |
+| 9 | VisibleShopEquipment | （需查） | 商店装备 |
+| 10 | RepeatedPreparationFrames | All 2/2 | **实时预算超时（性能）** |
+| 11 | KnownSpecialFormationUnit | Single() 空 | 特殊单位识别丢失 |
+| 12 | LivePreparationInventory | 期望153/041/041/040，实际全 Empty | **物品栏全空（识别失败）** |
+| 13 | LiveCapturedPreparation(1-7) | 角色24 slot0 Empty→Equipped + 2994ms | **装备误检/槽错位 + 性能** |
+| 14-15 | PreparationReferences(125924/132307) | （需查） | 节电难度/阵容参照 |
+
+### 关键共性
+- **装备 3→2 漏检**（Prep16+prep37）：中间件图标疑似偏蓝，段检测双路都漏——与缇宝追逐星尘同类、但固定坐标也 conf<0.90。
+- **装备误检 Empty→Equipped**（VisibleStandard + prep1-7 角色24）：空槽被识别成有装备。
+- **物品栏全空**（LivePreparationInventory）：ObserveInventory 识别全空（可能 B 项改动/模板）。
+- **性能超时**（Repeated + prep1-7 ~3s）：识别变慢。
+- 全部用 new Phase2OperationalScreenshotAnalyzer（非增量 pipeline），隔离实验确认与本轮双路无关。
+
+### 待办（按用户流程）
+1. 每个根因精确定位（需看 fixture 图/识别内部诊断）
+2. 最佳修复方法
+3. 子代理检验方法
+4. 确定后修复
+
+## 🔧 根因 A1 修复：装备槽位按 x 映射 + 补 Empty（2026-08-20）
+
+### 改动
+`Phase2OperationalScreenshotAnalyzer.RecognizeEquipmentSlots` 装配逻辑：
+- 原来：按"识别出的件数"从 0 递增编 `SlotIndex`，不映射到固定槽位、不补 Empty → 装备带偏移时槽位错位（prep1-7 角色24 本应 slot0空+slot1=061 却认成 slot0=061）、漏检时少槽（Prep16 3件只出2槽→IndexOutOfRange）。
+- 现在：识别出的装备图标**按 x 中心映射到固定 3 槽位**（固定坐标 0.03/0.39/0.72 或 Back 0.03/0.34/0.68），**空缺槽位补 Empty**（Empty 槽 Region 用固定槽位占位非 null）。
+
+### 验证
+- prep1-7 角色24：`slot0:Empty + slot1:Equipped 061`（原来错位 slot0=061）✅
+- Prep16：不再 IndexOutOfRange（3 槽补 Empty）✅（从失败消失）
+- 金标准 UserReference+SilverWolf+CharacterCardRecognizer **64/64 全绿** ✅
+- 011854/010639（ClipboardFrameProbe）：缇宝[075/080/075]、阿格莱雅[055/051/055]、星期日[slot1=064 其余 Empty]、风堇/千冶刃[全 Empty]、藿藿[slot1=045] 全部正确 ✅ 不误检
+
+### 仍未解决（独立根因，待下一轮分别深挖）
+- VisiblesStandardEquipment（Empty→Equipped 误检）、VisibleShopEquipment、RecognizesFormationEquipment(prep37 银狼 3→2 漏识中间件)、LivePreparationInventory（物品栏全空）—— 各是独立 bug，需单变量排查。
+
+## ✅ 应援(打call)机制全删 + 阿格莱雅/星期日 unknown 根因修复（2026-08-21，提交 0fb6130）
+
+### 根因（彻底定位）
+- **识别器本来识别正确**（3-1 前台[0]=阿格莱雅 conf0.56、后台[6]=星期日 conf0.58，均 Recognized）。
+- 但 analyzer 的"应援重识别分支"（hasJoyTrailblazer + DetectCallEffect）：场上**有开拓者**时，用亮蓝棒检测各槽，能量地块亮蓝误判为应援 ⇒ 用 excludeSides 重识别该槽 ⇒ 把正确的阿格莱雅覆盖成 Uncertain[开拓者,白厄]、星期日成 Uncertain[星期日,开拓者]。
+- **这解释"时好时坏"**：取决于该帧有无开拓者在场 + 槽位两侧亮蓝能量特效。
+- 前置应援(cheeredBoardIndices)上轮(8-19/8-20)已恒空；本次删除的是**最后一条**欢愉门控重识别。
+
+### 修复（用户拍板"全删应援机制"）
+- 删除 hasJoyTrailblazer 欢愉门控重识别分支 + 应援前置长注释（74 行删 / 3 行新注释）。cheeredBoardIndices 恒空保留。
+- 角色一律走标准路径，不再因应援/能量特效误报重识别。
+
+### 验证
+- ClipboardFrameProbe 两张图（125924-1-8 + 3-1）**所有角色识别正确，零 unknown**：阿格莱雅/星期日均恢复。
+- 金标准 CharacterCard/UserReference/SilverWolf **34/34 通过**（无回退）。
+- EndToEnd RecognizeFormationEquipment 单失败为**既有**装备基线（stash 对照确认非本次引入）。
+- review：warn；之后清理悬空注释，重新验证 34/34 + 两张图全对。
+
+### 取舍提示
+- 银狼被应援时"避开底部+两侧"的裁剪优化随之移除——应援本就为小型异常适配，用户接受此取舍；真应援场景后续需要时再单独设计不误报方案。
+
+## 🚫 教训：后台格数画图脚本擅自统一设 7 格（2026-08-21，用户当场纠正 — 未改源码）
+### 错误
+- _eq_boxes/draw_boxes.py 上一版把 10 张图的后台角色槽**全部硬编码 7 格**（误把用户"七人口"当成固定后台格数）。
+- 用户质问"为什么所有图都变成后台7人口"。**违反红线：擅自换方案/不按软件真实坐标。**
+### 正确规则（源码 DeriveBackSlotCount，用户 2026-08-15 拍板）
+- 后台格数 = 6 + (人口 − 商店Lv)，n∈{0,1,2,3}；人口/商店Lv识别失败回退 DetectBackSlotCount 像素检测。
+- **每张图格数不同，必须逐图用软件真实 backSlotCount 画，绝不能统一。**
+### 本次实测（ClipboardFrameProbe，src 源码编译，未改源码）
+- 125924（节点1-8）：StoreLevel=5, Population=6 ⇒ **后台 7 格**。后台识出：藿藿[4]·千冶•刃[5]·银枝[6]。
+- 3-1（clipboard-20260821）：StoreLevel=8, Population=8 ⇒ **后台 6 格**。后台识出：藿藿[4]·星期日[6]·符玄[7]·千冶•刃[9]。
+- 角色全部识别正确（阿格莱雅/星期日正常）零 unknown；金标准 34/34 保持不变。
+### 纠正
+- draw_boxes.py 改为逐图 IMG_BACK_COUNT：125924=7、31=6；前台恒 PreparationCharacterSlots1920[0..3]。
+- 重新生成 10 张图（char×2 + A/B×mode2/3×2底图），HTML 已更新说明，已弹给用户核对。
+### 下一步
+- 待用户核对红框位置；随后处理装备识别（银枝"财富宝钻"漏检等）。
+
+---
+
+## 2026-08-21 后段 · HTML 识别框微调器（本轮）
+
+### 用户决策（拍板）
+1. 后台锚点 + 恒定间距推出，但**间距须能确定最终间距**（不再写死魔法数反推），HTML 提供精确输入 + ±1px 精调 = 确定最终间距的算法入口。
+2. **不是软件读 JSON**：我（开发）读用户微调导出的 JSON → 把值**写死进 C# 源码**；软件本身不读 JSON 文件。
+3. 不再用推断/检测方式定这些位置（可降级保留 Detect 回退）。
+4. 装备框用 A 套（fixedSlots：前[0.03,0.39,0.72]/后[0.03,0.34,0.68]、槽宽0.26、y=卡+1.08卡高）。README_开发方案等用户审核通过后开工。
+
+### 产物
+- 单文件工具：`D:\CWAFix-20260814\_eq_boxes\recognition_slots_editor.html`
+- 配套自测：`_eq_boxes\_smoke.js`（12 断言全过）
+- 开发方案存档：`docs\HTML_坐标微调器_开发方案_待审核.md`
+- 已用 Edge 弹窗交付用户审核。
+
+### 功能（全部实现+review 两轮）
+- 上传图片（拖入/按钮），整图映射 1920×1080 参考系；fit 居中。
+- 后台人口 6/7/8/9 切换，后台斜四边形 + 后台装备三槽整体同步重排。
+- 前台 4 角色矩形、后台 count 个斜四边形、装备 A 套三槽（前台+后台）全部 4 顶点可拖；整框平移用起拖快照(dragStartMouseRef/dragStartBoxRect/dragStartAnchor)防漂移/归零。
+- 后台斜四边形几何与 C# BackRowPerspectiveGeometry.ComputeSlotQuads 代数等价：
+  - 顶宽=TR-TL=123、底宽=BR-BL=127、顶中=960+(i-(count-1)/2)*pitchTop、底中同理；
+  - pitchTop 默认 138.875、pitchBot 144.375（= (960-topCenter)/4）；
+  - 单应源点[q0[0],qN[1],q0[2],qN[3]]与 ComputeRowHomography 一致，右侧拉正预览经 H 映射真实反映。
+- 1px 方向按钮（前台/装备=平移框；后台=平移锚点整体联动）+ 间距 ±1px 按钮 + 间距数值输入。
+- JSON 导出（自动下载 recognition_slots.json + 文本框回显）/导入（loadJSON 清空旧 override）完整往返。
+- JSON 结构：version,frontSlots,backAnchor{TL/TR/BL/BR},pitch{top,bot},equipment{frontStarts/backStarts/slotW/slotH/yCenterRatio},equipOverrides{zone:card:slot→rect}。
+
+### review（子代理，用户要求）结论
+- 首轮 5 个 should-fix 全部修毕：①loadJSON 清空 override ②删 no-op measurePitch→间距±1px ③mouseup 绑 window 防 phantom drag ④hitTest 装备优先于 owner ⑤backQuad 底边用 BL/BR 宽。
+- 次轮复查：ship 无新的 BLOCKER/should-fix；零死代码残留、接线一致、后台几何与 C# 代数等价。
+- 纯函数冒烟 12/12 过；JS 语法 node --check 过。
+
+### 下一步（待用户指示）
+- 等用户用页面微调/审核后，**导出 JSON 发我 → 我把 frontSlots/backAnchor/pitch/equipment/equipOverrides 写死进 C#**；
+- 后台装备 owner 是否由 BackCharacterSlots1920(960等距) 改为斜四边形（用户"全部改标定位置"，需用户定夺是否改源码几何——触已标定常量，须单独授权）；
+- 装备识别问题（银枝"财富宝钻"漏检）仍在队列。
+
+### HTML 微调器第二轮（用户验收反馈修复）
+- **新增滚轮放大**：canvas `wheel` 监听，围绕鼠标点缩放（scale 0.05–40）；`redraw` 设 `ctx.imageSmoothingEnabled=false` 保留像素边界不清。deltaY===0 处理为不缩放。fit/resize 兼容。
+- **修复"改角色卡时装备框跟着移动"**：装备原由 owner 派生(equipBox)，拖角色框会让该卡装备重算移动。现改：真正拖动角色框那一刻才 `freezeOwnerEquip(d)`（把当前派生装备三槽写入 equipOverride 钉住），之后拖角色框只动角色框。nudge 前台分支同处理。切换人口/恢复默认标尺会**清空** equipOverride 让装备按新格数重排。
+- **review（sa_...aa787481c7a7）**：should-fix 已修（freeze 从 mousedown 改为首次 onDragTo 触发，防止仅点选后整体标尺操作使装备脱离）；nit（deltaY=0）已修。冒烟 12/12、node --check 过。
+- 测试图已放桌面 `货币战争-微调测试图\`（A=后台7格125924、B=后台6格31）。
+- **待用户**：实操审核滚轮放大 + 装备不再联动；通过后导出 JSON → 写死进 C#。
+
+### HTML 微调器第三轮（用户反馈 → v2.0 每格独立模型）
+- **用户核心反馈**：后台框用"锚点+恒定间距"全局模型导致"对上就对不齐下"——因为上下边 X 被全局参数绑死，不能逐格独立。用户指出：正交投影下卡是斜四边形，顶边中心 X ≠ 底边中心 X，四顶点各独立。
+- **用户拍板方案**：每人口(6/7/8/9)**各存一套独立四边形**，切档互不干扰。
+- **v2.0 重构** `recognition_slots_editor.html`：`state.backQuads={6,7,8,9}`，每套 count 个独立 `[[TL],[TR],[BL],[BR]]`（1920 参考系），4 点自由拖，上/下 X 独立；切人口读对应套；装备 override key 带 count(`back:count:card:slot`) 天然隔离；buildQuads 仍与 C# ComputeSlotQuads 精确一致（顶宽123/底宽127、pitchTop138.875/pitchBot144.375、960 对称）。滚轮放大保留(imageSmoothingEnabled=false)、装备"一次动一格"(freeze)、拉正预览保留。
+- **review（sa_...5a5653d7f141）**：BLOCKING 已修（切人口越界后台装备选中→清除）；should-fix 已修（back nudge 先 freeze 装备与 drag 一致）。冒烟 16/16、node --check 过。
+- **8/9人口测试图**（用户要求找）：用临时探针(DetectBackSlotCount)确认后已复制到桌面 `货币战争-微调测试图\`：
+  - 测试图C_后台8格.png = `artifacts/diag/back-diag-20260815-010920429-8slots.png`(2560×1440)
+  - 测试图D_后台9格.png = `artifacts/diag/back-diag-20260815-010905449-9slots.png`(2560×1440)
+  - （另有 130123.png=8格、back-diag-005423684=9格 备用）
+- **待用户**：实操微调 C(8)/D(9) 档后台框 → 导出 JSON → 写死进 C#。
+
+### HTML 微调器第四轮（后台格自由拖动 bug 修复）
+- **用户反馈 bug**：拖一个角，对角/其它点跟着动（只该动被拖角；同 X 竖边的点联动可接受，对角不应动）。
+- **根因**：`setFreeCornerRect`（前台矩形/装备框自由角拖）旧实现是"平移该角所在边"，导致对角(右下等)也随 r[0]/r[1] 变化而移动。
+- **修复**：改为"只移动被拖角、对角保持原位"，用被拖角 target 与对角当前坐标重建矩形；且修了 `op=3-k`（原 `k<=1?k+2:k-2` 对 k0/k1 对角映射错）。
+- **验证**：`_corner_test.js` 4 个角拖动行为全 PASS（被拖角=target、对角保持、同竖边 X 联动正确）。node --check 过。
+- **注**：后台斜四边形顶点本就独立（backQuads[idx][vert]=p），不经 setFreeCornerRect。
+
+### HTML 微调器第五轮（拖角独立 + 正视图黑屏修复）
+- **用户规则澄清**：后台卡四顶点 X、Y 各自完全独立，上下两点的 Y、左右两点的 X 都不得互相绑定（完全脱钩），"X 轴相同的点联动 OK、底下(对角)点不得动"。
+- **核对结论**：后台格走 `setOneVert` back 分支 = `backQuads[idx][vert]=[p]`，本就每点独立、无共享引用（buildQuads 深拷贝每点）；front/equip 用 `setFreeCornerRect`（op=3-k，对角保持，被拖角到位，同X/同Y边联动），4角验证 math 通过（_corner_test.js）。
+- **新增修复"正视图全黑"**：拉正预览原来只画线框不画图 → 黑。新增 `invertH`(3x3 逆) + `drawWarpedImage`(warp 目标矩形分96垂直条→经H^-1反推源AABB→drawImage抽入预览, imageSmoothingEnabled=false 保像素边界)，drawWarp 先画图像再叠线框。invertH 数学已人工核对（伴随/行列式正确）。
+- **待用户重点验证**：①拖后台格顶点是否只动该点 ②正视图是否显示拉正后的卡牌内容。若仍有"拖一角其它点动"，请用户指明是前台/后台/装备哪个框再精准定位（避免空转）。
+
+### HTML 微调器第六轮（正视图错位的真正根因：逆单应未归一化）
+- **自行逐项检查（用户要求）**：写了 _verify.js 严格断言跑通——拖动后台格顶点只改该格该点(其它格/点/人口档全不变)、前台/装备矩形对角保持正确、invertH+applyH 还原。
+- **新根因（正视图内容错乱，不黑但错位）**：`applyH` 恒假设输入单应 `H[8]=1`（`z=H6x+H7y+1`），但 `invertH` 高斯消元返回的逆矩阵 `inv[8]` 一般≠1 → 反向映射坐标全错（真实单应还原误差达 424px）。
+- **修复**：invertH 返回前把逆矩阵归一化到 `inv[8]=1`（齐次单应标准归一）；改后真实单应 **Hi 还原误差 = 0.0000px**，正视图源窗口有效、在图内、不黑。
+- **配套**：drawWarpedImage 96 条逆向采样已加；imageSmoothingEnabled=false 保像素边界。
+- **验证**：node 严格脚本全 PASS（拖点只动那点、对角保持、Hi 还原 0px、条采样有效不越界）；node --check 过。
+- **待用户**：重开工具实测后台拖角只动那点、正视图显示拉正内容。若仍有问题，请指明是前台/后台/装备哪个框。
+
+### HTML 微调器 v3.0（彻底解决"拖一角带同Y/X点"）
+- **用户明确规则**：每个框四角完全独立，拖任意一角，其它角（包括同 X / 同 Y 的）一律纹丝不动。
+- **根因**：v2 只有后台格是四独立点；前台卡 frontSlots、装备槽仍是轴对齐矩形 `[x,y,w,h]` + setFreeCornerRect，拖角时因改 w/h 带同 Y/X 角，且整套逻辑分散。
+- **本次重构（一次性）**：全部可拖对象统一为 **四独立顶点 [[TL],[TR],[BL],[BR]]**。frontSlots→frontQuads(四角)、装备 override→四角；删 setFreeCornerRect，统一 `applyVert(pts,vert,target){pts[vert]=[tx,ty]}`；box 平移/nudge 对4点整体加减；绘制/命中/JSON/兼容旧 rect 导入全改。
+- **验证** `_v3test.js` 22 断言全 PASS：前台卡/后台格/装备槽拖任意一角只改该角（同Y点不动），其它卡/格/槽全不变；nudge 4点一致；JSON 往返完整。node --check 过。
+- **版本**：导出 JSON version=3，字段 frontQuads(四角)/backQuads/equipment/equipOverrides(四角)；导入兼容旧 version=2 的 frontSlots(rect)。
+- **待用户**：重开工具实测拖前台/后台/装备任意一角是否只动那一点。确认后导出 JSON → 写死进 C#。
+
+### HTML 微调器 v3.1（拖角：竖边 X 联动 + Y 脱钩 + 对面不动）
+- **用户纠正**（"为什么 X 轴之间的联动也没了"）：我 v3 把"竖边 X 联动"也删了，过头。用户要的正确模型：**同一竖边两点 X 必须保持相同（X 联动）**，竖边内 Y 完全脱钩，对面竖边点不动。
+- **修复** `applyVert`：0=TL 1=TR 2=BL 3=BR；左竖边{0,2}、右竖边{1,3}。拖顶点→该点到位，同竖边另一端点 **X 设为 target.x（Y 不变）**，对面竖边两点完全不动。
+- **验证** `_v3test.js` 23 断言全 PASS：后台/前台/装备拖 TL→BL.x 联动、BL.y 不变、TR/BR 对面不动；拖 BR→TR.x 联动；其它格/卡/槽全不变。node --check 过。
+- **待用户**：重开工具验证"拖一角：同竖边 X 联动、Y 脱钩、对面不动"。确认后导出 JSON → 写死 C#。
+
+### HTML 微调器 v3.2（正确规则确认：横边 Y 联动、竖边 X 自由）
+- **用户纠正（之前说反了）**：正确 = **Y 轴相同的点（同一水平边：上边0-1 / 下边2-3）保持 Y 相同（联动，上/下边保持水平）；X 轴相同的点（竖边）X 可自由变化（不绑定）**。
+- **修复 applyVert**：拖上边某角→该角到位，另一个上边角 **Y=target.y（X 不变）**；拖下边同理；竖边/对角点不动。
+- **验证** `_v3test.js` 15 断言全 PASS：拖 TL→TR.y 跟动(水平)、TR.x 不变、BL/BR 不动；拖 BR→BL.y 跟动、TL/TR 不动；多步互不干扰。node --check 过。
+- **待用户**：重开工具实测拖上边/下边角，上边/下边自动保持水平(Y相同)、竖边 X 自由。确认后导出 JSON→写死 C#。
+
+### HTML 微调器 v3.3（修复上传打不开窗口）
+- **用户报**：上传文件功能异常、打不开文件选择窗口。
+- **修复**：原 `<input type="file">` 太窄/难点上 → 改为显式 **「选择图片」主色按钮**（`#pickFileBtn`，点击调 `fileInput.click()` 弹系统文件框），input 隐藏保留；change 加载 + 拖放不变。语法 node --check 过。
+- **新文件**：`recognition_slots_editor_v3.3.html`（副本，已 Edge 打开）。旧 recognition_slots_editor.html 同步更新同内容。
+- **待用户**：点「选择图片」应弹文件框；验证拖角横边Y联动/竖边X自由。确认后导出 JSON→写死 C#。
+
+### HTML 微调器 v3.4（装备数量 3/2 切换，2 件坐标取自软件真实）
+- **用户要求**：后台只有 2 件装备时也做一版，须从软件真实位置提取。
+- **软件真实 2 件布局**（BuildEquipmentSlotsByCount count==2，用户 8-10 定稿）：两槽对称分布**卡中心 ±21px（1920系固定像素）**、槽宽 0.30 卡宽、槽高 0.26 卡高、y 中心=卡y+1.08卡高。
+- **实现**：面板加「装备数量：3件/2件」切换(#equipCountGroup)；`state.equipCount`；`equipQuadDerive` 2件分支用软件公式，3件保持比例(前[0.03,0.39,0.72]/后[0.03,0.34,0.68]+槽0.26)；allSlots/freeze/redraw/drawWarp 槽数=equipCountOf()；切数量清 override+清越界选中；JSON 存读 equipCount。
+- **验证** `_eq2test.js` 12 断言全 PASS（软件公式 vs HTML 2件坐标逐值吻合 ±21px/0.30/1.08/0.26；3 件 front 槽0=684.84）。语法 node --check 过（修了一处 forEach→for 残留 `});` 语法错）。
+- **新文件**：`recognition_slots_editor_v3.4.html`（已 Edge 打开）。主文件 recognition_slots_editor.html 同步。
+- **待用户**：切 2 件 → 后台每格装备变 2 个槽（卡中心±21px），验证；确认后导出 JSON→写死 C#。
+
+### 识别管线硬编码标定坐标（用户 2026-08-21 最终交付 3 JSON）
+- **用户交付**：3 份 JSON（clipboard-20260821-211755.*{295820,303214,310181}.json）= 装备数量 **2件/1件/3件** 三套；含 frontQuads(4卡四角)、backQuads(6/7/8/9各格四角)、equipment、equipOverrides(前4+后30卡×1/2/3件槽四角)。数据已清洗、四舍五入整数、用户验证单点透视自洽。
+- **硬编码落点**：
+  - 新增 `CalibrationSlots.cs`：FrontQuads1920(int[][][]), BackQuads1920(Dict<int,int[][][]>), FrontEquip(Dict<int,int[][][][]> 装备数量→card→slot→四角), BackEquip(Dict<(数量,人口),int[][][][]>)。由 `_eq_boxes/_gen_calib.py` 从 3 JSON 精确生成（零改动/无遗漏），frontQuads card3 跨三份多数=1114。
+  - 新增 `CalibratedPerspective.cs`：`WarpRow/WarpOneQuad` 把每卡斜四角做单应拉成正矩形（正交投影），排进 16:9 canvas（CardW=123,CardH=135 接近模板 111×127）。
+  - `Phase2OperationalScreenshotAnalyzer.cs`：前台阵容用 FrontQuads1920 warp、后台用 BackQuads1920[count] warp（取代 WarpBackRow 锚点推导）；装备 fixedSlots 用 BackEquip[(3,pop)]/FrontEquip[3] 绝对坐标 + calibAll(1/2/3套并集) 参与识别、conf≥0.90+x去重判数量（数量判断保持原管线）、固定3槽映射补Empty；装备设备 owner 回原 Prep/BackCharacterSlots 保 seg 稳定。
+- **回归验证**（我自查替代无法调用的 review 子代理）：CharacterCardRecognizer 8/8、关键回归包(角色+装备+BackRow+SlotDetector)16/16、Prep16(2件)+VisibleStandard(装备偏移契约)通过、装备套 56/1(唯一失败=EndToEnd 既有失败，stash 确认非本次引入)。
+- **已知**：review 子代理工具本次间歇故障无法触发，已用编译+回归替代。
+- **待实机验证**：真实备战帧前后台阵容/装备识别符合正交投影预期。
+
+### review 子代理处理（2 个 should-fix 全部修毕）
+- review（sa_...b0b928edc460）确认：主识别路径 wiring 正确、无 correctness 回归；装备槽契约(Prep16/VisibleStd)/角色/BackRow/SlotDetector 全过。2 should-fix 已修：
+  1) uncertain/special 路径的 RecognizeEquipmentSlots 传入 raw warped slot → 抽 `RemapEquipmentOwner(slot,zone,backSlotCount)` helper（回原 Prep/BackCharacterSlots），2336 与 2416 两处共用，原帧裁剪不再裁错。
+  2) 性能：CalibratedPerspective.WarpRow 现在建一次源 Mat 复用（WarpOneQuad 加 sourceReuse 参数），不再每卡复制 8.3MB 整帧（回退前 WPC 每帧 13 次整帧复制）。
+- nit 未采纳：BackRowPerspectiveGeometry.WarpBackRow 等现生产死代码（保留作 8-15 几何基线，不删以免误伤历史）。
+- 回归：关键 17/17 通过（含修复后）。全量未跑（任务最后一次性按低并发跑）。
+- 临时脚本：`_eq_boxes/_gen_calib.py` 保留（3 JSON→CalibrationSlots.cs 数据溯源），`_explore_json.py` 已删。
+
+### 标定warp 回归根因排查与修复（2026-08-21 晚）
+- **现象**：接入标定四角 warp 后，125924/3-1 个别槽(Front-4/Back-5/Back-7)从能识别变 unknown(conf~0.54)，其余阿格莱雅/缇宝等仍对。
+- **排查(用户要求先停代码找根因，未动识别逻辑)**：
+  - 诊断探针(复刻打分 max*0.55+detail*0.45−0.5*max(0,grace−colorSim))证实：warp 后 colorSim 升、penalty 降、TOTAL 升 → warp 本身比 Prep 更优(用户"去蓝边框应更准"正确)。
+  - ClipboardFrameProbe 完整结果：回归槽 Front-4 cand=[风堇,痴蝶] conf0.54(<阈值0.55且两候选难分)、Back-5=[刻律德菈,开拓者]、Back-7=[星期日,开拓者]。
+  - **根因**：warp 目标尺寸此前用"卡参考系 AABB"(前台~125×128, 纵横比~0.98) 或统一 123/135/129/141，与角色模板固定**111×127(纵横比0.874)** 纵横比失配 → 这几张卡(风堇/痴蝶/开拓者/星期日)的 maximum/detail 匹配分压线失败。
+- **修复**：`CalibrationSlots.CardW/CardH` + `CalibratedPerspective.WarpRow` 的 warp 目标 = **精确模板尺寸 111×127**（与模板纵横比一致，匹配最直接）。
+- **结果（全面提升）**：125924 阿格莱雅0.58→0.70、缇宝0.75→0.78、风堇(原unknown)→0.74、back藿藿/千冶刃/银枝 0.74~0.78；3-1 零 unknown，风堇0.74/藿藿0.70/星期日0.69/开拓者0.94。**零 unknown**，conf 全面超 Prep —— 用户判断完全正确。
+- **回归**：关键17/17通过(角色金标准/Prep16两件/装备契约/BackRow/SlotDetector)；唯一 EndToEnd 既有失败(非本次)。
+- **结论记录**：warp 目标尺寸必须贴合模板纵横比(111×127)；之前"卡AABB尺寸"和"统一123/135"都因纵横比失配导致特定卡 conf 压线 → 已固化 111×127。
+
+### 星级回归 根因定位与修复（2026-08-21）
+- **现象**：用户发新备战图(1-6)，修改后的程序 Front[1]缇宝报星3(应2)、[2]吉尔伽美什星2(应1)。用户指出"星级不归我标定，我的优化没涉及"——确认是修改引入的回归。
+- **对照(stash 原始 vs warp)**：原始(未 warp)星级正确(缇宝2/吉尔1)；前台 warp 后星级多报一星。前台星级双带在**原帧**正确(char59金标准3、缇宝2)，在 **warp 卡(111×127 横向压缩)**上多报(缇宝3)。
+- **尝试但回退**：给识别器接口/实现加 starFrame/starReferenceSlots 让前台星级回原帧 —— 牵连 8 个测试 ICharacterCardRecognizer mock 实现(编译失败) + 接口改动风险高，**回退**(不改识别器签名)。
+- **最终修复(简单正确)**：**前台恢复原帧 Prep 矩形识别(不 warp)**，后台保留标定 warp。前台实际正视、warp 反使 Front-4 conf 压线+星级多报；后台是斜视主场景保留 warp(花火星2正确)。
+- **结果**：新图(1-6)：缇宝2/吉尔1/Saber2/远坂凛2/花火2全对，角色全对零unknown；125924/3-1 星级(缇宝2/开拓者2)与角色全对零unknown；关键回归17/17。编译0错。
+- **教训**：识别器接口签名改动牵连过多 mock，星级类回归优先用"不改识别器、前台回原帧"这类低侵方案。
+
+### 识别管线改用用户三文档精确四角正交投影（2026-08-21，用户怒返工后重做）
+- **背景**：用户今天手标 3 份 JSON（frontQuads/backQuads/equipOverrides，1/2/3 件装备三套，1920×1080 参考系斜视梯形四角）。我此前把它转录成 CalibrationSlots 后，装备槽用 min/max 压成轴对齐矩形（正方形化）→ 丢透视、装备误识别/漏识别；用户要求：角色+装备一律直接用用户精确四角做**正交投影**再识别，绝不再压正方形/相对比例推导。
+- **回退脏改动**：`git checkout -- Phase2OperationalScreenshotAnalyzer.cs` 回到 HEAD(0fb6130) 干净基线（撤销了我本会话的正方形化+旧接入）。
+- **按要求重做（角色+装备都用三文档四角正交投影）**：
+  - 角色前台(7237)：`CalibratedPerspective.WarpRow(frame, FrontQuads1920, 111,127,10)`；后台(7263)：`BackQuads1920[pop]`；不再用 Preparation 矩形/BachRowPerspectiveGeometry 老坐标。
+  - 装备(2512+)：收集该卡 FrontEquip[1..3]/BackEquip[(ec,pop)] 四角 → 每槽 `WarpOneQuad` 拉正 52×52 → dHash；去掉 0.26 正方形 fixedSlots / owner 相对比例推导。
+  - 输出适配(2751)：装备槽**补足到固定 3 槽**（0/1/2 件分别补 3/2/1 空槽），HTML/显示层无需改、Prep16 金标准仍过（用户方案 B：识别底层不改、只改输出字段）。
+- **子代理核对（skill:review，只核要求符合性）**：主路径全部符合；1 should-fix（quadCandidates 空分支返回 0 槽→已改回恒 3 空槽）。nit：注释口误、"BuildEquipmentSlotsByCount" 死代码、方法名残留（见下"遗留"）。
+- **验证**：关键回归 16/16（Prep16/角色金标准/BackRow/SlotDetector）；真实帧角色全对、主装备(055/051/075/064/069)识别对、无装备角色 3 空槽、星级对。
+- **遗留/下一步**：
+  - **轮滑鞋 046 在 132307 仍漏**（dHash 045/046 模板区分度问题，非坐标；用户已否降阈值，方向=模板/排除045/加特征，待定）。
+  - **性能翻倍**：全量单帧 ~14-17s（因对 1/2/3 全部套四角 WarpOneQuad+dHash，候选多 + 每候选新 Mat/复制低效）。需优化（复用源 Mat、收窄候选、只对判定套识别）——用户曾在意 ≤3s，属下一步。
+  - nit：注释口误（"有几件报几件" 与实际补3槽矛盾）、`BuildEquipmentSlotsByCount` 死代码、`RecognizeBoardWithBackRowPerspective` 命名残留待清理（不阻塞）。
+
+## 2026-08-22 · 手标数据入库提交（用户授权第一步，提交 c150c9d + 8cb6e2a）
+
+### 本次动作（用户授权"提交这个改动"）
+- **提交 c150c9d**（feat(识别)）：`CalibrationSlots.cs`（用户 8-21 三份手标 JSON 精确转录，frontQuads/backQuads 6-9 人口/装备 1-3 件套四角）+ `CalibratedPerspective.cs`（正交投影拉正，111×127 贴合模板纵横比）+ `Phase2OperationalScreenshotAnalyzer.cs`（前台 FrontQuads1920、后台 BackQuads1920[pop] warp 识别；装备三套四角 warp dHash，conf≥0.90 判数量，输出补足恒 3 槽）+ **手标 3 JSON 原件入库**（`_eq_boxes/calibration_json/`，md5 与 `.reasonix/attachments` 原件一致）+ `_gen_calib.py` 溯源脚本。
+- **提交 8cb6e2a**（chore(tools)）：HTML 识别框微调器 v3.4 + _smoke.js + 开发方案文档 + HANDOFF 同步。
+- **编译验证**：`dotnet build -c Release` 0 警告 0 错误。
+- **记忆强化**：用户 2026-08-22 拍板"一步一写 Handoff、禁止不写 Handoff 就结束任务、改动必须有迹可循"已存 `project/handoff-step-by-step-mandatory-20260822.md`（复用/强化全局约定）。
+
+### 识别路径现状（用户核心诉求："角色阵容和装备识别只会使用手标数据"）
+- ✅ 角色识别（frontTask/backTask）：全部 `CalibrationSlots.FrontQuads1920` / `BackQuads1920[pop]` 四角 warp（111×127）。
+- ✅ 装备图标裁剪：`FrontEquip[1..3]` / `BackEquip[(count,pop)]` 四角 warp（52×52 dHash）。
+- ⚠️ 非裁剪路径仍用旧参考坐标（已确认不影响识别结果内容）：① 页面族判定（489 行 `PreparationCharacterSlots1920`/`BenchCharacterSlots1920` 快速探测，仅用于判断页面类别）；② 装备所属角色 owner 映射（715/2380 行 `BackCharacterSlots1920`，决定装备挂到哪张卡、保 seg 稳定）。是否改为手标数据 → 由用户拍板（触已标定常量，须授权）。
+
+### 遗留（不变）
+- 性能：全量单帧 ~14-17s（目标 ≤3s），候选集/判定套收窄待优化（WarpOneQuad 源 Mat 复用已做）。
+- 轮滑鞋 046 在 132307 漏检（dHash 045/046 区分度，用户已否降阈值）。
+- 全量回归未跑（任务最后统一低并发跑）；注释口误（"有几件报几件"vs 补 3 槽）nit 待清。
+
+## 2026-08-22 · 8 个简易装备模板替换 + 轮滑鞋046修复确认
+
+### 用户动作（输入素材）
+- 用户从截图器边缘精确裁剪 8 张完整贴边新图：`C:\Users\zzz81\WorkBuddy\2026-08-22-07-13-05\currency_war_icons\framed\`（以太钻头/光能电池/和平手枪/幸运星/折叠小刀/生命之花/轮滑鞋/量产型装甲，各 RGBA，完整图标无空白）。
+
+### 本次改动
+- **替换 8 个主模板**：framed 8 图 → 素材库 `data/runtime/1.0.0/4.4/equipment/assets/currency_wars_equipment_icons/currency_wars_equipment_{040..047}.png`（sha256 校验全部一致）。映射：以太钻头040/光能电池041/和平手枪042/幸运星043/折叠小刀044/生命之花045/轮滑鞋046/量产型装甲047。
+- **删除 042/045 旧 __live 变体**（用户拍板：识别只认新图，删 live 变体）。备份在 `_eq_boxes/framed_backup/live_variants/`。
+- **同步测试断言**：`Phase2OperationalCollectionTests.IconCatalog` simple-equipment 10→8（删 2 个 live）。
+- 原主模板 + live 变体全部备份 `_eq_boxes/framed_backup/`。
+
+### 验证
+- 编译 `dotnet build -c Release` 0 警告 0 错误。
+- IconCatalog 测试通过（simple-equipment=8）。
+- **核心修复成功**：`_Equip046DiagProbe`（修复了输出路径 temp bug）→ 132307 阿格莱雅 slot1 识别 = `currency_wars_equipment_046` **Conf=0.950 IsKnown=True**（此前 045 误认/Empty 漏检）。
+- `046_slot_warp.png` 正交投影 warp 图经千问确认 = 紫色高帮带轮轮滑鞋，非生命之花。
+
+### 遗留
+- 待实机/全量回归验证；其余识别问题（性能 14-17s、其他装备漏检）未动。
+
+## 2026-08-22 · 发布 fix11（framework-dependent，不含.NET）+ ZIP 到桌面
+
+### 交付（用户"生成最新无BUG版发布包，去个性化配置，不含NET，zip到桌面"）
+- **源码**：HEAD fe7e825（含本轮：8个简易装备模板替换、删042/045 live变体、手标四角正交投影、应援删除等），工作区干净。
+- **发布方式**：`dotnet publish -c Release -r win-x64 --no-self-contained`（**不含 .NET 运行时**，用户机器需装 .NET 8 WindowsDesktop）。
+- **产物目录**：`D:\CWAFix-20260814\artifacts\publish-0.2.842-fix11\CurrencyWarsAssistant-win-x64\`（215MB，已验无 hostfxr/coreclr，data/config/python齐全）。
+- **ZIP（放到桌面）**：`C:\Users\zzz81\Desktop\CurrencyWarsSmartRaccoon-0.2.842-fix11-win-x64-framework-dependent.zip`（223MB，1360条目，含 exe/dll/data/046轮滑鞋模板 raw+runtime，抽查可解压）。
+- **个性化配置检查**：发布产物 data/ 无实机测试图/clipboard/UID 等（与源码 data 一致，均为游戏模板资源）。
+
+### 验证
+- 发布产物关键运行文件齐全（exe/dll/deps/runtimeconfig/data/046模板）；Assets/Brand 无 app-icon.ico（编译期资源，历史 fix 系列同，非缺）。
+- **注意**：因本机无 Inno Setup/NSIS（无法生成 .exe 安装器），"安装包"落地为 framework-dependent 可运行目录 + zip；用户此前认可该形态（官网52MB同样式）。GUI 启动冒烟在本 bash 环境受限，需用户实机双击验证。
+
+### ⚠️ 更正（2026-08-22 发布 fix11 的修复）
+- **错误**：首次用 `tar -a -c -f xxx.zip` 生成的"zip"是**错的**（文件头为 `CurrencyWarsAssistant-win-x64/` 文本，非 ZIP 魔法数 `PK\x03\x04`）——bsdtar 的 `-a` 自动检测在 Windows 上失败，生成的不是标准 zip，Windows 解压器不认。用户实测解压错误。
+- **修复**：改用 PowerShell `Compress-Archive`（.NET System.IO.Compression）重新生成标准 zip。
+- **验证**：新 zip 文件头 `PK\x03\x04` ✓；用 `Expand-Archive`（与用户相同的解压路径）实测解压成功，exe + 046模板正确解出 ✓。
+- **正确的 ZIP**：`C:\Users\zzz81\Desktop\CurrencyWarsSmartRaccoon-0.2.842-fix11-win-x64-framework-dependent.zip`（**116MB**，之前假 zip 223MB 是错误格式）。
+- **教训**：Windows 下生成 ZIP 必须用 `Compress-Archive`/`Expand-Archive`，**不要用 bash 的 `tar -a`**（自动检测不可靠，会生成非 zip 归档）。
+
+## 2026-08-22 · 生成 WiX .msi 安装包（framework-dependent，不含.NET）+ zip（修正到桌面）
+
+### 背景（用户指出"绝对有安装包生成器，漏找了"）
+- 在 Codex 主工作区找到安装包生成器：`D:\Codex-2\.tools\wix\wix.exe`（WiX 4.0.6）+ `D:\Codex-2\tools\Build-Installer.ps1` + `installer\CurrencyWarsAssistant.wxs`（此前只在 CWAFix-20260814 找，漏了 Codex 的 .tools）。
+- 用户拍板：**用 WiX 生成不含.NET 的 .msi**（`--self-contained false`）。
+
+### 交付
+- **framework-dependent 发布**：`dotnet publish -c Release -r win-x64 --self-contained false` → `artifacts\CurrencyWarsAssistant-0.2.842-win-x64\`（214MB，无 hostfxr/coreclr，无个性化内容）。
+- **MSI 安装器**：`artifacts\installers\CurrencyWarsAssistant-0.2.842-win-x64.msi`（94MB，WiX 4.0.6 构建，1300 文件）→ **已复制桌面** `C:\Users\zzz81\Desktop\CurrencyWarsAssistant-0.2.842-win-x64.msi`。
+- **ZIP**：`C:\Users\zzz81\Desktop\CurrencyWarsSmartRaccoon-0.2.842-win-x64-framework-dependent.zip`（116MB，标准 PK zip，Compress-Archive 生成）。
+- 删除了之前错误的 fix11 zip。
+
+### 验证
+- MSI 文件头 `d0cf11e0a1b11ae1`（标准 MSI/OLE）；Windows Installer 读取 OK：ProductName=货币战争小助手、ProductVersion=0.2.842。
+- ZIP `PK` 头；Expand-Archive 实测解压成功，exe+046模板齐全。
+- **注意**：真实安装（改变系统）未做，需用户桌面双击 .msi 实测；framework-dependent 需用户机器装 .NET 8。
+
+### 脚本（本次新增/适配，入 git）
+- `tools\MakeMsi.ps1`（手动生成 Payload.wxs + wix build）
+- `tools\Build-Installer.ps1`（从 Codex 复制并适配：wix/dotnet 路径→Codex .tools、--self-contained false、utf8NoBOM→UTF8；但原脚本因 $PSScriptRoot 依赖未直接用，用 MakeMsi.ps1 代替）
+- `installer\CurrencyWarsAssistant.wxs`（从 Codex 复制）
+
+## 2026-08-22 · MSI 安装体验改进（桌面快捷方式 + 安装后自动启动 + 产品名修正）
+
+### 用户反馈
+1. 产品名错误：MSI 里叫"货币战争小助手"，应为"货币战争智能狸"（Codex 旧 wxs 残留错名）。
+2. 安装没有"下一步/下一步"向导、没确认直接装；要求桌面快捷方式、安装完成提示、自动打开软件选项。
+
+### 本次改动（installer/CurrencyWarsAssistant.wxs）
+- 产品名全部"货币战争小助手"→"货币战争智能狸"（Package Name/Manufacturer/目录/快捷键/Feature/DowngradeError）。
+- **新增桌面快捷方式**（StandardDirectory DesktopFolder + DesktopShortcut 组件，卸载自动移除）。
+- **新增安装完成后自动启动软件**（CustomAction LaunchAppAfterInstall，Condition="NOT Installed" 仅首次安装触发，Return=asyncNoWait 不阻塞）。
+- Feature 增加 ComponentRef DesktopShortcut。
+
+### 验证（Windows Installer API 实测）
+- ProductName=货币战争智能狸 ✓；CustomAction LaunchAppAfterInstall present ✓；Shortcut=开始菜单 + DesktopShortcutApp→DesktopFolder ✓。
+
+### 受限说明（需告知用户）
+- **"下一步/下一步"完整向导 UI 做不了**：需 WixToolset.UI 扩展（WIX0094），本环境离线（extension add 失败、无本地 .wixext）。已回退 UIRef，MSI 保持可构建。正常双击 .msi 仍会显示 Windows 自带安装进度；安装完成会自动启动软件作为反馈。
+- 完整 UI 向导方案：需联网拉取 WixToolset.UI.wixext 或用户提供该包后再加 <UIRef>（记入待办）。
+
+### 交付
+- `C:\Users\zzz81\Desktop\CurrencyWarsAssistant-0.2.842-win-x64.msi`（94MB，framework-dependent 不含.NET，1300 文件）。
+
+## 2026-08-22 晚 · 本阶段收尾（版本结束，准备下一批新需求）
+
+### 本阶段最终结论（重要事实，供新会话恢复）
+1. **阵容漏记 = 特殊小情况，用户拍板忽略**。用户确认"很多时候确实在看商店"——那些判成 reward_shop 的帧本来就是商店页，页面分类器没有误判。我之前一度误判为"备战页被误判商店"，经用户确认后已撤销全部基于误判的 config 改动（reward_shop 优先级、prep 灰度），**config 已回滚到 HEAD 原状**。
+2. **识别功能确认无新问题**：关键识别回归 190 通过 / 9 失败全为既有基线（Non-待修 Known 项），非本版本引入。
+3. **性能问题确凿**：单帧全量识别 ~3.1s（formation 1.7s + progress 0.6s + 其它），`RepeatedPreparationFramesMeetTheTwoSecondRealtimeBudget`（预算 2s）超时属既有基线失败。
+   - **已验证：限制 OpenCV 线程数(16/8/4)对耗时无影响（3156/3110/3155ms）**——OpenCV 线程非瓶颈，formation 1.7s 是真实模板匹配计算量。
+   - 用户计划：性能粗修（progress 按需跳过可省 0.6s，安全）→ 精细优化（formation 收窄候选模板等）放到**下下个版本**。
+4. **36 张判 reward_shop 的帧已拷出供用户确认**：`D:\CWAFix-20260814\tools\diag\shop_misframes\`（用户确认全部正确=商店页）。
+
+### 本阶段已交付/完成
+- 发布 fix11 framework-dependent（不含.NET .msi + zip）到桌面；WiX 4.0.6 生成 msi（安装器工程 tools\MakeMsi.ps1 / installer\CurrencyWarsAssistant.wxs）；MSI 加桌面快捷方式 + 安装后自动启动 + 产品名修正为"货币战争智能狸"。
+- 服务器上传：`C:\Users\zzz81\Desktop\CurrencyWarsAssistant-0.2.842-win-x64.zip` 已传到 `8.215.1.116:/home/admin/cwt-website/uploads/`（93MB，未在服务器 DB 注册版本，待办）。
+- 8 个简易装备模板替换（fe7e825）、手标四角正交投影接入（c150c9d）、应援删除等。
+
+### 待办（下一批新需求前）
+- 服务器下载站版本注册未做（DB versions 表）；用户要求版本号"以1开头"。
+- 性能粗修（progress 按需跳过）未做，等用户新版本指示。
+- 其余既有基线失败（VisibleStandardEquipment Empty→Equipped 等）维持原有待办。
+
+### 教训（本阶段最重要的）
+- **不要在未确认前断言"识别器误判"**：这次我一度把"正确的商店页判定"误当 bug，改 config 后又回滚。用户红线再次验证：识别逻辑/坐标判断绝不自行下结论，先找用户用真实画面确认。
+
+---
+
+## 2026-08-22 深夜 · 下一批次开发需求（新版本，用户已下达）——需求理解记录
+
+### 用户对这批需求关键澄清（理解依据，勿走偏）
+- **第 3 点主角【1-3 五三自动刷取】** 用户原话："做一个刷开局，然后**一直跑到能够在 1-3 的时候完成这个三星五费**。" → 不是"刷合格开局就停"，而是**自动执行到 1-3 达成全员三星五费**。
+  - 理解依据：桌面《全网首发！1-3全员三星五费！_转写.txt》《我做到了！A850 1-3 三星昔涟_字幕转写.txt》两个视频转写 +《货币战争_命运圣杯祈愿与诅咒试炼_4.4_2026-08-10》资料包。
+  - 套路（来自转写）：圣杯转开局 → 找圣碑/圣杯 → 拿五费聘用书 → 采购专员批量刷五费 → 开五圣碑 → 升到全员三星五费。
+  - 与现有代码的关系：`Phase1AutomationService`/`OpeningRerollLoopCoordinator`（开局重开刷）是入口，但现有循环只"刷满意开局"，`RejectedOpeningRecovery` 等仍 NotConfigured；本需求要把它延伸为**一路打到 1-3 五三成型**。
+- **第 2 点【分角色字段】用户澄清**："战斗页的总伤害要显示，游戏也会给出排名靠前 7 位角色各自打出的伤害；战斗页要识别到并展示到 HTML 报告页面。" → 单角色伤害数据（Top7）+ 展示到复盘 HTML。
+- **第 2 点【后台特殊单位适配】**：用圣杯资料包（祈愿/诅咒试炼、特殊单位）做后台数据/识别适配底子。
+
+### 本批次 8 项需求清单（开发顺序：先修 bug → 做第3点 → 剩下再做后面）
+1. **完成群友反馈 bug**：入口 = docs/PENDING_USER_FIXES.md（累积制，先记录等"一起修"，阻断级才立即修）。
+2. **分角色字段 + 后台特殊单位适配**：战斗页总伤害 + Top7 单角色伤害识别 → 展示到 HTML；圣杯特殊单位适配。
+3. **1-3 五三自动刷取（主角，第二优先）**：刷开局 → 自动打到 1-3 全员三星五费。
+4. **商店页实时识别**：商店页即时识别（现有 reward_shop 识别 + RewardStageAutomation.Shop 已有打开/购买能力）。
+5. **主界面 UI 更改**。
+6. **云游戏适配**（已有部分基础：GdiGameCapture PrintWindow 云游戏回退 + CloudGameCompatibility 测试）。
+7. **只选一个投资环境的适配：选完即停，不打 1-1**：把关卡流程改成"投资环境选定后停止"，不再自动继续 1-1。
+8. **调试版本/功能**：保存完善复盘证据（截图/输入/判定日志）便于定位问题。
+
+### 本批次待用户后续细化/拍板项（本轮未定）
+- 第 3 点的具体操作序列、停点判定（1-3 达成"三星五费"的识别依据）需结合更多实机画面。
+- 第 4 点"实时识别"的具体交互（识别到什么动作）。
+- 第 5 点 UI 更改的具体设计。
+
+---
+
+## 2026-08-22 深夜补 · 需求理解关键修正（用户澄清，覆盖上文）
+
+> 上文"2026-08-22 深夜 · 下一批次开发需求"的理解有误，以本段为准。
+
+### 用户核心澄清（原话要点）
+1. **群友 bug 清单 = `C:\Users\zzz81\Desktop\问题反馈需求清单.md`**（来源群聊《问题反馈记录.txt》，反馈人云澈，整理 2026-08-11）——它**已包含第 5 点（主界面 UI 更改）**，且 UI 更改与该清单**联动**，一并修理。
+2. **顺序修正**：**把第1点(群友bug清单)和第3点(1-3五三自动刷)放到第一个做** → **再做第2点(分角色字段)** → **最后把第4点(商店实时识别)做完**（因第4点是第3点"1-3五三自动刷"的**必要支撑**，见下）。
+3. **第4点与第3点的关系（重要）**：两个三星五费视频文档里都有"**刷新商店 + 购买适合的角色**"操作 —— **这个功能软件里已经有类似实现**：就在 **`刷开局`（OpeningRerollLoop / phase1）部分的代码里**，已有"**识别商店页面 + 购买商店中的角色**"的能力。第4点"商店页实时识别"本质是**复用/补完这个既有能力**，作为第3点自动刷的必要部分。
+4. **第6点(云游戏适配)已经做过**；但用户发现**正式版里"保存复盘证据"的功能又被去掉了** → 这是**回归**（功能之前做过、正式版丢了），对应第8点方向，需找回/修复。
+
+### 最终开发顺序（用户拍板）
+1. **第一批（第一优先）**：第1点 群友bug（问题反馈需求清单.md 全修，含第5点 UI 联动）+ 第3点 1-3五三自动刷（含第4点商店实时识别作为必要能力，复用刷开局里的商店识别/购买逻辑）。
+2. **第二批**：第2点 分角色字段（战斗页总伤害 + Top7 单角色伤害识别 → HTML 展示）+ 后台特殊单位适配。
+3. **后续**：剩余项（含修复"复盘证据保存"回归、云游戏适配补全、第7点选完投资环境即停不打1-1、主界面UI具体改稿）。
+
+### 群友 bug 清单内容摘要（第1点实体，来自问题反馈需求清单.md）
+- **Bug1（最高优先）**：1-1 偶发角色上不齐(<3) → 游戏弹"角色未上齐"框 → 软件识别不到该界面卡死。根因：软件预设优先上场输出角色，命中后不再上其他角色。需：①识别"角色未上齐"弹框避免卡死；②处理预设角色致上不齐3人的逻辑。
+- **Bug2**：1-2 投资策略方案匹配失效——配置两组方案(组内"或"、组间"且")，刷出"长线利好"未选中直接停下。
+- **新增4个独立开关**：①刷到目标开局后是否停下(默认关=停下)；②对局中途点开始是否执行(默认关=不执行)；③主界面启动检测到已有对局是否自动停下(默认开)；④是否启用预设优先上场角色(默认开)。
+- **功能增强**：1-2 投资选择自动化（方案A完全自动化 / 方案B组合凑齐如确认有采购专员再停）；保护逻辑开关化；新手教程(.NET8+下载指引)。
+- **使用要点/已澄清**写入说明文档；打赏等暂不开发。
+
+---
+
+## 2026-08-22 深夜再补 · 最终批次顺序（用户拍板，覆盖上文顺序段）
+
+- **第一批（立即做）= 仅群友 bug 清单**：`C:\Users\zzz81\Desktop\问题反馈需求清单.md` 全部修掉，**含第5点主界面UI联动** + **恢复复盘证据(DebugEvidenceCollector)为可设开关、默认关**。
+- **1-3 五三自动刷（第3点）+ 商店实时识别（第4点）放后面第二批**（复用刷开局已有的商店识别/购买逻辑）。
+- 再后面：第2点分角色字段、其余项。
+- **复盘证据丢失根因（已初步定位）**：`DebugEvidenceCollector` 功能代码仍在，但开关 `EnableDebugEvidenceSaving` **默认 false 且设置界面未暴露**（XAML 无该勾选项）→ 正式版看起来像被去掉。处理：恢复成设置界面可设开关，**默认为关**。
+
+### 第一批待办清单（群友bug清单）
+1. Bug1：识别"角色未上齐"弹框避免卡死 + 修预设角色致上不齐3人逻辑（最高优先）
+2. Bug2：修 1-2 策略方案匹配"长线利好"未选中
+3. 新增4个独立开关：刷到目标开局后是否停下(默认关)/中途点开始是否执行(默认关)/已有对局自动停下(默认开)/预设优先上场角色(默认开)
+4. 1-2 投资选择自动化（方案A完全自动化 / 方案B组合凑齐再停）
+5. 保护逻辑开关化 + 新手教程文档 + 使用要点写入说明
+6. 恢复调试证据开关可设、默认关（DebugEvidenceCollector）
+7. UI 联动：主界面UI更改与上述清单合并
+
+---
+
+## 2026-08-22 深夜续 · Bug1 代码审计结论（用户要求"审计为何特定情况失效"）+ 用户澄清入口
+
+### 用户澄清：Bug1 实际触发路径
+- 用户原话："那个用户（云澈）使用的模式其实是 **主界面底部的『刷取方案』框设置了两套不同的刷取方案，点击刷取后** 出现他反馈的异常问题。"
+- → Bug1 走的是 **OpeningReroll（刷开局）** 多方案流程：`RunFilterAsync`(MainViewModel)→`BuildFilterSet()`→`filters.Profiles`(多套方案)→`OpeningRerollLoopCoordinator.RunUntilTerminalAsync`。
+- `BuildFilterSet` 用 `RerollProfiles.Select(BuildProfileFilter)` 把多套"刷取方案"转成 `Profiles`；匹配用 `evaluator.Evaluate(snapshot,filters)`，命中后 `SelectMatchedProfile` 在多方案中 `randomIndexSelector/Random.Shared` **随机锁定一个**，后续投资环境/策略只跟随该方案（OpeningRerollLoopCoordinator.cs:408-442）。
+
+### Bug1 卡死根因（已审计，供后续修）
+- **适配已存在**：`RewardStageAutomation.Battle.cs` 的 `ConfirmIncompleteLineupPromptIfPresentAsync`（识别 `incomplete_lineup_prompt` → 连2帧确认 → 点 `IncompleteLineupConfirmPoint` 右侧确认继续出战）。
+- **失效根因**：门控 `allowIncompleteLineupConfirmation = !HasThreeDistinctPlacements(currentFormationPlacements)`（RewardStageAutomation.cs:326/427）。`currentFormationPlacements` 来自 `options.InitialFormationPlacements`（**内存规划名单，非实机棋盘3/3验证**）。当"内存名单有3个distinct角色、实机只上了1~2个"（偶发部署/识别不一致）时：`HasThreeDistinctPlacements=true` → `allowIncompleteLineupConfirmation=false` → **弹框确认被禁用** → 弹框出现无人处理 → 卡死。
+- 代码自证局限：RewardStageAutomation.cs:520 `"这只是内存 Placements 一致性检查，不宣称已视觉确认棋盘 3/3"`。
+- 修复候选方向：①出战前后**始终**启用弹框确认（或多帧视觉复核后才禁用）；②需确认该弹框路径在"快速刷开局→奖励关进入"里也被补上适配。
+- **用户待逐一讲解，未拍板修复，勿改码。**
+
+### 复盘证据（遗留，用户确认）：DebugEvidenceCollector 功能在，开关默认 false + 设置界面未暴露 → 恢复为可设开关、默认关。
+
+---
+
+## 2026-08-22 夜 · Bug1 修复实施（第一批第一项，已落地）
+
+### 改动（src/CurrencyWarsAssistant.Tasks/RewardStageAutomation.cs）
+- `AdvanceBattleToPageAsync` 的两个调用点（1-1 出战→reward_shop、1-2 出战→investment_strategy）：
+  - `allowIncompleteLineupConfirmation: !PreparationPlacementConsistencyPolicy.HasThreeDistinctPlacements(currentFormationPlacements)`
+  - 改为 `allowIncompleteLineupConfirmation: true`
+- 含义：**每次点击出战按钮后，都调用 `ConfirmIncompleteLineupPromptIfPresentAsync`** 检测"可出战角色人数未达上限，是否确认出战"弹窗；命中 → 连2帧确认 → 点右侧确认（IncompleteLineupConfirmPoint 1170,675）继续；识别到已进入战斗页 → 立即返回停止。
+- 消除了"内存名单判有3人→门控关掉弹窗确认→实机不足无人处理→卡死"的失效窗口（匹配函数仍在 520/546 行用于其它一致性检查，不影响）。
+
+### 验证（已做，未跑全量测试——用户要求）
+- `dotnet build Tasks -c Release`：0 警告 0 错误。
+- 用用户发来的真机弹窗截图（tools/diag/incomplete-lineup-prompt-live.png，2559×1439）跑分类器：`pageId=incomplete_lineup_prompt`，displayName="出战人数未达上限确认" → **软件能正确识别该界面**。
+- 确认按钮坐标已在代码 IncompleteLineupConfirmPoint=(1170,675)（用户认可"参考已有坐标"）。
+- 临时验证 console 已删（未污染仓库）。
+
+### 用户的下一个指示
+- Bug1 修完后，告诉用户"接下来一步修什么 bug"。待续。
+
+---
+
+## 2026-08-22 夜追加 · Bug1.5：投资环境=英雄登场时禁止自动卖备战席1号位角色
+
+### 用户需求（在修 Bug2 之前先做，优先级高于 Bug2）
+- 自动刷开局过程中，**如果软件登记的这局投资环境是"英雄登场"（尤其用户目标环境就是它）**，
+  那么 **备战席第一号位（1号位）角色绝对不能自动卖出**。
+- 原因背景：群友刷"英雄登场 + 采购专员"组合；源码有备战席自动卖出（SellBenchCharactersAsync 等）。
+  1号位很可能是关键角色（英雄登场环境的关联角色/要保留的），自动卖出会导致流程出问题。
+
+### 待办优先级（更新）
+1. ✅ Bug1 弹窗确认（已修 c884d90）
+2. ⏳ **Bug1.5（本条，先于 Bug2 做）**：投资环境=英雄登场时，备战席1号位角色禁止自动卖出
+3. ⏳ Bug2：1-2 投资策略匹配"长线利好"
+4.. 等（开关/1-2自动化/复盘开关/UI/交付）
+
+---
+
+## 2026-08-22 夜 · Bug1.5 实施完成（投资环境=英雄登场时保护备战席1号位）
+
+### 需求
+自动刷开局/奖励关过程中，若软件登记的这局投资环境是「英雄登场」，备战席第一号位（最左槽 BenchSlot==0）角色绝对不能自动卖出（本局所有自动卖出都保护）。用户拍板：067=英雄登场；第一号位=最左第一格；实现范围=只在卖出规划里保护。
+
+### 改动
+- [核实] `data/4.4/investment-environments.json`：`investment_environment_067` = 英雄登场（用户确认）。
+- `PreparationFormation.cs`：
+  - `PreparationBoardOptions` 加 `ProtectFirstBenchSlotFromSale`（bool，默认 false）。
+  - `PrepareBenchSalePlanner.Plan`：保护开启时，把 `availableBench` 中 `BenchSlot==0` 的槽位加入 `reservedBenchSlots`（禁卖）。
+- `OpeningRerollLoopCoordinator.cs`：
+  - 加常量 `HeroEntranceInvestmentEnvironmentId = "investment_environment_067"`。
+  - `BuildPreparationOptions` 加参数 `protectFirstBenchSlotFromSale`；两处调用（1-1 PrepareAsync、BuildRewardStageOptions 内 PreparationCompletionOptions）传入 `navigation.SelectedInvestmentEnvironmentId == HeroEntranceInvestmentEnvironmentId`。
+- `RewardStageAutomation.cs`：`BuildPreparationCompletionOptions`（奖励关1-2后商店补员出售链路）补复制 `ProtectFirstBenchSlotFromSale`——否则英雄登场保护只在1-1生效、奖励关后段仍可能卖掉0号位（review 发现的 should-fix，已修）。
+
+### 验证
+- `dotnet build Tasks -c Release`：0 警告 0 错误。
+- `PreparationBenchSalePlannerTests`：5/5 通过（低风险回归确认，未把原有逻辑改坏）。
+- 独立临时验证（3 场景，已删）：①保护开启→0号位保留、其它卖出 ✅；②保护关闭→0号位照常可卖（行为不变）✅；③保护开启+0号位已部署→只卖其它、不误拦截 ✅。
+- review：无回归、null 安全；唯一 should-fix（奖励关后段漏复制保护字段）已修。nit（补测试用例）记录待后续批次统一补回归覆盖，未新增测试（用户未要求）。
+
+### 状态：已实现 + 已验证，待随第一批统一出包。
+
+---
+
+## 2026-08-23 凌晨 · Bug2 定位进展（投资策略/环境"长线利好"未选中）
+
+### 群聊原始记录（用户提供：clipboard-20260823-004241 txt，反馈人云澈 2026-08-10）
+- 关键对话：云澈"我加了两个方案(刷取方案)点开始刷，他两是并行吗?"/"长线利好他没选"；张jwXY"方案之间是或关系，方案内部不同条件之间是且关系"；云澈19:07"我这么设置碰到长线利好应该会选吧→不选"；张jwXY"最上面表格直接选长线利好+投资策略没bug"。
+- 结论线索：**全局表格(InvestmentEnvironmentFilters/InvestmentStrategyFilters)路径正常；"刷取方案"(RerollProfile)路径出问题(长线利好/策略未选中)**。
+- 云澈刷"英雄登场+采购专员"组合；期望刷到该组合才停；现状"只刷出英雄登场就停(奖励关)，采购专员不确定"。
+
+### 已核实的实配数据（用户本机 user-settings.json）
+- `InvestmentEnvironmentFilters = [investment_environment_018(命运圣杯契约), investment_environment_082(长线利好)]` 均为 Required。
+- `RerollProfiles = []`（当前为空）；`PreferredInvestmentStrategyIds = []`。
+- 环境 id 确认：018=命运圣杯契约、082=长线利好、067=英雄登场（data/4.4/investment-environments.json）。
+- 投资策略无"长线利好"名；"长期主义"=052/053。"长线利好"是**投资环境**而非投资策略。
+
+### 代码定位（当前结论）
+- `OpeningFilterEvaluator.Evaluate` + `ProfileMatches`：方案内环境/竞争者/词条为"或(交集)"、跨类"且"、排除项生效——**与用户设计一致，OpeningFilterEvaluatorTests 已覆盖并通过**（ProfilesUseAndAcrossCategoriesAndOrWithinPositiveChoices / MultipleProfilesAreOrAlternatives / AnyRejectedProfileItemInvalidatesThatProfile）。
+- `SelectInvestmentEnvironmentIds`（OpeningRerollLoopCoordinator.cs:765）：configured 与 snapshot 识别环境求交 offered，**offered>1 时随机选1个**；offered=0 时返回整个 configured 集合。
+- 疑点A：多分支环境同时出现时随机选1个，可能"漏选长线利好/选到别的"。
+- 疑点B：settings 里没有 067(英雄登场)、只有 018(命运圣杯契约)+082；群友以为刷"英雄登场"，可能与识别/名称映射有关，待确认。
+- **未下结论，需继续**：下一步看 OpeningFilterEvaluator 的 Snapshot 环境 id 如何由 OCR/名称映射而来（GameDataNameMatcher），以及 SelectInvestmentEnvironmentIds 在多环境下是否合理；或读本次运行日志 real-run 验证。
+
+### 待办（Bug2）
+- 定位真实失败分支：可能是(1)多可接受环境随机选一个→漏选目标；(2)配置环境/策略 id 与识别 id 不一致；(3)RewardStage 投资策略页匹配用策略 id 但用户配的是环境 id。
+- 需要用户确认：群友具体是哪条路径（全局环境筛选 vs 刷取方案）复现；有截图/日志最好。
+
+---
+
+## 2026-08-23 凌晨 · Bug2 定位结论（用户拍板：逻辑正确则忽略，用户自测）
+
+### 用户澄清
+- 群友说的"碰到了就卡住"= **Bug1（弹窗确认）**，与本 Bug2 无关（Bug1 已修 c884d90）。
+- 我模拟的几种环境判定情况，**如果逻辑正确就忽略**，不当作 bug 修改。
+- **用户将自行实机复测最新版**，看在他说的相同情况（刷取方案配"长线利好"等）下结果是否一致。
+
+### 定位结论（已复现验证，但不作为 bug 修改）
+- "长线利好" = 投资环境 investment_environment_082（非投资策略）；全局 settings 配 018(命运圣杯契约)+082(长线利好)。
+- `OpeningFilterEvaluator.Evaluate` + `SelectInvestmentEnvironmentIds` 逻辑验证：环境"或"语义、多环境并存随机选1个——当前实现语义与用户设计一致（测试通过），**用户判定逻辑正确 → 忽略，不改代码**。
+- 结论：Bug2 **挂起，等用户实机复测**后据结果决定是否进一步处理。
+
+### 待办更新
+- Bug2：⏳ 用户自测 pending（不改代码）。
+- 下一步处理其余清单：4个独立开关 → 1-2投资选择自动化/保护开关化 → 复盘证据开关(默认关) → UI → 全量回归+出包。
+
+---
+
+## 2026-08-23 凌晨 · Bug2 结论已定 + 转向"4个独立开关"（第一批项3）
+
+### 用户拍板
+- Bug2：逻辑正确则忽略，用户自行实机复测最新安装版（现有版即可，不出包）。已挂起，不改代码。
+- 接下来继续做群友清单里的其它项 → **4个独立开关**。
+
+### 4个独立开关（来自问题反馈需求清单.md 第二部分，用户云澈建议"设置里单独开关"）
+| # | 开关 | 当前行为(原设计意图) | 建议默认值 |
+|---|------|----------------------|-----------|
+| 1 | 刷到目标开局后是否停下 | 刷到想要投资策略/开局即停，不进行1-2干预(保护设计) | 默认关=停 |
+| 2 | 对局中途点开始是否执行 | 已在1-1/1-2中途点开始不自动执行，防误结算已有开局 | 默认关=不执行 |
+| 3 | 主界面启动检测到已有对局是否自动停下 | 发现已有进行中对局即自动停下防误触 | 默认开 |
+| 4 | 是否启用预设优先上场角色 | 优先上预设输出角色，命中后不再上其他角色(致Bug1上不齐) | 默认开 |
+
+### 现状摸底（只读）
+- 设置窗口 `SettingsWindow.xaml`：页签"常规与恢复/奖励关角色/截图与识别"。已有 EnableRewardStageAutomation / EnableGalaxyScholarRewardStrategy 等开关。
+- 开关1候选字段：`OpeningRerollLoopOptions.DeployMatchedOpening`，MainViewModel 当前 `DeployMatchedOpening = !singleRound`（硬编码）。
+- 开关4：布阵"预设优先输出角色"逻辑在 InitialRewardFormationPlanner / PreparationFormation。
+- 开关2、3：App 层生命周期（UnifiedRunLifecycleService.BeginAutomaticReroll / 导航），当前硬编码保护。
+- 需逐个定位精确接入点后实施（多文件：Settings模型+SettingsWindow.xaml+MainViewModel+自动化）。
+
+### 下一步
+- 向用户确认：4开关做成 SettingsWindow 4个 CheckBox？各自接入点方案？确认后逐项实施（单变量+回归）。
+
+---
+
+## 2026-08-23 凌晨 · 第一批"功能修正"最终实施清单（用户逐项拍板，覆盖群友清单第二部分）
+
+### 用户修正（不做开关，直接改逻辑）
+1. **投资策略选择逻辑**：用户刷开局时**选了投资策略(1个或几个)**→ 之前逻辑"刷到就立刻停、不帮选策略"；**改为刷到目标策略时软件直接帮用户选择该策略，不停**。
+2. **无策略停点**：用户**没选投资策略**（只选环境/敌人阵营/负面词条）→ **选完投资环境后立即停下**，不再自动打两关奖励关。
+3. **对局中途点开始**：**直接不执行**（不可控因素多），不做开关。
+
+### 用户确认做 2 个开关
+- **开关A【是否停下】**：开=检测到已有对局自动停下(不动)；关=自动点"继续对局"→进局立即退出结算→重开新一局。
+- **开关B【预设优先上场角色】**：开=现有行为(优先上预设输出角色)；关=把**备战席前3个(slot0/1/2)**直接拖上前台，再做金矿/买卖等，其他流程不变，最后开战。弹窗确认(Bug1)已修可兜底上不齐。
+
+### 待用户复测（挂起）
+- Bug2(长线利好)逻辑正确则忽略，用户自测。
+
+### 实施计划（逐步单变量）
+1. 逻辑改1：投资策略"刷到即帮选不停"
+2. 逻辑改2：仅环境/敌方/词条(无策略)时选完环境立即停
+3. 逻辑改3：中途点开始不执行
+4. 开关B：预设优先上场角色(关闭→拖前3个上前台)
+5. 开关A：是否停下(已有对局自动继续/退出结算/重开)
+6. 全量回归 + 出包
+
+---
+
+## 2026-08-23 · 首批"功能修正"改造点定位（已完成代码定位，待逐项实施）
+
+### 定位结果
+- **开关A【是否停下/已有对局】**：核心点 `CurrencyWarsNavigation.cs:358-367`——识别到 `rank_difficulty_in_progress`（已有进行中对局）→ 当前直接 `ActiveRunDetected`（保护不动）。开关开=保持此行为；开关关=**自动点继续对局→进局立即退出结算→重开新一局**（新逻辑，需新增）。
+- **逻辑改1【帮选策略】**：`RewardStageAutomation.Battle.cs` `SelectInvestmentStrategyAsync` 已实现"命中目标策略即 SelectStrategyAndConfirmAsync"。触发前提 `CompleteRewardStages=true`（多轮+EnableRewardStageAutomation），且 `PreferredInvestmentStrategyIds` 非空。可能已满足；待确认。
+- **逻辑改2【无策略选完环境即停】**：`RewardStageAutomation.cs` `CompleteAfterSecondRewardStageAsync`（preferredStrategyIds空→停待手动）+ Coordinator 停点判定。需按"没选策略→选完环境立即停"调整。
+- **逻辑改3【中途点不执行】**：即 `ActiveRunDetected`（保持"不执行"为最终行为）。
+- **开关B【预设优先上场角色】**：`PreparationFormation.PrepareAsync`（900）布阵分层 FastReroll；`PrepareExtremeAsync`(前3无脑拖)。需加独立开关控制"关闭→直接拖备战席前3个上前台"，后续金矿/买卖/出战流程不变。
+
+### 说明
+- 这批改造涉核心自动化（尤其开关A"自动退出结算重开"较高风险），实施后须用户实机验证；建议逐项改+单变量+验证后推进。
+- 用户当前先自测 Bug2；本批待用户确认后逐项动工。
+
+---
+
+## 2026-08-23 · 突发排查记录：刷开局报"WindowUnavailable"（临时现象）→ 待办
+
+### 现象（用户 2026-08-23 凌晨报告，现已自行恢复可正常操作）
+- 用户官网版(0.2.842)刷开局失败，日志反复 `WindowUnavailable：游戏窗口不存在、已最小化或客户区无效`（CurrencyWarsNavigation.cs:310，Refresh(handle) 拿不到窗口）。
+- 用户补充：19点用的是旧版，刚刷开局用最新版；报错后"现在突然又好了，可正常操作"。
+- **已澄清**：官网0.2.842=基线1ddd0c3，不含本会话 Bug1(Bug1.5) 改动（未发布）；该现象与本次两处改动无关。
+- **未深究根因**：疑为窗口前台/最小化/客户区瞬间状态（可能受我调试时切窗口影响）导致 Refresh 返回 null；正常后即恢复。
+- **用户指示**：针对此现象稍后还有 **2 个 bug 将加入待办**（待用户补充具体内容）。
+
+### 待办（累积）
+- [待补] 用户将针对"刷开局窗口不可用临时现象"再补充 2 个 bug 进 PENDING_USER_FIXES。
+
+---
+
+## 2026-08-23 · 第一批功能修正·开关B(预设优先上场角色)已实施 + Bug2真根因(用户实测)
+
+### 开关B【预设优先上场角色】已实施（未提交）
+- `PreparationBoardOptions.EnablePresetPriorityDeployment`（默认 true）。
+- `PreparationFormation.Plan` 保留；`PrepareAsync` 关闭标志时调新方法 `PrepareTopThreeWithoutPresetAsync`（识别真实 bench → 把备战席前3槽(slot0/1/2)拖到前台0/1/2 → 保留真实 bench 供后续金矿/买卖/出战）。
+- `OpeningRerollLoopOptions.EnablePresetPriorityDeployment` 传递 → `BuildPreparationOptions`。
+- MainViewModel：字段`_enablePresetPriorityDeployment=true`+属性+RunFilterAsync 传值+设置持久化(Save/Load)。
+- SettingsWindow"奖励关角色"页新增 CheckBox。
+- `dotnet build App -c Release`：0 警告 0 错误。
+- 【待 review + 提交】未跑全量测试。
+
+### Bug2 真根因（用户 2026-08-23 实测，第二块结论）★关键
+- 用户操作：主界面顶部全局配置已选**2个投资环境**；下方又配置了**2个独立刷取方案**（每方案含自己的投资环境）。
+- **现象：软件只读取了顶部全局选的2个投资环境，底下配置的刷取方案根本没读取/没生效**（日志里没有刷取方案的环境）。
+- → 不是"多套刷取方案逻辑(或/且)"本身有 bug，而是**刷取方案(RerollProfiles)的数据根本没有被读取进刷开局评估**。
+- 关联代码：`BuildFilterSet()` 把 `RerollProfiles`→`Profiles`；`EvaluatePreferredInvestmentEnvironments` 只处理全局 `filters.InvestmentEnvironments`；`ProfileMatches` 处理 profile 环境。**需定位为什么 selectedProfile.AcceptedInvestmentEnvironmentIds 为空/未进 filter**，或 BuildProfileFilter 环节丢失。
+- 【待办】读当前 user-settings.json 的 RerollProfiles 实际内容，定位读取链路缺口。优先级高。
+
+---
+
+## 2026-08-23 · Bug2 真根因实锤（用用户真实数据复现）+ 用户设计意图澄清
+
+### 用户真实配置（user-settings.json，2026-08-23 读）
+- 顶部全局投资环境 Require：`investment_environment_051` + `052`（SelectionMode=1）
+- 底部 2 个刷取方案：
+  - `刷取方案0104` #1: AcceptedInvestmentEnvironmentIds=`[082 长线利好]`
+  - `刷取方案0104` #2: AcceptedInvestmentEnvironmentIds=`[067 英雄登场]`
+
+### 复现结果（OpeningFilterEvaluator 实跑）
+| 刷到环境 | Matched | 命中方案 | 结论 |
+|---|---|---|---|
+| 082 长线利好(方案1目标) | ❌ | p1 | 全局 Require 051/052 挡掉 |
+| 067 英雄登场(方案2目标) | ❌ | p2 | 全局 Require 挡掉 |
+| 051(全局) | ❌ | - | 方案未命中 |
+| 082+051 | ✅ | p1 | 全局+方案同时出现才放行 |
+| 067+052 | ✅ | p2 | 同上 |
+
+**根因：全局 `InvestmentEnvironments` Require(051/052) 硬性判定 + 刷取方案环境(082/067) ProfileMatches 判定 → 叠加互斥。方案环境永远无法单独命中。**
+
+### 用户设计意图澄清
+- MainWindow.xaml 刷取方案框说明文字："一套方案内：同类多选取其一、不同类别同时满足；多套方案之间任意命中一套即可。若同时命中多套，程序随机锁定一套继续。**方案未设置环境或策略时，沿用上方通用选择**。"
+- 用户要求：检查软件逻辑是否与"方案内且、方案间或"一致；**一致不修，不一致修**。
+- 已确认**不一致点**：方案设置了环境时，上方全局环境 Require 仍硬性生效 → 与方案环境叠加冲突。应改为"方案设了环境就用方案环境，上方通用环境只在方案未设环境时才生效"。
+
+### 关键 UI 事实
+- MainWindow 只有**一个**"开始刷开局"按钮（AutoRerollCommand，同时加载全局+方案）；刷取方案框内无独立"开始"按钮（仅添加/编辑/删除）。用户原以为有独立按钮，实际没有——此为待办（可能用户希望加，但本轮先按"检查且/或一致性"修环境冲突）。
+
+### 待办（Bug2 修复方向）
+- 改 `Evaluate` 的投资环境判定：当存在设置了环境的启用刷取方案时，上方全局环境 Require 不构成硬性障碍（不叠加），方案环境命中即满足投资环境条件；未设环境的方案仍沿用上方通用环境。
+- 需用户确认修法后实施 + review + 回归（OpeningFilterEvaluatorTests）。
+
+---
+
+## 2026-08-23 · Bug2 修复实施（上下配置完全隔离，双入口按钮）
+
+### 需求（用户拍板）
+"上面的'全局投资环境'和底下的'刷取方案'全部隔离开，互不影响：点上面的刷开局就生效上面的配置，点下面的刷开局就生效下面的方案。"
+
+### 改动（已编译 0 警告 0 错误，待 review+提交）
+- `MainViewModel.BuildFilterSet(bool useProfiles)`：useProfiles=false→只用顶部全局(环境/阵营/词条/特殊组合)，Profiles=空；useProfiles=true→只用刷取方案(Profiles)，顶部全局全空。完全隔离。
+- `RunFilterAsync(singleRound, useProfiles)`。
+- `AutoRerollCommand`(上方"开始刷开局")→useProfiles:false；新增 `RunProfilesCommand`(下方"开始刷开局仅按刷取方案")→useProfiles:true。
+- MainWindow.xaml 刷取方案框底部新增按钮"开始刷开局（仅按下方刷取方案）"。
+- 说明文字同步："方案未设置环境或策略时沿用上方通用"仍适用（未设方案才用上方）。
+
+### 验证（临时复现，已删）
+- 修复后 useProfiles=true：识别到 082→命中方案1；识别到067→命中方案2；识别到无关051→不命中（不被全局环境挡）。✅
+- Build App：0 警告 0 错误。
+
+## 2026-08-23 · 新增 2 个 bug（用户待办，待修）
+
+### BugA：开始刷开局时，节点历史记录弹窗需自动开鼠标穿透
+- 现象：软件有两个悬浮窗（日志窗 + 节点历史记录窗）。开始刷开局后，若"节点历史记录"窗没开鼠标穿透，鼠标可能点到节点历史区域，导致自动停止。
+- 要求：**开始刷开局/记录前，检测"节点历史记录"窗是否已开鼠标穿透；没开就自动打开**。
+- 参照：日志窗现有 `LogOverlayClickThrough` 穿透机制；节点历史窗（OperationPanel）需确认是否已有穿透能力。
+
+### BugB：窗口重开后句柄失效 → 开始前需重新定位窗口
+- 根因（用户确认）：软件定位窗口后，用户关闭游戏又重开 → 窗口"看起来一样"但**句柄实际变了**，软件仍用旧句柄 → 找不到窗口/操作失败（01:06 WindowUnavailable 就是这个）。
+- 要求：**开始刷开局 / 开始记录前，必须重新走一遍"识别窗口 → 重新定位窗口"的完整流程**；**用户自选窗口时也要适配**。
+- 涉及：`GameWindowService`/`MainWindow` 选窗逻辑 + `RunFilterAsync` 开始入口 / 记录入口。
+
+---
+
+## 2026-08-23 · BugA/BugB 已实现（修复完成，已编译+回归43/43通过）
+
+### BugA（节点历史窗强制穿透）已修复
+- 发现：日志窗(LogOverlayWindow)与节点历史窗(OperationPanelWindow)**共用同一 `MainViewModel.IsLogOverlayClickThrough` 穿透属性**（OperationPanelWindow.ApplyClickThrough/WM_NCHITTEST 均读它）。
+- 改动：`MainWindow.OnAssistanceActivated`（刷开局+记录开始统一入口，由 RunFilterAsync 与 BeginPassiveCollection 触发）里，若穿透未开则强制 `IsLogOverlayClickThrough=true`；属性变化自动触发 OperationPanelWindow 立即应用 WsExTransparent。
+- 说明：刷开局 RunFilterAsync 原本已在 1914 行设 true；本次在统一入口补强，覆盖记录/即时识别场景，确保任何运行入口下节点历史窗都穿透。
+
+### BugB（开始前重新识别窗口）已修复
+- 根因（用户确认）：定位窗口后用户重开游戏 → 旧句柄失效（本会话 WindowUnavailable）。
+- 改动：`RunFilterAsync`（刷开局）与 `BeginPassiveCollection`（即时识别/记录）开始前调用 `RefreshWindows()`——重新 FindCandidates 枚举窗口，通过 previousHandle→进程名+标题(由 SelectedWindow setter 存 _lastWindowProcessName/Title)→FirstOrDefault 重新匹配最新句柄。**含用户自选窗口**（进程名+标题 fallback 已覆盖，525-526 记录）。
+
+### 编译与回归
+- `dotnet build App -c Release`：0 警告 0 错误。
+- Tests 工程编译 0 警告 0 错误。
+- 回归 43/43 通过（OpeningFilterEvaluator 17 + PreparationBenchSalePlanner 5 + GamePageClassifier 21）。
+- 【待提交】改动文件：MainViewModel.cs、MainWindow.xaml.cs、docs/HANDOFF。
+
+---
+
+## 2026-08-23 · 理清货币战争开局页面顺序（为逻辑改1/2的前提）
+
+### 完整开局页面顺序（据 docs/SCREEN_FLOW_1920x1080.md 实证 + navigation-flow.json）
+```
+货币战争首页 → 模式选择 → 职级难度 →
+敌人概览页(enemy_overview)     ← 读取敌方阵营 + 4个负面词缀（刷开局第一判定点）
+位面进度页(plane_progress)
+投资环境页(investment_environment)  ← 读取3候选环境、选择/刷新、确认（第二判定点）
+1-1 备战页(preparation_1_1/preparation_generic)  → 布阵 → 出战
+   ├→ 打1-1战 → 1-1奖励关(reward_shop商店) → 再出战
+   └→ 打1-2战 → 投资策略页(investment_strategy)  ← 选投资策略（在RewardStageAutomation内）
+```
+关键：
+- **敌人概览(阵营+词缀)在投资环境之前**，是两个独立识别阶段。
+- **投资环境页是刷开局核心目标页**（配环境就是用这页判定）。
+- **投资策略在1-2打完后的投资策略页选**（RewardStageAutomation 流程终点），不是开战前。
+
+### 逻辑改2 精确化（用户纠正）
+- 需求：没选投资策略时，"选完投资环境立即停（不打奖励关）"。
+- 现状：CompleteRewardStages开时，无论选没选策略，都会一直打到1-1、1-2奖励关、在投资策略页才停(RewardStagesCompletedAwaitingManualStrategy)。
+- 目标改法：没配策略(preferredStrategyIds空) → 布阵完成后即 Matched 停，跳过1-1/1-2奖励关自动化。
+- 【待用户确认改法后实施】
+
+## 2026-08-23 · 逻辑改2 + 奖励关开关语义（用户拍板精确定义）已实现
+
+### 奖励关开关(EnableRewardStageAutomation)精确语义（用户定义）
+| 场景 | 打不打 1-1/1-2 奖励关 |
+|---|---|
+| 已选择投资策略 | 必定打（无视开关，去刷目标策略） |
+| 已选策略但前三项(投资环境/敌人阵营/负面词条)不过关 | 不打（直接结算重刷）——由 opening 评估 isMatch 保证，天然成立 |
+| 未选投资策略 | 按开关决定（默认关→不打，布阵后停） |
+- **开关默认 = 关**（`_enableRewardStageAutomation` 由 true 改 false）。
+
+### 实现
+- MainViewModel.RunFilterAsync：
+  `CompleteRewardStages = !singleRound && (HasConfiguredStrategy() || EnableRewardStageAutomation)`
+- 新增 helper `HasConfiguredStrategy()`：主界面策略筛选有必选 或 任一启用刷取方案设了首选策略。
+- OpeningRerollLoopCoordinator：恢复 `if (!options.CompleteRewardStages) return Matched`（不含策略判断，交给上层开关）；删除了 Session 前期我误加的 `HasPreferredInvestmentStrategy` 判断与 helper。
+- SettingsWindow 开关文案更新为上述语义（未选策略时按此开关；默认关）。
+- 编译：Tasks/App/Tests 0 警告 0 错误。
+
+### 机制确认（SCREEN_FLOW_1920x1080.md 实证）
+开局顺序：敌人概览(阵营+4词缀)→位面→投资环境(3选1)→1-1备战→开战→1-1奖励关→再战→1-2→投资策略页(选策略)。敌人概览在投资环境之前；投资策略在奖励关流程终点。
+
+### 待办：逻辑改1（用户此前回复"需要再调"，待用户说明具体调整点）
+现状：选中策略→三连刷重试帮选目标策略→InvestmentStrategySelected→Matched 停。
+
+## 2026-08-23 · 逻辑改1 / 逻辑改3 现状梳理（待用户确认）
+- **逻辑改3（对局中途点开始→直接不执行）现状已满足**：CurrencyWarsNavigation while 循环开头检测 `rank_difficulty_in_progress` → 返回 `ActiveRunDetected`（"为保护用户进度，未执行任何操作"），导航不执行任何点击。刷开局运行时若当前在对局中会被拦截。无需额外代码，待用户实机确认。
+- **逻辑改1（刷到目标策略直接帮选）现状**：选中策略后，RewardStageAutomation 在投资策略页 `SelectStrategyAndConfirmAsync` 帮选目标策略；三连刷重试后仍不中→`InvestmentStrategyNotFound` 重开。用户此前选"需要再调"，但尚未说明具体调整点，待用户澄清。
+
+## 2026-08-23 · 逻辑改1/改3已确认无需改动；复盘证据开关已恢复UI（默认关）
+- **逻辑改1**：用户确认现状帮选策略已满足，不改。
+- **逻辑改3**：用户确认现状 ActiveRunDetected 保护已满足，不改。
+- **复盘证据开关恢复**：SettingsWindow"常规"分组新增"保存复盘证据截图(默认关)"，绑定已有 `EnableDebugEvidenceSaving`（默认 false，setter 同步 `DebugEvidenceCollector.Enabled`）。
+- 编译 App：0 警告 0 错误。
+
+## 第一批收尾待办
+- 主界面 UI 更改（与首批联动，待确认具体指什么）
+- review + 全量回归 + 交付包
+
+## 2026-08-23 · 清单 4 个独立开关全部落实（1/2/3 新增 + 4已有）
+
+### 清单开关实现（部分二，共4个，均已作成设置开关）
+| # | 开关 | 默认值 | 接入逻辑 |
+|---|---|---|---|
+| 1 | StopOnTargetedOpening 刷到目标是否停下 | 关(=命中即停) | `DeployMatchedOpening=!singleRound && !StopOnTargetedOpening`（命中停在投资环境页不进备战）|
+| 2 | SkipStartDuringActiveRun 对局中途点开始是否执行 | 关(=不执行) | 见 IgnoreActiveRun |
+| 3 | AutoStopOnExistingRun 检测已有对局自动停 | 开(=停) | 见 IgnoreActiveRun |
+| 4 | 预设优先上场角色 | 开 | 已实现（开关B） |
+
+### 已有对局保护（开关2/3 核心，用户强调"必须生效"）
+- `IgnoreActiveRun = !AutoStopOnExistingRun && SkipStartDuringActiveRun`（默认 false=遇已有对局立即停）
+- 传递链：MainViewModel → OpeningRerollLoopOptions.IgnoreActiveRun → 两处 CurrencyWarsNavigationOptions → `CurrencyWarsNavigation` 检测 `rank_difficulty_in_progress` 处；IgnoreActiveRun=false 返回 ActiveRunDetected → 非可重试 → 整个刷开局 NavigationFailed 停。
+- 默认行为与现状一致（已有对局→停），不破坏现有功能；用户主动关 AutoStop 且开 SkipStart 才忽略保护继续。
+
+### 编译与轻量回归
+- App/Tasks/Tests 编译 0 警告 0 错误；OpeningFilterEvaluator+PreparationBenchSalePlanner 22/22 通过。未跑全量（避免卡，按约定只跑受影响子集）。
+- 【待提交】
+
+## 2026-08-23 · 第一批（群友需求清单）完成度盘点
+### 已全部完成
+- Bug1(出战弹窗确认)、Bug1.5(英雄登场1号位保护)、Bug2(上下隔离+双按钮)
+- 4个独立开关(预设优先/目标停/中途不执行/已有对局停)
+- 复盘证据开关(默认关)、奖励关开关语义重构(默认关)
+- 逻辑改1/2/3、已有对局保护(ActiveRunDetected, IgnoreActiveRun)
+- BugA(节点历史窗穿透)、BugB(窗口重新识别)
+- git: c884d90,b57021d,904bf73,93c764e,7787f3c,76c15d8,e84c7b1,83a0f59
+### 待确认/待办
+- **1-2 投资策略自动化/组合凑齐才停**：现状已实现核心——配目标策略→命中环境→打1-1/1-2奖励关→投资策略页帮选目标策略(SelectStrategyAndConfirmAsync+三连刷)，选中才停、未中重开。待用户实机确认是否满足诉求。
+- **新手教程**(.NET8安装+版本下载指引): 清单建议排期，纯文档，需官网/素材。未做。
+
+## 2026-08-23 · 第一批确认收尾
+- **1-2 投资策略自动化**：用户确认现状已满足（命中→自动打奖励关→帮选目标策略→命中才停），不用改。
+- **新手教程**：用户确认安装部分无需做（安装包已有 .NET8 检测+跳转官方下载）；"软件使用教程文档"以后可出，非本批必做。
+==> **第一批群友需求清单明确要求已全部完成。** 剩余为后续批次/可选增强。
+### 后续/可选（非第一批必做）
+- 第二批：1-3 五三自动刷、商店实时识别（复用刷开局已有代码）
+- 分角色字段 Top7 伤害 + HTML（清单第2点）
+- 软件使用教程文档（以后出）
+- 主界面 UI 整体调整（用户/宣传侧）
+
+## 2026-08-23 · fix12 安装包发布（含 .NET 8 检测）
+- **安装器新增 .NET 8 桌面运行时检测**（CurrencyWarsAssistant.wxs）：RegistrySearch 查 HKLM\SOFTWARE\dotnet\Setup\InstalledVersions\{x64,x86}\sharedfx\Microsoft.WindowsDesktop.App；未装 → Launch Condition 中止安装并提示 + InstallUISequence 自动打开 dotnet.microsoft.com/download/dotnet/8.0 官方下载页。WiX4 语法（Condition 属性+Before=LaunchConditions）已通过构建。
+- **产物**（framework-dependent，需 .NET 8）：
+  - msi: artifacts/installers/CurrencyWarsAssistant-0.2.842-fix12-win-x64.msi (94MB)
+  - zip: artifacts/installers/CurrencyWarsAssistant-0.2.842-fix12-win-x64.zip (116MB)
+  - 可运行目录: artifacts/publish-0.2.842-fix12/CurrencyWarsAssistant-win-x64/ (215MB)
+- **发布目录**：artifacts/publish-0.2.842-fix12/CurrencyWarsAssistant-win-x64/（含 runtimeconfig，framework-dependent；本批全量修复：Bug1/1.5/2、4开关、复盘开关、奖励关语义、逻辑改、已有对局保护、BugA/BugB）
+- **验证**：编译 0 警告 0 错误；相关轻量子集测试 22/22（评估+备战）；msi 构建通过（含 .NET 检测）。**未跑全量**（用户电脑限制）。
+- wpftmp.csproj 临时文件已清理删除（意外被跟踪）。
+
+---
+
+## 2026-08-23 · 重新生成 1.0.0 安装包（MSI 压成 ZIP）+ 官网发布范式固化
+
+### 背景（用户强烈不满，反复纠正）
+用户多次强调：**发布是件简单事，按固定范式一遍走完**；不要我在「生成安装包/上传/写版本号」之间反复绕圈、不要自行在 exe/msi/zip 间切换、不要动历史版本、不要留传一半的坏文件。WiX 的 Setup.exe（带向导）因缺 Bootstrapper 扩展离线做不了，用户已确认用 **MSI 压缩成 ZIP** 作为安装包形态。
+
+### 本次重新生成的安装包（已验证，含 .NET 8 检测）
+- **MSI 本体**：`artifacts/installers/CurrencyWarsAssistant-1.0.0-win-x64.msi`（94MB，WiX4 构建，文件头 `d0cf11e0a1b11ae1` 有效；含 .NET 8 桌面运行时检测 + 未装自动打开官方下载页 + 桌面快捷方式 + 安装后自动启动）。
+- **ZIP（MSI 压缩）**：`artifacts/installers/CurrencyWarsAssistant-1.0.0-win-x64.zip`（89.5MB，用 `Compress-Archive -LiteralPath <msi>` 生成；**已用 Expand-Archive 实测解压成功**，得到内含 .msi）。注意：不是平铺可运行目录，是内部放着 .msi 的标准 PK zip。
+
+### 官网发布/上传范式（用户 2026-08-23 强制固化，以后每次发布照做）
+1. 安装包 = MSI 原样压成 ZIP（Compress-Archive），不要自行换 exe/msi/zip 形体。
+2. 生成后**必须**用用户相同方式验解压（Expand-Archive/zipfile + CRC），禁止 tar -a 假 zip。
+3. 上传前先只读查服务器 uploads/ 与 versions 表，确认历史版本（绝不动/绝不删）。
+4. 上传走 SFTP/paramiko 到 uploads/，先传临时名再 mv，避免中断留坏文件。
+5. 写版本号+发布说明：`data/site.db` 的 versions 表登记 version/file_name/notes(含「上一版本+本版本全部修改+安装说明」)/active=1；旧版本 active 置 0 但文件保留；版本号以 1 开头。
+6. 删传一半的坏文件（_uploading_* 残留、损坏 zip），但历史版本绝不删。
+7. 桌面留一份交付物，其他位置不保留。
+（规则亦已写入工作区 AGENTS.md「官网发布/上传范式」节，跨会话自动加载。）
+
+### 服务器当前状态（已被我清理到干净）
+- uploads/ 仅剩历史版本：0.2.842 / 0.2.815 / 0.2.843（一个都没删）。
+- versions 表 active 仍 = 0.2.843，未写坏；1.0.0 尚未上传（上传曾半途被停、坏文件已删）。
+- 遗留：1.0.0 的 ZIP 尚未正式上传 + 写库登记（待用户确认后按范式执行）。
+
+### 2026-08-23 · MSI 无法安装根因 + 修复（重要）
+用户报"安装包无法正常运行 / 安装 MSI 时"。实测 `msiexec /i xxx.msi /qn` 返回 1603，日志定位失败在 **LaunchConditions**（.NET 8 检测）动作，报 1708。
+**根因**：wxs 用 `RegistrySearch` 查 `HKLM\SOFTWARE\dotnet\Setup\InstalledVersions\{x64,x86}\sharedfx\Microsoft.WindowsDesktop.App`，但本机 .NET 8 (8.0.29) 装的是 Program Files\dotnet\shared 方式，**不写该 setup 注册键** → DOTNETDESKTOPRUNTIME64/32 为空 → LaunchCondition 为 false → 即便已装 .NET 也被判"没装"而中止安装。
+**修复（用户拍板方案A）**：`installer/CurrencyWarsAssistant.wxs` 检测改为 `DirectorySearch Path="[ProgramFiles64Folder]dotnet\shared\Microsoft.WindowsDesktop.App" AssignToProperty="yes"`（查目录存在性，不依赖 setup 注册键）；LaunchCondition/OpenDotNet8Download 条件改为单 Property `DOTNETDESKTOPRUNTIME`。
+**验证**：wix 重新 build 通过；`msiexec /i /qn` 静默安装 **exit=0**，文件落盘到 `C:\Users\zzz81\AppData\Local\Programs\CurrencyWarsAssistant\`（exe+dll+Assets 齐全）。**安装正常，已修好。**
+**新产物**：`artifacts/installers/CurrencyWarsAssistant-1.0.0-win-x64.msi`（94.3MB）+ 重新打包 `...-win-x64.zip`（89.5MB，内含修好 msi，Expand-Archive 实测可解压）。
+**待办**：测试安装残留在本机（尚未卸载干净，不影响；发布时可覆盖升级）；下一步按范式正式上传+写库。
+
+### 2026-08-23 · 桌面快捷方式 + 启动可选项（用户再骂后修复）
+用户反馈装了 msi 没桌面快捷方式、且无"是否立即启动"选项（重复要求）。处置：
+- **桌面快捷方式是生效的**：wxs 有 `StandardDirectory Id="DesktopFolder"` + Component DesktopShortcut（Shortcut Target=[INSTALLFOLDER]exe）+ Feature ComponentRef。首装后桌面实测出现 `货币战争智能狸.lnk`（之前"没快捷方式"是我用测试残留目录导致 `NOT Installed` 假、或没查桌面）。
+- **启动改为可选项**：启动原来无条件 `Condition="NOT Installed"` 自动启动；改加 `<Property Id="LAUNCHAPP" Value="1"/>`，CustomAction `LaunchAppAfterInstall` 条件 = `NOT Installed AND LAUNCHAPP = "1"`（默认自动启动，可 msiexec LAUNCHAPP=0 关）。
+- **能力边界（如实）**：真正在安装向导里弹"是否启动"勾选框需 WixUI 扩展；本机 WiX **装不上任何扩展**（`extension add WixToolset.UI.wixext` exit=0 但 `-ext` 找不到，离线/NuGet 缓存坏），故当前以 LAUNCHAPP 属性实现为边界。若要可视化勾选框需联网拉 WixToolset.UI.wixext。
+- **重新生成产物**：`artifacts/installers/CurrencyWarsAssistant-1.0.0-win-x64.msi`（94.3MB，wiX4 构建）+ zip（89.5MB，Compress-Archive 生成，内含新 msi）。旧的失效 1.0.0 产物（folder.zip/旧msi/旧zip/Payload）已全部删除；installers 只剩 0.2.842 历史 msi。
+- **规则已固化**：AGENTS.md 发布范式追加"MSI 必须实测能安装 + 必须创建桌面快捷方式 + 启动必须是可选项"三条。
+
+### 2026-08-23 · 官网发布 1.0.0 完成 + 发布说明要点 + 两处字段教训
+**发布已全部完成（用户验收）**：
+- 上传 `CurrencyWarsAssistant-1.0.0-win-x64.zip`（93.9MB，内含修好 msi，服务器 CRC 校验 OK）到 `uploads/`
+- `versions` 表登记 **1.0.0**（active=1）；0.2.843/0.2.815 active 置 0 但历史文件全保留；官网 active=1.0.0，HTTP 200
+- 前台展示页"更新说明"已更新（`/api/site` 的 updates 返回 1.0.0），历史 0.2.843/0.2.815 行保留
+
+**发布说明要点（用户明确要求，别走偏）**：重点是 **上一版做的战斗阵容/装备识别功能 + 识别器底层重构**（识别准确性/稳定度/性能全面提升）；**刷开局功能完善**是补充，只提一两句具体定语（刷开局更稳定、修复出战弹窗卡死/开局保护1号位/配置上下隔离 + 新增独立开关）；**不要**用"群友反馈/群友bug"这类措辞。
+
+**两处字段都要改的坑（重要教训）**：前台展示页"更新说明"读的是 `site_content.updates`（独立字段），**不是** `versions.notes`；后台/版本数据读 `versions.notes`。所以改版本说明要**两处一起改**：①`site_content.updates`（前台展示）②`versions.notes`（版本记录）。本次先只改了 versions.notes 导致前台没变化，已补 site_content.updates。
+
+**发布范式教训更新**：发布说明除"上一版本+本版本修改+安装说明"外，还须：重点放"识别器功能与重构/局势数据记录"等核心价值，多写几句；刷开局完善一两句即可；禁用"群友反馈"提法。
+
+---
+
+## 2026-08-23 · 商店刷新购买循环模块（独立可调用，第4点基础件）
+
+### 需求（用户 2026-08-23 实机截图 + 逐项拍板）
+为"1-3 五三自动刷"做商店实时识别 + 刷新购买循环的地基。用户给 2K(2559×1439) 商店页截图：
+- **刷新按钮圆心 (2155,677)，按 2K 参考等比缩放**到实际窗口（非 1920 基准）。
+- **每次刷新费用 = 2 金币**（用户确认，但原始来源待实机复核）。
+- **简化原则（用户强调，去繁就简）**：所有需要购买的角色**鼠标各点一次即视为购买，不做任何确认**；点完直接刷新；点刷新后**几乎零延迟**进入下一轮识别（不要乱加延迟）。
+- 金币判断：**用软件现有 Economy 区域识别**（复用 `Phase2RecognitionRegions.EconomyValue` + OCR），实机验证读数。
+- 空槽=已购买角色（`RewardShopReader` 识别不到返回 null=空槽），刷新后 **5 槽全部一起重新识别**（刷新与买没买无关，5 槽全换）。
+- 1-1/1-2 沿用现有一次性购买 + 可配置名单（圣杯成员后续自动适配）；1-3 用本刷新循环——均在金币耗尽前反复刷新购买直至名单齐全。
+
+### 新增文件（唯一改动）
+- `src/CurrencyWarsAssistant.Tasks/RewardStageAutomation.ShopRefresh.cs`（partial 扩展 `RewardStageAutomationController`）
+  - `public RunShopRefreshPurchaseLoopAsync(windowHandle, options, Func<CaptureFrame,CT,Task<int?>>? readRemainingGold, CT, IReadOnlySet<string>? purchaseNames=null)`
+  - 循环：`ReadStableShopAsync` 识别5槽 → 对名单内未 owned/purchased 角色 `ClickShopCardAsync` 各点一次不确认 → 名单买齐则 `Complete` → 注入读金币<2 则 `InsufficientGold` → `ClickShopRefreshAsync`(2K 圆心) → 立即下一轮（零延迟）。
+  - **安全阀（review should-fix 采纳）**：`MaximumShopRefreshRounds=200` 轮上限 + 连续 `ConsecutiveNoPurchaseStopThreshold=6` 轮无新增购买即停，防盲点死循环烧金币。
+  - 坐标：`ShopRefreshCenterPoint2K=(2155,677)` 用新私有 `MapRefreshPixelPoint`(÷2559/1439) 缩放；刷新点击 `AfterActionDelay=TimeSpan.Zero`。
+  - 名单回落：`purchaseNames` ?? `AutoPurchaseCharacterNames ∪ RetainedCharacterNames`；初始 owned=InitialOwnedCharacters ∪ InitialFormationPlacements。
+
+### 验证
+- Tasks 编译 0 警告 0 错误。
+- review 子代理：warn，无阻断；should-fix(无限循环/盲点) 已全部处理，nit(&lt;、自动关闭误报、2K注释) 已处理。唯一保留建议=抽纯函数+单测（用户红线不擅增测试文件，留待后续）。
+- 回归：Reward+Opening 相关测试 **207/207 通过**（商店相关 56/56），**零回归**。
+
+### 待办/未做（按用户确认）
+- **本轮只做独立模块，未接 1-3 流程**（用户明确本轮不接）。
+- 金币读取 `readRemainingGold` 委托：由调用方注入基于现有 Economy 区域的实现；测试/实机验证读数正则。
+- 圣杯成员名单：本轮走 `purchaseNames` 通用名单机制，**后续三星五费自动适配时补全**（用户说需进一步技术适配）。
+- 刷新费用 2 待实机复核（原始来源=千~读图，用户要求确认但本轮可先用 2，实机看读数）。
+
+---
+
+## 2026-08-23 · 祈愿试炼选择：页面识别 + 独立选择模块（1-3 三星五费基础件）
+
+### 需求（用户 2026-08-23 实机 4 张截图 + 红框标注）
+《货币战争》命运圣杯羁绊激活新等级时，~3 秒后自动弹出「祈愿试炼」2 选 1 弹框，期间无法其它操作。软件需：①自动识别弹框出现；②识别左右两个试炼；③**先选一个试炼，再点一次「确认选择」**即退出弹框。"具体选哪个更合适"的规则**是下一步**（本轮不做选择智能，先默认选左侧打通链路）。
+- **用户红框标定的坐标（2K=2559×1439 参考）**：左侧试炼选项 (617,245)-(1206,692)；右侧 (1583,244)-(2175,691)；左右**名称框**(633,596)-(1190,676) 与 (1600,596)-(2160,671)；「确认选择」按钮 (1749,818)-(2248,891)。点选项框内任意点即可选中。
+
+### 改动（全部未提交）
+1. **页面识别** `config/page-recognition.1920x1080.json` 新增页 `wish_trial_selection`（priority 75, minimumAnchorMatches=1）：
+   - 锚点用「祈愿试炼」标题文字（首次用外框顶部横条 frame-top/corner → **严重误报**，把 4 张备考帧全判成 wish_trial_selection；改成标题文字锚点后修复）。
+   - 2 个标题锚点模板：`config/templates/1920x1080/pages/wish-trial-title.png`(450,45,750,67) 阈值0.70、`wish-trial-title-narrow.png`(520,45,180,67) 阈值0.66。
+2. **独立模块** `src/CurrencyWarsAssistant.Tasks/WishTrialSelectionAutomation.cs`：
+   - `public TryHandleSelectionAsync(windowHandle, ct, select?)`：页面分类检测 wish_trial_selection → PpOcr 读左右名称框（2K 缩放）→ 点选一侧（默认左侧）→ 点一次「确认选择」并复查。
+   - **确认交互 + 重试（用户澄清 2026-08-23）**：确认只需点一次；点确认后若复查发现弹框仍在（点击时动画未生效等），**再点一次目标试炼（左/右）+ 再点一次确认**，最多重试 3 次；不是在同一轮重复点确认。
+   - 坐标一律 2K 参考 ÷2559/1439 等比缩放（同 ShopRefresh.MapRefreshPixelPoint）。
+   - 双名称 OCR 均失败→RecognitionFailed 不点击（防空点）。
+3. **DI** `src/CurrencyWarsAssistant.App/App.xaml.cs` 注册 `WishTrialSelectionAutomation` 单例。
+
+### 验证
+- 临时探针：4 张图全部识别为 wish_trial_selection（conf 1.00/1.00/0.79/0.74）；备考(prep 1-1/1-2/batch/companion)、商店、战斗、主页、投资环境、失败页等**全部不误判**。
+- 名称 OCR：4 图左右试炼名都能读出（如"池子里全是红A"/"回路升级·一"、“遭遇战”/“令咒决议·回路过载”等）。
+- review 子代理：warn，无阻断；should-fix（确认循环末轮复查）已按用户澄清改为"点一次确认并复查"，nit（2K注释）已处理。
+- 回归：GamePageClassifier 21/21 全过（页面改动零回归）；Reward/RewardPageReader/RewardShopClose/FastReroll/Phase2 相关 238 通过；**7 失败全为既有基线**（RepeatedPreparation性能/VisibleStandardEquipment/LiveCapturedBattleFrames16335000/KnownSpecial/LivePreparationInventory/UnknownFormationEvidence/LiveCapturedPreparation，见 Handoff 既有清单），**零新增回归**。
+- 编译 App/Tasks 0 警告 0 错误。
+
+### 待办 / 未做
+- **未接线**（review should-fix 指出）：WishTrialSelectionAutomation 是本轮独立模块，**无 workflow/Navigation 调用方**。需等用户后接入「1-3 五三自动刷」流程时触发。
+- **选择一个试炼的智能规则**（用户说下一步）：默认选左侧；`select(left,right)` 委托留给调用方实现规则。
+- 「确认选择」只需点一次（用户 2026-08-23 澄清）：先选一个试炼，再点一次确认，弹框即消失。点确认后若仍在弹框，会重试（再选目标试炼 + 再点一次确认，最多 3 次）；实机验证一次点击是否稳定退出。
+- 弹框出现在"激活羁绊新等级约3秒后"：当前模块是"调用时检测"，若需主动等待 3 秒，由调用方在激活后调本模块即可（本模块不内置等待）。
+
+### 机制备忘（试炼选择）
+- 命运圣杯羁绊等级：2人=首个试炼 / 3人=第二(诅咒) / 4人=第三 / 5人=最终。每次激活弹 2 选 1。
+- 圣杯成员 4 人：远坂凛(1费)/吉尔伽美什(2费)/Saber(3费)/Archer(5费)，第5圣杯靠装备「命运圣杯星徽」。
+
+---
+
+## 2026-08-23 · 1-3 三星五费：机制审计 + 路径可行性核查（⚠️ 初版理解，已被下文"机制修正"替换/覆盖，勿沿用此段结论）
+
+> 依据：桌面「货币战争_命运圣杯祈愿与诅咒试炼_4.4_2026-08-10」资料包（88条试炼/投资环境/投资策略/角色数据）+ 两个玩家TXT流程（视频1《1-3全员三星五费》、视频2《A850 1-3三星昔涟》）。纯分析，未改代码。
+
+### 目标与边界（用户澄清）
+- 软件只做到【出现 1 个三星5费】或【出现 8 个完美投影仪】即收工，后续交用户自己把握运营。
+- 定死规矩：开局投资环境/策略必须是「圣杯转」（能拿到命运圣杯星徽或圣杯成员的），不是圣杯转就不要。
+- **A4D 误解澄清**：A4 = 难度 A4；再往上更高难度特殊机制=以 80 点生命开局，导致拿不到视频2结果，故用 A4 难度档（A4-5）。A4 难度适配细节以后细说。
+- **视频2"未赌成"澄清**：不是没懂机制，而是他只拿到 1 个三星5费（没做到全员）就懒得继续。软件只需 1 个三星5费。
+
+### 机制事实（资料确认，勿推断）
+- 圣杯转开局：018命运圣杯契约=得远坂凛(1费)+吉尔伽美什(2费),完成2次试炼→Archer(5费)；019命运圣杯邀请=得1命运圣杯星徽(第5圣杯计数)；投资策略321命运圣杯星徽=得星徽+远坂凛。
+- 圣杯羁绊：2人首个祈愿 / 3人第二(诅咒) / 4人第三 / 5人最终。
+- 【关键】触发祈愿试炼必须把圣杯角色拖前台/后台激活≥2圣杯羁绊；买了不部署=不触发。
+- 88条试炼中唯一直接奖角色：'池子里全是红A'(7320005)=凛在场刷新20次→Archer(5费)。其他祈愿多奖装备/资源；诅咒带代价(卖光圣杯/掉血/降星)应避。
+- 采购专员：金(051)每7刷/彩(238)每5刷→商店出5张【费用相同】角色(费=备战席最左角色费用)。【用法】目标费角色先出现→买下→拖备战席最左→才生效。**『5张同费用≠同一角色』待实测确认。**
+- 5费聘书：专家招募(167/236)→2张。目标5费：昔涟(c19,cost5)/Archer/银狼；三星=同角色9张。常规商店 Lv1-6 五费0%、Lv7才1%→1-3常规刷不齐9张。
+
+### 路径核查结论（自查5点 + 子代理独立核查）
+- **三条候选路径均难在1-3凑齐9张同款5费**，卡两死结：
+  ①第一张5费无来源（1-3商店5费概率0%，仅靠祈愿/聘书拿1~几张）
+  ②采购专员能否凑【同款】9张取决于关键机制分岔（"5张同费用"=同款复制 or 同费不同角色），未定。
+- 路径A(契约→祈愿拿Archer→采购专员)：阶段可行，1-3内凑9张存疑；祈愿有条件(凛在场+刷20次≈40金)非白拿。
+- 路径B(星徽→5圣杯→聘书→采购专员)：1-3凑5圣杯不现实；星徽是计数非角色难单独激活2圣杯。
+- 路径C(纯采购专员)：死锁（采购专员需目标5费先出现，但商店5费0%→首张买不到→永不生效）。
+- 5点检查：①都难1-3完成 ②祈愿有条件有金币代价非白拿 ③金币只够1张Archer、采购专员买5张账撑不住需实测 ④采购专员特求已理解 ⑤圣杯激活已理解。
+
+### 待用户澄清/补充（分岔点，勿推断）
+1. 采购专员"5张同费用"是否=同款复制？（生死线：决定三星能否靠它凑）
+2. 1-3的大致金币预算/节点数范围？（判断资源够否）
+3. 最终祈愿试炼(5圣杯)奖励是否直接给5费角色？（资料未收录，若给则路径B有救）
+4. 5费聘书能否自选目标角色、能否多次获得？
+5. 视频1"全员三星5费"里采购专员实际刷出的是同款还是同费不同款？（解开死结②）
+
+### 状态
+- 已实现（未提交）：祈愿试炼选择模块 `WishTrialSelectionAutomation.cs` + `wish_trial_selection` 页面识别（上节）。
+- 1-3 五三自动刷 = 待用户澄清分岔点后，重跑核查 → 再定实现方案。
+
+---
+
+## 2026-08-23 · ★ 机制修正：1-3 三星五费的正确机制咬合（用户澄清，覆盖上文初版）
+
+> 上文 1832 起的"路径核查"是错误的初版理解（把采购专员当"凑三星"手段、漏了 8 投影仪/聘书来源、圣杯转理解错）。本小节是用户 2026-08-23 澄清后的**正确机制**。
+
+### 核心纠正
+1. **采购专员 = 打破 1-3 商店 5 费 0% 的"买到第一张 5 费"手段**，不是凑 9 张三星的手段。（采购专员刷出的是**同费用≠同角色**的 5 张，用户确认。）
+2. **三星 5 费达成来源 = 命运圣杯试炼给 8 张完美投影仪**（是达成点，不是靠采购专员凑）。
+   - 资料确认：诅咒试炼「令咒决议·奇迹代偿」= **立即获得 8 个持续 1 节点的完美投影仪**，代价=损失 88 小队生命 + 所有金币。（正好对应"软件只管到 8 个完美投影仪出现为止"）
+3. **5 费角色获得 = 另一个祈愿试炼给 2 个五费聘用书**（不是采购专员给角色）。
+   - 记忆：祈愿试炼含「5 费聘用书」→ 白嫖 5 费（视频 1 帧实锤）。
+4. **圣杯转机制（正确）**：
+   - 效果：使击败数 +1。
+   - 用法：只有 4 个命运圣杯角色时，用 1 个"圣杯转"放在**任意一个非命运圣杯羁绊的角色**身上，并放到**前台或后台** → 凑齐 5 圣杯。
+5. **1-3 阶段可获**：1 个投资策略 + 1 个投资环境；激活 5 圣杯中间会拿到 **4 个祈愿试炼**：
+   - 第 1、2 祈愿试炼：条件大概率非立即获得、不太可能有好东西 → **随便选**即可。
+   - 第 3、4 祈愿试炼：可能**立即获得奖励** → 若奖励可立即拿到、对 1-3 三星 5 费有用，就是各机制咬合的一环。
+6. **最终三星 5 费 = 天时地利人和，多机制配合 + 概率运作都刷到才成**。这就是软件**刷开局**的意义（刷到种子好局 = 生存游戏）。
+
+### 五费聘用书选角色界面
+- 该界面**尚未适配**（用户 2026-08-23 想起），后续会适配。
+
+### 1-3 三星 5 费的多机制咬合链（正确逻辑）
+1. 开局 1 个投资环境（圣杯转类：018 契约 / 019 邀请）+ 或许 1 个投资策略。
+2. 凑 5 圣杯（4 圣杯角色 + 1 圣杯转放非圣杯角色上+上场），中间激活拿 4 个祈愿试炼。
+3. 祈愿试炼里挑：**立即获得奖励**且对三星 5 费有用的（如 5 费聘用书 → 得 5 费角色 → 选定目标），第 1/2 随便选。
+4. 用"圣杯转/祝福"等机制打破 1-3 商店 5 费 0% → 拿到目标 5 费角色。
+5. 采购专员把某个 5 费放备战席最左 → 刷出 5 费角色（打破 0%）。
+6. 最终圣杯试炼给 **8 张完美投影仪** = 三星 5 费达成点之一。
+7. 三星 5 费或 8 完美投影仪出现 → 软件收工，交用户。
+
+### 待适配/待做（新增）
+- 五费聘用书"选角色"界面适配（用户确认要适配）。
+- 1-3 三星五费 = 多机制组合刷开局；具体每环的软件识别/操作编排，待用户继续给方向和素材。
+
+---
+
+## 2026-08-23 · ★★ 1-3 三星五费：圣杯转开局·通用复刻条件清单（两实践推广，用户拍板为准）
+
+> 上一节（"机制修正"）已纠正错误理解。本节把"圣杯转投资环境开局"推广为通用模型：分析任一这种开局的案例，需满足哪些条件才能复刻视频1/视频2两人"拿到三星5费"的成果。核心结论来自 8-10 研究报告 + 两视频逐动作 + 用户 2026-08-23 澄清。**多机制咬合 + 天时地利人和**，不是单机制。
+
+### 0. 术语确认
+- **「圣杯转」机制（用户 2026-08-23 澄清）**：让一个角色**额外计入圣杯羁绊（羁绊数 +1）**。用法：只有 4 个圣杯角色时，用 1 个圣杯转放**任意非圣杯羁绊角色**身上并放前台/后台 → 凑齐 5 圣杯。
+  - 等价物「命运圣杯星徽」（研究报告：装备者加入【命运圣杯】羁绊）。别把"圣杯转"当"击败数+1"（那是笔误）。
+- 目标边界：软件只管到【1 个三星5费】或【8 个完美投影仪】出现即收工。
+
+### 1. 两实践的共同成功路径（逐动作 → 依赖条件）
+**视频1《1-3全员三星5费》**
+1. 开局投资环境=「命运圣杯契约」（白送凛+闪，2圣杯）+ 圣杯转开局。
+2. 二圣杯 → 激活 ≥2 → 触发首个祈愿试炼。
+3. 祈愿二选一选中「**5费聘用书**」（或「登场Archer」）→ 直接拿 5 费（Archer/其他）。
+4. 战斗后投资策略三选一刷出「**采购专员**」→ 5 费放备战席最左。
+5. 采购专员反复刷新 → 批量出 5 费 → 买（凑 9 张的钥匙）。
+6. 靠采购专员刷出金闪闪（吉尔伽美什）→ 凑 4 圣杯 → 开 5 圣杯（+1 圣杯转）→ 最终试炼。
+7. "找全员三星五费" → 采购专员+概率刷到 → 完成。
+
+**视频2《A850 1-3三星昔涟》**
+1. 圣杯转开局 → 直接升4 → 买3费升5。
+2. 拿 5 费（红A=Archer / 闪大王）→ 追三星昔涟/银狼。
+3. "依旧0"（常规刷不到）→ 靠祈愿/聘书/采购专员破 0%。
+4. "思考升4还是赌2个3费"=经济抉择；结尾 3星银狼在场。
+5. "惜败/不想赌了"= 运气不足失败（吃开局实锤）。
+
+### 2. 通用复刻条件清单（任一圣杯转开局案例，满足越多越可能复刻）
+| 条件 | 内容 | 性质 | 资料来源 |
+|---|---|---|---|
+| C1 | **开局投资环境=圣杯转**（命运圣杯契约 018 / 邀请 019 / 或"圣杯转"环境） | 必要(用户定死) | 投资环境数据 |
+| C2 | **圣杯角色上场激活 ≥2 圣杯羁绊** → 触发首个祈愿试炼（买了不部署=不触发） | 必要 | 用户+资料 |
+| C3 | **祈愿试炼随机刷出"立即获益"项**（5费聘用书 / 登场Archer / 立即奖励） | 运气(可重开) | 试炼池88条 + 视频帧 |
+| C4 | **至少拿到 1 个 5 费角色**（破 1-3 商店 0% 的门票） | 必要 | 概率表+聘书/祈愿 |
+| C5 | **采购专员**（金 051 每7刷 / 彩 238 每5刷）：把 5 费放备战席最左 → 批量出同费用5张 | 主角或补充 | 投资策略/视频帧 |
+| C6 | **5费聘用书 / 专家招募 / 祈愿白嫖** 补充拿 5 费 | 补充 | 聘书机制 |
+| C7 | **最终圣杯试炼/相关祈愿给 8 完美投影仪** → 即"三星5费"达成点之一 | 三星来源 | 用户 + 「奇迹代偿」诅咒试炼(立即8投影仪) |
+| C8 | **金币/经济**支撑多轮刷量（升级vs刷新 vs 锁存的抉择） | 越多越好 | 视频2经济抉择 |
+| C9 | **5费池凑齐同角色9张**（或 8投影仪）的运气 | 天时 | 概率 |
+
+### 3. 说明
+- **采购专员 = 打破 1-3 0% 的"买到5费"手段**（同费用≠同角色），不是凑9张三星的来源；**三星5费**（或 8 投影仪）靠**命运圣杯试炼/最终试炼奖励**（用户多次强调）。
+- 软件刷开局的意义 = 刷到种子条件（C1+C3+C5+C7 齐）才值得执行；缺核心就重开。
+- 五费聘用书"选角色"界面**未适配**（待做）。
+
+[更具体路径：待我基于资料再列——见下节]
+
+### 3.5 视频转写错别字校正（用户提醒，重要）
+两个视频都是无 CC 字幕/OCR 听写，错别字多。校正后机制理解才可靠：
+
+**视频1《1-3全员三星5费》(131s)**
+| 原文错字 | 正读 | 机制含义 |
+|---|---|---|
+| 阿却 | **Archer**(红A) | 5费圣杯成员，祈愿/聘书白嫖 |
+| 西连 | **昔涟** | 5费，视频1另一目标 |
+| 二/四/五 圣碑 | **二号/四号/五号圣杯/圣碑** | 圣杯/圣碑谐音，指圣杯羁绊级别 |
+| 写银郎 | **银狼** | 5费，凑齐目标之一 |
+| A4D南 / A4 南 | 难度 **A4** | 语音"去A4难度" |
+
+**视频2《A850 1-3三星昔涟》(235s)**
+| 原文 | 正读 | 含义 |
+|---|---|---|
+| 圣杯转开局 | 圣杯转开局 | 开局圣杯转环境 |
+| 直接升4 | 直接升到4级（人口/商店） | 人口/商店等级 |
+| 买个3费，升5 | 买个3费角色升到5级 | 商店等级提升 |
+| 依旧0…… | 依旧0（刷不到5费） | 常规0% |
+| 闪大王 | **吉尔伽美什**(闪闪) | 2费圣杯成员 |
+| 红A / 出现吧红A | **Archer** | 5费 |
+| D5费狼中 | **刷新 5费 银狼 命中** | 刷出银狼 |
+| 升4还是赌2个3费 | 升商店4级 vs 赌2个3费 | 经济抉择 |
+| 惜败 | 惜败/差一点 | 运气不足失败 |
+
+> 通用规则：转写中"圣碑"多为"圣杯/圣碑"谐音；"阿却""红A"=Archer；"西连""西涟"=昔涟；"金闪闪/闪大王"=吉尔伽美什；"银郎/银狼"=银狼。识别都基于这些正读。
+
+### 4. 可复刻的具体路径变体（基于资料机制组合，每条=一套可执行路线）
+> 每条都是"圣杯转开局"下的某种机制咬合。核心=破1-3商店5费0%（拿到第一张5费）+ 凑9张同款或8投影仪。
+
+**路径A（视频1主线）契约开局 + 祈愿聘书/Archer + 采购专员批量刷**
+1. 开局环境=命运圣杯契约(018) → 凛+闪(2圣杯)。
+2. 圣杯上场激活 → 首个祈愿试炼 → 选中「5费聘用书」或「登场Archer」→ 得 Archer(5费)。
+3. 战斗后投资策略刷出「采购专员」→ Archer 放备战席最左。
+4. 采购专员反复刷新 → 批量出 5 费 → 买同角色 9 张 → 三星。
+- 依赖条件：C1契约 + C2激活 + C3试炼出聘书 + C5采购专员 + C9同款运气。
+- 视频1实锤可达（全员三星5费）。
+
+**路径B（邀请开局）邀请星徽 + 专家招募 1 张聘书 + 采购专员**
+1. 开局环境=命运圣杯邀请(019) → 得星徽(第5圣杯)。
+2. 靠 星徽+2圣杯(如后续商店/试炼补凛闪) 激活 → 祈愿。
+3. 投资策略「专家招募/专家招募+」→ 得 2 张 5费聘书 → 5费。
+4. 采购专员放最左批量刷补足 9 张。
+- 依赖：C1邀请 + C6聘书 + C5采购专员。
+
+**路径C（纯祈愿白嫖）契约开局 + 多祈愿「登场Archer」类累积 + 采购专员**
+- 契约 → 每级试炼选「登场Archer / 5费聘书」类 → 累积 5 费角色 → 采购专员补量。
+- 依赖：C3反复出白嫖项(随机) + C5。
+
+**路径D（不依赖采购专员的采购？）星徽/聘书 + 大规模刷新**
+- 若拿不到采购专员，仅靠聘书(几个5费) + 常规刷新(1-3仍0%)无法凑9张 → 待确认是否有"指定角色出现"的其它手段。
+- 【存疑，待用户补】：是否有非采购专员的批量指定5费手段（如某星徽/羁绊），否则采购专员几乎是凑同款必经。
+
+**路径E（8完美投影仪=三星5费达成点）5圣杯→最终/相关试炼**
+- 5圣杯(4角色+1圣杯转) → 最终祈愿试炼 → 诅咒·圣杯×1+分裂·圣杯×9，或「令咒决议·奇迹代偿」诅咒试炼 = **立即8个完美投影仪**(代价掉血+清金币)。
+- 8 完美投影仪 = 软件达成点之一（用户指定）。不靠采购专员，靠圣杯试炼直接给。
+
+### 5. 结论（软件侧含义）
+- **刷开局** = 刷 C1(环境=圣杯转) + C3(试炼出好项) + C5(出采购专员) + C7(能到最终试炼) 的种子局；缺核心项 → 重开。
+- 软件需识别的机制节点：投资环境三选一判定、圣杯羁绊激活判定、祈愿试炼任务名识别(选最优)、采购专员识别+最左摆放、5费聘书选角色界面(未适配待做)、三星5费/8投影仪达成检测。
+- 具体每环识别/操作，待用户给素材后逐项开发。

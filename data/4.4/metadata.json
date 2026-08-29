@@ -1,0 +1,28 @@
+{
+    "schema_version":  1,
+    "game_version":  "4.4",
+    "generated_from":  "4.4 final markdown report",
+    "imported_at":  "2026-07-23T18:27:43.2485472+00:00",
+    "datasets":  {
+                     "investment_environments":  {
+                                                     "file":  "investment-environments.json",
+                                                     "count":  83,
+                                                     "source_file":  "货币战争_投资环境_完整数据.md"
+                                                 },
+                     "investment_strategies":  {
+                                                   "file":  "investment-strategies.json",
+                                                   "count":  334,
+                                                   "source_file":  "货币战争_投资策略_完整数据.md"
+                                               },
+                     "enemy_affixes":  {
+                                           "file":  "enemy-affixes.json",
+                                           "count":  51,
+                                           "source_file":  "货币战争_敌人负面词条_核对数据.md"
+                                       },
+                     "competitors":  {
+                                         "file":  "competitors.json",
+                                         "count":  20,
+                                         "source_file":  "货币战争_竞争对手_当前完整数据.md"
+                                     }
+                 }
+}

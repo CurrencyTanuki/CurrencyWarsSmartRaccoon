@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="baef09ad-e3bb-44e9-8420-c16e257a7132" name="zzz81@ZZZ的电脑 2026-08-09 03:02:41" runUser="ZZZ的电脑\zzz81" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-08-09T03:02:41.9782866+08:00" queuing="2026-08-09T03:02:41.9782867+08:00" start="2026-08-09T03:02:35.4665028+08:00" finish="2026-08-09T03:02:41.9836429+08:00" />
+  <TestSettings name="default" id="48509788-198d-47b7-8d59-a2c65b639de7">
+    <Deployment runDeploymentRoot="zzz81_ZZZ的电脑_2026-08-09_03_02_41" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="aaf389d5-4a18-4117-827e-43e7384c8836" testId="409c97b1-c3c8-3563-b8a7-9b1a74f070b3" testName="CurrencyWarsAssistant.Tests.ShopEquipmentCandidateRecognitionTests.DiagnoseCompactVerticalAnchorsAcrossNativeRewardShopFrames" computerName="ZZZ的电脑" duration="00:00:03.8085264" startTime="2026-08-09T03:02:41.9121252+08:00" endTime="2026-08-09T03:02:41.9121375+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aaf389d5-4a18-4117-827e-43e7384c8836">
+      <Output>
+        <StdOut>prep_0.png y=0.82 character=0 equipment=0 foreground=True best=currency_wars_equipment_074/0.765408 candidates=[currency_wars_equipment_074|currency_wars_equipment_113]&#xD;
+prep_0.png y=0.82 character=0 equipment=1 foreground=True best=currency_wars_equipment_131/0.796786 candidates=[currency_wars_equipment_131]&#xD;
+prep_0.png y=0.82 character=0 equipment=2 foreground=True best=currency_wars_equipment_123/0.703144 candidates=[currency_wars_equipment_123|currency_wars_equipment_136|currency_wars_equipment_069|currency_wars_equipment_108|currency_wars_equipment_039|currency_wars_equipment_086]&#xD;
+prep_0.png y=0.82 character=1 equipment=0 foreground=True best=currency_wars_equipment_006/0.713628 candidates=[currency_wars_equipment_006|currency_wars_equipment_009|currency_wars_equipment_016]&#xD;
+prep_0.png y=0.82 character=1 equipment=1 foreground=True best=currency_wars_equipment_125/0.753063 candidates=[currency_wars_equipment_125]&#xD;
+prep_0.png y=0.82 character=1 equipment=2 foreground=False best=currency_wars_equipment_125/0.691043 candidates=[currency_wars_equipment_125|currency_wars_equipment_073|currency_wars_equipment_112|currency_wars_equipment_006|currency_wars_equipment_009|currency_wars_equipment_016]&#xD;
+prep_0.png y=0.82 character=2 equipment=0 foreground=True best=currency_wars_equipment_056/0.683993 candidates=[currency_wars_equipment_056|currency_wars_equipment_095]&#xD;
+prep_0.png y=0.82 character=2 equipment=1 foreground=True best=currency_wars_equipment_126/0.782492 candidates=[currency_wars_equipment_126]&#xD;
+prep_0.png y=0.82 character=2 equipment=2 foreground=True best=currency_wars_equipment_005/0.701851 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_0.png y=0.82 character=3 equipment=0 foreground=False best=currency_wars_equipment_056/0.682243 candidates=[currency_wars_equipment_056|currency_wars_equipment_095]&#xD;
+prep_0.png y=0.82 character=3 equipment=1 foreground=True best=currency_wars_equipment_141/0.693553 candidates=[currency_wars_equipment_141|currency_wars_equipment_071|currency_wars_equipment_110|currency_wars_equipment_126|currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015|currency_wars_equipment_080]&#xD;
+prep_0.png y=0.82 character=3 equipment=2 foreground=False best=currency_wars_equipment_005/0.720844 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_0.png y=0.90 character=0 equipment=0 foreground=True best=currency_wars_equipment_059/0.733297 candidates=[currency_wars_equipment_059|currency_wars_equipment_098]&#xD;
+prep_0.png y=0.90 character=0 equipment=1 foreground=True best=currency_wars_equipment_075/0.705140 candidates=[currency_wars_equipment_075|currency_wars_equipment_114]&#xD;
+prep_0.png y=0.90 character=0 equipment=2 foreground=True best=currency_wars_equipment_060/0.711971 candidates=[currency_wars_equipment_060|currency_wars_equipment_099|currency_wars_equipment_144|currency_wars_equipment_147]&#xD;
+prep_0.png y=0.90 character=1 equipment=0 foreground=False best=currency_wars_equipment_086/0.679612 candidates=[currency_wars_equipment_086|currency_wars_equipment_072|currency_wars_equipment_111|currency_wars_equipment_064|currency_wars_equipment_103|currency_wars_equipment_001|currency_wars_equipment_130|currency_wars_equipment_074]&#xD;
+prep_0.png y=0.90 character=1 equipment=1 foreground=True best=currency_wars_equipment_056/0.734663 candidates=[currency_wars_equipment_056|currency_wars_equipment_095]&#xD;
+prep_0.png y=0.90 character=1 equipment=2 foreground=False best=currency_wars_equipment_051/0.713519 candidates=[currency_wars_equipment_051|currency_wars_equipment_090|currency_wars_equipment_143|currency_wars_equipment_146]&#xD;
+prep_0.png y=0.90 character=2 equipment=0 foreground=False best=currency_wars_equipment_059/0.754199 candidates=[currency_wars_equipment_059|currency_wars_equipment_098]&#xD;
+prep_0.png y=0.90 character=2 equipment=1 foreground=True best=currency_wars_equipment_086/0.753757 candidates=[currency_wars_equipment_086]&#xD;
+prep_0.png y=0.90 character=2 equipment=2 foreground=False best=currency_wars_equipment_085/0.698180 candidates=[currency_wars_equipment_085|currency_wars_equipment_080|currency_wars_equipment_119]&#xD;
+prep_0.png y=0.90 character=3 equipment=0 foreground=False best=currency_wars_equipment_071/0.713052 candidates=[currency_wars_equipment_071|currency_wars_equipment_110]&#xD;
+prep_0.png y=0.90 character=3 equipment=1 foreground=True best=currency_wars_equipment_069/0.728253 candidates=[currency_wars_equipment_069|currency_wars_equipment_108]&#xD;
+prep_0.png y=0.90 character=3 equipment=2 foreground=False best=currency_wars_equipment_064/0.715880 candidates=[currency_wars_equipment_064|currency_wars_equipment_103]&#xD;
+prep_1.png y=0.82 character=0 equipment=0 foreground=True best=currency_wars_equipment_002/0.720212 candidates=[currency_wars_equipment_002|currency_wars_equipment_003|currency_wars_equipment_013]&#xD;
+prep_1.png y=0.82 character=0 equipment=1 foreground=True best=currency_wars_equipment_131/0.817953 candidates=[currency_wars_equipment_131]&#xD;
+prep_1.png y=0.82 character=0 equipment=2 foreground=True best=currency_wars_equipment_064/0.749284 candidates=[currency_wars_equipment_064|currency_wars_equipment_103]&#xD;
+prep_1.png y=0.82 character=1 equipment=0 foreground=True best=currency_wars_equipment_085/0.696568 candidates=[currency_wars_equipment_085|currency_wars_equipment_069|currency_wars_equipment_108|currency_wars_equipment_049|currency_wars_equipment_088|currency_wars_equipment_071|currency_wars_equipment_110|currency_wars_equipment_053]&#xD;
+prep_1.png y=0.82 character=1 equipment=1 foreground=True best=currency_wars_equipment_125/0.753063 candidates=[currency_wars_equipment_125]&#xD;
+prep_1.png y=0.82 character=1 equipment=2 foreground=False best=currency_wars_equipment_125/0.691043 candidates=[currency_wars_equipment_125|currency_wars_equipment_073|currency_wars_equipment_112|currency_wars_equipment_006|currency_wars_equipment_009|currency_wars_equipment_016]&#xD;
+prep_1.png y=0.82 character=2 equipment=0 foreground=True best=currency_wars_equipment_056/0.683993 candidates=[currency_wars_equipment_056|currency_wars_equipment_095]&#xD;
+prep_1.png y=0.82 character=2 equipment=1 foreground=True best=currency_wars_equipment_126/0.782492 candidates=[currency_wars_equipment_126]&#xD;
+prep_1.png y=0.82 character=2 equipment=2 foreground=True best=currency_wars_equipment_005/0.681547 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_1.png y=0.82 character=3 equipment=0 foreground=False best=currency_wars_equipment_056/0.682243 candidates=[currency_wars_equipment_056|currency_wars_equipment_095]&#xD;
+prep_1.png y=0.82 character=3 equipment=1 foreground=True best=currency_wars_equipment_141/0.693553 candidates=[currency_wars_equipment_141|currency_wars_equipment_071|currency_wars_equipment_110|currency_wars_equipment_126|currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015|currency_wars_equipment_080]&#xD;
+prep_1.png y=0.82 character=3 equipment=2 foreground=False best=currency_wars_equipment_005/0.720843 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_1.png y=0.90 character=0 equipment=0 foreground=True best=currency_wars_equipment_059/0.733343 candidates=[currency_wars_equipment_059|currency_wars_equipment_098]&#xD;
+prep_1.png y=0.90 character=0 equipment=1 foreground=True best=currency_wars_equipment_130/0.721789 candidates=[currency_wars_equipment_130|currency_wars_equipment_075|currency_wars_equipment_114]&#xD;
+prep_1.png y=0.90 character=0 equipment=2 foreground=True best=currency_wars_equipment_060/0.732992 candidates=[currency_wars_equipment_060|currency_wars_equipment_099|currency_wars_equipment_144|currency_wars_equipment_147]&#xD;
+prep_1.png y=0.90 character=1 equipment=0 foreground=False best=currency_wars_equipment_072/0.697803 candidates=[currency_wars_equipment_072|currency_wars_equipment_111]&#xD;
+prep_1.png y=0.90 character=1 equipment=1 foreground=True best=currency_wars_equipment_056/0.734663 candidates=[currency_wars_equipment_056|currency_wars_equipment_095]&#xD;
+prep_1.png y=0.90 character=1 equipment=2 foreground=False best=currency_wars_equipment_051/0.713519 candidates=[currency_wars_equipment_051|currency_wars_equipment_090|currency_wars_equipment_143|currency_wars_equipment_146]&#xD;
+prep_1.png y=0.90 character=2 equipment=0 foreground=False best=currency_wars_equipment_059/0.754199 candidates=[currency_wars_equipment_059|currency_wars_equipment_098]&#xD;
+prep_1.png y=0.90 character=2 equipment=1 foreground=True best=currency_wars_equipment_086/0.753757 candidates=[currency_wars_equipment_086]&#xD;
+prep_1.png y=0.90 character=2 equipment=2 foreground=False best=currency_wars_equipment_085/0.698469 candidates=[currency_wars_equipment_085|currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015|currency_wars_equipment_133|currency_wars_equipment_052|currency_wars_equipment_091|currency_wars_equipment_140]&#xD;
+prep_1.png y=0.90 character=3 equipment=0 foreground=False best=currency_wars_equipment_071/0.713052 candidates=[currency_wars_equipment_071|currency_wars_equipment_110]&#xD;
+prep_1.png y=0.90 character=3 equipment=1 foreground=True best=currency_wars_equipment_069/0.728253 candidates=[currency_wars_equipment_069|currency_wars_equipment_108]&#xD;
+prep_1.png y=0.90 character=3 equipment=2 foreground=False best=currency_wars_equipment_064/0.715880 candidates=[currency_wars_equipment_064|currency_wars_equipment_103]&#xD;
+prep_2.png y=0.82 character=0 equipment=0 foreground=True best=currency_wars_equipment_074/0.745109 candidates=[currency_wars_equipment_074|currency_wars_equipment_113]&#xD;
+prep_2.png y=0.82 character=0 equipment=1 foreground=True best=currency_wars_equipment_131/0.758173 candidates=[currency_wars_equipment_131|currency_wars_equipment_130]&#xD;
+prep_2.png y=0.82 character=0 equipment=2 foreground=True best=currency_wars_equipment_078/0.756460 candidates=[currency_wars_equipment_078|currency_wars_equipment_117]&#xD;
+prep_2.png y=0.82 character=1 equipment=0 foreground=True best=currency_wars_equipment_085/0.717293 candidates=[currency_wars_equipment_085|currency_wars_equipment_053|currency_wars_equipment_092]&#xD;
+prep_2.png y=0.82 character=1 equipment=1 foreground=True best=currency_wars_equipment_125/0.752210 candidates=[currency_wars_equipment_125]&#xD;
+prep_2.png y=0.82 character=1 equipment=2 foreground=False best=currency_wars_equipment_073/0.676429 candidates=[currency_wars_equipment_073|currency_wars_equipment_112]&#xD;
+prep_2.png y=0.82 character=2 equipment=0 foreground=False best=currency_wars_equipment_056/0.684404 candidates=[currency_wars_equipment_056|currency_wars_equipment_095]&#xD;
+prep_2.png y=0.82 character=2 equipment=1 foreground=True best=currency_wars_equipment_126/0.782046 candidates=[currency_wars_equipment_126]&#xD;
+prep_2.png y=0.82 character=2 equipment=2 foreground=False best=currency_wars_equipment_071/0.676470 candidates=[currency_wars_equipment_071|currency_wars_equipment_110]&#xD;
+prep_2.png y=0.82 character=3 equipment=0 foreground=False best=currency_wars_equipment_074/0.674946 candidates=[currency_wars_equipment_074|currency_wars_equipment_113]&#xD;
+prep_2.png y=0.82 character=3 equipment=1 foreground=True best=currency_wars_equipment_005/0.721598 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_2.png y=0.82 character=3 equipment=2 foreground=False best=currency_wars_equipment_005/0.741349 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_2.png y=0.90 character=0 equipment=0 foreground=True best=currency_wars_equipment_059/0.732575 candidates=[currency_wars_equipment_059|currency_wars_equipment_098]&#xD;
+prep_2.png y=0.90 character=0 equipment=1 foreground=True best=currency_wars_equipment_075/0.704808 candidates=[currency_wars_equipment_075|currency_wars_equipment_114]&#xD;
+prep_2.png y=0.90 character=0 equipment=2 foreground=True best=currency_wars_equipment_060/0.711034 candidates=[currency_wars_equipment_060|currency_wars_equipment_099|currency_wars_equipment_144|currency_wars_equipment_147]&#xD;
+prep_2.png y=0.90 character=1 equipment=0 foreground=False best=currency_wars_equipment_005/0.727387 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_2.png y=0.90 character=1 equipment=1 foreground=True best=currency_wars_equipment_056/0.734274 candidates=[currency_wars_equipment_056|currency_wars_equipment_095]&#xD;
+prep_2.png y=0.90 character=1 equipment=2 foreground=False best=currency_wars_equipment_073/0.737978 candidates=[currency_wars_equipment_073|currency_wars_equipment_112]&#xD;
+prep_2.png y=0.90 character=2 equipment=0 foreground=False best=currency_wars_equipment_006/0.679943 candidates=[currency_wars_equipment_006|currency_wars_equipment_009|currency_wars_equipment_016]&#xD;
+prep_2.png y=0.90 character=2 equipment=1 foreground=True best=currency_wars_equipment_086/0.773673 candidates=[currency_wars_equipment_086]&#xD;
+prep_2.png y=0.90 character=2 equipment=2 foreground=False best=currency_wars_equipment_086/0.720140 candidates=[currency_wars_equipment_086|currency_wars_equipment_006|currency_wars_equipment_009|currency_wars_equipment_016]&#xD;
+prep_2.png y=0.90 character=3 equipment=0 foreground=False best=currency_wars_equipment_072/0.696726 candidates=[currency_wars_equipment_072|currency_wars_equipment_111]&#xD;
+prep_2.png y=0.90 character=3 equipment=1 foreground=True best=currency_wars_equipment_069/0.728245 candidates=[currency_wars_equipment_069|currency_wars_equipment_108]&#xD;
+prep_2.png y=0.90 character=3 equipment=2 foreground=False best=currency_wars_equipment_130/0.718966 candidates=[currency_wars_equipment_130|currency_wars_equipment_064|currency_wars_equipment_103|currency_wars_equipment_131|currency_wars_equipment_072|currency_wars_equipment_111]&#xD;
+prep_3.png y=0.82 character=0 equipment=0 foreground=True best=currency_wars_equipment_060/0.707085 candidates=[currency_wars_equipment_060|currency_wars_equipment_099|currency_wars_equipment_144|currency_wars_equipment_147]&#xD;
+prep_3.png y=0.82 character=0 equipment=1 foreground=True best=currency_wars_equipment_131/0.781118 candidates=[currency_wars_equipment_131]&#xD;
+prep_3.png y=0.82 character=0 equipment=2 foreground=True best=currency_wars_equipment_064/0.747922 candidates=[currency_wars_equipment_064|currency_wars_equipment_103]&#xD;
+prep_3.png y=0.82 character=1 equipment=0 foreground=True best=currency_wars_equipment_085/0.696379 candidates=[currency_wars_equipment_085|currency_wars_equipment_052|currency_wars_equipment_091|currency_wars_equipment_053|currency_wars_equipment_092|currency_wars_equipment_132|currency_wars_equipment_072|currency_wars_equipment_111]&#xD;
+prep_3.png y=0.82 character=1 equipment=1 foreground=True best=currency_wars_equipment_125/0.752210 candidates=[currency_wars_equipment_125]&#xD;
+prep_3.png y=0.82 character=1 equipment=2 foreground=False best=currency_wars_equipment_073/0.676429 candidates=[currency_wars_equipment_073|currency_wars_equipment_112]&#xD;
+prep_3.png y=0.82 character=2 equipment=0 foreground=False best=currency_wars_equipment_056/0.684404 candidates=[currency_wars_equipment_056|currency_wars_equipment_095]&#xD;
+prep_3.png y=0.82 character=2 equipment=1 foreground=True best=currency_wars_equipment_126/0.782046 candidates=[currency_wars_equipment_126]&#xD;
+prep_3.png y=0.82 character=2 equipment=2 foreground=False best=currency_wars_equipment_006/0.690682 candidates=[currency_wars_equipment_006|currency_wars_equipment_009|currency_wars_equipment_016]&#xD;
+prep_3.png y=0.82 character=3 equipment=0 foreground=False best=currency_wars_equipment_074/0.674948 candidates=[currency_wars_equipment_074|currency_wars_equipment_113]&#xD;
+prep_3.png y=0.82 character=3 equipment=1 foreground=True best=currency_wars_equipment_005/0.721598 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_3.png y=0.82 character=3 equipment=2 foreground=False best=currency_wars_equipment_005/0.741352 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_3.png y=0.90 character=0 equipment=0 foreground=True best=currency_wars_equipment_059/0.713389 candidates=[currency_wars_equipment_059|currency_wars_equipment_098]&#xD;
+prep_3.png y=0.90 character=0 equipment=1 foreground=True best=currency_wars_equipment_075/0.728307 candidates=[currency_wars_equipment_075|currency_wars_equipment_114]&#xD;
+prep_3.png y=0.90 character=0 equipment=2 foreground=True best=currency_wars_equipment_060/0.752790 candidates=[currency_wars_equipment_060|currency_wars_equipment_099|currency_wars_equipment_144|currency_wars_equipment_147]&#xD;
+prep_3.png y=0.90 character=1 equipment=0 foreground=False best=currency_wars_equipment_077/0.674340 candidates=[currency_wars_equipment_077|currency_wars_equipment_116]&#xD;
+prep_3.png y=0.90 character=1 equipment=1 foreground=True best=currency_wars_equipment_056/0.734274 candidates=[currency_wars_equipment_056|currency_wars_equipment_095]&#xD;
+prep_3.png y=0.90 character=1 equipment=2 foreground=False best=currency_wars_equipment_073/0.737978 candidates=[currency_wars_equipment_073|currency_wars_equipment_112]&#xD;
+prep_3.png y=0.90 character=2 equipment=0 foreground=False best=currency_wars_equipment_006/0.679943 candidates=[currency_wars_equipment_006|currency_wars_equipment_009|currency_wars_equipment_016]&#xD;
+prep_3.png y=0.90 character=2 equipment=1 foreground=True best=currency_wars_equipment_086/0.773673 candidates=[currency_wars_equipment_086]&#xD;
+prep_3.png y=0.90 character=2 equipment=2 foreground=False best=currency_wars_equipment_132/0.701312 candidates=[currency_wars_equipment_132|currency_wars_equipment_130|currency_wars_equipment_085|currency_wars_equipment_072|currency_wars_equipment_111|currency_wars_equipment_123|currency_wars_equipment_135|currency_wars_equipment_005]&#xD;
+prep_3.png y=0.90 character=3 equipment=0 foreground=False best=currency_wars_equipment_005/0.707136 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_3.png y=0.90 character=3 equipment=1 foreground=True best=currency_wars_equipment_069/0.728245 candidates=[currency_wars_equipment_069|currency_wars_equipment_108]&#xD;
+prep_3.png y=0.90 character=3 equipment=2 foreground=False best=currency_wars_equipment_130/0.718974 candidates=[currency_wars_equipment_130|currency_wars_equipment_064|currency_wars_equipment_103|currency_wars_equipment_131|currency_wars_equipment_139|currency_wars_equipment_072|currency_wars_equipment_111]&#xD;
+prep_4.png y=0.82 character=0 equipment=0 foreground=True best=currency_wars_equipment_074/0.764530 candidates=[currency_wars_equipment_074|currency_wars_equipment_113]&#xD;
+prep_4.png y=0.82 character=0 equipment=1 foreground=True best=currency_wars_equipment_131/0.775847 candidates=[currency_wars_equipment_131]&#xD;
+prep_4.png y=0.82 character=0 equipment=2 foreground=True best=currency_wars_equipment_078/0.733144 candidates=[currency_wars_equipment_078|currency_wars_equipment_117]&#xD;
+prep_4.png y=0.82 character=1 equipment=0 foreground=True best=currency_wars_equipment_085/0.717259 candidates=[currency_wars_equipment_085|currency_wars_equipment_006|currency_wars_equipment_009|currency_wars_equipment_016|currency_wars_equipment_053|currency_wars_equipment_092]&#xD;
+prep_4.png y=0.82 character=1 equipment=1 foreground=True best=currency_wars_equipment_125/0.752210 candidates=[currency_wars_equipment_125]&#xD;
+prep_4.png y=0.82 character=1 equipment=2 foreground=False best=currency_wars_equipment_073/0.676429 candidates=[currency_wars_equipment_073|currency_wars_equipment_112]&#xD;
+prep_4.png y=0.82 character=2 equipment=0 foreground=False best=currency_wars_equipment_056/0.684404 candidates=[currency_wars_equipment_056|currency_wars_equipment_095]&#xD;
+prep_4.png y=0.82 character=2 equipment=1 foreground=True best=currency_wars_equipment_126/0.782046 candidates=[currency_wars_equipment_126]&#xD;
+prep_4.png y=0.82 character=2 equipment=2 foreground=False best=currency_wars_equipment_006/0.690675 candidates=[currency_wars_equipment_006|currency_wars_equipment_009|currency_wars_equipment_016]&#xD;
+prep_4.png y=0.82 character=3 equipment=0 foreground=False best=currency_wars_equipment_074/0.674948 candidates=[currency_wars_equipment_074|currency_wars_equipment_113]&#xD;
+prep_4.png y=0.82 character=3 equipment=1 foreground=True best=currency_wars_equipment_005/0.721598 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_4.png y=0.82 character=3 equipment=2 foreground=False best=currency_wars_equipment_005/0.741352 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_4.png y=0.90 character=0 equipment=0 foreground=True best=currency_wars_equipment_059/0.733219 candidates=[currency_wars_equipment_059|currency_wars_equipment_098]&#xD;
+prep_4.png y=0.90 character=0 equipment=1 foreground=True best=currency_wars_equipment_075/0.684255 candidates=[currency_wars_equipment_075|currency_wars_equipment_114]&#xD;
+prep_4.png y=0.90 character=0 equipment=2 foreground=True best=currency_wars_equipment_060/0.731639 candidates=[currency_wars_equipment_060|currency_wars_equipment_099|currency_wars_equipment_144|currency_wars_equipment_147]&#xD;
+prep_4.png y=0.90 character=1 equipment=0 foreground=False best=currency_wars_equipment_005/0.707059 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_4.png y=0.90 character=1 equipment=1 foreground=True best=currency_wars_equipment_056/0.734274 candidates=[currency_wars_equipment_056|currency_wars_equipment_095]&#xD;
+prep_4.png y=0.90 character=1 equipment=2 foreground=False best=currency_wars_equipment_073/0.737978 candidates=[currency_wars_equipment_073|currency_wars_equipment_112]&#xD;
+prep_4.png y=0.90 character=2 equipment=0 foreground=False best=currency_wars_equipment_006/0.679943 candidates=[currency_wars_equipment_006|currency_wars_equipment_009|currency_wars_equipment_016]&#xD;
+prep_4.png y=0.90 character=2 equipment=1 foreground=True best=currency_wars_equipment_086/0.773673 candidates=[currency_wars_equipment_086]&#xD;
+prep_4.png y=0.90 character=2 equipment=2 foreground=False best=currency_wars_equipment_133/0.726753 candidates=[currency_wars_equipment_133]&#xD;
+prep_4.png y=0.90 character=3 equipment=0 foreground=False best=currency_wars_equipment_005/0.707136 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_4.png y=0.90 character=3 equipment=1 foreground=True best=currency_wars_equipment_069/0.728245 candidates=[currency_wars_equipment_069|currency_wars_equipment_108]&#xD;
+prep_4.png y=0.90 character=3 equipment=2 foreground=False best=currency_wars_equipment_130/0.718974 candidates=[currency_wars_equipment_130|currency_wars_equipment_064|currency_wars_equipment_103|currency_wars_equipment_131|currency_wars_equipment_139|currency_wars_equipment_072|currency_wars_equipment_111]&#xD;
+prep_5.png y=0.82 character=0 equipment=0 foreground=True best=currency_wars_equipment_074/0.745200 candidates=[currency_wars_equipment_074|currency_wars_equipment_113]&#xD;
+prep_5.png y=0.82 character=0 equipment=1 foreground=True best=currency_wars_equipment_131/0.796525 candidates=[currency_wars_equipment_131]&#xD;
+prep_5.png y=0.82 character=0 equipment=2 foreground=True best=currency_wars_equipment_078/0.755220 candidates=[currency_wars_equipment_078|currency_wars_equipment_117]&#xD;
+prep_5.png y=0.82 character=1 equipment=0 foreground=True best=currency_wars_equipment_071/0.697458 candidates=[currency_wars_equipment_071|currency_wars_equipment_110]&#xD;
+prep_5.png y=0.82 character=1 equipment=1 foreground=True best=currency_wars_equipment_125/0.752210 candidates=[currency_wars_equipment_125]&#xD;
+prep_5.png y=0.82 character=1 equipment=2 foreground=False best=currency_wars_equipment_073/0.676429 candidates=[currency_wars_equipment_073|currency_wars_equipment_112]&#xD;
+prep_5.png y=0.82 character=2 equipment=0 foreground=False best=currency_wars_equipment_056/0.684404 candidates=[currency_wars_equipment_056|currency_wars_equipment_095]&#xD;
+prep_5.png y=0.82 character=2 equipment=1 foreground=True best=currency_wars_equipment_126/0.782046 candidates=[currency_wars_equipment_126]&#xD;
+prep_5.png y=0.82 character=2 equipment=2 foreground=False best=currency_wars_equipment_005/0.680321 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_5.png y=0.82 character=3 equipment=0 foreground=False best=currency_wars_equipment_074/0.674948 candidates=[currency_wars_equipment_074|currency_wars_equipment_113]&#xD;
+prep_5.png y=0.82 character=3 equipment=1 foreground=True best=currency_wars_equipment_005/0.721598 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_5.png y=0.82 character=3 equipment=2 foreground=False best=currency_wars_equipment_005/0.741352 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_5.png y=0.90 character=0 equipment=0 foreground=True best=currency_wars_equipment_133/0.725980 candidates=[currency_wars_equipment_133|currency_wars_equipment_059|currency_wars_equipment_098]&#xD;
+prep_5.png y=0.90 character=0 equipment=1 foreground=True best=currency_wars_equipment_075/0.708045 candidates=[currency_wars_equipment_075|currency_wars_equipment_114]&#xD;
+prep_5.png y=0.90 character=0 equipment=2 foreground=True best=currency_wars_equipment_060/0.712992 candidates=[currency_wars_equipment_060|currency_wars_equipment_099|currency_wars_equipment_144|currency_wars_equipment_147]&#xD;
+prep_5.png y=0.90 character=1 equipment=0 foreground=False best=currency_wars_equipment_071/0.693926 candidates=[currency_wars_equipment_071|currency_wars_equipment_110]&#xD;
+prep_5.png y=0.90 character=1 equipment=1 foreground=True best=currency_wars_equipment_056/0.734274 candidates=[currency_wars_equipment_056|currency_wars_equipment_095]&#xD;
+prep_5.png y=0.90 character=1 equipment=2 foreground=False best=currency_wars_equipment_073/0.737978 candidates=[currency_wars_equipment_073|currency_wars_equipment_112]&#xD;
+prep_5.png y=0.90 character=2 equipment=0 foreground=False best=currency_wars_equipment_006/0.679943 candidates=[currency_wars_equipment_006|currency_wars_equipment_009|currency_wars_equipment_016]&#xD;
+prep_5.png y=0.90 character=2 equipment=1 foreground=True best=currency_wars_equipment_086/0.773673 candidates=[currency_wars_equipment_086]&#xD;
+prep_5.png y=0.90 character=2 equipment=2 foreground=False best=currency_wars_equipment_005/0.727453 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_5.png y=0.90 character=3 equipment=0 foreground=False best=currency_wars_equipment_005/0.707136 candidates=[currency_wars_equipment_005|currency_wars_equipment_008|currency_wars_equipment_015]&#xD;
+prep_5.png y=0.90 character=3 equipment=1 foreground=True best=currency_wars_equipment_069/0.728245 candidates=[currency_wars_equipment_069|currency_wars_equipment_108]&#xD;
+prep_5.png y=0.90 character=3 equipment=2 foreground=False best=currency_wars_equipment_130/0.718974 candidates=[currency_wars_equipment_130|currency_wars_equipment_064|currency_wars_equipment_103|currency_wars_equipment_131|currency_wars_equipment_139|currency_wars_equipment_072|currency_wars_equipment_111]</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="CurrencyWarsAssistant.Tests.ShopEquipmentCandidateRecognitionTests.DiagnoseCompactVerticalAnchorsAcrossNativeRewardShopFrames" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="409c97b1-c3c8-3563-b8a7-9b1a74f070b3">
+      <Execution id="aaf389d5-4a18-4117-827e-43e7384c8836" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.ShopEquipmentCandidateRecognitionTests" name="DiagnoseCompactVerticalAnchorsAcrossNativeRewardShopFrames" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="409c97b1-c3c8-3563-b8a7-9b1a74f070b3" executionId="aaf389d5-4a18-4117-827e-43e7384c8836" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.29)&#xD;
+[xUnit.net 00:00:02.21]   Discovering: CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:02.30]   Discovered:  CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:02.30]   Starting:    CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:06.14]   Finished:    CurrencyWarsAssistant.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

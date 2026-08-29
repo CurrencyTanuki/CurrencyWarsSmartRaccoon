@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package
+      Name="货币战争智能狸"
+      Manufacturer="货币战争智能狸开源项目"
+      Version="$(ProductVersion)"
+      Language="2052"
+      UpgradeCode="{B6890673-830C-41E7-B5D5-D415FDBD9391}"
+      Scope="perUser"
+      InstallerVersion="500"
+      Compressed="yes">
+
+    <MajorUpgrade DowngradeErrorMessage="已安装更新版本的货币战争智能狸。" />
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+    <StandardDirectory Id="LocalAppDataFolder">
+      <Directory Id="LocalProgramsFolder" Name="Programs">
+        <Directory Id="INSTALLFOLDER" Name="CurrencyWarsAssistant" />
+      </Directory>
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="货币战争智能狸">
+        <Component Id="ApplicationShortcut" Guid="{06618B4F-0ADF-4C4A-A309-01DB08E7107F}">
+          <Shortcut
+              Id="ApplicationStartMenuShortcut"
+              Name="货币战争智能狸"
+              Description="后台记录货币战争对局状态"
+              Target="[INSTALLFOLDER]CurrencyWarsAssistant.App.exe"
+              WorkingDirectory="INSTALLFOLDER" />
+          <RemoveFolder Id="RemoveApplicationProgramsFolder" On="uninstall" />
+          <RegistryValue
+              Root="HKCU"
+              Key="Software\CurrencyWarsAssistant"
+              Name="Installed"
+              Type="integer"
+              Value="1"
+              KeyPath="yes" />
+        </Component>
+      </Directory>
+    </StandardDirectory>
+
+    <!-- 2026-08-22：桌面快捷方式（用户要求）。仅首次安装创建（NOT Installed），
+         卸载时自动移除。perUser 安装下桌面 = DesktopFolder。 -->
+    <StandardDirectory Id="DesktopFolder">
+      <Component Id="DesktopShortcut" Guid="{C1A2B3C4-D5E6-4A5B-9C8D-1E2F3A4B5C6D}">
+        <Shortcut
+            Id="DesktopShortcutApp"
+            Name="货币战争智能狸"
+            Description="后台记录货币战争对局状态"
+            Target="[INSTALLFOLDER]CurrencyWarsAssistant.App.exe"
+            WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveDesktopFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\CurrencyWarsAssistant" Name="DesktopShortcut" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </StandardDirectory>
+
+    <!-- 2026-08-22：安装完成后自动启动软件（用户要求）。默认 LAUNCHAPP=1 自动启动，
+         可通过 msiexec LAUNCHAPP=0 关闭。仅在"本次刚完成安装"（NOT Installed）时触发，
+         升级/卸载不启动。Return=asyncNoWait 不阻塞安装。 -->
+    <Property Id="LAUNCHAPP" Value="1" />
+    <CustomAction Id="LaunchAppAfterInstall" Return="asyncNoWait" Execute="immediate"
+                  Directory="INSTALLFOLDER" ExeCommand="&quot;[INSTALLFOLDER]CurrencyWarsAssistant.App.exe&quot;" />
+    <InstallExecuteSequence>
+      <Custom Action="LaunchAppAfterInstall" After="InstallFinalize" Condition="NOT Installed AND LAUNCHAPP = &quot;1&quot;" />
+    </InstallExecuteSequence>
+
+    <!-- 2026-08-23：安装前检测 .NET 8 桌面运行时（用户要求）。本软件 framework-dependent，
+         未装 .NET 8 桌面运行时无法运行。检测方式（用户拍板方案A）：DirectorySearch 直接查
+         %ProgramFiles%\dotnet\shared\Microsoft.WindowsDesktop.App 目录是否存在——比注册表 InstalledVersions
+         拼目录；只要装了任意版本 .NET Desktop（8.x）该目录即存在。检测失败时：自动打开微软官方
+         .NET 8 下载页 + 中止安装并提示。
+         注：旧版用 RegistrySearch 查 HKLM\SOFTWARE\dotnet\Setup\InstalledVersions\...\WindowsDesktop.App，
+         但该 setup 注册键常被缺失（如官方 zip/SDK 方式安装不写该键），导致已装 .NET 也被误判为没装
+         而中止安装（1603/1708），故改此方案。 -->
+    <Property Id="DOTNETDESKTOPRUNTIME">
+      <DirectorySearch Id="DotNetWinDesktopSearch"
+                       Path="[ProgramFiles64Folder]dotnet\shared\Microsoft.WindowsDesktop.App"
+                       AssignToProperty="yes" />
+    </Property>
+
+    <Launch Condition="DOTNETDESKTOPRUNTIME"
+            Message="未检测到 .NET 8 桌面运行时，安装已中止。请先安装 .NET 8 Desktop Runtime（下载页已自动打开），安装完成后再重试本安装。" />
+
+    <CustomAction Id="OpenDotNet8Download" Return="ignore" Execute="immediate"
+                  Directory="WindowsFolder"
+                  ExeCommand="explorer.exe https://dotnet.microsoft.com/download/dotnet/8.0" />
+    <InstallUISequence>
+      <Custom Action="OpenDotNet8Download"
+              Condition="NOT DOTNETDESKTOPRUNTIME"
+              Before="LaunchConditions" />
+    </InstallUISequence>
+
+    <Feature Id="MainFeature" Title="货币战争智能狸" Level="1">
+      <ComponentGroupRef Id="PayloadComponents" />
+      <ComponentRef Id="ApplicationShortcut" />
+      <ComponentRef Id="DesktopShortcut" />
+    </Feature>
+  </Package>
+</Wix>

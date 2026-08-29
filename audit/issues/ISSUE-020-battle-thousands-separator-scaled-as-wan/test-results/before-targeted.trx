@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="8dbb64fb-62e7-4e3e-8cc9-4a9e28ff49a1" name="zzz81@ZZZ的电脑 2026-08-09 14:19:46" runUser="ZZZ的电脑\zzz81" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-08-09T14:19:46.5508861+08:00" queuing="2026-08-09T14:19:46.5508864+08:00" start="2026-08-09T14:19:42.7531931+08:00" finish="2026-08-09T14:19:46.5554658+08:00" />
+  <TestSettings name="default" id="a7e13699-5002-41e0-aa98-b7b268f40fed">
+    <Deployment runDeploymentRoot="zzz81_ZZZ的电脑_2026-08-09_14_19_46" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="d9729209-57bb-4c7e-b9b2-16ca5ec320f7" testId="60e13278-3502-d9c1-1573-f2944beed619" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleThousandsSeparatorUsesBaseUnits(text: &quot;8,863&quot;, expected: 8863)" computerName="ZZZ的电脑" duration="00:00:00.2705786" startTime="2026-08-09T14:19:46.3820462+08:00" endTime="2026-08-09T14:19:46.3820604+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d9729209-57bb-4c7e-b9b2-16ca5ec320f7">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ&#xD;
+Expected: 8863&#xD;
+Actual:   88630000</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleThousandsSeparatorUsesBaseUnits(String text, Int64 expected) in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs:line 2205&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="dcdcbb54-ab76-4f33-8004-b68ee4360198" testId="f9a7ef99-ea6d-2e94-6e30-2a0cdcb9cde1" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleThousandsSeparatorUsesBaseUnits(text: &quot;3,545&quot;, expected: 3545)" computerName="ZZZ的电脑" duration="00:00:00.1182176" startTime="2026-08-09T14:19:46.4968777+08:00" endTime="2026-08-09T14:19:46.4968779+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dcdcbb54-ab76-4f33-8004-b68ee4360198">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ&#xD;
+Expected: 3545&#xD;
+Actual:   35450000</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleThousandsSeparatorUsesBaseUnits(String text, Int64 expected) in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs:line 2205&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleThousandsSeparatorUsesBaseUnits(text: &quot;8,863&quot;, expected: 8863)" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="60e13278-3502-d9c1-1573-f2944beed619">
+      <Execution id="d9729209-57bb-4c7e-b9b2-16ca5ec320f7" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="BattleThousandsSeparatorUsesBaseUnits" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleThousandsSeparatorUsesBaseUnits(text: &quot;3,545&quot;, expected: 3545)" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="f9a7ef99-ea6d-2e94-6e30-2a0cdcb9cde1">
+      <Execution id="dcdcbb54-ab76-4f33-8004-b68ee4360198" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="BattleThousandsSeparatorUsesBaseUnits" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="60e13278-3502-d9c1-1573-f2944beed619" executionId="d9729209-57bb-4c7e-b9b2-16ca5ec320f7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f9a7ef99-ea6d-2e94-6e30-2a0cdcb9cde1" executionId="dcdcbb54-ab76-4f33-8004-b68ee4360198" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="2" executed="2" passed="0" failed="2" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.29)&#xD;
+[xUnit.net 00:00:02.94]   Discovering: CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:03.03]   Discovered:  CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:03.03]   Starting:    CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:03.34]       Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:03.34]       Expected: 8863&#xD;
+[xUnit.net 00:00:03.34]       Actual:   88630000&#xD;
+[xUnit.net 00:00:03.34]       Stack Trace:&#xD;
+[xUnit.net 00:00:03.34]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs(2205,0): at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleThousandsSeparatorUsesBaseUnits(String text, Int64 expected)&#xD;
+[xUnit.net 00:00:03.34]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:03.45]       Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:03.45]       Expected: 3545&#xD;
+[xUnit.net 00:00:03.45]       Actual:   35450000&#xD;
+[xUnit.net 00:00:03.45]       Stack Trace:&#xD;
+[xUnit.net 00:00:03.45]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs(2205,0): at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleThousandsSeparatorUsesBaseUnits(String text, Int64 expected)&#xD;
+[xUnit.net 00:00:03.45]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:03.46]   Finished:    CurrencyWarsAssistant.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-09T14:19:46.3789153+08:00">
+        <Text>[xUnit.net 00:00:03.34]     CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleThousandsSeparatorUsesBaseUnits(text: "8,863", expected: 8863) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-09T14:19:46.4964808+08:00">
+        <Text>[xUnit.net 00:00:03.45]     CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.BattleThousandsSeparatorUsesBaseUnits(text: "3,545", expected: 3545) [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

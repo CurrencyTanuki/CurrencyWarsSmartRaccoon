@@ -1,0 +1,4 @@
+##### DetectPrivilegeEquipmentOverlay: 842=[(2298, 2353)] 855=[(2517, 2572)]
+##### ResolveEquipmentIdentityByPrivilegeMarker: 842=[(2262, 2296)] 855=[(2481, 2515)]
+##### HasPrivilegeV: 842=[(2355, 2406)] 855=[(2574, 2625)]
+##### ObserveEquipmentForSlots: 842=None 855=None

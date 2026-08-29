@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="39844e25-f90d-4347-a143-c400a15f9be7" name="zzz81@ZZZ的电脑 2026-08-09 14:47:22" runUser="ZZZ的电脑\zzz81" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-08-09T14:47:22.6154276+08:00" queuing="2026-08-09T14:47:22.6154279+08:00" start="2026-08-09T14:47:16.9051953+08:00" finish="2026-08-09T14:47:22.6229564+08:00" />
+  <TestSettings name="default" id="86376f7a-ebd8-467a-9dec-23aa86ec9b79">
+    <Deployment runDeploymentRoot="zzz81_ZZZ的电脑_2026-08-09_14_47_22" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="10ab661f-3c82-4901-8aa5-aa31a4c25073" testId="f3a8d24e-ce09-5434-21da-67f7b1d49d1d" testName="CurrencyWarsAssistant.Tests.Phase2RecognitionQueueTests.DropStaleFramesWhenLatestFrameIsCriticalKeepsItsNewestCriticalPredecessor" computerName="ZZZ的电脑" duration="00:00:00.0068394" startTime="2026-08-09T14:47:22.4403248+08:00" endTime="2026-08-09T14:47:22.4403399+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="10ab661f-3c82-4901-8aa5-aa31a4c25073" />
+    <UnitTestResult executionId="66be90d6-c468-4849-aea2-b6efe525b2ce" testId="5d254d06-cb43-01ac-73d1-cfedc2c4d343" testName="CurrencyWarsAssistant.Tests.Phase2RecognitionQueueTests.DropStaleFramesWithInterleavedRegularKeepsOnlyNewestCriticalPair" computerName="ZZZ的电脑" duration="00:00:00.0025529" startTime="2026-08-09T14:47:22.4438118+08:00" endTime="2026-08-09T14:47:22.4438118+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="66be90d6-c468-4849-aea2-b6efe525b2ce" />
+    <UnitTestResult executionId="754f0398-79e5-459b-a8e4-f87ac86364a8" testId="b0ce0531-ce2e-9616-941f-8e98e8f69553" testName="CurrencyWarsAssistant.Tests.Phase2RealtimeFrameBufferTests.UnclassifiedSettlementPredecessorSurvivesQueueStaleDropAtPreparationBoundary" computerName="ZZZ的电脑" duration="00:00:00.0947477" startTime="2026-08-09T14:47:22.5285215+08:00" endTime="2026-08-09T14:47:22.5285218+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="754f0398-79e5-459b-a8e4-f87ac86364a8" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2RecognitionQueueTests.DropStaleFramesWithInterleavedRegularKeepsOnlyNewestCriticalPair" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="5d254d06-cb43-01ac-73d1-cfedc2c4d343">
+      <Execution id="66be90d6-c468-4849-aea2-b6efe525b2ce" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2RecognitionQueueTests" name="DropStaleFramesWithInterleavedRegularKeepsOnlyNewestCriticalPair" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2RealtimeFrameBufferTests.UnclassifiedSettlementPredecessorSurvivesQueueStaleDropAtPreparationBoundary" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="b0ce0531-ce2e-9616-941f-8e98e8f69553">
+      <Execution id="754f0398-79e5-459b-a8e4-f87ac86364a8" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2RealtimeFrameBufferTests" name="UnclassifiedSettlementPredecessorSurvivesQueueStaleDropAtPreparationBoundary" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2RecognitionQueueTests.DropStaleFramesWhenLatestFrameIsCriticalKeepsItsNewestCriticalPredecessor" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="f3a8d24e-ce09-5434-21da-67f7b1d49d1d">
+      <Execution id="10ab661f-3c82-4901-8aa5-aa31a4c25073" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2RecognitionQueueTests" name="DropStaleFramesWhenLatestFrameIsCriticalKeepsItsNewestCriticalPredecessor" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="f3a8d24e-ce09-5434-21da-67f7b1d49d1d" executionId="10ab661f-3c82-4901-8aa5-aa31a4c25073" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5d254d06-cb43-01ac-73d1-cfedc2c4d343" executionId="66be90d6-c468-4849-aea2-b6efe525b2ce" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b0ce0531-ce2e-9616-941f-8e98e8f69553" executionId="754f0398-79e5-459b-a8e4-f87ac86364a8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.29)&#xD;
+[xUnit.net 00:00:05.02]   Discovering: CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:05.19]   Discovered:  CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:05.20]   Starting:    CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:05.34]   Finished:    CurrencyWarsAssistant.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

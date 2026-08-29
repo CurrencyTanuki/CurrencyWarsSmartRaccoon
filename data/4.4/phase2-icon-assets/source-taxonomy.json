@@ -1,0 +1,1095 @@
+{
+  "version": "4.4",
+  "generated_by": "tools/build_icon_asset_pack.py",
+  "expected_logical_records": 630,
+  "categories": {
+    "investment_environment": 83,
+    "investment_strategy": 334,
+    "enemy_affix": 51,
+    "bond_state": 135,
+    "special_item": 22,
+    "official_composition_layer": 5
+  },
+  "bond_matrix": [
+    {
+      "id": "bond_星核猎手_inactive",
+      "name": "星核猎手",
+      "bond_type": "阵营羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_星核猎手_p2",
+      "name": "星核猎手",
+      "bond_type": "阵营羁绊",
+      "population": 2,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_星核猎手_p3",
+      "name": "星核猎手",
+      "bond_type": "阵营羁绊",
+      "population": 3,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_星核猎手_p4",
+      "name": "星核猎手",
+      "bond_type": "阵营羁绊",
+      "population": 4,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_贝洛伯格_inactive",
+      "name": "贝洛伯格",
+      "bond_type": "阵营羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_贝洛伯格_p2",
+      "name": "贝洛伯格",
+      "bond_type": "阵营羁绊",
+      "population": 2,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_贝洛伯格_p4",
+      "name": "贝洛伯格",
+      "bond_type": "阵营羁绊",
+      "population": 4,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_公司_inactive",
+      "name": "公司",
+      "bond_type": "阵营羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_公司_p2",
+      "name": "公司",
+      "bond_type": "阵营羁绊",
+      "population": 2,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_公司_p3",
+      "name": "公司",
+      "bond_type": "阵营羁绊",
+      "population": 3,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_星间旅人_inactive",
+      "name": "星间旅人",
+      "bond_type": "阵营羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_星间旅人_p1",
+      "name": "星间旅人",
+      "bond_type": "阵营羁绊",
+      "population": 1,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_星间旅人_p2",
+      "name": "星间旅人",
+      "bond_type": "阵营羁绊",
+      "population": 2,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_星间旅人_p3",
+      "name": "星间旅人",
+      "bond_type": "阵营羁绊",
+      "population": 3,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_星间旅人_p4",
+      "name": "星间旅人",
+      "bond_type": "阵营羁绊",
+      "population": 4,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_星间旅人_p5",
+      "name": "星间旅人",
+      "bond_type": "阵营羁绊",
+      "population": 5,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_星间旅人_p6",
+      "name": "星间旅人",
+      "bond_type": "阵营羁绊",
+      "population": 6,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_星间旅人_p7",
+      "name": "星间旅人",
+      "bond_type": "阵营羁绊",
+      "population": 7,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_巡海游侠_inactive",
+      "name": "巡海游侠",
+      "bond_type": "阵营羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_巡海游侠_p1",
+      "name": "巡海游侠",
+      "bond_type": "阵营羁绊",
+      "population": 1,
+      "background_state": "bronze_brown",
+      "available": true
+    },
+    {
+      "id": "bond_巡海游侠_p2",
+      "name": "巡海游侠",
+      "bond_type": "阵营羁绊",
+      "population": 2,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_巡海游侠_p3",
+      "name": "巡海游侠",
+      "bond_type": "阵营羁绊",
+      "population": 3,
+      "background_state": "gold",
+      "available": true
+    },
+    {
+      "id": "bond_巡海游侠_p4",
+      "name": "巡海游侠",
+      "bond_type": "阵营羁绊",
+      "population": 4,
+      "background_state": "prismatic",
+      "available": true
+    },
+    {
+      "id": "bond_昼之半神_inactive",
+      "name": "昼之半神",
+      "bond_type": "阵营羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_昼之半神_p3",
+      "name": "昼之半神",
+      "bond_type": "阵营羁绊",
+      "population": 3,
+      "background_state": "bronze_brown",
+      "available": true
+    },
+    {
+      "id": "bond_昼之半神_p4",
+      "name": "昼之半神",
+      "bond_type": "阵营羁绊",
+      "population": 4,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_昼之半神_p6",
+      "name": "昼之半神",
+      "bond_type": "阵营羁绊",
+      "population": 6,
+      "background_state": "gold",
+      "available": true
+    },
+    {
+      "id": "bond_昼之半神_p9",
+      "name": "昼之半神",
+      "bond_type": "阵营羁绊",
+      "population": 9,
+      "background_state": "prismatic",
+      "available": true
+    },
+    {
+      "id": "bond_夜之半神_inactive",
+      "name": "夜之半神",
+      "bond_type": "阵营羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_夜之半神_p2",
+      "name": "夜之半神",
+      "bond_type": "阵营羁绊",
+      "population": 2,
+      "background_state": "bronze_brown",
+      "available": true
+    },
+    {
+      "id": "bond_夜之半神_p4",
+      "name": "夜之半神",
+      "bond_type": "阵营羁绊",
+      "population": 4,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_夜之半神_p7",
+      "name": "夜之半神",
+      "bond_type": "阵营羁绊",
+      "population": 7,
+      "background_state": "gold",
+      "available": true
+    },
+    {
+      "id": "bond_夜之半神_p9",
+      "name": "夜之半神",
+      "bond_type": "阵营羁绊",
+      "population": 9,
+      "background_state": "prismatic",
+      "available": true
+    },
+    {
+      "id": "bond_银河学者_inactive",
+      "name": "银河学者",
+      "bond_type": "阵营羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_银河学者_p2",
+      "name": "银河学者",
+      "bond_type": "阵营羁绊",
+      "population": 2,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_银河学者_p4",
+      "name": "银河学者",
+      "bond_type": "阵营羁绊",
+      "population": 4,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_银河学者_p6",
+      "name": "银河学者",
+      "bond_type": "阵营羁绊",
+      "population": 6,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_盛会之星_inactive",
+      "name": "盛会之星",
+      "bond_type": "阵营羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_盛会之星_p2",
+      "name": "盛会之星",
+      "bond_type": "阵营羁绊",
+      "population": 2,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_盛会之星_p3",
+      "name": "盛会之星",
+      "bond_type": "阵营羁绊",
+      "population": 3,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_盛会之星_p4",
+      "name": "盛会之星",
+      "bond_type": "阵营羁绊",
+      "population": 4,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_盛会之星_p5",
+      "name": "盛会之星",
+      "bond_type": "阵营羁绊",
+      "population": 5,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_盛会之星_p6",
+      "name": "盛会之星",
+      "bond_type": "阵营羁绊",
+      "population": 6,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_狼狩_inactive",
+      "name": "狼狩",
+      "bond_type": "阵营羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_狼狩_p3",
+      "name": "狼狩",
+      "bond_type": "阵营羁绊",
+      "population": 3,
+      "background_state": "bronze_brown",
+      "available": true
+    },
+    {
+      "id": "bond_狼狩_p5",
+      "name": "狼狩",
+      "bond_type": "阵营羁绊",
+      "population": 5,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_狼狩_p6",
+      "name": "狼狩",
+      "bond_type": "阵营羁绊",
+      "population": 6,
+      "background_state": "gold",
+      "available": true
+    },
+    {
+      "id": "bond_狼狩_p8",
+      "name": "狼狩",
+      "bond_type": "阵营羁绊",
+      "population": 8,
+      "background_state": "prismatic",
+      "available": true
+    },
+    {
+      "id": "bond_列车同行_inactive",
+      "name": "列车同行",
+      "bond_type": "阵营羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_列车同行_p2",
+      "name": "列车同行",
+      "bond_type": "阵营羁绊",
+      "population": 2,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_列车同行_p4",
+      "name": "列车同行",
+      "bond_type": "阵营羁绊",
+      "population": 4,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_列车同行_p6",
+      "name": "列车同行",
+      "bond_type": "阵营羁绊",
+      "population": 6,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_仙舟_inactive",
+      "name": "仙舟",
+      "bond_type": "阵营羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_仙舟_p3",
+      "name": "仙舟",
+      "bond_type": "阵营羁绊",
+      "population": 3,
+      "background_state": "bronze_brown",
+      "available": true
+    },
+    {
+      "id": "bond_仙舟_p5",
+      "name": "仙舟",
+      "bond_type": "阵营羁绊",
+      "population": 5,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_仙舟_p7",
+      "name": "仙舟",
+      "bond_type": "阵营羁绊",
+      "population": 7,
+      "background_state": "gold",
+      "available": true
+    },
+    {
+      "id": "bond_仙舟_p10",
+      "name": "仙舟",
+      "bond_type": "阵营羁绊",
+      "population": 10,
+      "background_state": "prismatic",
+      "available": true
+    },
+    {
+      "id": "bond_治疗_inactive",
+      "name": "治疗",
+      "bond_type": "流派羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_治疗_p2",
+      "name": "治疗",
+      "bond_type": "流派羁绊",
+      "population": 2,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_治疗_p4",
+      "name": "治疗",
+      "bond_type": "流派羁绊",
+      "population": 4,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_治疗_p6",
+      "name": "治疗",
+      "bond_type": "流派羁绊",
+      "population": 6,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_持续伤害_inactive",
+      "name": "持续伤害",
+      "bond_type": "流派羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_持续伤害_p2",
+      "name": "持续伤害",
+      "bond_type": "流派羁绊",
+      "population": 2,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_持续伤害_p4",
+      "name": "持续伤害",
+      "bond_type": "流派羁绊",
+      "population": 4,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_持续伤害_p6",
+      "name": "持续伤害",
+      "bond_type": "流派羁绊",
+      "population": 6,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_护盾_inactive",
+      "name": "护盾",
+      "bond_type": "流派羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_护盾_p2",
+      "name": "护盾",
+      "bond_type": "流派羁绊",
+      "population": 2,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_护盾_p4",
+      "name": "护盾",
+      "bond_type": "流派羁绊",
+      "population": 4,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_击破_inactive",
+      "name": "击破",
+      "bond_type": "流派羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_击破_p2",
+      "name": "击破",
+      "bond_type": "流派羁绊",
+      "population": 2,
+      "background_state": "bronze_brown",
+      "available": true
+    },
+    {
+      "id": "bond_击破_p4",
+      "name": "击破",
+      "bond_type": "流派羁绊",
+      "population": 4,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_击破_p6",
+      "name": "击破",
+      "bond_type": "流派羁绊",
+      "population": 6,
+      "background_state": "gold",
+      "available": true
+    },
+    {
+      "id": "bond_击破_p9",
+      "name": "击破",
+      "bond_type": "流派羁绊",
+      "population": 9,
+      "background_state": "prismatic",
+      "available": true
+    },
+    {
+      "id": "bond_减益_inactive",
+      "name": "减益",
+      "bond_type": "流派羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_减益_p2",
+      "name": "减益",
+      "bond_type": "流派羁绊",
+      "population": 2,
+      "background_state": "bronze_brown",
+      "available": true
+    },
+    {
+      "id": "bond_减益_p4",
+      "name": "减益",
+      "bond_type": "流派羁绊",
+      "population": 4,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_减益_p6",
+      "name": "减益",
+      "bond_type": "流派羁绊",
+      "population": 6,
+      "background_state": "gold",
+      "available": true
+    },
+    {
+      "id": "bond_减益_p8",
+      "name": "减益",
+      "bond_type": "流派羁绊",
+      "population": 8,
+      "background_state": "prismatic",
+      "available": true
+    },
+    {
+      "id": "bond_能量_inactive",
+      "name": "能量",
+      "bond_type": "流派羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_能量_p3",
+      "name": "能量",
+      "bond_type": "流派羁绊",
+      "population": 3,
+      "background_state": "bronze_brown",
+      "available": true
+    },
+    {
+      "id": "bond_能量_p5",
+      "name": "能量",
+      "bond_type": "流派羁绊",
+      "population": 5,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_能量_p7",
+      "name": "能量",
+      "bond_type": "流派羁绊",
+      "population": 7,
+      "background_state": "gold",
+      "available": true
+    },
+    {
+      "id": "bond_能量_p10",
+      "name": "能量",
+      "bond_type": "流派羁绊",
+      "population": 10,
+      "background_state": "prismatic",
+      "available": true
+    },
+    {
+      "id": "bond_群攻_inactive",
+      "name": "群攻",
+      "bond_type": "流派羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_群攻_p3",
+      "name": "群攻",
+      "bond_type": "流派羁绊",
+      "population": 3,
+      "background_state": "bronze_brown",
+      "available": true
+    },
+    {
+      "id": "bond_群攻_p5",
+      "name": "群攻",
+      "bond_type": "流派羁绊",
+      "population": 5,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_群攻_p7",
+      "name": "群攻",
+      "bond_type": "流派羁绊",
+      "population": 7,
+      "background_state": "gold",
+      "available": true
+    },
+    {
+      "id": "bond_群攻_p9",
+      "name": "群攻",
+      "bond_type": "流派羁绊",
+      "population": 9,
+      "background_state": "prismatic",
+      "available": true
+    },
+    {
+      "id": "bond_燃血_inactive",
+      "name": "燃血",
+      "bond_type": "流派羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_燃血_p2",
+      "name": "燃血",
+      "bond_type": "流派羁绊",
+      "population": 2,
+      "background_state": "bronze_brown",
+      "available": true
+    },
+    {
+      "id": "bond_燃血_p4",
+      "name": "燃血",
+      "bond_type": "流派羁绊",
+      "population": 4,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_燃血_p6",
+      "name": "燃血",
+      "bond_type": "流派羁绊",
+      "population": 6,
+      "background_state": "gold",
+      "available": true
+    },
+    {
+      "id": "bond_燃血_p8",
+      "name": "燃血",
+      "bond_type": "流派羁绊",
+      "population": 8,
+      "background_state": "prismatic",
+      "available": true
+    },
+    {
+      "id": "bond_追击_inactive",
+      "name": "追击",
+      "bond_type": "流派羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_追击_p3",
+      "name": "追击",
+      "bond_type": "流派羁绊",
+      "population": 3,
+      "background_state": "bronze_brown",
+      "available": true
+    },
+    {
+      "id": "bond_追击_p5",
+      "name": "追击",
+      "bond_type": "流派羁绊",
+      "population": 5,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_追击_p7",
+      "name": "追击",
+      "bond_type": "流派羁绊",
+      "population": 7,
+      "background_state": "gold",
+      "available": true
+    },
+    {
+      "id": "bond_追击_p9",
+      "name": "追击",
+      "bond_type": "流派羁绊",
+      "population": 9,
+      "background_state": "prismatic",
+      "available": true
+    },
+    {
+      "id": "bond_量子同频_inactive",
+      "name": "量子同频",
+      "bond_type": "流派羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_量子同频_p2",
+      "name": "量子同频",
+      "bond_type": "流派羁绊",
+      "population": 2,
+      "background_state": "bronze_brown",
+      "available": true
+    },
+    {
+      "id": "bond_量子同频_p3",
+      "name": "量子同频",
+      "bond_type": "流派羁绊",
+      "population": 3,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_量子同频_p4",
+      "name": "量子同频",
+      "bond_type": "流派羁绊",
+      "population": 4,
+      "background_state": "gold",
+      "available": true
+    },
+    {
+      "id": "bond_量子同频_p5",
+      "name": "量子同频",
+      "bond_type": "流派羁绊",
+      "population": 5,
+      "background_state": "prismatic",
+      "available": true
+    },
+    {
+      "id": "bond_战技点_inactive",
+      "name": "战技点",
+      "bond_type": "流派羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_战技点_p2",
+      "name": "战技点",
+      "bond_type": "流派羁绊",
+      "population": 2,
+      "background_state": "bronze_brown",
+      "available": true
+    },
+    {
+      "id": "bond_战技点_p4",
+      "name": "战技点",
+      "bond_type": "流派羁绊",
+      "population": 4,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_战技点_p6",
+      "name": "战技点",
+      "bond_type": "流派羁绊",
+      "population": 6,
+      "background_state": "gold",
+      "available": true
+    },
+    {
+      "id": "bond_战技点_p8",
+      "name": "战技点",
+      "bond_type": "流派羁绊",
+      "population": 8,
+      "background_state": "prismatic",
+      "available": true
+    },
+    {
+      "id": "bond_救世主_inactive",
+      "name": "救世主",
+      "bond_type": "独立羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_救世主_p1",
+      "name": "救世主",
+      "bond_type": "独立羁绊",
+      "population": 1,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_大守护者_inactive",
+      "name": "大守护者",
+      "bond_type": "独立羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_大守护者_p1",
+      "name": "大守护者",
+      "bond_type": "独立羁绊",
+      "population": 1,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_命运卜者_inactive",
+      "name": "命运卜者",
+      "bond_type": "独立羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_命运卜者_p1",
+      "name": "命运卜者",
+      "bond_type": "独立羁绊",
+      "population": 1,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_挚爱之人_inactive",
+      "name": "挚爱之人",
+      "bond_type": "独立羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_挚爱之人_p1",
+      "name": "挚爱之人",
+      "bond_type": "独立羁绊",
+      "population": 1,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_魔术师_inactive",
+      "name": "魔术师",
+      "bond_type": "独立羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_魔术师_p1",
+      "name": "魔术师",
+      "bond_type": "独立羁绊",
+      "population": 1,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_欢愉_inactive",
+      "name": "欢愉",
+      "bond_type": "流派羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_欢愉_p3",
+      "name": "欢愉",
+      "bond_type": "流派羁绊",
+      "population": 3,
+      "background_state": "bronze_brown",
+      "available": true
+    },
+    {
+      "id": "bond_欢愉_p4",
+      "name": "欢愉",
+      "bond_type": "流派羁绊",
+      "population": 4,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_欢愉_p5",
+      "name": "欢愉",
+      "bond_type": "流派羁绊",
+      "population": 5,
+      "background_state": "gold",
+      "available": true
+    },
+    {
+      "id": "bond_欢愉_p7",
+      "name": "欢愉",
+      "bond_type": "流派羁绊",
+      "population": 7,
+      "background_state": "prismatic",
+      "available": true
+    },
+    {
+      "id": "bond_头号玩家_inactive",
+      "name": "头号玩家",
+      "bond_type": "独立羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_头号玩家_p1",
+      "name": "头号玩家",
+      "bond_type": "独立羁绊",
+      "population": 1,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_命运圣杯_inactive",
+      "name": "命运圣杯",
+      "bond_type": "阵营羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_命运圣杯_p2",
+      "name": "命运圣杯",
+      "bond_type": "阵营羁绊",
+      "population": 2,
+      "background_state": "bronze_brown",
+      "available": true
+    },
+    {
+      "id": "bond_命运圣杯_p3",
+      "name": "命运圣杯",
+      "bond_type": "阵营羁绊",
+      "population": 3,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_命运圣杯_p4",
+      "name": "命运圣杯",
+      "bond_type": "阵营羁绊",
+      "population": 4,
+      "background_state": "gold",
+      "available": true
+    },
+    {
+      "id": "bond_命运圣杯_p5",
+      "name": "命运圣杯",
+      "bond_type": "阵营羁绊",
+      "population": 5,
+      "background_state": "prismatic",
+      "available": true
+    },
+    {
+      "id": "bond_领航员_inactive",
+      "name": "领航员",
+      "bond_type": "独立羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_领航员_p1",
+      "name": "领航员",
+      "bond_type": "独立羁绊",
+      "population": 1,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_师徒_inactive",
+      "name": "师徒",
+      "bond_type": "特殊羁绊",
+      "population": 0,
+      "background_state": "gray_black_inactive",
+      "available": true
+    },
+    {
+      "id": "bond_师徒_p2",
+      "name": "师徒",
+      "bond_type": "特殊羁绊",
+      "population": 2,
+      "background_state": "unverified_exact_color",
+      "available": true
+    },
+    {
+      "id": "bond_师徒_p3",
+      "name": "师徒",
+      "bond_type": "特殊羁绊",
+      "population": 3,
+      "background_state": "unverified_exact_color",
+      "available": true
+    }
+  ]
+}

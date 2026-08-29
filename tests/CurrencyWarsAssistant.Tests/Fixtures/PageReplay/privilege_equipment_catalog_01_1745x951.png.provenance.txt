@@ -1,0 +1,4 @@
+Source: user-provided screenshot
+Original: C:\Users\zzz81\AppData\Local\Temp\codex-clipboard-d34e14cd-f650-4775-9365-91a33f1d8161.png
+SHA256: B944EE1CFF478CB040B1DAC57FBD88946904FE25E0D88228C73E64080E502D1A
+Ground truth: 21 privilege equipment icons. Each is the normal equipment artwork plus the privilege frame and V marker.

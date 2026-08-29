@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0.0",
+  "component": "RapidOCR PP-OCRv6 recognition-only model",
+  "packageVersion": "3.9.2",
+  "modelFile": "PP-OCRv6_rec_small.onnx",
+  "modelSha256": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+  "sourceUrl": "https://files.pythonhosted.org/packages/55/ed/0ee9b9281986974be9d2406ae0134c8d7c91d2fc613f16ffda9701eeda6f/rapidocr-3.9.2-py3-none-any.whl",
+  "sourceWheelSha256": "04d6b8d151f823d930bd91910555f57bea897c0c44fa6794267b94cf9c1ef9a0",
+  "upstreamRepository": "https://github.com/RapidAI/RapidOCR",
+  "upstreamModelRepository": "https://www.modelscope.cn/models/RapidAI/RapidOCR",
+  "license": "Apache-2.0",
+  "retrievedAt": "2026-07-30",
+  "usage": "Only the text-recognition stage is used. UI regions are located and cropped by CurrencyWarsAssistant before inference."
+}

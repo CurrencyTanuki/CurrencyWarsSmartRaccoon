@@ -1,0 +1,304 @@
+生成启动时间为 2026/8/9 7:36:52。
+日志记录详细程度设置为: Normal。     1>节点 1 上的项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\CurrencyWarsAssistant.sln”(默认目标)。
+     1>ValidateSolutionConfiguration:
+         正在生成解决方案配置“Release|Any CPU”。
+     1>项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\CurrencyWarsAssistant.sln”(1)正在节点 1 上生成“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Core\CurrencyWarsAssistant.Core.csproj”(2) (默认目标)。
+     2>GenerateTargetFrameworkMonikerAttribute:
+       正在跳过目标“GenerateTargetFrameworkMonikerAttribute”，因为所有输出文件相对于输入文件而言都是最新的。
+       CoreGenerateAssemblyInfo:
+       正在跳过目标“CoreGenerateAssemblyInfo”，因为所有输出文件相对于输入文件而言都是最新的。
+       _GenerateSourceLinkFile:
+         Source Link 为空，则文件 "obj\Release\net8.0\CurrencyWarsAssistant.Core.sourcelink.json" 不存在。
+       CoreCompile:
+       正在跳过目标“CoreCompile”，因为所有输出文件相对于输入文件而言都是最新的。
+       GenerateBuildDependencyFile:
+       正在跳过目标“GenerateBuildDependencyFile”，因为所有输出文件相对于输入文件而言都是最新的。
+       CopyFilesToOutputDirectory:
+         CurrencyWarsAssistant.Core -> D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Core\bin\Release\net8.0\CurrencyWarsAssistant.Core.dll
+     2>已完成生成项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Core\CurrencyWarsAssistant.Core.csproj”(默认目标)的操作。
+     1>项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\CurrencyWarsAssistant.sln”(1)正在节点 6 上生成“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Advisor\CurrencyWarsAssistant.Advisor.csproj”(3) (默认目标)。
+     3>GenerateTargetFrameworkMonikerAttribute:
+       正在跳过目标“GenerateTargetFrameworkMonikerAttribute”，因为所有输出文件相对于输入文件而言都是最新的。
+       CoreGenerateAssemblyInfo:
+       正在跳过目标“CoreGenerateAssemblyInfo”，因为所有输出文件相对于输入文件而言都是最新的。
+       _GenerateSourceLinkFile:
+         Source Link 为空，则文件 "obj\Release\net8.0\CurrencyWarsAssistant.Advisor.sourcelink.json" 不存在。
+       CoreCompile:
+       正在跳过目标“CoreCompile”，因为所有输出文件相对于输入文件而言都是最新的。
+       GenerateBuildDependencyFile:
+       正在跳过目标“GenerateBuildDependencyFile”，因为所有输出文件相对于输入文件而言都是最新的。
+       CopyFilesToOutputDirectory:
+         CurrencyWarsAssistant.Advisor -> D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Advisor\bin\Release\net8.0\CurrencyWarsAssistant.Advisor.dll
+     3>已完成生成项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Advisor\CurrencyWarsAssistant.Advisor.csproj”(默认目标)的操作。
+     1>项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\CurrencyWarsAssistant.sln”(1)正在节点 2 上生成“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Game\CurrencyWarsAssistant.Game.csproj”(6) (默认目标)。
+     6>GenerateTargetFrameworkMonikerAttribute:
+       正在跳过目标“GenerateTargetFrameworkMonikerAttribute”，因为所有输出文件相对于输入文件而言都是最新的。
+       CoreGenerateAssemblyInfo:
+       正在跳过目标“CoreGenerateAssemblyInfo”，因为所有输出文件相对于输入文件而言都是最新的。
+     1>项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\CurrencyWarsAssistant.sln”(1)正在节点 9 上生成“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Vision\CurrencyWarsAssistant.Vision.csproj”(7) (默认目标)。
+     7>GenerateTargetFrameworkMonikerAttribute:
+       正在跳过目标“GenerateTargetFrameworkMonikerAttribute”，因为所有输出文件相对于输入文件而言都是最新的。
+     6>_GenerateSourceLinkFile:
+         Source Link 为空，则文件 "obj\Release\net8.0\CurrencyWarsAssistant.Game.sourcelink.json" 不存在。
+     7>CoreGenerateAssemblyInfo:
+       正在跳过目标“CoreGenerateAssemblyInfo”，因为所有输出文件相对于输入文件而言都是最新的。
+     6>CoreCompile:
+       正在跳过目标“CoreCompile”，因为所有输出文件相对于输入文件而言都是最新的。
+     7>_GenerateSourceLinkFile:
+         Source Link 为空，则文件 "obj\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Vision.sourcelink.json" 不存在。
+     6>GenerateBuildDependencyFile:
+       正在跳过目标“GenerateBuildDependencyFile”，因为所有输出文件相对于输入文件而言都是最新的。
+     7>CoreCompile:
+       正在跳过目标“CoreCompile”，因为所有输出文件相对于输入文件而言都是最新的。
+     6>CopyFilesToOutputDirectory:
+         CurrencyWarsAssistant.Game -> D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Game\bin\Release\net8.0\CurrencyWarsAssistant.Game.dll
+     6>已完成生成项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Game\CurrencyWarsAssistant.Game.csproj”(默认目标)的操作。
+     7>GenerateBuildDependencyFile:
+       正在跳过目标“GenerateBuildDependencyFile”，因为所有输出文件相对于输入文件而言都是最新的。
+       CopyFilesToOutputDirectory:
+         CurrencyWarsAssistant.Vision -> D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Vision\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Vision.dll
+     7>已完成生成项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Vision\CurrencyWarsAssistant.Vision.csproj”(默认目标)的操作。
+     1>项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\CurrencyWarsAssistant.sln”(1)正在节点 8 上生成“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Automation\CurrencyWarsAssistant.Automation.csproj”(4) (默认目标)。
+     4>GenerateTargetFrameworkMonikerAttribute:
+       正在跳过目标“GenerateTargetFrameworkMonikerAttribute”，因为所有输出文件相对于输入文件而言都是最新的。
+       CoreGenerateAssemblyInfo:
+       正在跳过目标“CoreGenerateAssemblyInfo”，因为所有输出文件相对于输入文件而言都是最新的。
+       _GenerateSourceLinkFile:
+         Source Link 为空，则文件 "obj\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Automation.sourcelink.json" 不存在。
+       CoreCompile:
+       正在跳过目标“CoreCompile”，因为所有输出文件相对于输入文件而言都是最新的。
+       GenerateBuildDependencyFile:
+       正在跳过目标“GenerateBuildDependencyFile”，因为所有输出文件相对于输入文件而言都是最新的。
+       CopyFilesToOutputDirectory:
+         CurrencyWarsAssistant.Automation -> D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Automation\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Automation.dll
+     4>已完成生成项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Automation\CurrencyWarsAssistant.Automation.csproj”(默认目标)的操作。
+     1>项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\CurrencyWarsAssistant.sln”(1)正在节点 3 上生成“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Tasks\CurrencyWarsAssistant.Tasks.csproj”(8) (默认目标)。
+     8>GenerateTargetFrameworkMonikerAttribute:
+       正在跳过目标“GenerateTargetFrameworkMonikerAttribute”，因为所有输出文件相对于输入文件而言都是最新的。
+       CoreGenerateAssemblyInfo:
+       正在跳过目标“CoreGenerateAssemblyInfo”，因为所有输出文件相对于输入文件而言都是最新的。
+       _GenerateSourceLinkFile:
+         Source Link 为空，则文件 "obj\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tasks.sourcelink.json" 不存在。
+       CoreCompile:
+       正在跳过目标“CoreCompile”，因为所有输出文件相对于输入文件而言都是最新的。
+       GenerateBuildDependencyFile:
+       正在跳过目标“GenerateBuildDependencyFile”，因为所有输出文件相对于输入文件而言都是最新的。
+       CopyFilesToOutputDirectory:
+         CurrencyWarsAssistant.Tasks -> D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Tasks\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tasks.dll
+     8>已完成生成项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Tasks\CurrencyWarsAssistant.Tasks.csproj”(默认目标)的操作。
+     1>项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\CurrencyWarsAssistant.sln”(1)正在节点 4 上生成“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Workflow\CurrencyWarsAssistant.Workflow.csproj”(5) (默认目标)。
+     5>GenerateTargetFrameworkMonikerAttribute:
+       正在跳过目标“GenerateTargetFrameworkMonikerAttribute”，因为所有输出文件相对于输入文件而言都是最新的。
+       CoreGenerateAssemblyInfo:
+       正在跳过目标“CoreGenerateAssemblyInfo”，因为所有输出文件相对于输入文件而言都是最新的。
+       _GenerateSourceLinkFile:
+         Source Link 为空，则文件 "obj\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Workflow.sourcelink.json" 不存在。
+       CoreCompile:
+       正在跳过目标“CoreCompile”，因为所有输出文件相对于输入文件而言都是最新的。
+       GenerateBuildDependencyFile:
+       正在跳过目标“GenerateBuildDependencyFile”，因为所有输出文件相对于输入文件而言都是最新的。
+       CopyFilesToOutputDirectory:
+         CurrencyWarsAssistant.Workflow -> D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Workflow\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Workflow.dll
+     5>已完成生成项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Workflow\CurrencyWarsAssistant.Workflow.csproj”(默认目标)的操作。
+     1>项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\CurrencyWarsAssistant.sln”(1)正在节点 5 上生成“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.App\CurrencyWarsAssistant.App.csproj”(9) (默认目标)。
+     9>MainResourcesGeneration:
+       正在跳过目标“MainResourcesGeneration”，因为所有输出文件相对于输入文件而言都是最新的。
+       GenerateTargetFrameworkMonikerAttribute:
+       正在跳过目标“GenerateTargetFrameworkMonikerAttribute”，因为所有输出文件相对于输入文件而言都是最新的。
+       CoreGenerateAssemblyInfo:
+       正在跳过目标“CoreGenerateAssemblyInfo”，因为所有输出文件相对于输入文件而言都是最新的。
+       _GenerateSourceLinkFile:
+         Source Link 为空，则文件 "obj\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.App.sourcelink.json" 不存在。
+       CoreCompile:
+       正在跳过目标“CoreCompile”，因为所有输出文件相对于输入文件而言都是最新的。
+       _CreateAppHost:
+       正在跳过目标“_CreateAppHost”，因为所有输出文件相对于输入文件而言都是最新的。
+       _CopyOutOfDateSourceItemsToOutputDirectory:
+       正在跳过目标“_CopyOutOfDateSourceItemsToOutputDirectory”，因为所有输出文件相对于输入文件而言都是最新的。
+       GenerateBuildDependencyFile:
+       正在跳过目标“GenerateBuildDependencyFile”，因为所有输出文件相对于输入文件而言都是最新的。
+       GenerateBuildRuntimeConfigurationFiles:
+       正在跳过目标“GenerateBuildRuntimeConfigurationFiles”，因为所有输出文件相对于输入文件而言都是最新的。
+       CopyFilesToOutputDirectory:
+         CurrencyWarsAssistant.App -> D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.App\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.App.dll
+     9>已完成生成项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.App\CurrencyWarsAssistant.App.csproj”(默认目标)的操作。
+     1>项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\CurrencyWarsAssistant.sln”(1)正在节点 7 上生成“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\CurrencyWarsAssistant.Tests.csproj”(10) (默认目标)。
+    10>GenerateTargetFrameworkMonikerAttribute:
+       正在跳过目标“GenerateTargetFrameworkMonikerAttribute”，因为所有输出文件相对于输入文件而言都是最新的。
+       CoreGenerateAssemblyInfo:
+       正在跳过目标“CoreGenerateAssemblyInfo”，因为所有输出文件相对于输入文件而言都是最新的。
+       _GenerateSourceLinkFile:
+         Source Link 为空，则文件 "obj\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.sourcelink.json" 不存在。
+       CoreCompile:
+       正在跳过目标“CoreCompile”，因为所有输出文件相对于输入文件而言都是最新的。
+       _CopyOutOfDateSourceItemsToOutputDirectory:
+       正在跳过目标“_CopyOutOfDateSourceItemsToOutputDirectory”，因为所有输出文件相对于输入文件而言都是最新的。
+       GenerateBuildDependencyFile:
+       正在跳过目标“GenerateBuildDependencyFile”，因为所有输出文件相对于输入文件而言都是最新的。
+       GenerateBuildRuntimeConfigurationFiles:
+       正在跳过目标“GenerateBuildRuntimeConfigurationFiles”，因为所有输出文件相对于输入文件而言都是最新的。
+       CopyFilesToOutputDirectory:
+         CurrencyWarsAssistant.Tests -> D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll
+    10>已完成生成项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\CurrencyWarsAssistant.Tests.csproj”(默认目标)的操作。
+     1>已完成生成项目“D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\CurrencyWarsAssistant.sln”(默认目标)的操作。
+延迟消息
+         
+         详细生成摘要
+         ======================
+             
+         
+         ============================== 生成层次结构(ID 表示配置) =====================================================
+         Id                  : 独占时间 总时间 路径(目标)
+         -----------------------------------------------------------------------------------------------------------------------------------
+         0                   : 0.022秒      2.228秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\CurrencyWarsAssistant.sln () 
+         | 1                 : 0.450秒      0.450秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Core\CurrencyWarsAssistant.Core.csproj () 
+         | 9                 : 1.218秒      1.997秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\CurrencyWarsAssistant.Tests.csproj () 
+         | | 8               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.App\CurrencyWarsAssistant.App.csproj () 
+         | | 7               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Workflow\CurrencyWarsAssistant.Workflow.csproj () 
+         | | 6               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Tasks\CurrencyWarsAssistant.Tasks.csproj () 
+         | | 5               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Automation\CurrencyWarsAssistant.Automation.csproj () 
+         | | 44              : 0.004秒      0.004秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.App\CurrencyWarsAssistant.App.csproj (GetTargetFrameworks) 
+         | | 94              : 0.001秒      0.001秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.App\CurrencyWarsAssistant.App.csproj (GetNativeManifest) 
+         | | 95              : 0.001秒      0.001秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Advisor\CurrencyWarsAssistant.Advisor.csproj (InitializeSourceRootMappedPaths) 
+         | | 97              : 0.001秒      0.001秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Game\CurrencyWarsAssistant.Game.csproj (InitializeSourceRootMappedPaths) 
+         | | 98              : 0.001秒      0.001秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Vision\CurrencyWarsAssistant.Vision.csproj (InitializeSourceRootMappedPaths) 
+         | | 99              : 0.001秒      0.001秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Automation\CurrencyWarsAssistant.Automation.csproj (InitializeSourceRootMappedPaths) 
+         | | 100             : 0.001秒      0.001秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Tasks\CurrencyWarsAssistant.Tasks.csproj (InitializeSourceRootMappedPaths) 
+         | | 101             : 0.002秒      0.002秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Workflow\CurrencyWarsAssistant.Workflow.csproj (InitializeSourceRootMappedPaths) 
+         | | 102             : 0.001秒      0.001秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.App\CurrencyWarsAssistant.App.csproj (InitializeSourceRootMappedPaths) 
+         | . 110             : 0.006秒      0.006秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.App\CurrencyWarsAssistant.App.csproj (GetCopyToOutputDirectoryItems) 
+         | 8                 : 0.587秒      1.363秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.App\CurrencyWarsAssistant.App.csproj () 
+         | | 7               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Workflow\CurrencyWarsAssistant.Workflow.csproj () 
+         | | 6               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Tasks\CurrencyWarsAssistant.Tasks.csproj () 
+         | | 5               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Automation\CurrencyWarsAssistant.Automation.csproj () 
+         | | 4               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Game\CurrencyWarsAssistant.Game.csproj () 
+         | | 3               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Vision\CurrencyWarsAssistant.Vision.csproj () 
+         | | 22              : 0.004秒      0.004秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Workflow\CurrencyWarsAssistant.Workflow.csproj (GetTargetFrameworks) 
+         | | 10              : 0.002秒      0.002秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Core\CurrencyWarsAssistant.Core.csproj (GetTargetFrameworks) 
+         | | 14              : 0.008秒      0.008秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Advisor\CurrencyWarsAssistant.Advisor.csproj (GetTargetFrameworks) 
+         | | 79              : 0.002秒      0.002秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Workflow\CurrencyWarsAssistant.Workflow.csproj (GetNativeManifest) 
+         | . 86              : 0.002秒      0.002秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Workflow\CurrencyWarsAssistant.Workflow.csproj (GetCopyToOutputDirectoryItems) 
+         | 7                 : 0.445秒      1.022秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Workflow\CurrencyWarsAssistant.Workflow.csproj () 
+         | | 11              : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Vision\CurrencyWarsAssistant.Vision.csproj (GetTargetFrameworks) 
+         | | 10              : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Core\CurrencyWarsAssistant.Core.csproj (GetTargetFrameworks) 
+         | | 14              : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Advisor\CurrencyWarsAssistant.Advisor.csproj (GetTargetFrameworks) 
+         | | 3               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Vision\CurrencyWarsAssistant.Vision.csproj () 
+         | | 5               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Automation\CurrencyWarsAssistant.Automation.csproj () 
+         | | 6               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Tasks\CurrencyWarsAssistant.Tasks.csproj () 
+         | | 4               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Game\CurrencyWarsAssistant.Game.csproj () 
+         | | 15              : 0.004秒      0.004秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Automation\CurrencyWarsAssistant.Automation.csproj (GetTargetFrameworks) 
+         | | 12              : 0.005秒      0.005秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Game\CurrencyWarsAssistant.Game.csproj (GetTargetFrameworks) 
+         | | 13              : 0.004秒      0.004秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Tasks\CurrencyWarsAssistant.Tasks.csproj (GetTargetFrameworks) 
+         | | 62              : 0.002秒      0.002秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Tasks\CurrencyWarsAssistant.Tasks.csproj (GetNativeManifest) 
+         | . 68              : 0.001秒      0.001秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Tasks\CurrencyWarsAssistant.Tasks.csproj (GetCopyToOutputDirectoryItems) 
+         | 6                 : 0.374秒      0.790秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Tasks\CurrencyWarsAssistant.Tasks.csproj () 
+         | | 12              : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Game\CurrencyWarsAssistant.Game.csproj (GetTargetFrameworks) 
+         | | 10              : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Core\CurrencyWarsAssistant.Core.csproj (GetTargetFrameworks) 
+         | | 14              : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Advisor\CurrencyWarsAssistant.Advisor.csproj (GetTargetFrameworks) 
+         | | 5               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Automation\CurrencyWarsAssistant.Automation.csproj () 
+         | | 4               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Game\CurrencyWarsAssistant.Game.csproj () 
+         | | 3               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Vision\CurrencyWarsAssistant.Vision.csproj () 
+         | | 55              : 0.002秒      0.002秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Automation\CurrencyWarsAssistant.Automation.csproj (GetNativeManifest) 
+         | | 54              : 0.002秒      0.002秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Game\CurrencyWarsAssistant.Game.csproj (GetNativeManifest) 
+         | | 51              : 0.002秒      0.002秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Advisor\CurrencyWarsAssistant.Advisor.csproj (GetNativeManifest) 
+         | | 60              : 0.001秒      0.001秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Automation\CurrencyWarsAssistant.Automation.csproj (GetCopyToOutputDirectoryItems) 
+         | | 59              : 0.001秒      0.001秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Game\CurrencyWarsAssistant.Game.csproj (GetCopyToOutputDirectoryItems) 
+         | . 56              : 0.001秒      0.001秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Advisor\CurrencyWarsAssistant.Advisor.csproj (GetCopyToOutputDirectoryItems) 
+         | 5                 : 0.388秒      0.630秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Automation\CurrencyWarsAssistant.Automation.csproj () 
+         | | 10              : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Core\CurrencyWarsAssistant.Core.csproj (GetTargetFrameworks) 
+         | | 3               : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Vision\CurrencyWarsAssistant.Vision.csproj () 
+         | | 11              : 0.009秒      0.009秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Vision\CurrencyWarsAssistant.Vision.csproj (GetTargetFrameworks) 
+         | | 36              : 0.002秒      0.002秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Vision\CurrencyWarsAssistant.Vision.csproj (GetNativeManifest) 
+         | . 50              : 0.001秒      0.001秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Vision\CurrencyWarsAssistant.Vision.csproj (GetCopyToOutputDirectoryItems) 
+         | 4                 : 0.357秒      0.418秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Game\CurrencyWarsAssistant.Game.csproj () 
+         | | 10              : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Core\CurrencyWarsAssistant.Core.csproj (GetTargetFrameworks) 
+         | . 26              : 0.001秒      0.001秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Core\CurrencyWarsAssistant.Core.csproj (GetNativeManifest) 
+         | 3                 : 0.382秒      0.436秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Vision\CurrencyWarsAssistant.Vision.csproj () 
+         | | 10              : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Core\CurrencyWarsAssistant.Core.csproj (GetTargetFrameworks) 
+         | . 26              : 0.000秒      0.000秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Core\CurrencyWarsAssistant.Core.csproj (GetNativeManifest) 
+         . 2                 : 0.318秒      0.318秒    D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\src\CurrencyWarsAssistant.Advisor\CurrencyWarsAssistant.Advisor.csproj () 
+         
+         ============================== 节点利用率(ID 表示配置) ====================================================
+         时间戳:            1       6       9       2       8       3       4       5       7        持续时间  累计
+         -----------------------------------------------------------------------------------------------------------------------------------
+         639218290122576124:   0       x       x       x       x       x       x       x       x        0.015秒   0.015秒 
+         639218290122729031:   1       x       x       x       x       x       x       x       x        0.209秒   0.224秒 ....
+         639218290124814858:   |       2       3       4       5       6       7       8       9        0.185秒   0.408秒 ...
+         639218290126661122:   |       |       |       x       |       |       |       |       |        0.006秒   0.415秒 
+         639218290126724891:   |       |       |       x       x       |       |       |       |        0.000秒   0.415秒 
+         639218290126728047:   |       |       11      x       x       |       |       |       |        0.007秒   0.422秒 
+         639218290126796909:   |       |       |       12      15      |       x       |       |        0.002秒   0.425秒 
+         639218290126821441:   |       |       x       |       |       |       x       |       |        0.002秒   0.426秒 
+         639218290126841038:   |       |       x       |       x       |       x       |       |        0.000秒   0.427秒 
+         639218290126844145:   |       |       x       |       x       13      x       |       |        0.000秒   0.427秒 
+         639218290126848457:   |       |       x       x       x       |       x       |       |        0.003秒   0.431秒 
+         639218290126882055:   |       |       x       x       x       x       x       |       |        0.030秒   0.460秒 
+         639218290127177401:   |       |       x       x       x       x       22      x       |        0.004秒   0.464秒 
+         639218290127216290:   |       |       x       x       x       x       x       x       |        0.002秒   0.466秒 
+         639218290127233199:   10      |       x       x       x       x       x       x       |        0.002秒   0.468秒 
+         639218290127257851:   x       |       3       4       5       x       x       x       |        0.006秒   0.474秒 
+         639218290127314257:   x       |       |       |       x       x       x       x       |        0.004秒   0.478秒 
+         639218290127351399:   26      |       |       x       x       x       x       x       |        0.000秒   0.478秒 
+         639218290127354795:   |       |       x       x       x       x       x       x       |        0.000秒   0.478秒 
+         639218290127357133:   x       |       3       4       x       x       x       x       |        0.064秒   0.542秒 .
+         639218290127995632:   x       14      |       |       x       x       x       x       |        0.008秒   0.550秒 
+         639218290128078113:   x       x       |       |       x       6       7       8       |        0.013秒   0.563秒 
+         639218290128210854:   x       x       |       |       x       |       |       x       |        0.001秒   0.565秒 
+         639218290128225294:   x       x       |       |       x       x       |       x       |        0.003秒   0.568秒 
+         639218290128259093:   x       x       |       |       x       x       x       x       |        0.073秒   0.642秒 .
+         639218290128991184:   x       x       |       x       x       x       x       x       |        0.018秒   0.660秒 
+         639218290129171860:   x       x       x       x       5       x       x       x       |        0.002秒   0.662秒 
+         639218290129195049:   x       x       36      x       x       x       x       x       |        0.002秒   0.664秒 
+         639218290129211943:   x       x       x       x       5       x       x       x       |        0.092秒   0.756秒 .
+         639218290130134259:   x       x       x       x       |       x       x       44      x        0.004秒   0.760秒 
+         639218290130177973:   x       x       x       x       |       x       x       x       9        0.070秒   0.830秒 .
+         639218290130873653:   x       x       x       x       |       x       x       x       x        0.003秒   0.832秒 
+         639218290130900380:   x       x       50      x       x       x       x       x       x        0.002秒   0.834秒 
+         639218290130916026:   x       x       x       x       5       x       x       x       x        0.020秒   0.854秒 
+         639218290131118434:   x       x       x       x       x       6       x       x       x        0.004秒   0.858秒 
+         639218290131155546:   x       51      x       54      55      x       x       x       x        0.002秒   0.860秒 
+         639218290131172508:   x       |       x       |       x       x       x       x       x        0.000秒   0.860秒 
+         639218290131173322:   x       |       x       x       x       x       x       x       x        0.000秒   0.860秒 
+         639218290131173584:   x       x       x       x       x       6       x       x       x        0.128秒   0.988秒 ..
+         639218290132456566:   x       56      x       59      60      x       x       x       x        0.001秒   0.989秒 
+         639218290132469950:   x       |       x       |       x       x       x       x       x        0.000秒   0.989秒 
+         639218290132470591:   x       x       x       |       x       x       x       x       x        0.000秒   0.990秒 
+         639218290132471173:   x       x       x       x       x       6       x       x       x        0.025秒   1.014秒 
+         639218290132719731:   x       x       x       x       x       x       7       x       x        0.004秒   1.018秒 
+         639218290132757575:   x       x       x       x       x       62      x       x       x        0.002秒   1.020秒 
+         639218290132773771:   x       x       x       x       x       x       7       x       x        0.195秒   1.215秒 ...
+         639218290134724730:   x       x       x       x       x       68      x       x       x        0.001秒   1.216秒 
+         639218290134738983:   x       x       x       x       x       x       7       x       x        0.030秒   1.246秒 
+         639218290135035272:   x       x       x       x       x       x       x       8       x        0.005秒   1.251秒 
+         639218290135084220:   x       x       x       x       x       x       79      x       x        0.002秒   1.253秒 
+         639218290135101963:   x       x       x       x       x       x       x       8       x        0.198秒   1.451秒 ...
+         639218290137083142:   x       x       x       x       x       x       86      x       x        0.002秒   1.453秒 
+         639218290137103904:   x       x       x       x       x       x       x       8       x        0.134秒   1.587秒 ..
+         639218290138444030:   x       x       x       x       x       x       x       x       9        0.006秒   1.592秒 
+         639218290138500254:   x       x       x       x       x       x       x       94      x        0.002秒   1.594秒 
+         639218290138515735:   x       x       x       x       x       x       x       x       9        0.343秒   1.937秒 ......
+         639218290141943962:   x       95      x       x       x       x       x       x       x        0.001秒   1.938秒 
+         639218290141958947:   x       x       x       x       x       x       x       x       9        0.003秒   1.941秒 
+         639218290141985708:   x       x       x       97      x       x       x       x       x        0.001秒   1.942秒 
+         639218290141999495:   x       x       x       x       x       x       x       x       9        0.002秒   1.944秒 
+         639218290142017700:   x       x       98      x       x       x       x       x       x        0.002秒   1.946秒 
+         639218290142032979:   x       x       x       x       x       x       x       x       9        0.002秒   1.947秒 
+         639218290142047990:   x       x       x       x       99      x       x       x       x        0.001秒   1.949秒 
+         639218290142061675:   x       x       x       x       x       x       x       x       9        0.001秒   1.950秒 
+         639218290142074754:   x       x       x       x       x       100     x       x       x        0.001秒   1.951秒 
+         639218290142087986:   x       x       x       x       x       x       x       x       9        0.001秒   1.953秒 
+         639218290142101351:   x       x       x       x       x       x       101     x       x        0.002秒   1.954秒 
+         639218290142116928:   x       x       x       x       x       x       x       x       9        0.001秒   1.955秒 
+         639218290142126436:   x       x       x       x       x       x       x       102     x        0.001秒   1.956秒 
+         639218290142137958:   x       x       x       x       x       x       x       x       9        0.034秒   1.990秒 
+         639218290142478314:   x       x       x       x       x       x       x       110     x        0.006秒   1.996秒 
+         639218290142538234:   x       x       x       x       x       x       x       x       9        0.224秒   2.221秒 ....
+         639218290144783127:   0       x       x       x       x       x       x       x       x        0.007秒   2.228秒 
+         -----------------------------------------------------------------------------------------------------------------------------------
+         利用率:          21.4    16.5    19.8    18.3    19.8    19.1    22.7    29.9    60.8     平均利用率: 25.4
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:00:02.31

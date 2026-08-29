@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0.0",
+  "gameVersion": "4.4",
+  "auditedAt": "2026-07-28T00:00:00+08:00",
+  "sources": [
+    {
+      "id": "bwiki-investment-environments",
+      "title": "投资环境一览",
+      "url": "https://wiki.biligame.com/sr/投资环境一览",
+      "use": "投资环境名称、效果、独立页面和图标文件名定位",
+      "licenseNote": "页面声明 CC BY-NC-SA 4.0；游戏图标著作权和再分发条件仍需单独核对"
+    },
+    {
+      "id": "bwiki-investment-strategies",
+      "title": "投资策略一览",
+      "url": "https://wiki.biligame.com/sr/投资策略一览",
+      "use": "334 条投资策略的名称、品质、位面和独立页面定位",
+      "licenseNote": "页面声明 CC BY-NC-SA 4.0；游戏图标著作权和再分发条件仍需单独核对"
+    },
+    {
+      "id": "bwiki-4.0-adjustment",
+      "title": "4.0版本货币战争调整公告",
+      "url": "https://wiki.biligame.com/sr/4.0版本货币战争调整公告",
+      "use": "确认专家顾问机制、专家邀请函和新增环境/策略",
+      "licenseNote": "只保存来源链接和转述，不复制公告全文"
+    },
+    {
+      "id": "bwiki-expert-workshop",
+      "title": "专家研讨会",
+      "url": "https://wiki.biligame.com/sr/专家研讨会",
+      "use": "确认投资环境可给予专家邀请函和简易武装箱",
+      "licenseNote": "只保存来源链接和转述；图标需用用户截图复核"
+    }
+  ],
+  "knownGap": {
+    "assetId": "special_item:expert_invitation",
+    "displayName": "专家邀请函",
+    "status": "asset_imported_runtime_verification_pending",
+    "runtimeId": "special_item_001",
+    "reason": "4.4 资产包提供了带来源页和源文件链接的独立图标，已纳入运行时资源；当前真实参考截图未出现该物品，仍需后续游戏截图验证实际界面匹配。"
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "1.0.0",
+  "guideId": "guide-taptap-828363891523190942",
+  "title": "V4.4 A850 姬子·启行列车护盾挂机流",
+  "archetypeId": "archetype-himeko-train-shield",
+  "archetypeName": "姬子·启行：列车同行护盾挂机流",
+  "applicableGameVersion": "4.4",
+  "goalIds": ["stable"],
+  "signals": {
+    "coreCharacterIds": [
+      "currency_wars_character_01",
+      "currency_wars_character_67"
+    ],
+    "optionalCharacterIds": [
+      "currency_wars_character_23",
+      "currency_wars_character_35",
+      "currency_wars_character_55"
+    ],
+    "synergyIds": ["bond:列车同行", "bond:护盾"]
+  },
+  "prohibitedConditions": [],
+  "rules": [
+    {
+      "ruleId": "early-transition",
+      "title": "第一位面先用低费混合羁绊稳定过渡",
+      "action": "先保持当前可用低费阵容，不为未出现的核心角色过度刷新；首个首领前以升到 6 级为阶段目标。",
+      "conditions": [
+        {
+          "field": "stage",
+          "operator": "starts_with",
+          "expectedValues": ["preparation_1"],
+          "unknownPolicy": "reject",
+          "sourceId": "taptap-828363891523190942",
+          "locator": "article:h2 二、初期过渡"
+        },
+        {
+          "field": "lineup",
+          "operator": "contains_none",
+          "expectedValues": ["currency_wars_character_01"],
+          "unknownPolicy": "requireReview",
+          "sourceId": "taptap-828363891523190942",
+          "locator": "article:h2 二、初期过渡"
+        }
+      ],
+      "benefits": ["避免在第一位面为三费核心过度消耗经济", "保留第二位面转 4 列车的空间"],
+      "costs": ["当前路线的上限暂时较低"],
+      "risks": ["若当前过渡阵容强度不足，需优先保证生存"],
+      "preconditions": ["画面处于第一位面备战阶段", "当前尚未可靠识别到姬子·启行"],
+      "invalidatesWhen": ["可靠识别到姬子·启行", "进入第二位面或当前阵容无法稳定过关"],
+      "sources": [
+        {
+          "sourceId": "taptap-828363891523190942",
+          "locator": "article:h2 二、初期过渡",
+          "summary": "作者建议第一位面用低费混合羁绊过渡。"
+        }
+      ]
+    },
+    {
+      "ruleId": "himeko-core-found",
+      "title": "识别到姬子·启行后围绕列车同行与护盾构筑",
+      "action": "保留姬子·启行，并优先寻找三月七及其他列车同行组件；仍先保证可上场人数和生存，不把缺失组件当作已经拥有。",
+      "conditions": [
+        {
+          "field": "stage",
+          "operator": "starts_with",
+          "expectedValues": ["preparation"],
+          "unknownPolicy": "reject",
+          "sourceId": "taptap-828363891523190942",
+          "locator": "article:h2 三、中期运营"
+        },
+        {
+          "field": "lineup",
+          "operator": "contains_any",
+          "expectedValues": ["currency_wars_character_01"],
+          "unknownPolicy": "reject",
+          "sourceId": "taptap-828363891523190942",
+          "locator": "article:h2 一、阵容优势"
+        }
+      ],
+      "benefits": ["向作者给出的列车护盾核心收束", "三月七可提供护盾与反击联动"],
+      "costs": ["需要继续寻找列车同行和生存组件"],
+      "risks": ["单有姬子·启行不代表阵容已经成型", "来源为作者经验，不是官方强度保证"],
+      "preconditions": ["姬子·启行识别置信度可靠"],
+      "invalidatesWhen": ["第二位面仍缺核心且当前路线明显失去生存能力"],
+      "sources": [
+        {
+          "sourceId": "taptap-828363891523190942",
+          "locator": "article:h2 一、阵容优势；article:h2 三、中期运营",
+          "summary": "作者以姬子·启行、三月七和列车同行/护盾联动为核心。"
+        }
+      ]
+    },
+    {
+      "ruleId": "late-fallback",
+      "title": "第二位面仍无姬子时采用明确的备选路线",
+      "action": "若进入第二位面仍未获得姬子·启行，评估转向希儿量子路线；人口紧张时先保证 8 人口和生存位。",
+      "conditions": [
+        {
+          "field": "stage",
+          "operator": "starts_with",
+          "expectedValues": ["preparation_2"],
+          "unknownPolicy": "reject",
+          "sourceId": "taptap-828363891523190942",
+          "locator": "article:h2 三、中期运营；article:h2 四、终局"
+        },
+        {
+          "field": "lineup",
+          "operator": "contains_none",
+          "expectedValues": ["currency_wars_character_01"],
+          "unknownPolicy": "reject",
+          "sourceId": "taptap-828363891523190942",
+          "locator": "article:h2 三、中期运营"
+        }
+      ],
+      "benefits": ["避免继续为已经错过的核心投入", "保留量子转型的可执行备选"],
+      "costs": ["放弃已经投入的部分列车过渡资源"],
+      "risks": ["转型成本取决于当前真实经济和已有角色，单张截图无法完整确定"],
+      "preconditions": ["确认为第二位面", "当前阵容中没有姬子·启行"],
+      "invalidatesWhen": ["获得姬子·启行", "已对其他路线形成不可逆高投入"],
+      "sources": [
+        {
+          "sourceId": "taptap-828363891523190942",
+          "locator": "article:h2 三、中期运营；article:h2 四、终局",
+          "summary": "作者将希儿列为未抽到姬子时的量子转型备选。"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "sourceId": "taptap-828363891523190942",
+      "title": "【V4.4攻略】货币战争A850攻略｜姬子·启行挂机流",
+      "author": "冻梨游研社",
+      "platform": "TapTap",
+      "url": "https://www.taptap.cn/moment/828363891523190942",
+      "publishedAt": "2026-07-20T04:22:21Z",
+      "accessedAt": "2026-07-27T13:40:00Z",
+      "contentType": "article",
+      "applicableGameVersion": "4.4",
+      "copyrightStatus": "linked_only"
+    }
+  ],
+  "notes": [
+    "runtime 数据由第二轮原始攻略结果经本地 4.4 稳定角色 ID 映射生成。",
+    "未把文章中的经验性结论提升为官方机制或确定胜率。"
+  ]
+}

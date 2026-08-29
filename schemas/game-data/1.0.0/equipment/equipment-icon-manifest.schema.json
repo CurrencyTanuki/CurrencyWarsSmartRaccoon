@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "currency-wars://schemas/game-data/1.0.0/equipment/icon-manifest",
+  "title": "Currency Wars upstream equipment icon manifest",
+  "type": "object",
+  "required": ["record_count", "records"],
+  "properties": {
+    "record_count": { "type": "integer", "minimum": 0 },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "equipment_type",
+          "local_path",
+          "source_url",
+          "bytes",
+          "sha256",
+          "width",
+          "height"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^currency_wars_equipment_[0-9]{3}$"
+          },
+          "name": { "type": "string", "minLength": 1 },
+          "equipment_type": { "type": "string", "minLength": 1 },
+          "local_path": { "type": "string", "minLength": 1 },
+          "source_url": { "type": "string", "minLength": 1 },
+          "bytes": { "type": "integer", "minimum": 1 },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "width": { "type": "integer", "minimum": 1 },
+          "height": { "type": "integer", "minimum": 1 }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

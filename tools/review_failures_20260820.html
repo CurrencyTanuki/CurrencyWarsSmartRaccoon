@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>识别失败项清单 — 请逐个确认</title>
+<style>
+  body { font-family: "Microsoft YaHei", sans-serif; background:#f5f6fa; margin:20px; }
+  h1 { font-size:22px; }
+  .fail { background:#fff; border:1px solid #ddd; border-left:5px solid #e74c3c; border-radius:6px; padding:16px; margin-bottom:18px; }
+  .fail img { max-width:100%; border:1px solid #ccc; border-radius:4px; display:block; margin-top:8px; }
+  .fail h2 { font-size:17px; margin:0 0 6px; color:#c0392b; }
+  .desc { color:#333; line-height:1.6; }
+  .tag { display:inline-block; background:#eee; border-radius:4px; padding:1px 8px; font-size:12px; color:#555; margin-bottom:6px;}
+  .frame { color:#888; font-size:12px; margin-top:6px; }
+</style>
+</head>
+<body>
+<h1>当前失败的 13 项（请逐个看图确认，告诉我你觉得正确的是什么）</h1>
+
+<div class="fail"><h2>① 备战 1-7 画面：装备“候选/待补”为空</h2><div class="desc">
+图里有个角色（遐蝶）身上穿着一件装备，软件认出了是 <b>杀红眼</b>（置信度 0.95），但它该一并列出的“也可能是杀红眼·特权”候选是空的。
+<b>请你确认：图上遐蝶那件到底是不是杀红眼？以及是不是其实更像“杀红眼·特权”？</b></div>
+<img src="../tests/CurrencyWarsAssistant.Tests/Fixtures/phase2-live-2026-07-29/preparation-1-7-user.png">
+<div class="frame">图片：preparation-1-7-user.png（备战 1-7 实机截图）</div></div>
+
+<div class="fail"><h2>② 同一张备战 1-7：有装备却没产生“待补”记录</h2><div class="desc">
+这张图里，软件认出了装备槽有内容，但没把它登记成“待确认/待补”的条目（影响记录完整度）。<b>请确认这张图上各角色装备情况。</b></div>
+<img src="../tests/CurrencyWarsAssistant.Tests/Fixtures/phase2-live-2026-07-29/preparation-1-7-user.png">
+<div class="frame">图片：preparation-1-7-user.png</div></div>
+
+<div class="fail"><h2>③ 商店界面：普通装备没配上“也是特权版”候选</h2><div class="desc">
+商店界面（1-4）里角色 <b>真理医生</b> 身上一件装备，软件认出是 <b>火力风暴潮</b>，但没给出“也可能是火力风暴潮·特权”的候选、也没打“非特权”标记。
+<b>请确认：真理医生身上那件到底是普通火力风暴潮，还是金色特权版？</b></div>
+<img src="../tests/CurrencyWarsAssistant.Tests/Fixtures/phase2-live-2026-07-29/preparation-shop-1-4.png">
+<div class="frame">图片：preparation-shop-1-4.png（商店界面）</div></div>
+
+<div class="fail"><h2>④ 同一张商店图：特权版没被正确打标记</h2><div class="desc">
+同一商店画面里，软件要正确分辨某件是否特权版并打标记，这一步没判对。<b>请对照③一起看。</b></div>
+<img src="../tests/CurrencyWarsAssistant.Tests/Fixtures/phase2-live-2026-07-29/preparation-shop-1-4.png">
+<div class="frame">图片：preparation-shop-1-4.png</div></div>
+
+<div class="fail"><h2>⑤ 展开商店分析：阵容/证据区没保持</h2><div class="desc">
+商店面板展开时，软件应仍能认出场上阵容 + 紧凑证据区，这里没保持。<b>请看展开后的阵容。</b></div>
+<img src="../tests/CurrencyWarsAssistant.Tests/Fixtures/phase2-live-2026-07-29/preparation-shop-1-4.png">
+<div class="frame">图片：preparation-shop-1-4.png</div></div>
+
+<div class="fail"><h2>⑥ 备战帧（图A）：节点/难度对，但“待补先进装备”为空</h2><div class="desc">
+这张图软件判断是备战界面，节点号和难度都识别对了，但它该报的“待补先进装备”条目是空的。</div>
+<img src="../tests/CurrencyWarsAssistant.Tests/Fixtures/phase2-2026-07-28/125924.png">
+<div class="frame">图片：125924.png</div></div>
+
+<div class="fail"><h2>⑦ 备战帧（图B）：同上，节点/难度对，但“待补先进装备”为空</h2><div class="desc">
+同⑥，这张是 132307 帧（也是性能测试用的那张）。</div>
+<img src="../tests/CurrencyWarsAssistant.Tests/Fixtures/phase2-2026-07-28/132307.png">
+<div class="frame">图片：132307.png</div></div>
+
+<div class="fail"><h2>⑧ 战斗 1-4：伤害数值差一位</h2><div class="desc">
+软件把这张战斗图右上角伤害读成 16,205,013，测试期望 16,335,000。<b>请你确认图上这格伤害到底是多少。</b></div>
+<img src="../tests/CurrencyWarsAssistant.Tests/Fixtures/phase2-live-2026-07-29/battle-1-4-action-row-obscured.png">
+<div class="frame">图片：battle-1-4-action-row-obscured.png</div></div>
+
+<div class="fail"><h2>⑨ 真实帧 3-7：阵容 + 装备 + 羁绊整体识别</h2><div class="desc">
+这张 3-7 局的真实画面，软件要认出场上的阵容、装备、羁绊，整体有一处没对上。<b>请看场上各角色和装备。</b></div>
+<img src="../tests/CurrencyWarsAssistant.Tests/Fixtures/PageReplay/prep_3_7_142723217.png">
+<div class="frame">图片：prep_3_7_142723217.png（3-7 备战）</div></div>
+
+<div class="fail"><h2>⑩ 战斗 1-4 之外还有几个“合成帧”逻辑测试（无对应真实截图）</h2><div class="desc">
+以下几项是<b>代码拼出来的合成画面</b>（不是真实截图），用于测软件的逻辑分支，出现失败说明逻辑没走对：
+<ul>
+<li><b>结算→备战切换那一下，旧帧没清干净</b>（时序问题）</li>
+<li><b>未知单位/特殊单位的“非决策证据”保存</b>问题</li>
+</ul>
+这些没有能看图片的原始截图，属于逻辑类问题，我先按文字说明列给你。</div>
+<div class="frame">合成帧测试，无对应真实截图</div></div>
+
+<div class="fail"><h2>⑪ 性能：备战全量识别（最坏情形）2 秒预算仍差一点</h2><div class="desc">
+同一张备战帧连续全量识别，从原来 6.3 秒优化到 2.9 秒，仍略超 2 秒硬预算。真实连玩时有“画面静止就增量、只补变化”的机制顶着，一般到不了最坏情形。<b>这条主要是性能，不是识别错。</b></div>
+<img src="../tests/CurrencyWarsAssistant.Tests/Fixtures/phase2-2026-07-28/132307.png">
+<div class="frame">图片：132307.png（性能最坏情形）</div></div>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="5dfdff64-6d50-4508-bef3-88efb876b366" name="zzz81@ZZZ的电脑 2026-08-09 14:46:22" runUser="ZZZ的电脑\zzz81" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-08-09T14:46:22.9841292+08:00" queuing="2026-08-09T14:46:22.9841295+08:00" start="2026-08-09T14:46:20.4791320+08:00" finish="2026-08-09T14:46:22.9898332+08:00" />
+  <TestSettings name="default" id="b9cdd177-d82b-46ce-b1de-68fe9e965da3">
+    <Deployment runDeploymentRoot="zzz81_ZZZ的电脑_2026-08-09_14_46_22" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="ab786831-4c76-4f23-881b-8ff045f668a2" testId="5d254d06-cb43-01ac-73d1-cfedc2c4d343" testName="CurrencyWarsAssistant.Tests.Phase2RecognitionQueueTests.DropStaleFramesWithInterleavedRegularKeepsOnlyNewestCriticalPair" computerName="ZZZ的电脑" duration="00:00:00.0075506" startTime="2026-08-09T14:46:22.8619340+08:00" endTime="2026-08-09T14:46:22.8619447+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ab786831-4c76-4f23-881b-8ff045f668a2">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ&#xD;
+Expected: 1&#xD;
+Actual:   3</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.Phase2RecognitionQueueTests.DropStaleFramesWithInterleavedRegularKeepsOnlyNewestCriticalPair() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\Phase2RecognitionQueueTests.cs:line 50&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6e3c7c2c-9783-4b21-b076-f3212371f6a1" testId="b0ce0531-ce2e-9616-941f-8e98e8f69553" testName="CurrencyWarsAssistant.Tests.Phase2RealtimeFrameBufferTests.UnclassifiedSettlementPredecessorSurvivesQueueStaleDropAtPreparationBoundary" computerName="ZZZ的电脑" duration="00:00:00.0772484" startTime="2026-08-09T14:46:22.9211054+08:00" endTime="2026-08-09T14:46:22.9211055+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6e3c7c2c-9783-4b21-b076-f3212371f6a1">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ&#xD;
+Expected: 2&#xD;
+Actual:   3</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.Phase2RealtimeFrameBufferTests.UnclassifiedSettlementPredecessorSurvivesQueueStaleDropAtPreparationBoundary() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\Phase2RealtimeFrameBufferTests.cs:line 571&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2RecognitionQueueTests.DropStaleFramesWithInterleavedRegularKeepsOnlyNewestCriticalPair" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="5d254d06-cb43-01ac-73d1-cfedc2c4d343">
+      <Execution id="ab786831-4c76-4f23-881b-8ff045f668a2" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2RecognitionQueueTests" name="DropStaleFramesWithInterleavedRegularKeepsOnlyNewestCriticalPair" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2RealtimeFrameBufferTests.UnclassifiedSettlementPredecessorSurvivesQueueStaleDropAtPreparationBoundary" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="b0ce0531-ce2e-9616-941f-8e98e8f69553">
+      <Execution id="6e3c7c2c-9783-4b21-b076-f3212371f6a1" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2RealtimeFrameBufferTests" name="UnclassifiedSettlementPredecessorSurvivesQueueStaleDropAtPreparationBoundary" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="5d254d06-cb43-01ac-73d1-cfedc2c4d343" executionId="ab786831-4c76-4f23-881b-8ff045f668a2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b0ce0531-ce2e-9616-941f-8e98e8f69553" executionId="6e3c7c2c-9783-4b21-b076-f3212371f6a1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="2" executed="2" passed="0" failed="2" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.29)&#xD;
+[xUnit.net 00:00:01.93]   Discovering: CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:02.02]   Discovered:  CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:02.03]   Starting:    CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:02.07]       Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:02.07]       Expected: 1&#xD;
+[xUnit.net 00:00:02.07]       Actual:   3&#xD;
+[xUnit.net 00:00:02.07]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.07]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\Phase2RecognitionQueueTests.cs(50,0): at CurrencyWarsAssistant.Tests.Phase2RecognitionQueueTests.DropStaleFramesWithInterleavedRegularKeepsOnlyNewestCriticalPair()&#xD;
+[xUnit.net 00:00:02.07]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:02.13]       Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:02.13]       Expected: 2&#xD;
+[xUnit.net 00:00:02.13]       Actual:   3&#xD;
+[xUnit.net 00:00:02.13]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.13]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\Phase2RealtimeFrameBufferTests.cs(571,0): at CurrencyWarsAssistant.Tests.Phase2RealtimeFrameBufferTests.UnclassifiedSettlementPredecessorSurvivesQueueStaleDropAtPreparationBoundary()&#xD;
+[xUnit.net 00:00:02.13]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:02.13]   Finished:    CurrencyWarsAssistant.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-09T14:46:22.8665098+08:00">
+        <Text>[xUnit.net 00:00:02.07]     CurrencyWarsAssistant.Tests.Phase2RecognitionQueueTests.DropStaleFramesWithInterleavedRegularKeepsOnlyNewestCriticalPair [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-09T14:46:22.9211319+08:00">
+        <Text>[xUnit.net 00:00:02.13]     CurrencyWarsAssistant.Tests.Phase2RealtimeFrameBufferTests.UnclassifiedSettlementPredecessorSurvivesQueueStaleDropAtPreparationBoundary [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

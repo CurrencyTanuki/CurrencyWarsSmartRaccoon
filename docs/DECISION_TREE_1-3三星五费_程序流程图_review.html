@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《1-3 三星五费》自动刷 · 一局对局时序模拟（子代理审查修正版）</title>
+<style>
+  body{background:#f4f6f9;font-family:"Microsoft YaHei",system-ui,sans-serif;margin:0;color:#1f2733;}
+  .head{max-width:1000px;margin:0 auto;padding:18px 20px 4px;}
+  .head h1{font-size:20px;margin:0;}
+  .head p{font-size:13px;color:#5b6574;margin:6px 0 0;line-height:1.7;}
+  .board{max-width:1000px;margin:16px auto 0;background:#fff;border:1px solid #dde3ec;border-radius:12px;padding:26px 20px;overflow:auto;}
+  .mermaid{display:flex;justify-content:flex-start;}
+  .leg{max-width:1000px;margin:12px auto 0;background:#fff;border:1px solid #dde3ec;border-radius:10px;padding:10px 16px;font-size:12.5px;color:#33415c;}
+  .foot{max-width:1000px;margin:0 auto 40px;padding:12px 20px;font-size:12.5px;color:#5b6574;line-height:1.9;}
+  .foot b{color:#33415c;}
+  .ok{color:#2f9e44;font-weight:700;}
+  .no{color:#e5484d;font-weight:700;}
+  .blue{color:#1d7bf0;font-weight:700;}
+  .gry{color:#8a94a6;font-weight:700;}
+</style>
+</head>
+<body>
+<div class="head">
+  <h1>《1-3 三星五费》自动刷 · 一局对局时序模拟（子代理审查修正版）</h1>
+  <p>菱形 = <b>识别</b>状态 · 方框 = <b>执行</b>的操作 · ( ) = 起止/过程。按一局真实先后顺写。<br>
+  各路线在「1-3 投资策略选择」合流；读血量统一在策略前做（两条路线通用）；采购专员是<b>条件必要</b>（缺目标费用角时才用，且必须先把它放到备战席最左才生效）；Archer 商店买不到，靠试炼登场/聘书；无星徽则 4 档封顶。</p>
+</div>
+
+<div class="board">
+<div class="mermaid">
+flowchart TD
+  S0(["📌 当前:软件已到 刷开局·投资环境 界面"])
+  S0 --> S1{"识别:当前投资环境<br/>(读名称/ID)"}
+  S1 -- "其他环境" --> R(["重刷:退出结算·重新开局"])
+  R --> S0
+  S1 -- "英雄登场 ENV067<br/>(随机送一个 2星5费)" --> SA(["路线A 英雄登场"])
+  S1 -- "圣杯邀请 ENV019<br/>(送1圣杯星徽)" --> SB(["路线B 圣杯邀请"])
+  S1 -- "识别不出" --> S1b["操作:重扫/重判,连续失败→结算重开"]
+  S1b --> R
+
+  SA --> SA1{"识别:随机送的是哪个 5费?"}
+  SA1 -- "送 Archer" --> SA1a["说明:Archer 上不了场、无法激活羁绊<br/>并入「其他5费」类 → 靠采购专员/聘书"]
+  SA1a --> MERGE
+  SA1 -- "送 昔涟" --> SA1b["说明:昔涟 = 5费本体, 走圣杯羁绊线"]
+  SA1b --> MERGE
+  SA1 -- "送 其他5费<br/>(含Archer)" --> SA1c["缺本体/缺目标 → 采购专员 或 聘书 补"]
+  SA1c --> MERGE
+
+  MERGE(["🎯 各路线合流"]) --> G1_1(["⚔️ 1-1 节点"])
+  G1_1 --> G1_1do["操作:软件已有流程自动处理<br/>投入/上场 → 点出战 → 等战斗结束"]
+  G1_1do --> G1_2(["🏠 1-2 备战节点"])
+  G1_2 --> G1_2do["操作:复用软件已有备战流程<br/>上场 开金矿 买角色 卖角色<br/>(本功能仅多一条:只买圣杯羁绊角色、禁卖圣杯角色)<br/>随后 点出战 → 等战斗结束"]
+  G1_2do --> G_SEL2(["✅ 1-2 战斗结束 → 来到 1-3 投资策略选择"])
+
+  G_SEL2 --> G_HP{"识别:当前血量 hpNow"}
+  G_HP -- "hp ≥ 88" --> G_NEED
+  G_HP -- "hp < 88(约84)" --> G_HP1{"识别:本次打算走<br/>奇迹代偿(扣88)线?"}
+  G_HP1 -- "是" --> G_HP2["操作:先买 二极管 STR276 +10 → hp≥88"]
+  G_HP2 --> G_HP3{"识别:二极管买到?"}
+  G_HP3 -- "否" --> R
+  G_HP3 -- "是" --> G_NEED
+  G_HP1 -- "否(走无限之釜/其它线)" --> G_NEED
+
+  G_NEED{"盘点:当前是否已有 5费本体?<br/>(昔涟 / 聘书拿的Archer 等)"}
+  G_NEED -- "无 5费本体" --> G_OB["第一步:先拿 5费本体<br/>1-3内可得来源:祈愿试炼「登场Archer」/「5费聘书」<br/>(专家招募167/236 在位面2/3,1-3选不到,排除)"]
+  G_OB --> G_OB2{"识别:本体到手?"}
+  G_OB2 -- "否" --> R
+  G_OB2 -- "是" --> G_NEED2
+  G_NEED -- "已有 5费本体" --> G_NEED2
+
+  G_NEED2{"盘点:命运圣杯成员齐不齐<br/>(凛1/闪2/Saber3/Archer5)?"}
+  G_NEED2 -- "成员已齐" --> G_PLAIN["操作:不缺角色 → 不需要采购专员<br/>正常选投资策略 → 进 1-3 备战"]
+  G_PLAIN --> CORE
+  G_NEED2 -- "缺某费用成员<br/>(如缺2费金闪闪 / 3费Saber)" --> G_PRO["采购专员 条件必要:<br/>把目标费用的同费角色放备战席最左<br/>刷新抬出该费用(同费≠同角色)"]
+  G_PRO --> G_READ{"在可选策略里找:<br/>采购专员(金051每7刷/彩238每5刷)?"}
+  G_READ -- "有,选了采购专员" --> G_PLACE
+  G_READ -- "没有采购专员" --> G_REF{"识别:还能否刷新?"}
+  G_REF -- "能" --> G_REFDO["操作:点刷新 → 回来重新判断"]
+  G_REFDO --> G_READ
+  G_REF -- "刷完仍无" --> G_GIVE["操作:接受其它策略 或 放弃"]
+  G_GIVE --> CORE
+
+  CORE(["💥 重头戏:1-3 备战节点"])
+  CORE --> G_PLACE{"本次是否要靠采购专员<br/>刷某费用角色?"}
+  G_PLACE -- "不需要" --> SHOP
+  G_PLACE -- "需要" --> PLACE["关键操作:把 目标费用 的同费角色<br/>放到 备战席最左侧<br/>(缺2费→放2费最左; 缺5费→放5费最左)"]
+  PLACE --> SHOP
+  G_PLACE -- "无5费本体,靠采购专员刷5费" --> PLACE
+
+  SHOP["进商店,调用真实刷新购买插件<br/>购买名单=命运圣杯羁绊成员<br/>凛1/闪2/Saber3 商店可买<br/>Archer5费 商店0%不出<br/>插件:识别5槽→名单内点一次买→刷新→重扫<br/>买齐 或 金币不足(<2) 停; 连6轮无新增停<br/>禁卖 命运圣杯羁绊角色"]
+  SHOP --> SHOP_R{"插件返回 + 已买圣杯成员数"}
+  SHOP_R -- "<2 个(二羁绊都凑不齐)" --> G_REF2{"识别:能否继续刷商店?"}
+  G_REF2 -- "能" --> SHOP
+  G_REF2 -- "不能" --> R
+  SHOP_R -- "≥2 个圣杯成员" --> BOND2(["上 2 个圣杯成员 → 激活 二羁绊"])
+
+  BOND2 --> B2_CHK{"识别:二羁绊给的试炼<br/>(多个→优先选『立即获得X』)"}
+  B2_CHK -- "首个起源试炼<br/>(平凡,无关键项)" --> B2_NEXT["动作:记为无效,升档"]
+  B2_NEXT --> BOND3(["上 3 个圣杯成员 → 激活 三羁绊"])
+  BOND3 --> B3_CHK{"识别:三羁绊给的试炼"}
+  B3_CHK -- "有「2 个五费聘用书」<br/>(3/4 档都可能出)" --> B_OK
+  B3_CHK -- "没有关键" --> B_ONDA{"识别:是否已有 Archer(5费)?"}
+  B_ONDA -- "没有 Archer(4档凑不齐)" --> G_AR["操作:去拿 Archer<br/>试炼登场Archer / 聘书选Archer"]
+  G_AR --> G_AR2{"识别:拿到?"}
+  G_AR2 -- "否" --> R
+  G_AR2 -- "是" --> BONDA4(["上 4 个圣杯成员 → 激活 四羁绊"])
+  B_ONDA -- "已有 Archer" --> BONDA4
+  BONDA4 --> B4_CHK{"识别:四羁绊给的试炼"}
+  B4_CHK -- "有「8 完美投影仪」/「圣杯·直接三星」<br/>或「2 五费聘书」<br/>(4/5 高层档)" --> B_OK
+  B4_CHK -- "没有关键" --> B_STAR{"识别:是否有圣杯星徽?<br/>(来源:ENV019 / 策略333 都是这家伙的错 / 策略321 命运圣杯星徽)"}
+  B_STAR -- "无星徽 → 4档封顶" --> B_4TOP{"识别:4档已尽,无更高<br/>试炼可触发?"}
+  B_4TOP -- "已拿关键则收工/否则" --> CHECK_ACH
+  B_STAR -- "有星徽" --> BOND5(["星徽放场上非羁绊角色 → 五羁绊"])
+  BOND5 --> B5_CHK{"识别:五羁绊最终试炼"}
+  B5_CHK -- "有「8 投影仪」/「圣杯·三星5费」" --> B_OK
+  B5_CHK -- "仍无关键" --> CHECK_ACH
+
+  CHECK_ACH{"达成判定:是否已拿到<br/>8投影+本体 / 直接三星5费 ?"}
+  CHECK_ACH -- "尚未达成" --> R
+  CHECK_ACH -- "已达成" --> FINAL
+
+  B_OK(["🎯 命中关键试炼"]) --> KIND{"识别:命中的是哪种?"}
+  KIND -- "圣杯·直接三星5费<br/>(无限之釜)" --> DONE["达成:已得三星5费"]
+  KIND -- "8 完美投影仪<br/>(奇迹代偿)" --> HASOB{"识别:已有 ≥1 个 5费本体?"}
+  HASOB -- "无本体 → 继续刷试炼求本体<br/>(登场Archer/聘书)" --> G_OB
+  HASOB -- "有本体在池" --> DONE8["达成:8投影 + 本体 拖8投影=三星"]
+  KIND -- "2 个五费聘用书" --> OBTAIN["操作:用聘书拿 5费本体<br/>(聘书选目标5费 / 选Archer凑4档)"]
+  OBTAIN --> OB2b{"识别:本体到手?"}
+  OB2b -- "否" --> R
+  OB2b -- "是,但还缺最终件<br/>(投影/直接三星)" --> BACK["操作:回头继续升 4/5 档<br/>刷 8投影 或 直接三星"]
+  BACK --> B_4TOP
+
+  DONE --> FINAL((收工:交用户手动成型<br/>爽点软件不代劳))
+  DONE8 --> FINAL
+
+  SB --> SB1["动作:记录 白得 1 圣杯星徽(第5圣杯计数)<br/>凛/闪/Saber 全要自己商店买<br/>5费本体靠 1-3内可得:祈愿「登场Archer」/「5费聘书」"]
+  SB1 --> SB_MERGE(["🎯 圣杯线汇入:进入 1-1"])
+
+  SB_MERGE --> G1_1
+</div>
+</div>
+
+<div class="leg">
+<b>读法</b>· 顺序行为流：刷环境 → 各路线合流 → 1-1(出战) → 1-2 备战(上场/金矿/买/卖,复用已有) → 1-3 投资策略(软件自选 + 读血量补二极管) → 1-3 备战(重头) → 放最左(如需采购专员) → 商店买光圣杯成员 → 逐档上羁绊 2/3/4/5 看每档试炼。
+<br>关键档位 — <span class="gry">二羁绊</span>=起源试炼(无关键)；<span class="blue">三/四羁绊</span>可能出「2五费聘书」；<span class="ok">四/五羁绊</span>可能出「8完美投影仪」「圣杯·直接三星」；<span class="no">无星徽→4 档封顶</span>。失败归<b>重刷(R)</b>，来自子代理审查逐项修正。
+</div>
+
+<div class="foot">
+  <b>审查修正要点（子代理 research 逐条核对）</b>：
+  ● <span class="no">B1</span> 聘书拿本体后 → 回到升 4/5 档续追最终件（不再直接重刷）；仅最高档无关键才重刷。
+  ● <span class="no">B2</span> Archer(5费)商店买不到 → 商店名单只标 凛/闪/Saber；4 档需先获 Archer（试炼登场/聘书选），无则去拿、拿不到才重刷。
+  ● <span class="blue">S1</span> 放备战席最左仅在"需采购专员刷某费用"时执行，不缺角不无脑放。
+  ● <span class="blue">S2</span> 盘点加"无 5费本体"分支：先靠登场Archer/聘书拿本体，拿不到才重刷。
+  ● <span class="blue">S3</span> 四羁绊档补「2 五费聘书」分支。
+  ● <span class="blue">S4</span> 每档试炼多个时优先选「立即获得 X」类（聘书 / 奇迹代偿·8投影 / 无限之釜）。
+  ● <span class="blue">S5</span> 8 投影无本体 → 继续刷试炼求本体，非直接重刷。
+  ● <span class="blue">S6</span> 血量:统一在策略选择前读 hp，两条路线通用；<88 且走奇迹代偿 → 先买二极管 STR276 +10，买不到才重刷。
+  ● <span class="blue">S7</span> 星徽来源 = ENV019 / 策略333(都是这家伙的错) / 策略321(命运圣杯星徽,还送远坂凛)，无 333 副作用优先 321；无星徽时 4 档封顶。
+  ● <span class="blue">S8</span> 商店买到圣杯成员 &lt;2 时二羁绊凑不齐 → 继续刷或重刷。
+  ● <span class="blue">S9</span> 5费聘书/本体来源须<b>1-3(第一位面)内可得</b>：祈愿试炼「登场Archer」与「5费聘书」；专家招募167/236 在位面2/3选不到，已排除。
+  ● <span class="blue">S10</span> 投资策略 = 软件自选；各路线在此合流，无"开局再选一次"的误导。
+  ● 采购专员生效前提 = 目标费用的同费角色放<b>备战席最左</b>；条件必要，非全局必须。
+  ● 若本页未显示图形，确认 <code>mermaid.min.js</code> 与本 HTML 同目录（本地渲染、不依赖网络）。
+</div>
+
+<script src="./mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default', flowchart:{ curve:'linear' }, securityLevel:'loose' });
+</script>
+</body>
+</html>

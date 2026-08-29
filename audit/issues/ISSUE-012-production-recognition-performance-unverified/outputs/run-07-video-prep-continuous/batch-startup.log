@@ -1,0 +1,8 @@
+2026-08-09T06:57:59.6828202+08:00	command-parsed
+2026-08-09T06:57:59.6860630+08:00	wpf-started
+2026-08-09T06:58:00.3194429+08:00	configuration-loaded
+2026-08-09T06:58:00.3265450+08:00	batch-analysis-starting
+2026-08-09T06:58:00.3848869+08:00	batch-service-resolved
+2026-08-09T06:58:00.3851648+08:00	recognition-warmup-starting
+2026-08-09T06:58:01.3604869+08:00	recognition-warmup-completed
+2026-08-09T06:58:10.1241025+08:00	batch-analysis-completed

@@ -1,0 +1,14 @@
+==== 20260818-084639619.png ====
+  population=Known:5 storeLevel=Known:5
+  SimpleEquipment=  gun042 count=0
+  Front(4): 0=currency_wars_character_72:0.61,1=unknown-formation-unit-Front-2:0.23,2=unknown-formation-unit-Front-3:0.36,3=currency_wars_character_47:0.63
+  Back(1): 4=currency_wars_character_69:0.68
+  Bench(5): 1=currency_wars_character_69:0.70,2=currency_wars_character_02:0.73,3=currency_wars_character_72:0.69,4=currency_wars_character_55:0.71,5=currency_wars_character_01:0.71
+  hasTrailblazer=False
+==== 20260818-084211147.png ====
+  population=Known:5 storeLevel=Known:5
+  SimpleEquipment=  gun042 count=0
+  Front(4): 0=currency_wars_character_72:0.69,1=currency_wars_character_55:0.77,2=currency_wars_character_36:0.69,3=currency_wars_character_47:0.74
+  Back(1): 4=currency_wars_character_69:0.68
+  Bench(4): 1=currency_wars_character_69:0.70,2=currency_wars_character_02:0.73,3=currency_wars_character_72:0.69,4=currency_wars_character_55:0.71
+  hasTrailblazer=False

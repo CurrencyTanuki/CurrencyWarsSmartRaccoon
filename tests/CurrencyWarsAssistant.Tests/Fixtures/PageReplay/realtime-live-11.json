@@ -1,0 +1,4534 @@
+﻿{
+  "schemaVersion": "1.0.0",
+  "applicationVersion": "0.2.833\u002B6cee296a8d65e4d991cecb63a1c5b43847d9a70e",
+  "analysisId": "20260806-050557624-1754179b6a694b468f7ea135603f5da2",
+  "snapshot": {
+    "schemaVersion": "1.0.0",
+    "runId": "run-20260806-125919",
+    "asOf": "2026-08-06T05:05:57.6248119+00:00",
+    "pageId": {
+      "status": "known",
+      "value": "challenge_success",
+      "confidence": 0.96,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050557624.png",
+          "locator": "ocr:settlement-semantic-layout",
+          "summary": "\u6311 \u6218 \u6210 \u529F 1 \u00B7 3 \u00D7 \u6597 \u706B \u70ED \u8FDE \u80DC 0 \u00D7 1 | \u6311 \u6218 \u6210 \u529F | 1 \u00B7 3 \u00D7 \u6597 | \u706B \u70ED \u8FDE \u80DC 0 \u00D7 1 | \u6311 \u6218 \u6210 \u529F 1 \u4E00 3 \u00D7 \u6218 \u6597 \u4E00 | 1 \u4E00 3 \u00D7 \u6218 \u6597 \u4E00 | \u6311 \u6218 \u6210 \u529F \u706B \u70ED \u8FDE \u80DC \u00D6 1 | \u706B \u70ED \u8FDE \u80DC \u00D6 1 | 1 \u00B7 3 \u00D7 \u6218 \u6597 6 0 \u5C0F \u961F \u751F \u547D \u503C \u83B7 \u5F97 \u91D1 \u5E01 \u603B \u89C8 \u57FA \u7840 \u5956 \u52B1 \u8FDE \u80DC \u00D7 1 \u706B \u70ED \u8FDE \u80DC 0 \u00D7 1 0 2 / 6 \u6570 \u636E \u7EDF \u8BA1 \u8016 \u3001 \u3001 3731 \uFF0C 2 \u4E07 0 \u300B 600 8 \u4E07 \u0027 162 \uFF0C 0 \u4E07 | 1 \u00B7 3 \u00D7 \u6218 \u6597 | 6 0 | \u5C0F \u961F \u751F \u547D \u503C | \u83B7 \u5F97 \u91D1 \u5E01 \u603B \u89C8 | \u57FA \u7840 \u5956 \u52B1 | \u8FDE \u80DC \u00D7 1 | 0 | 2 / 6 | \u6570 \u636E \u7EDF \u8BA1 | \u8016 \u3001 \u3001 3731 \uFF0C 2 \u4E07 | 0 \u300B 600 8 \u4E07 | \u0027 162 \uFF0C 0 \u4E07 | 1 \u4E00 3 \u00D7 \u6218 \u6597 \u83B7 \u5F97 \u91D1 \u5E01 \u603B \u89C8 \u57FA \u7840 \u5956 \u52B1 \u8FDE \u80DC \u00D6 \u00D7 1 \u706B \u70ED \u8FDE \u80DC \u00D7 1 06 \u6570 \u636E \u7EDF \u8BA1 3731 \u00B7 2 \u4E07 \u8BD5 \u7528 600 \u00B7 8 \u4E07 \u4E00 \u8BD5 \u7528 \u3001 \u5BFB 162 \u00B7 0 \u4E07 | 1 \u4E00 3 \u00D7 \u6218 \u6597 | \u8FDE \u80DC \u00D6 \u00D7 1 | \u706B \u70ED \u8FDE \u80DC \u00D7 1 | 06 | 3731 \u00B7 2 \u4E07 | \u8BD5 \u7528 | 600 \u00B7 8 \u4E07 | \u4E00 \u8BD5 \u7528 | \u3001 \u5BFB 162 \u00B7 0 \u4E07 | \u706B \u70ED \u8FDE \u80DC \u00D6 \u5176 1 \u83B7 \u5F97 \u91D1 \u5E01 \u603B \u89C8 \u57FA \u7840 \u5956 \u52B1 \u8FDE \u80DC \u00D6 \u00D7 1 \u6570 \u636E \u7EDF \u8BA1 \uFF0C 3731 \u00B7 2 \u4E07 \u51AB \u8BD5 \u7528 \u201C \u6C35 600 \u00B7 8 \u4E07 \u4E00 \u8BD5 \u7528 162 \u00B7 0 \u4E07 | \u706B \u70ED \u8FDE \u80DC \u00D6 \u5176 1 | \uFF0C 3731 \u00B7 2 \u4E07 | \u51AB \u8BD5 \u7528 | \u201C \u6C35 600 \u00B7 8 \u4E07 | 162 \u00B7 0 \u4E07 | \u7EE7 \u7EED \u6311 \u6218 | \u7EE7 \u7EED \u6311 \u627E",
+          "capturedAt": "2026-08-06T05:05:57.6248119+00:00",
+          "confidence": 0.96
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:05:57.6248119+00:00"
+    },
+    "stage": {
+      "status": "known",
+      "value": "node_complete",
+      "confidence": 0.96,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050557624.png",
+          "locator": "ocr:settlement-semantic-layout",
+          "summary": "\u6311 \u6218 \u6210 \u529F 1 \u00B7 3 \u00D7 \u6597 \u706B \u70ED \u8FDE \u80DC 0 \u00D7 1 | \u6311 \u6218 \u6210 \u529F | 1 \u00B7 3 \u00D7 \u6597 | \u706B \u70ED \u8FDE \u80DC 0 \u00D7 1 | \u6311 \u6218 \u6210 \u529F 1 \u4E00 3 \u00D7 \u6218 \u6597 \u4E00 | 1 \u4E00 3 \u00D7 \u6218 \u6597 \u4E00 | \u6311 \u6218 \u6210 \u529F \u706B \u70ED \u8FDE \u80DC \u00D6 1 | \u706B \u70ED \u8FDE \u80DC \u00D6 1 | 1 \u00B7 3 \u00D7 \u6218 \u6597 6 0 \u5C0F \u961F \u751F \u547D \u503C \u83B7 \u5F97 \u91D1 \u5E01 \u603B \u89C8 \u57FA \u7840 \u5956 \u52B1 \u8FDE \u80DC \u00D7 1 \u706B \u70ED \u8FDE \u80DC 0 \u00D7 1 0 2 / 6 \u6570 \u636E \u7EDF \u8BA1 \u8016 \u3001 \u3001 3731 \uFF0C 2 \u4E07 0 \u300B 600 8 \u4E07 \u0027 162 \uFF0C 0 \u4E07 | 1 \u00B7 3 \u00D7 \u6218 \u6597 | 6 0 | \u5C0F \u961F \u751F \u547D \u503C | \u83B7 \u5F97 \u91D1 \u5E01 \u603B \u89C8 | \u57FA \u7840 \u5956 \u52B1 | \u8FDE \u80DC \u00D7 1 | 0 | 2 / 6 | \u6570 \u636E \u7EDF \u8BA1 | \u8016 \u3001 \u3001 3731 \uFF0C 2 \u4E07 | 0 \u300B 600 8 \u4E07 | \u0027 162 \uFF0C 0 \u4E07 | 1 \u4E00 3 \u00D7 \u6218 \u6597 \u83B7 \u5F97 \u91D1 \u5E01 \u603B \u89C8 \u57FA \u7840 \u5956 \u52B1 \u8FDE \u80DC \u00D6 \u00D7 1 \u706B \u70ED \u8FDE \u80DC \u00D7 1 06 \u6570 \u636E \u7EDF \u8BA1 3731 \u00B7 2 \u4E07 \u8BD5 \u7528 600 \u00B7 8 \u4E07 \u4E00 \u8BD5 \u7528 \u3001 \u5BFB 162 \u00B7 0 \u4E07 | 1 \u4E00 3 \u00D7 \u6218 \u6597 | \u8FDE \u80DC \u00D6 \u00D7 1 | \u706B \u70ED \u8FDE \u80DC \u00D7 1 | 06 | 3731 \u00B7 2 \u4E07 | \u8BD5 \u7528 | 600 \u00B7 8 \u4E07 | \u4E00 \u8BD5 \u7528 | \u3001 \u5BFB 162 \u00B7 0 \u4E07 | \u706B \u70ED \u8FDE \u80DC \u00D6 \u5176 1 \u83B7 \u5F97 \u91D1 \u5E01 \u603B \u89C8 \u57FA \u7840 \u5956 \u52B1 \u8FDE \u80DC \u00D6 \u00D7 1 \u6570 \u636E \u7EDF \u8BA1 \uFF0C 3731 \u00B7 2 \u4E07 \u51AB \u8BD5 \u7528 \u201C \u6C35 600 \u00B7 8 \u4E07 \u4E00 \u8BD5 \u7528 162 \u00B7 0 \u4E07 | \u706B \u70ED \u8FDE \u80DC \u00D6 \u5176 1 | \uFF0C 3731 \u00B7 2 \u4E07 | \u51AB \u8BD5 \u7528 | \u201C \u6C35 600 \u00B7 8 \u4E07 | 162 \u00B7 0 \u4E07 | \u7EE7 \u7EED \u6311 \u6218 | \u7EE7 \u7EED \u6311 \u627E",
+          "capturedAt": "2026-08-06T05:05:57.6248119+00:00",
+          "confidence": 0.96
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:05:57.6248119+00:00"
+    },
+    "economy": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "cumulativeSpend": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "health": {
+      "status": "known",
+      "value": 86,
+      "confidence": 0.7,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050557624.png",
+          "locator": "ocr:challenge-success-health",
+          "summary": "\u5C0F\u961F\u751F\u547D\u503C 86 \u2460",
+          "capturedAt": "2026-08-06T05:05:57.6248119+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:05:57.6248119+00:00"
+    },
+    "actionPoints": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "currentNodeDamage": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "boardCharacterIds": {
+      "status": "unknown",
+      "value": [],
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "benchCharacterIds": {
+      "status": "unknown",
+      "value": [],
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "shopCharacterIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "lineupIds": {
+      "status": "unknown",
+      "value": [],
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "synergyIds": {
+      "status": "unknown",
+      "value": [],
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "investmentEnvironmentId": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "template library pending"
+      ]
+    },
+    "investmentStrategyIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "template library pending"
+      ]
+    },
+    "equipmentIds": {
+      "status": "unknown",
+      "value": [],
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed",
+        "\u88C5\u5907\u6570\u636E\u4E0D\u5B8C\u6574\uFF1B\u5DF2\u8BC6\u522B\u7684\u88C5\u5907ID\u4ECD\u4F5C\u4E3A\u6B8B\u7F3A\u8BC1\u636E\u4FDD\u7559\u3002"
+      ]
+    },
+    "specialItemIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "inventorySlots": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "expertAdvisorIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "enemyIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "nodes": [],
+    "appliedEventIds": [],
+    "diagnostics": []
+  },
+  "routeCandidates": [
+    {
+      "guideId": "guide-taptap-828363891523190942",
+      "archetypeId": "archetype-himeko-train-shield",
+      "archetypeName": "\u59EC\u5B50\u00B7\u542F\u884C\uFF1A\u5217\u8F66\u540C\u884C\u62A4\u76FE\u6302\u673A\u6D41",
+      "eligible": true,
+      "score": 9,
+      "confidence": 0.15,
+      "components": [
+        {
+          "name": "eligible",
+          "score": 25,
+          "weight": 1,
+          "explanation": "\u901A\u8FC7\u76EE\u6807\u548C\u7248\u672C\u786C\u8FC7\u6EE4"
+        },
+        {
+          "name": "version",
+          "score": 10,
+          "weight": 1,
+          "explanation": "\u653B\u7565\u4E0E\u5F53\u524D\u7248\u672C\u4E00\u81F4"
+        },
+        {
+          "name": "lineup",
+          "score": -8,
+          "weight": 1,
+          "explanation": "\u9635\u5BB9\u672A\u77E5"
+        },
+        {
+          "name": "synergy",
+          "score": -5,
+          "weight": 1,
+          "explanation": "\u7F81\u7ECA\u672A\u77E5"
+        },
+        {
+          "name": "best_rule",
+          "score": -13,
+          "weight": 1,
+          "explanation": "\u7B2C\u4E00\u4F4D\u9762\u5148\u7528\u4F4E\u8D39\u6DF7\u5408\u7F81\u7ECA\u7A33\u5B9A\u8FC7\u6E21"
+        }
+      ],
+      "warnings": [],
+      "missingInformation": [
+        "lineup",
+        "synergy"
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "recommendationId": "no-action",
+      "guideId": "none",
+      "priority": 1,
+      "action": "\u6682\u4E0D\u5EFA\u8BAE\u64CD\u4F5C",
+      "isNoAction": true,
+      "confidence": 1,
+      "reasons": [
+        "\u5F53\u524D\u8BC1\u636E\u4E0D\u8DB3\u4EE5\u652F\u6301\u653B\u7565\u4E2D\u7684\u5177\u4F53\u52A8\u4F5C\u3002"
+      ],
+      "benefits": [],
+      "costs": [],
+      "risks": [
+        "\u5728\u8BC1\u636E\u4E0D\u8DB3\u65F6\u64CD\u4F5C\u53EF\u80FD\u9020\u6210\u4E0D\u53EF\u9006\u7684\u8D44\u6E90\u635F\u5931\u3002"
+      ],
+      "preconditions": [],
+      "invalidatesWhen": [
+        "\u83B7\u5F97\u65B0\u7684\u53EF\u9760\u8BC6\u522B\u8BC1\u636E\u3002"
+      ],
+      "missingInformation": [
+        "lineup",
+        "synergy"
+      ],
+      "sources": []
+    }
+  ],
+  "warnings": [
+    "\u4EE5\u4E0B\u5B57\u6BB5\u5728\u8FD9\u5F20\u622A\u56FE\u4E2D\u4E0D\u53EF\u53EF\u9760\u786E\u5B9A\uFF1Aeconomy(Unknown)\u3001cumulativeSpend(Unknown)\u3001actionPoints(Unknown)\u3001damage(Unknown)\u3001board(Unknown)\u3001bench(Unknown)\u3001shop(Unknown)\u3001investmentEnvironment(Unknown)\u3001investmentStrategies(Unknown)\u3001equipment(Unknown)\u3001inventorySlots(Unknown)\u3001specialItems(Unknown)\u3001expertAdvisors(Unknown)\u3001enemies(Unknown)"
+  ],
+  "unknownFields": [
+    "economy(Unknown)",
+    "cumulativeSpend(Unknown)",
+    "actionPoints(Unknown)",
+    "damage(Unknown)",
+    "board(Unknown)",
+    "bench(Unknown)",
+    "shop(Unknown)",
+    "investmentEnvironment(Unknown)",
+    "investmentStrategies(Unknown)",
+    "equipment(Unknown)",
+    "inventorySlots(Unknown)",
+    "specialItems(Unknown)",
+    "expertAdvisors(Unknown)",
+    "enemies(Unknown)"
+  ],
+  "operationalState": {
+    "pageFamily": "battleSettlement",
+    "pageId": "challenge_success",
+    "nodeId": {
+      "status": "known",
+      "value": "1-3",
+      "confidence": 0.72,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050557624.png",
+          "locator": "ocr:settlement-node",
+          "summary": "1-3",
+          "capturedAt": "2026-08-06T05:05:57.6248119+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:05:57.6248119+00:00"
+    },
+    "enemyDifficulty": {
+      "status": "stale",
+      "value": 120,
+      "confidence": 0,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "ocr:enemy-difficulty",
+          "summary": "120",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00"
+        }
+      ],
+      "uncertainty": [
+        "\u654C\u4EBA\u96BE\u5EA6\u5728\u5F53\u524D\u5E27\u6682\u4E0D\u53EF\u89C1\uFF1B\u6CBF\u7528\u6700\u8FD1\u4E00\u6B21\u53EF\u9760\u503C\uFF0C\u53EF\u80FD\u5DF2\u8FC7\u671F\u3002"
+      ],
+      "observedAt": "2026-08-06T05:02:44.6790644+00:00"
+    },
+    "storeLevel": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "interest": {
+      "status": "stale",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "template:interest-localized-digits",
+          "summary": "value=0; confidence=0.992; runner-up=0.666",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+          "confidence": 0.9918594932556153
+        }
+      ],
+      "uncertainty": [
+        "\u5229\u606F\u5728\u5F53\u524D\u5E27\u6682\u4E0D\u53EF\u89C1\uFF1B\u6CBF\u7528\u6700\u8FD1\u4E00\u6B21\u53EF\u9760\u503C\uFF0C\u53EF\u80FD\u5DF2\u8FC7\u671F\u3002"
+      ],
+      "observedAt": "2026-08-06T05:02:44.6790644+00:00"
+    },
+    "cumulativeSpend": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "playerProgress": {
+      "status": "stale",
+      "value": {
+        "level": 4,
+        "experience": 0,
+        "experienceToNextLevel": 6
+      },
+      "confidence": 0,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050236008.png",
+          "locator": "ocr:player-progress\u002Blocalized-level",
+          "summary": "0/6 | localized-level=4",
+          "capturedAt": "2026-08-06T05:02:36.0081707+00:00"
+        }
+      ],
+      "uncertainty": [
+        "\u73A9\u5BB6\u8FDB\u5EA6\u5728\u5F53\u524D\u5E27\u6682\u4E0D\u53EF\u89C1\uFF1B\u6CBF\u7528\u6700\u8FD1\u4E00\u6B21\u53EF\u9760\u503C\uFF0C\u53EF\u80FD\u5DF2\u8FC7\u671F\u3002"
+      ],
+      "observedAt": "2026-08-06T05:02:36.0081707+00:00"
+    },
+    "formation": {
+      "status": "unknown",
+      "value": [
+        {
+          "zone": "front",
+          "slotIndex": 0,
+          "characterId": "unknown-formation-unit-68",
+          "starLevel": 1,
+          "standing": "unknown",
+          "equipmentIds": [],
+          "confidence": 0.5536959266828447,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "partial:formation:Front:1",
+            "summary": "\u9EC4\u6CC9",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+            "confidence": 0.5536959266828447
+          },
+          "temporaryId": "unknown-formation-unit-68",
+          "candidateCharacterIds": [
+            "currency_wars_character_34",
+            "currency_wars_character_37"
+          ],
+          "failureReason": "\u89D2\u8272\u6216\u7279\u6B8A\u5355\u4F4D\u5934\u50CF\u65E0\u6CD5\u552F\u4E00\u8BC6\u522B\uFF1B\u69FD\u4F4D\u548C\u88C1\u526A\u5DF2\u4FDD\u7559\u3002",
+          "canDriveDecisions": false,
+          "cardRegion": {
+            "x": 0.3546875,
+            "y": 0.30462962962962964,
+            "width": 0.06666666666666667,
+            "height": 0.12962962962962962
+          },
+          "equipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.3546875,
+                "y": 0.42907407407407405,
+                "width": 0.02266666666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Front:1:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.3766875,
+                "y": 0.42907407407407405,
+                "width": 0.02266666666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Front:1:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.39868750000000003,
+                "y": 0.42907407407407405,
+                "width": 0.02266666666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Front:1:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ],
+          "finalEquipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.3546875,
+                "y": 0.42907407407407405,
+                "width": 0.02266666666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Front:1:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.3766875,
+                "y": 0.42907407407407405,
+                "width": 0.02266666666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Front:1:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.39868750000000003,
+                "y": 0.42907407407407405,
+                "width": 0.02266666666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Front:1:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ]
+        },
+        {
+          "zone": "front",
+          "slotIndex": 1,
+          "characterId": "currency_wars_character_60",
+          "starLevel": 2,
+          "standing": "\u524D\u53F0",
+          "equipmentIds": [],
+          "confidence": 0.6459584116826211,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "vision:formation:Front:1",
+            "summary": "\u8D5B\u98DE\u513F",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00"
+          },
+          "canDriveDecisions": true,
+          "cardRegion": {
+            "x": 0.43072916666666666,
+            "y": 0.30462962962962964,
+            "width": 0.06354166666666666,
+            "height": 0.12962962962962962
+          },
+          "equipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.43072916666666666,
+                "y": 0.42907407407407405,
+                "width": 0.021604166666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Front:2:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.45169791666666664,
+                "y": 0.42907407407407405,
+                "width": 0.021604166666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Front:2:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.4726666666666667,
+                "y": 0.42907407407407405,
+                "width": 0.021604166666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Front:2:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ],
+          "finalEquipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.43072916666666666,
+                "y": 0.42907407407407405,
+                "width": 0.021604166666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Front:2:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.45169791666666664,
+                "y": 0.42907407407407405,
+                "width": 0.021604166666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Front:2:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.4726666666666667,
+                "y": 0.42907407407407405,
+                "width": 0.021604166666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Front:2:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ]
+        },
+        {
+          "zone": "back",
+          "slotIndex": 5,
+          "characterId": "currency_wars_character_02",
+          "starLevel": 2,
+          "standing": "\u540E\u53F0",
+          "equipmentIds": [],
+          "confidence": 0.6723111837309143,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "vision:formation:Back:5",
+            "summary": "\u5343\u51B6\u2022\u5203",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00"
+          },
+          "canDriveDecisions": true,
+          "cardRegion": {
+            "x": 0.3578125,
+            "y": 0.5555555555555556,
+            "width": 0.06770833333333333,
+            "height": 0.13425925925925927
+          },
+          "equipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.3578125,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Back:6:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.38015625,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Back:6:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.40249999999999997,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Back:6:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ],
+          "finalEquipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.3578125,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Back:6:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.38015625,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Back:6:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.40249999999999997,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Back:6:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ]
+        },
+        {
+          "zone": "back",
+          "slotIndex": 6,
+          "characterId": "currency_wars_character_68",
+          "starLevel": 2,
+          "standing": "\u524D\u53F0",
+          "equipmentIds": [],
+          "confidence": 0.7113905335296491,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "vision:formation:Back:6",
+            "summary": "\u4E71\u7834",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00"
+          },
+          "canDriveDecisions": true,
+          "cardRegion": {
+            "x": 0.4317708333333333,
+            "y": 0.5555555555555556,
+            "width": 0.06770833333333333,
+            "height": 0.13425925925925927
+          },
+          "equipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.4317708333333333,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Back:7:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.4541145833333333,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Back:7:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.4764583333333333,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Back:7:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ],
+          "finalEquipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.4317708333333333,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Back:7:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.4541145833333333,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Back:7:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.4764583333333333,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Back:7:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ]
+        },
+        {
+          "zone": "bench",
+          "slotIndex": 3,
+          "characterId": "unknown-formation-unit-69",
+          "starLevel": 1,
+          "standing": "unknown",
+          "equipmentIds": [],
+          "confidence": 0.47579596325206713,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "partial:formation:Bench:4",
+            "summary": "\u6912\u4E18",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+            "confidence": 0.47579596325206713
+          },
+          "temporaryId": "unknown-formation-unit-69",
+          "candidateCharacterIds": [
+            "currency_wars_character_57",
+            "currency_wars_character_56"
+          ],
+          "failureReason": "\u89D2\u8272\u6216\u7279\u6B8A\u5355\u4F4D\u5934\u50CF\u65E0\u6CD5\u552F\u4E00\u8BC6\u522B\uFF1B\u69FD\u4F4D\u548C\u88C1\u526A\u5DF2\u4FDD\u7559\u3002",
+          "canDriveDecisions": false,
+          "cardRegion": {
+            "x": 0.3953125,
+            "y": 0.7814814814814814,
+            "width": 0.059375,
+            "height": 0.12685185185185185
+          },
+          "equipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.3953125,
+                "y": 0.9032592592592592,
+                "width": 0.020187500000000004,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:4:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.41490625,
+                "y": 0.9032592592592592,
+                "width": 0.020187500000000004,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:4:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.4345,
+                "y": 0.9032592592592592,
+                "width": 0.020187500000000004,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:4:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ],
+          "finalEquipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.3953125,
+                "y": 0.9032592592592592,
+                "width": 0.020187500000000004,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:4:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.41490625,
+                "y": 0.9032592592592592,
+                "width": 0.020187500000000004,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:4:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.4345,
+                "y": 0.9032592592592592,
+                "width": 0.020187500000000004,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:4:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ]
+        },
+        {
+          "zone": "bench",
+          "slotIndex": 0,
+          "characterId": "currency_wars_character_45",
+          "starLevel": 1,
+          "standing": "\u524D\u540E\u53F0",
+          "equipmentIds": [],
+          "confidence": 0.6886210836437638,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "vision:formation:Bench:0",
+            "summary": "\u94F6\u679D",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00"
+          },
+          "canDriveDecisions": true,
+          "cardRegion": {
+            "x": 0.19947916666666668,
+            "y": 0.7814814814814814,
+            "width": 0.059375,
+            "height": 0.12685185185185185
+          },
+          "equipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.19947916666666668,
+                "y": 0.9032592592592592,
+                "width": 0.020187500000000004,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:1:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.21907291666666667,
+                "y": 0.9032592592592592,
+                "width": 0.020187500000000004,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:1:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.23866666666666667,
+                "y": 0.9032592592592592,
+                "width": 0.020187500000000004,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:1:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ],
+          "finalEquipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.19947916666666668,
+                "y": 0.9032592592592592,
+                "width": 0.020187500000000004,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:1:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.21907291666666667,
+                "y": 0.9032592592592592,
+                "width": 0.020187500000000004,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:1:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.23866666666666667,
+                "y": 0.9032592592592592,
+                "width": 0.020187500000000004,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:1:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ]
+        },
+        {
+          "zone": "bench",
+          "slotIndex": 1,
+          "characterId": "currency_wars_character_34",
+          "starLevel": 1,
+          "standing": "\u524D\u53F0",
+          "equipmentIds": [],
+          "confidence": 0.7075552796934534,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "vision:formation:Bench:1",
+            "summary": "\u9EC4\u6CC9",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00"
+          },
+          "canDriveDecisions": true,
+          "cardRegion": {
+            "x": 0.2635416666666667,
+            "y": 0.7814814814814814,
+            "width": 0.06197916666666667,
+            "height": 0.12685185185185185
+          },
+          "equipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.2635416666666667,
+                "y": 0.9032592592592592,
+                "width": 0.021072916666666667,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:2:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.28399479166666663,
+                "y": 0.9032592592592592,
+                "width": 0.021072916666666667,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:2:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.30444791666666665,
+                "y": 0.9032592592592592,
+                "width": 0.021072916666666667,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:2:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ],
+          "finalEquipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.2635416666666667,
+                "y": 0.9032592592592592,
+                "width": 0.021072916666666667,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:2:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.28399479166666663,
+                "y": 0.9032592592592592,
+                "width": 0.021072916666666667,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:2:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.30444791666666665,
+                "y": 0.9032592592592592,
+                "width": 0.021072916666666667,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:2:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ]
+        },
+        {
+          "zone": "bench",
+          "slotIndex": 2,
+          "characterId": "currency_wars_character_55",
+          "starLevel": 1,
+          "standing": "\u524D\u540E\u53F0",
+          "equipmentIds": [],
+          "confidence": 0.6908520743686508,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "vision:formation:Bench:2",
+            "summary": "\u7F07\u5B9D",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00"
+          },
+          "canDriveDecisions": true,
+          "cardRegion": {
+            "x": 0.3296875,
+            "y": 0.7814814814814814,
+            "width": 0.0609375,
+            "height": 0.12685185185185185
+          },
+          "equipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.3296875,
+                "y": 0.9032592592592592,
+                "width": 0.02071875,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:3:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.349796875,
+                "y": 0.9032592592592592,
+                "width": 0.02071875,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:3:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.36990625,
+                "y": 0.9032592592592592,
+                "width": 0.02071875,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:3:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ],
+          "finalEquipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.3296875,
+                "y": 0.9032592592592592,
+                "width": 0.02071875,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:3:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.349796875,
+                "y": 0.9032592592592592,
+                "width": 0.02071875,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:3:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.36990625,
+                "y": 0.9032592592592592,
+                "width": 0.02071875,
+                "height": 0.0405925925925926
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+                "locator": "vision:advanced-equipment-empty:Bench:3:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ]
+        }
+      ],
+      "confidence": 0,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "vision:formation-slots",
+          "summary": "\u8BC6\u522B\u5230 8 \u4E2A\u89D2\u8272\uFF1B2 \u4E2A\u69FD\u4F4D\u6682\u4E0D\u53EF\u89C1\u6216\u4E0D\u786E\u5B9A\u3002",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00"
+        }
+      ],
+      "uncertainty": [
+        "\u9635\u5BB9\u5305\u542B\u672A\u8BC6\u522B\u89D2\u8272\u6216\u7279\u6B8A\u5360\u7528\u5355\u4F4D\uFF1B\u5DF2\u8BC6\u522B\u69FD\u4F4D\u4ECD\u4F5C\u4E3A\u6B8B\u7F3A\u8BC1\u636E\u4FDD\u7559\u3002"
+      ],
+      "observedAt": "2026-08-06T05:02:44.6790644+00:00"
+    },
+    "activeSynergies": {
+      "status": "stale",
+      "value": [
+        {
+          "synergyId": "bond_\u51CF\u76CA",
+          "slotKey": "Synergy-1",
+          "confidence": 1,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "named:Synergy:Synergy-1",
+            "summary": "\u51CF\u76CA",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+            "confidence": 1
+          }
+        },
+        {
+          "synergyId": "bond_\u5DE1\u6D77\u6E38\u4FA0",
+          "slotKey": "Synergy-2",
+          "confidence": 1,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "named:Synergy:Synergy-2",
+            "summary": "\u5DE1\u6D77\u6E38\u4FA0",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+            "confidence": 1
+          }
+        },
+        {
+          "synergyId": "bond_\u51FB\u7834",
+          "slotKey": "Synergy-3",
+          "confidence": 1,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "named:Synergy:Synergy-3",
+            "summary": "\u51FB\u7834",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+            "confidence": 1
+          }
+        },
+        {
+          "synergyId": "bond_\u8FFD\u51FB",
+          "slotKey": "Synergy-4",
+          "confidence": 1,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "named:Synergy:Synergy-4",
+            "summary": "\u8FFD\u51FB",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+            "confidence": 1
+          }
+        },
+        {
+          "synergyId": "bond_\u591C\u4E4B\u534A\u795E",
+          "slotKey": "Synergy-5",
+          "confidence": 1,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "named:Synergy:Synergy-5",
+            "summary": "\u591C\u4E4B\u534A\u795E",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+            "confidence": 1
+          }
+        },
+        {
+          "synergyId": "bond_\u661F\u6838\u730E\u624B",
+          "slotKey": "Synergy-7",
+          "confidence": 1,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "named:Synergy:Synergy-7",
+            "summary": "\u661F\u6838\u730E\u624B",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+            "confidence": 1
+          }
+        }
+      ],
+      "confidence": 0,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "named:Synergy:Synergy-1",
+          "summary": "\u51CF\u76CA",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+          "confidence": 1
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "named:Synergy:Synergy-2",
+          "summary": "\u5DE1\u6D77\u6E38\u4FA0",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+          "confidence": 1
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "named:Synergy:Synergy-3",
+          "summary": "\u51FB\u7834",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+          "confidence": 1
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "named:Synergy:Synergy-4",
+          "summary": "\u8FFD\u51FB",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+          "confidence": 1
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "named:Synergy:Synergy-5",
+          "summary": "\u591C\u4E4B\u534A\u795E",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+          "confidence": 1
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "named:Synergy:Synergy-7",
+          "summary": "\u661F\u6838\u730E\u624B",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+          "confidence": 1
+        }
+      ],
+      "uncertainty": [
+        "\u5DF2\u6FC0\u6D3B\u7F81\u7ECA\u5728\u5F53\u524D\u5E27\u6682\u4E0D\u53EF\u89C1\uFF1B\u6CBF\u7528\u6700\u8FD1\u4E00\u6B21\u53EF\u9760\u503C\uFF0C\u53EF\u80FD\u5DF2\u8FC7\u671F\u3002"
+      ],
+      "observedAt": "2026-08-06T05:02:44.6790644+00:00"
+    },
+    "dismantleToolCount": {
+      "status": "stale",
+      "value": 2,
+      "confidence": 0,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "ocr:dismantle-tools",
+          "summary": "H2",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00"
+        }
+      ],
+      "uncertainty": [
+        "\u62C6\u89E3\u5DE5\u5177\u5728\u5F53\u524D\u5E27\u6682\u4E0D\u53EF\u89C1\uFF1B\u6CBF\u7528\u6700\u8FD1\u4E00\u6B21\u53EF\u9760\u503C\uFF0C\u53EF\u80FD\u5DF2\u8FC7\u671F\u3002"
+      ],
+      "observedAt": "2026-08-06T05:02:44.6790644+00:00"
+    },
+    "simpleEquipmentIds": {
+      "status": "stale",
+      "value": [
+        "currency_wars_equipment_042",
+        "currency_wars_equipment_045",
+        "currency_wars_equipment_042",
+        "currency_wars_equipment_043"
+      ],
+      "confidence": 0,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "vision:inventory:SimpleEquipment",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00"
+        }
+      ],
+      "uncertainty": [
+        "\u7B80\u6613\u88C5\u5907\u5728\u5F53\u524D\u5E27\u6682\u4E0D\u53EF\u89C1\uFF1B\u6CBF\u7528\u6700\u8FD1\u4E00\u6B21\u53EF\u9760\u503C\uFF0C\u53EF\u80FD\u5DF2\u8FC7\u671F\u3002"
+      ],
+      "observedAt": "2026-08-06T05:02:44.6790644+00:00"
+    },
+    "specialItemIds": {
+      "status": "stale",
+      "value": [],
+      "confidence": 0,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "vision:inventory:SpecialItem",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00"
+        }
+      ],
+      "uncertainty": [
+        "\u7279\u6B8A\u7269\u54C1\u5728\u5F53\u524D\u5E27\u6682\u4E0D\u53EF\u89C1\uFF1B\u6CBF\u7528\u6700\u8FD1\u4E00\u6B21\u53EF\u9760\u503C\uFF0C\u53EF\u80FD\u5DF2\u8FC7\u671F\u3002"
+      ],
+      "observedAt": "2026-08-06T05:02:44.6790644+00:00"
+    },
+    "inventorySlots": {
+      "status": "stale",
+      "value": [
+        {
+          "slotIndex": 0,
+          "occupancy": "equipped",
+          "itemKind": "simpleEquipment",
+          "itemId": "currency_wars_equipment_042",
+          "candidateItemIds": [
+            "currency_wars_equipment_042"
+          ],
+          "confidence": 0.9217354565147793,
+          "region": {
+            "x": 0.94,
+            "y": 0.19,
+            "width": 0.04,
+            "height": 0.071
+          },
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "crop:inventory-item:1",
+            "summary": "2560x1440",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+            "confidence": 0.9217354565147793
+          },
+          "canDriveDecisions": true
+        },
+        {
+          "slotIndex": 1,
+          "occupancy": "equipped",
+          "itemKind": "simpleEquipment",
+          "itemId": "currency_wars_equipment_045",
+          "candidateItemIds": [
+            "currency_wars_equipment_045"
+          ],
+          "confidence": 0.9131538280062677,
+          "region": {
+            "x": 0.94,
+            "y": 0.265,
+            "width": 0.04,
+            "height": 0.071
+          },
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "crop:inventory-item:2",
+            "summary": "2560x1440",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+            "confidence": 0.9131538280062677
+          },
+          "canDriveDecisions": true
+        },
+        {
+          "slotIndex": 2,
+          "occupancy": "equipped",
+          "itemKind": "simpleEquipment",
+          "itemId": "currency_wars_equipment_042",
+          "candidateItemIds": [
+            "currency_wars_equipment_042"
+          ],
+          "confidence": 0.8965146349865436,
+          "region": {
+            "x": 0.94,
+            "y": 0.33999999999999997,
+            "width": 0.04,
+            "height": 0.071
+          },
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+            "locator": "crop:inventory-item:3",
+            "summary": "2560x1440",
+            "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+            "confidence": 0.8965146349865436
+          },
+          "canDriveDecisions": true
+        },
+        {
+          "slotIndex": 3,
+          "occupancy": "empty",
+          "itemKind": "unknown",
+          "candidateItemIds": [],
+          "confidence": 0.9,
+          "region": {
+            "x": 0.94,
+            "y": 0.415,
+            "width": 0.04,
+            "height": 0.071
+          },
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050141475.png",
+            "locator": "vision:inventory-empty:4",
+            "summary": "2560x1440",
+            "capturedAt": "2026-08-06T05:01:41.4753924+00:00",
+            "confidence": 0.9
+          },
+          "canDriveDecisions": true
+        }
+      ],
+      "confidence": 0,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045954617.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:54.6177546+00:00",
+          "confidence": 0.9217351644520199
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045954617.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:54.6177546+00:00",
+          "confidence": 0.9253769628795216
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045954617.png",
+          "locator": "vision:inventory-empty:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:54.6177546+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045954617.png",
+          "locator": "vision:inventory-empty:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:54.6177546+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.9217435449490242
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.9253760658296177
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:inventory-empty:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:inventory-empty:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.9217438995966606
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.9253758363517355
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:inventory-empty:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:inventory-empty:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050007545.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:07.5459271+00:00",
+          "confidence": 0.9217436909804039
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050007545.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:07.5459271+00:00",
+          "confidence": 0.925375857213361
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050007545.png",
+          "locator": "vision:inventory-empty:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:07.5459271+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050007545.png",
+          "locator": "vision:inventory-empty:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:07.5459271+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050009700.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:09.7007701+00:00",
+          "confidence": 0.9217438995966606
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050009700.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:09.7007701+00:00",
+          "confidence": 0.925375857213361
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050009700.png",
+          "locator": "vision:inventory-empty:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:09.7007701+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050009700.png",
+          "locator": "vision:inventory-empty:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:09.7007701+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050033885.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:33.885426+00:00",
+          "confidence": 0.9217432320246391
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050033885.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:33.885426+00:00",
+          "confidence": 0.9253881249628761
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050033885.png",
+          "locator": "vision:inventory-empty:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:33.885426+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050033885.png",
+          "locator": "vision:inventory-empty:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:33.885426+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034153.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.1537453+00:00",
+          "confidence": 0.9217433154711419
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034153.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.1537453+00:00",
+          "confidence": 0.9253887090883948
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034153.png",
+          "locator": "vision:inventory-empty:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.1537453+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034153.png",
+          "locator": "vision:inventory-empty:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.1537453+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034417.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.4171938+00:00",
+          "confidence": 0.9217436701187783
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034417.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.4171938+00:00",
+          "confidence": 0.9253758780749868
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034417.png",
+          "locator": "vision:inventory-empty:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.4171938+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034417.png",
+          "locator": "vision:inventory-empty:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.4171938+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050045114.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:45.114141+00:00",
+          "confidence": 0.9217472578224272
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050045114.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:45.114141+00:00",
+          "confidence": 0.9253916615864817
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050045114.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:45.114141+00:00",
+          "confidence": 0.8994327657174984
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050045114.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:45.114141+00:00",
+          "confidence": 0.8193411230556659
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050049200.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:49.2009893+00:00",
+          "confidence": 0.9217288691064204
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050049200.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:49.2009893+00:00",
+          "confidence": 0.9253917867562358
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050049200.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:49.2009893+00:00",
+          "confidence": 0.8994326822709957
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050049200.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:49.2009893+00:00",
+          "confidence": 0.8196702495455805
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050051452.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:51.4529852+00:00",
+          "confidence": 0.9217300790807093
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050051452.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:51.4529852+00:00",
+          "confidence": 0.925391703309733
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050051452.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:51.4529852+00:00",
+          "confidence": 0.8994327031326215
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050051452.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:51.4529852+00:00",
+          "confidence": 0.8196701372909517
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050052954.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:52.9545316+00:00",
+          "confidence": 0.9217285979052866
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050052954.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:52.9545316+00:00",
+          "confidence": 0.9253759197982381
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050052954.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:52.9545316+00:00",
+          "confidence": 0.8993594521027185
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050052954.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:52.9545316+00:00",
+          "confidence": 0.8198667243361536
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050057427.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:57.4279248+00:00",
+          "confidence": 0.6108539698969164
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050057427.png",
+          "locator": "vision:inventory-empty:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:57.4279248+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050057427.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:57.4279248+00:00",
+          "confidence": 0.4976439018805823
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050057427.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:57.4279248+00:00",
+          "confidence": 0.43065723751601853
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050101642.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:01.6428526+00:00",
+          "confidence": 0.9217352270368969
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050101642.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:01.6428526+00:00",
+          "confidence": 0.9253762327226231
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050101642.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:01.6428526+00:00",
+          "confidence": 0.8994327031326215
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050101642.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:01.6428526+00:00",
+          "confidence": 0.8179082267205733
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050103863.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:03.8635199+00:00",
+          "confidence": 0.9217356859926616
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050103863.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:03.8635199+00:00",
+          "confidence": 0.9253769628795216
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050103863.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:03.8635199+00:00",
+          "confidence": 0.8993323020769246
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050103863.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:03.8635199+00:00",
+          "confidence": 0.817919095627548
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050106010.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:06.0109043+00:00",
+          "confidence": 0.9217356859926616
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050106010.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:06.0109043+00:00",
+          "confidence": 0.9253769628795216
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050106010.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:06.0109043+00:00",
+          "confidence": 0.8993323020769246
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050106010.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:06.0109043+00:00",
+          "confidence": 0.8179195128600615
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050108013.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:08.0136675+00:00",
+          "confidence": 0.9217352270368969
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050108013.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:08.0136675+00:00",
+          "confidence": 0.9253769628795216
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050108013.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:08.0136675+00:00",
+          "confidence": 0.8993323020769246
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050108013.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:08.0136675+00:00",
+          "confidence": 0.8179187618415373
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050110015.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:10.015644+00:00",
+          "confidence": 0.9217356859926616
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050110015.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:10.015644+00:00",
+          "confidence": 0.9253769628795216
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050110015.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:10.015644+00:00",
+          "confidence": 0.8993323020769246
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050110015.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:10.015644+00:00",
+          "confidence": 0.8179195128600615
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050112032.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:12.0326346+00:00",
+          "confidence": 0.9217349558357631
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050112032.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:12.0326346+00:00",
+          "confidence": 0.9253754399808476
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050112032.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:12.0326346+00:00",
+          "confidence": 0.8994327031326215
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050112032.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:12.0326346+00:00",
+          "confidence": 0.8179066412370223
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050116386.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:16.3863488+00:00",
+          "confidence": 0.9217354565147793
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050116386.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:16.3863488+00:00",
+          "confidence": 0.9253762327226231
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050116386.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:16.3863488+00:00",
+          "confidence": 0.8994327031326215
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050116386.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:16.3863488+00:00",
+          "confidence": 0.8179103546063917
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050141475.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:41.4753924+00:00",
+          "confidence": 0.9217353939299023
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050141475.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:41.4753924+00:00",
+          "confidence": 0.9253762327226231
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050141475.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:41.4753924+00:00",
+          "confidence": 0.8993323020769246
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050141475.png",
+          "locator": "vision:inventory-empty:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:41.4753924+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050158441.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:58.4417061+00:00",
+          "confidence": 0.9217353939299023
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050158441.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:58.4417061+00:00",
+          "confidence": 0.9253769628795216
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050158441.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:58.4417061+00:00",
+          "confidence": 0.8993323020769246
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050158441.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:58.4417061+00:00",
+          "confidence": 0.8179201804320829
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050206744.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:06.7449576+00:00",
+          "confidence": 0.9217354565147793
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050206744.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:06.7449576+00:00",
+          "confidence": 0.9253769628795216
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050206744.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:06.7449576+00:00",
+          "confidence": 0.8993323020769246
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050206744.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:06.7449576+00:00",
+          "confidence": 0.8179155491511839
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050208879.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:08.8792265+00:00",
+          "confidence": 0.9217354565147793
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050208879.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:08.8792265+00:00",
+          "confidence": 0.9253769628795216
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050208879.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:08.8792265+00:00",
+          "confidence": 0.8993323020769246
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050208879.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:08.8792265+00:00",
+          "confidence": 0.8179169260184782
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050217424.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:17.4247412+00:00",
+          "confidence": 0.9217356859926616
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050217424.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:17.4247412+00:00",
+          "confidence": 0.9131541200690272
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050217424.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:17.4247412+00:00",
+          "confidence": 0.8965146349865436
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050217424.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:17.4247412+00:00",
+          "confidence": 0.824398655920495
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050217673.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:17.673862+00:00",
+          "confidence": 0.9217356859926616
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050217673.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:17.673862+00:00",
+          "confidence": 0.9131541200690272
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050217673.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:17.673862+00:00",
+          "confidence": 0.8965146349865436
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050217673.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:17.673862+00:00",
+          "confidence": 0.8243994278006448
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050233124.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:33.1248453+00:00",
+          "confidence": 0.921729265477308
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050233124.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:33.1248453+00:00",
+          "confidence": 0.9131740743756627
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050233124.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:33.1248453+00:00",
+          "confidence": 0.8965281292247174
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050233124.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:33.1248453+00:00",
+          "confidence": 0.8237668192855542
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050235186.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:35.1865521+00:00",
+          "confidence": 0.9217220008215139
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050235186.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:35.1865521+00:00",
+          "confidence": 0.9131486967939125
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050235186.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:35.1865521+00:00",
+          "confidence": 0.8965306163269582
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050235186.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:35.1865521+00:00",
+          "confidence": 0.8181151582894521
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050236008.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:36.0081707+00:00",
+          "confidence": 0.9217293489238108
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050236008.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:36.0081707+00:00",
+          "confidence": 0.9131688181791205
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050236008.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:36.0081707+00:00",
+          "confidence": 0.8965313464838567
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050236008.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:36.0081707+00:00",
+          "confidence": 0.8187241572610569
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+          "confidence": 0.9217354565147793
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+          "confidence": 0.9131538280062677
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "crop:inventory-item:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+          "confidence": 0.8965146349865436
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "crop:inventory-item:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+          "confidence": 0.8243988228135004
+        }
+      ],
+      "uncertainty": [
+        "not observed",
+        "\u5F53\u524D\u5E27\u65E0\u6CD5\u786E\u8BA4\uFF1B\u65AD\u70B9\u4FDD\u7559\u4E0A\u4E00\u5E27\u53EF\u9760\u503C\u5E76\u6807\u8BB0\u4E3A\u5DF2\u8FC7\u671F\u3002"
+      ],
+      "observedAt": "2026-08-06T05:02:44.6790644+00:00"
+    },
+    "negativeAffixIds": {
+      "status": "unknown",
+      "value": [],
+      "confidence": 0,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045950415.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:50.4155988+00:00",
+          "confidence": 0.45235076546669006
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045950415.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:50.4155988+00:00",
+          "confidence": 0.3130172789096832
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045950415.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:50.4155988+00:00",
+          "confidence": 0.24487189948558807
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045950415.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:50.4155988+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045952489.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:52.489645+00:00",
+          "confidence": 0.45235076546669006
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045952489.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:52.489645+00:00",
+          "confidence": 0.3130172789096832
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045952489.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:52.489645+00:00",
+          "confidence": 0.24487189948558807
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045952489.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:52.489645+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045954617.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:54.6177546+00:00",
+          "confidence": 0.45235076546669006
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045954617.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:54.6177546+00:00",
+          "confidence": 0.3130172789096832
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045954617.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:54.6177546+00:00",
+          "confidence": 0.24487189948558807
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045954617.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:54.6177546+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045956605.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:56.6054217+00:00",
+          "confidence": 0.28072115778923035
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045956605.png",
+          "locator": "vision:NegativeAffix:2",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T04:59:56.6054217+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045956605.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:56.6054217+00:00",
+          "confidence": 0.34144511818885803
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045956605.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:56.6054217+00:00",
+          "confidence": 0.3014713525772095
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050001011.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:00:01.0112124+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050001011.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:01.0112124+00:00",
+          "confidence": 0.3355201482772827
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050001011.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:01.0112124+00:00",
+          "confidence": 0.24710768461227417
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050001011.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:01.0112124+00:00",
+          "confidence": 0.2639414966106415
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.3355201482772827
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.24710768461227417
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.2639414966106415
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.3355201482772827
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.24710768461227417
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.2639414966106415
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050010821.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:10.8217622+00:00",
+          "confidence": 0.45235076546669006
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050010821.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:10.8217622+00:00",
+          "confidence": 0.3130172789096832
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050010821.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:10.8217622+00:00",
+          "confidence": 0.24487189948558807
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050010821.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:10.8217622+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.2876012921333313
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.45894938707351685
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.24487189948558807
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050027381.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:27.381072+00:00",
+          "confidence": 0.3115032911300659
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050027381.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:27.381072+00:00",
+          "confidence": 0.28814348578453064
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050027381.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:27.381072+00:00",
+          "confidence": 0.2389465868473053
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050027381.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:27.381072+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050027998.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:27.9989478+00:00",
+          "confidence": 0.3115032911300659
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050027998.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:27.9989478+00:00",
+          "confidence": 0.28814348578453064
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050027998.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:27.9989478+00:00",
+          "confidence": 0.2389465868473053
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050027998.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:27.9989478+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050029178.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:29.1786532+00:00",
+          "confidence": 0.3115032911300659
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050029178.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:29.1786532+00:00",
+          "confidence": 0.28814348578453064
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050029178.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:29.1786532+00:00",
+          "confidence": 0.2389465868473053
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050029178.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:29.1786532+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050030087.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:00:30.0877366+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050030087.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:30.0877366+00:00",
+          "confidence": 0.3917100131511688
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050030087.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:30.0877366+00:00",
+          "confidence": 0.28274956345558167
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050030087.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:30.0877366+00:00",
+          "confidence": 0.3288052976131439
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034153.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:00:34.1537453+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034153.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.1537453+00:00",
+          "confidence": 0.3355201482772827
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034153.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.1537453+00:00",
+          "confidence": 0.24740292131900787
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034153.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.1537453+00:00",
+          "confidence": 0.2639414966106415
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050033885.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:00:33.885426+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050033885.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:33.885426+00:00",
+          "confidence": 0.3355201482772827
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050033885.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:33.885426+00:00",
+          "confidence": 0.24740292131900787
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050033885.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:33.885426+00:00",
+          "confidence": 0.2639414966106415
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034801.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.801834+00:00",
+          "confidence": 0.3115032911300659
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034801.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.801834+00:00",
+          "confidence": 0.28814348578453064
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034801.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.801834+00:00",
+          "confidence": 0.2389465868473053
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034801.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.801834+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050040432.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:40.432081+00:00",
+          "confidence": 0.30967089533805847
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050040432.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:40.432081+00:00",
+          "confidence": 0.2451605200767517
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050040432.png",
+          "locator": "vision:NegativeAffix:3",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:00:40.432081+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050040432.png",
+          "locator": "vision:NegativeAffix:4",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:00:40.432081+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050042926.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:00:42.9266892+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050042926.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:42.9266892+00:00",
+          "confidence": 0.3355201482772827
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050042926.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:42.9266892+00:00",
+          "confidence": 0.24740292131900787
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050042926.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:42.9266892+00:00",
+          "confidence": 0.2639414966106415
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050045114.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:00:45.114141+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050045114.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:45.114141+00:00",
+          "confidence": 0.3355201482772827
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050045114.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:45.114141+00:00",
+          "confidence": 0.24740292131900787
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050045114.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:45.114141+00:00",
+          "confidence": 0.2639414966106415
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050047161.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:00:47.1619617+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050047161.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:47.1619617+00:00",
+          "confidence": 0.3355201482772827
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050047161.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:47.1619617+00:00",
+          "confidence": 0.24740292131900787
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050047161.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:47.1619617+00:00",
+          "confidence": 0.2639414966106415
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050055257.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:55.2579058+00:00",
+          "confidence": 0.3115032911300659
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050055257.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:55.2579058+00:00",
+          "confidence": 0.28814348578453064
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050055257.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:55.2579058+00:00",
+          "confidence": 0.2389465868473053
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050055257.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:55.2579058+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050057427.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:57.4279248+00:00",
+          "confidence": 0.3115032911300659
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050057427.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:57.4279248+00:00",
+          "confidence": 0.28814348578453064
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050057427.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:57.4279248+00:00",
+          "confidence": 0.2389465868473053
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050057427.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:57.4279248+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050059522.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:59.5226132+00:00",
+          "confidence": 0.3115032911300659
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050059522.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:59.5226132+00:00",
+          "confidence": 0.28814348578453064
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050059522.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:59.5226132+00:00",
+          "confidence": 0.2389465868473053
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050059522.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:59.5226132+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050118160.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:18.1601814+00:00",
+          "confidence": 0.20431844890117645
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050118160.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:18.1601814+00:00",
+          "confidence": 0.41465866565704346
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050118160.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:18.1601814+00:00",
+          "confidence": 0.31955206394195557
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050118160.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:18.1601814+00:00",
+          "confidence": 0.3319823443889618
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050121695.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:01:21.6953287+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050121695.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:21.6953287+00:00",
+          "confidence": 0.3355201482772827
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050121695.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:21.6953287+00:00",
+          "confidence": 0.24740292131900787
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050121695.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:21.6953287+00:00",
+          "confidence": 0.2639414966106415
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050136588.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:36.5888338+00:00",
+          "confidence": 0.234002023935318
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050136588.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:36.5888338+00:00",
+          "confidence": 0.2634020149707794
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050136588.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:36.5888338+00:00",
+          "confidence": 0.22249050438404083
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050136588.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:36.5888338+00:00",
+          "confidence": 0.34335556626319885
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050137138.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:37.1386949+00:00",
+          "confidence": 0.234002023935318
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050137138.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:37.1386949+00:00",
+          "confidence": 0.2634020149707794
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050137138.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:37.1386949+00:00",
+          "confidence": 0.22249050438404083
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050137138.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:37.1386949+00:00",
+          "confidence": 0.346937894821167
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050139275.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:39.2751463+00:00",
+          "confidence": 0.234002023935318
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050139275.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:39.2751463+00:00",
+          "confidence": 0.2634020149707794
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050139275.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:39.2751463+00:00",
+          "confidence": 0.22095663845539093
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050139275.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:39.2751463+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050141475.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:41.4753924+00:00",
+          "confidence": 0.234002023935318
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050141475.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:41.4753924+00:00",
+          "confidence": 0.2634020149707794
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050141475.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:41.4753924+00:00",
+          "confidence": 0.22095663845539093
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050141475.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:41.4753924+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050159011.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:01:59.0110442+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050159011.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:59.0110442+00:00",
+          "confidence": 0.3755701184272766
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050159011.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:59.0110442+00:00",
+          "confidence": 0.3016040027141571
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050159011.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:59.0110442+00:00",
+          "confidence": 0.343277245759964
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050204597.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:04.5976645+00:00",
+          "confidence": 0.234002023935318
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050204597.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:04.5976645+00:00",
+          "confidence": 0.2634020149707794
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050204597.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:04.5976645+00:00",
+          "confidence": 0.22095663845539093
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050204597.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:04.5976645+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050206744.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:06.7449576+00:00",
+          "confidence": 0.234002023935318
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050206744.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:06.7449576+00:00",
+          "confidence": 0.2634020149707794
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050206744.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:06.7449576+00:00",
+          "confidence": 0.22095663845539093
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050206744.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:06.7449576+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050208879.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:08.8792265+00:00",
+          "confidence": 0.234002023935318
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050208879.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:08.8792265+00:00",
+          "confidence": 0.2634020149707794
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050208879.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:08.8792265+00:00",
+          "confidence": 0.22095663845539093
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050208879.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:08.8792265+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050218310.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:02:18.3106357+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050218310.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:18.3106357+00:00",
+          "confidence": 0.3838872015476227
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050218310.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:18.3106357+00:00",
+          "confidence": 0.33498334884643555
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050218310.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:18.3106357+00:00",
+          "confidence": 0.34274569153785706
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050222359.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:22.3593191+00:00",
+          "confidence": 0.3020718991756439
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050222359.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:22.3593191+00:00",
+          "confidence": 0.13728809356689453
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050222359.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:22.3593191+00:00",
+          "confidence": 0.41381388902664185
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050222359.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:22.3593191+00:00",
+          "confidence": 0.263736754655838
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050224580.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:02:24.5805812+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050224580.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:24.5805812+00:00",
+          "confidence": 0.351075142621994
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050224580.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:24.5805812+00:00",
+          "confidence": 0.2744715213775635
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050224580.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:24.5805812+00:00",
+          "confidence": 0.3046611547470093
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050226697.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:02:26.6970819+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050226697.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:26.6970819+00:00",
+          "confidence": 0.3355201482772827
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050226697.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:26.6970819+00:00",
+          "confidence": 0.24740292131900787
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050226697.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:26.6970819+00:00",
+          "confidence": 0.2639414966106415
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050228987.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:02:28.987014+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050228987.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:28.987014+00:00",
+          "confidence": 0.3355201482772827
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050228987.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:28.987014+00:00",
+          "confidence": 0.24740292131900787
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050228987.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:28.987014+00:00",
+          "confidence": 0.2639414966106415
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050236312.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:36.3120339+00:00",
+          "confidence": -1
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050236312.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:36.3120339+00:00",
+          "confidence": 0.2505778670310974
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050236312.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:36.3120339+00:00",
+          "confidence": 0.18008610606193542
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050236312.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:36.3120339+00:00",
+          "confidence": 0.21437856554985046
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050236587.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:36.5879127+00:00",
+          "confidence": 0.234002023935318
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050236587.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:36.5879127+00:00",
+          "confidence": 0.2634020149707794
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050236587.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:36.5879127+00:00",
+          "confidence": 0.21993376314640045
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050236587.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:36.5879127+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050242547.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:42.5479798+00:00",
+          "confidence": 0.234002023935318
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050242547.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:42.5479798+00:00",
+          "confidence": 0.2634020149707794
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050242547.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:42.5479798+00:00",
+          "confidence": 0.22095663845539093
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050242547.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:42.5479798+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+          "confidence": 0.234002023935318
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+          "confidence": 0.2634020149707794
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+          "confidence": 0.22095663845539093
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+          "confidence": 0.3210281729698181
+        }
+      ],
+      "uncertainty": [
+        "template library pending",
+        "negative affixes recognized 0/4; partial identities remain non-authoritative.",
+        "negative-affix \u6CA1\u6709\u5F97\u5230\u53EF\u9760\u7684 OCR \u6216\u7528\u9014\u9650\u5B9A\u56FE\u6807\u8BC1\u636E"
+      ],
+      "observedAt": "2026-08-06T05:02:44.6790644+00:00"
+    },
+    "investmentEnvironmentId": {
+      "status": "known",
+      "value": "investment_environment_011",
+      "confidence": 0.6701998114585876,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045950415.png",
+          "locator": "vision:InvestmentEnvironment:InvestmentEnvironment-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:50.4155988+00:00",
+          "confidence": 0.6701998114585876
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T04:59:50.4155988+00:00"
+    },
+    "investmentStrategyIds": {
+      "status": "unknown",
+      "value": [],
+      "confidence": 0,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.21085648238658905
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.2861824035644531
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.10358335077762604
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.4397677481174469
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.13108713924884796
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.10358335077762604
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050007545.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:07.5459271+00:00",
+          "confidence": 0.3517429828643799
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050007545.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:07.5459271+00:00",
+          "confidence": 0.13452614843845367
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050007545.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:07.5459271+00:00",
+          "confidence": 0.15823251008987427
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050009700.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:09.7007701+00:00",
+          "confidence": 0.28659388422966003
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050009700.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:09.7007701+00:00",
+          "confidence": 0.10358335077762604
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050033885.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:33.885426+00:00",
+          "confidence": 0.4134119153022766
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050033885.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:33.885426+00:00",
+          "confidence": 0.3209737539291382
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034153.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.1537453+00:00",
+          "confidence": 0.4134119153022766
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050034153.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:34.1537453+00:00",
+          "confidence": 0.3209737539291382
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050045114.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:45.114141+00:00",
+          "confidence": 0.4134119153022766
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050045114.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:45.114141+00:00",
+          "confidence": 0.3209737539291382
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050047161.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:47.1619617+00:00",
+          "confidence": 0.4134119153022766
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050047161.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:47.1619617+00:00",
+          "confidence": 0.3209737539291382
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050158441.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:01:58.4417061+00:00",
+          "confidence": 0.47414499521255493
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050206744.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:06.7449576+00:00",
+          "confidence": 0.47475317120552063
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050208879.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:08.8792265+00:00",
+          "confidence": 0.47475317120552063
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050233124.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:33.1248453+00:00",
+          "confidence": -0.023220129311084747
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050233124.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:33.1248453+00:00",
+          "confidence": 0.20813828706741333
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050233124.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:33.1248453+00:00",
+          "confidence": 0.2296486347913742
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050235186.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:35.1865521+00:00",
+          "confidence": 0.28659388422966003
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050235186.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:35.1865521+00:00",
+          "confidence": 0.10358335077762604
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050236008.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:36.0081707+00:00",
+          "confidence": -1
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050244679.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:02:44.6790644+00:00",
+          "confidence": 0.47414499521255493
+        }
+      ],
+      "uncertainty": [
+        "template library pending"
+      ],
+      "observedAt": "2026-08-06T05:02:44.6790644+00:00"
+    },
+    "battleDamage": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "battleSynergyDamage": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "battleUnresolvedDamage": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "battleScreenDamageCandidate": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "settlementDamage": {
+      "status": "unknown",
+      "value": [
+        {
+          "rank": 1,
+          "characterId": "unknown-character-44",
+          "damage": 37312000,
+          "rawText": "3731.2\u4E07",
+          "avatarConfidence": 0.552780270576477,
+          "damageConfidence": 0.75,
+          "avatarRegion": {
+            "x": 0.582,
+            "y": 0.562,
+            "width": 0.04,
+            "height": 0.062
+          },
+          "damageRegion": {
+            "x": 0.622,
+            "y": 0.575,
+            "width": 0.105,
+            "height": 0.052
+          },
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050557624.png",
+            "locator": "partial:settlement-damage-row-1",
+            "summary": "3731.2\u4E07",
+            "capturedAt": "2026-08-06T05:05:57.6248119+00:00",
+            "confidence": 0.552780270576477
+          },
+          "temporaryId": "unknown-character-44",
+          "candidateCharacterIds": [
+            "currency_wars_character_02",
+            "currency_wars_character_36"
+          ],
+          "failureReason": "\u7ED3\u7B97\u4F24\u5BB3\u6570\u503C\u53EF\u8BFB\uFF0C\u4F46\u89D2\u8272\u6216\u7279\u6B8A\u5355\u4F4D\u5934\u50CF\u65E0\u6CD5\u552F\u4E00\u8BC6\u522B\u3002",
+          "canDriveDecisions": false
+        },
+        {
+          "rank": 2,
+          "characterId": "currency_wars_character_40",
+          "damage": 6008000,
+          "rawText": "600.8\u4E07",
+          "avatarConfidence": 0.4815736413002014,
+          "damageConfidence": 0.75,
+          "avatarRegion": {
+            "x": 0.582,
+            "y": 0.637,
+            "width": 0.04,
+            "height": 0.062
+          },
+          "damageRegion": {
+            "x": 0.622,
+            "y": 0.6499999999999999,
+            "width": 0.105,
+            "height": 0.052
+          },
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050557624.png",
+            "locator": "ocr:settlement-damage-row-2",
+            "summary": "600.8\u4E07",
+            "capturedAt": "2026-08-06T05:05:57.6248119+00:00",
+            "confidence": 0.4815736413002014
+          },
+          "canDriveDecisions": true
+        },
+        {
+          "rank": 3,
+          "characterId": "unknown-character-43",
+          "damage": 1620000,
+          "rawText": "162.0\u4E07",
+          "avatarConfidence": 0.20696789026260376,
+          "damageConfidence": 0.75,
+          "avatarRegion": {
+            "x": 0.582,
+            "y": 0.7120000000000001,
+            "width": 0.04,
+            "height": 0.062
+          },
+          "damageRegion": {
+            "x": 0.622,
+            "y": 0.725,
+            "width": 0.105,
+            "height": 0.052
+          },
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050557624.png",
+            "locator": "partial:settlement-damage-row-3",
+            "summary": "162.0\u4E07",
+            "capturedAt": "2026-08-06T05:05:57.6248119+00:00",
+            "confidence": 0.20696789026260376
+          },
+          "temporaryId": "unknown-character-43",
+          "candidateCharacterIds": [
+            "currency_wars_character_58",
+            "currency_wars_character_10",
+            "currency_wars_character_62"
+          ],
+          "failureReason": "\u7ED3\u7B97\u4F24\u5BB3\u6570\u503C\u53EF\u8BFB\uFF0C\u4F46\u89D2\u8272\u6216\u7279\u6B8A\u5355\u4F4D\u5934\u50CF\u65E0\u6CD5\u552F\u4E00\u8BC6\u522B\u3002",
+          "canDriveDecisions": false
+        }
+      ],
+      "confidence": 0,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050557624.png",
+          "locator": "partial:settlement-top-three",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:05:57.6248119+00:00"
+        }
+      ],
+      "uncertainty": [
+        "\u7ED3\u7B97\u524D\u4E09\u540D\u4F24\u5BB3\u6570\u503C\u5B8C\u6574\uFF0C\u4F46\u81F3\u5C11\u4E00\u4E2A\u5934\u50CF\u8EAB\u4EFD\u672A\u77E5\u3002"
+      ],
+      "observedAt": "2026-08-06T05:05:57.6248119+00:00"
+    },
+    "settlementScreenDamageCandidate": {
+      "status": "known",
+      "value": 44940000,
+      "confidence": 0.7,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050557624.png",
+          "locator": "partial:settlement-damage-row-1",
+          "summary": "3731.2\u4E07",
+          "capturedAt": "2026-08-06T05:05:57.6248119+00:00",
+          "confidence": 0.552780270576477
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050557624.png",
+          "locator": "ocr:settlement-damage-row-2",
+          "summary": "600.8\u4E07",
+          "capturedAt": "2026-08-06T05:05:57.6248119+00:00",
+          "confidence": 0.4815736413002014
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050557624.png",
+          "locator": "partial:settlement-damage-row-3",
+          "summary": "162.0\u4E07",
+          "capturedAt": "2026-08-06T05:05:57.6248119+00:00",
+          "confidence": 0.20696789026260376
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:05:57.6248119+00:00"
+    },
+    "settlementGoldReward": {
+      "status": "known",
+      "value": 6,
+      "confidence": 0.65,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050557624.png",
+          "locator": "ocr:settlement-gold-reward",
+          "summary": "6",
+          "capturedAt": "2026-08-06T05:05:57.6248119+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:05:57.6248119+00:00"
+    },
+    "remainingActionValue": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "finalBattle": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "battle has not been finalized"
+      ]
+    },
+    "namedContent": [],
+    "pendingIcons": [
+      {
+        "category": "characterAvatar",
+        "slotKey": "settlement-damage-character-1",
+        "region": {
+          "x": 0.582,
+          "y": 0.562,
+          "width": 0.04,
+          "height": 0.062
+        },
+        "templateId": "currency_wars_character_02",
+        "confidence": 0.552780270576477,
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050557624.png",
+          "locator": "crop:settlement-damage-character:1",
+          "summary": "3731.2\u4E07",
+          "capturedAt": "2026-08-06T05:05:57.6248119+00:00",
+          "confidence": 0.552780270576477
+        },
+        "status": "settlement-character-unresolved",
+        "candidateTemplateIds": [
+          "currency_wars_character_02",
+          "currency_wars_character_36"
+        ],
+        "temporaryId": "unknown-object-49",
+        "recognizedFields": {
+          "damage": "37312000",
+          "rawText": "3731.2\u4E07",
+          "sourceType": "character-or-special-unit"
+        },
+        "canDriveDecisions": false,
+        "cropFile": "unresolved-icons/20260806-050557624-00-CharacterAvatar-settlement-damage-character-1.png"
+      },
+      {
+        "category": "characterAvatar",
+        "slotKey": "settlement-damage-character-3",
+        "region": {
+          "x": 0.582,
+          "y": 0.7120000000000001,
+          "width": 0.04,
+          "height": 0.062
+        },
+        "templateId": "currency_wars_character_58",
+        "confidence": 0.20696789026260376,
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050557624.png",
+          "locator": "crop:settlement-damage-character:3",
+          "summary": "162.0\u4E07",
+          "capturedAt": "2026-08-06T05:05:57.6248119+00:00",
+          "confidence": 0.20696789026260376
+        },
+        "status": "settlement-character-unresolved",
+        "candidateTemplateIds": [
+          "currency_wars_character_58",
+          "currency_wars_character_10",
+          "currency_wars_character_62"
+        ],
+        "temporaryId": "unknown-object-48",
+        "recognizedFields": {
+          "damage": "1620000",
+          "rawText": "162.0\u4E07",
+          "sourceType": "character-or-special-unit"
+        },
+        "canDriveDecisions": false,
+        "cropFile": "unresolved-icons/20260806-050557624-01-CharacterAvatar-settlement-damage-character-3.png"
+      }
+    ],
+    "partialFields": [],
+    "recognitionTrace": [
+      {
+        "field": "nodeId",
+        "nodeId": "1-3",
+        "sourcePageId": "challenge_success",
+        "rawOcr": [
+          "1-3"
+        ],
+        "normalizedValue": "1-3",
+        "status": "known",
+        "confidence": 0.72,
+        "attempt": 1,
+        "region": {
+          "x": 0.4,
+          "y": 0.225,
+          "width": 0.105,
+          "height": 0.07
+        },
+        "capturedAt": "2026-08-06T05:05:57.6248119+00:00"
+      },
+      {
+        "field": "health",
+        "nodeId": "1-3",
+        "sourcePageId": "challenge_success",
+        "rawOcr": [
+          "\u5C0F\u961F\u751F\u547D\u503C 86 \u2460"
+        ],
+        "normalizedValue": "86",
+        "status": "known",
+        "confidence": 0.7,
+        "attempt": 1,
+        "region": {
+          "x": 0.3072916666666667,
+          "y": 0.41203703703703703,
+          "width": 0.171875,
+          "height": 0.09722222222222222
+        },
+        "capturedAt": "2026-08-06T05:05:57.6248119+00:00"
+      },
+      {
+        "field": "settlementGoldReward",
+        "nodeId": "1-3",
+        "sourcePageId": "challenge_success",
+        "rawOcr": [
+          "6"
+        ],
+        "normalizedValue": "6",
+        "status": "known",
+        "confidence": 0.65,
+        "attempt": 1,
+        "region": {
+          "x": 0.26,
+          "y": 0.485,
+          "width": 0.315,
+          "height": 0.075
+        },
+        "capturedAt": "2026-08-06T05:05:57.6248119+00:00"
+      },
+      {
+        "field": "nodeTotalDamage",
+        "nodeId": "1-3",
+        "sourcePageId": "challenge_success",
+        "rawOcr": [
+          "3731.2\u4E07",
+          "600.8\u4E07",
+          "162.0\u4E07"
+        ],
+        "normalizedValue": "44940000",
+        "status": "known",
+        "confidence": 0.7,
+        "attempt": 1,
+        "region": {
+          "x": 0.57,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.31
+        },
+        "capturedAt": "2026-08-06T05:05:57.6248119+00:00"
+      },
+      {
+        "field": "settlementTopThree[1]",
+        "nodeId": "1-3",
+        "sourcePageId": "challenge_success",
+        "rawOcr": [
+          "3731.2\u4E07"
+        ],
+        "normalizedValue": "37312000",
+        "status": "unknown",
+        "confidence": 0.552780270576477,
+        "attempt": 1,
+        "degradationReason": "\u7ED3\u7B97\u4F24\u5BB3\u6570\u503C\u53EF\u8BFB\uFF0C\u4F46\u89D2\u8272\u6216\u7279\u6B8A\u5355\u4F4D\u5934\u50CF\u65E0\u6CD5\u552F\u4E00\u8BC6\u522B\u3002",
+        "region": {
+          "x": 0.622,
+          "y": 0.575,
+          "width": 0.105,
+          "height": 0.052
+        },
+        "capturedAt": "2026-08-06T05:05:57.6248119+00:00",
+        "cropFile": "recognition-failures/20260806-050557624-04-settlementTopThree-1-.png"
+      },
+      {
+        "field": "settlementTopThree[2]",
+        "nodeId": "1-3",
+        "sourcePageId": "challenge_success",
+        "rawOcr": [
+          "600.8\u4E07"
+        ],
+        "normalizedValue": "6008000",
+        "status": "unknown",
+        "confidence": 0.4815736413002014,
+        "attempt": 1,
+        "region": {
+          "x": 0.622,
+          "y": 0.6499999999999999,
+          "width": 0.105,
+          "height": 0.052
+        },
+        "capturedAt": "2026-08-06T05:05:57.6248119+00:00",
+        "cropFile": "recognition-failures/20260806-050557624-05-settlementTopThree-2-.png"
+      },
+      {
+        "field": "settlementTopThree[3]",
+        "nodeId": "1-3",
+        "sourcePageId": "challenge_success",
+        "rawOcr": [
+          "162.0\u4E07"
+        ],
+        "normalizedValue": "1620000",
+        "status": "unknown",
+        "confidence": 0.20696789026260376,
+        "attempt": 1,
+        "degradationReason": "\u7ED3\u7B97\u4F24\u5BB3\u6570\u503C\u53EF\u8BFB\uFF0C\u4F46\u89D2\u8272\u6216\u7279\u6B8A\u5355\u4F4D\u5934\u50CF\u65E0\u6CD5\u552F\u4E00\u8BC6\u522B\u3002",
+        "region": {
+          "x": 0.622,
+          "y": 0.725,
+          "width": 0.105,
+          "height": 0.052
+        },
+        "capturedAt": "2026-08-06T05:05:57.6248119+00:00",
+        "cropFile": "recognition-failures/20260806-050557624-06-settlementTopThree-3-.png"
+      }
+    ],
+    "diagnostics": []
+  }
+}

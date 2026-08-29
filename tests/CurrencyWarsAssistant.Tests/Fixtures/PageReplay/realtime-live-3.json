@@ -1,0 +1,3299 @@
+﻿{
+  "schemaVersion": "1.0.0",
+  "applicationVersion": "0.2.833\u002B6cee296a8d65e4d991cecb63a1c5b43847d9a70e",
+  "analysisId": "20260806-050026413-5071f788d7ac4d3299d1c7bb49ac23cd",
+  "snapshot": {
+    "schemaVersion": "1.0.0",
+    "runId": "run-20260806-125919",
+    "asOf": "2026-08-06T05:00:26.4130191+00:00",
+    "pageId": {
+      "status": "known",
+      "value": "preparation_generic",
+      "confidence": 0.43852171301841736,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "page-classifier:preparation_stage_label=0.439",
+          "summary": "\u5F53\u524D\u5206\u6790\u6240\u7528\u7684\u539F\u59CB\u622A\u56FE\u3002",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "stage": {
+      "status": "known",
+      "value": "preparation_generic",
+      "confidence": 0.43852171301841736,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "page-classifier:preparation_stage_label=0.439",
+          "summary": "\u5F53\u524D\u5206\u6790\u6240\u7528\u7684\u539F\u59CB\u622A\u56FE\u3002",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "economy": {
+      "status": "known",
+      "value": 8,
+      "confidence": 0.65,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "template:economy-wide-candidate",
+          "summary": "style=DarkOnLight; value=unknown; confidence=0.000; runner-up=0.000; reason=No unambiguous digit components were found.",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "template:economy-wide-candidate",
+          "summary": "style=BrightOnDark; value=unknown; confidence=0.000; runner-up=0.000; reason=No unambiguous digit components were found.",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "template:economy-narrow-candidate",
+          "summary": "style=DarkOnLight; value=unknown; confidence=0.000; runner-up=0.000; reason=No unambiguous digit components were found.",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "template:economy-narrow-candidate",
+          "summary": "style=BrightOnDark; value=unknown; confidence=0.000; runner-up=0.000; reason=No unambiguous digit components were found.",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "ocr:economy-wide",
+          "summary": "8",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "ocr:economy-narrow",
+          "summary": "8",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "cumulativeSpend": {
+      "status": "known",
+      "value": 0,
+      "confidence": 0.72,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "template:cumulative-spend-localized-digits",
+          "summary": "value=0; confidence=0.977; runner-up=0.657",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.9768248176574708
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "health": {
+      "status": "known",
+      "value": 82,
+      "confidence": 0.65,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "ocr:health-context",
+          "summary": "82",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "actionPoints": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "currentNodeDamage": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "boardCharacterIds": {
+      "status": "known",
+      "value": [
+        "currency_wars_character_34",
+        "currency_wars_character_04",
+        "currency_wars_character_02"
+      ],
+      "confidence": 0.6380293194482356,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:formation-slots",
+          "summary": "\u8BC6\u522B\u5230 3 \u4E2A\u89D2\u8272\u3002",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "benchCharacterIds": {
+      "status": "known",
+      "value": [],
+      "confidence": 0.6380293194482356,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:formation-slots",
+          "summary": "\u8BC6\u522B\u5230 3 \u4E2A\u89D2\u8272\u3002",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "shopCharacterIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "lineupIds": {
+      "status": "known",
+      "value": [
+        "currency_wars_character_34",
+        "currency_wars_character_04",
+        "currency_wars_character_02"
+      ],
+      "confidence": 0.6380293194482356,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:formation-slots",
+          "summary": "\u8BC6\u522B\u5230 3 \u4E2A\u89D2\u8272\u3002",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "synergyIds": {
+      "status": "known",
+      "value": [
+        "bond_\u5DE1\u6D77\u6E38\u4FA0",
+        "bond_\u71C3\u8840",
+        "bond_\u6218\u6280\u70B9",
+        "bond_\u661F\u6838\u730E\u624B",
+        "bond_\u547D\u8FD0\u5723\u676F"
+      ],
+      "confidence": 1,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "named:Synergy:Synergy-2",
+          "summary": "\u5DE1\u6D77\u6E38\u4FA0",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 1
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "named:Synergy:Synergy-3",
+          "summary": "\u71C3\u8840",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 1
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "named:Synergy:Synergy-4",
+          "summary": "\u6218\u6280\u70B9",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 1
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "named:Synergy:Synergy-5",
+          "summary": "\u661F\u6838\u730E\u624B",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 1
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "named:Synergy:Synergy-6",
+          "summary": "\u547D\u8FD0\u5723\u676F",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 1
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "investmentEnvironmentId": {
+      "status": "known",
+      "value": "investment_environment_011",
+      "confidence": 0.6701998114585876,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045950415.png",
+          "locator": "vision:InvestmentEnvironment:InvestmentEnvironment-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:50.4155988+00:00",
+          "confidence": 0.6701998114585876
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T04:59:50.4155988+00:00"
+    },
+    "investmentStrategyIds": {
+      "status": "known",
+      "value": [],
+      "confidence": 1,
+      "evidence": [],
+      "uncertainty": []
+    },
+    "equipmentIds": {
+      "status": "known",
+      "value": [
+        "currency_wars_equipment_042",
+        "currency_wars_equipment_047"
+      ],
+      "confidence": 0.6380293194482356,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:formation-slots",
+          "summary": "\u8BC6\u522B\u5230 3 \u4E2A\u89D2\u8272\u3002",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:inventory:SimpleEquipment",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "specialItemIds": {
+      "status": "known",
+      "value": [],
+      "confidence": 0.8766151901013584,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:inventory:SpecialItem",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "inventorySlots": {
+      "status": "known",
+      "value": [
+        {
+          "slotIndex": 0,
+          "occupancy": "equipped",
+          "itemKind": "simpleEquipment",
+          "itemId": "currency_wars_equipment_042",
+          "candidateItemIds": [
+            "currency_wars_equipment_042"
+          ],
+          "confidence": 0.9312393318085805,
+          "region": {
+            "x": 0.94,
+            "y": 0.19,
+            "width": 0.04,
+            "height": 0.071
+          },
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+            "locator": "crop:inventory-item:1",
+            "summary": "2560x1440",
+            "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+            "confidence": 0.9312393318085805
+          },
+          "canDriveDecisions": true
+        },
+        {
+          "slotIndex": 1,
+          "occupancy": "equipped",
+          "itemKind": "simpleEquipment",
+          "itemId": "currency_wars_equipment_047",
+          "candidateItemIds": [
+            "currency_wars_equipment_047"
+          ],
+          "confidence": 0.775221428596853,
+          "region": {
+            "x": 0.94,
+            "y": 0.265,
+            "width": 0.04,
+            "height": 0.071
+          },
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+            "locator": "crop:inventory-item:2",
+            "summary": "2560x1440",
+            "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+            "confidence": 0.775221428596853
+          },
+          "canDriveDecisions": true
+        },
+        {
+          "slotIndex": 2,
+          "occupancy": "empty",
+          "itemKind": "unknown",
+          "candidateItemIds": [],
+          "confidence": 0.9,
+          "region": {
+            "x": 0.94,
+            "y": 0.33999999999999997,
+            "width": 0.04,
+            "height": 0.071
+          },
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+            "locator": "vision:inventory-empty:3",
+            "summary": "2560x1440",
+            "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+            "confidence": 0.9
+          },
+          "canDriveDecisions": true
+        },
+        {
+          "slotIndex": 3,
+          "occupancy": "empty",
+          "itemKind": "unknown",
+          "candidateItemIds": [],
+          "confidence": 0.9,
+          "region": {
+            "x": 0.94,
+            "y": 0.415,
+            "width": 0.04,
+            "height": 0.071
+          },
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+            "locator": "vision:inventory-empty:4",
+            "summary": "2560x1440",
+            "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+            "confidence": 0.9
+          },
+          "canDriveDecisions": true
+        }
+      ],
+      "confidence": 0.8766151901013584,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.9312393318085805
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.775221428596853
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:inventory-empty:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:inventory-empty:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.9
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "expertAdvisorIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "enemyIds": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "nodes": [],
+    "appliedEventIds": [],
+    "diagnostics": []
+  },
+  "routeCandidates": [
+    {
+      "guideId": "guide-taptap-828363891523190942",
+      "archetypeId": "archetype-himeko-train-shield",
+      "archetypeName": "\u59EC\u5B50\u00B7\u542F\u884C\uFF1A\u5217\u8F66\u540C\u884C\u62A4\u76FE\u6302\u673A\u6D41",
+      "eligible": true,
+      "score": 33,
+      "confidence": 0.15,
+      "components": [
+        {
+          "name": "eligible",
+          "score": 25,
+          "weight": 1,
+          "explanation": "\u901A\u8FC7\u76EE\u6807\u548C\u7248\u672C\u786C\u8FC7\u6EE4"
+        },
+        {
+          "name": "version",
+          "score": 10,
+          "weight": 1,
+          "explanation": "\u653B\u7565\u4E0E\u5F53\u524D\u7248\u672C\u4E00\u81F4"
+        },
+        {
+          "name": "lineup",
+          "score": 0,
+          "weight": 1,
+          "explanation": "\u547D\u4E2D\u6838\u5FC3\u89D2\u8272 0 \u4E2A\u3001\u53EF\u9009\u89D2\u8272 0 \u4E2A"
+        },
+        {
+          "name": "synergy",
+          "score": 0,
+          "weight": 1,
+          "explanation": "\u547D\u4E2D\u76EE\u6807\u7F81\u7ECA 0 \u4E2A"
+        },
+        {
+          "name": "best_rule",
+          "score": -2,
+          "weight": 1,
+          "explanation": "\u7B2C\u4E00\u4F4D\u9762\u5148\u7528\u4F4E\u8D39\u6DF7\u5408\u7F81\u7ECA\u7A33\u5B9A\u8FC7\u6E21"
+        }
+      ],
+      "warnings": [],
+      "missingInformation": []
+    }
+  ],
+  "recommendations": [
+    {
+      "recommendationId": "no-action",
+      "guideId": "none",
+      "priority": 1,
+      "action": "\u6682\u4E0D\u5EFA\u8BAE\u64CD\u4F5C",
+      "isNoAction": true,
+      "confidence": 1,
+      "reasons": [
+        "\u5F53\u524D\u8BC1\u636E\u4E0D\u8DB3\u4EE5\u652F\u6301\u653B\u7565\u4E2D\u7684\u5177\u4F53\u52A8\u4F5C\u3002"
+      ],
+      "benefits": [],
+      "costs": [],
+      "risks": [
+        "\u5728\u8BC1\u636E\u4E0D\u8DB3\u65F6\u64CD\u4F5C\u53EF\u80FD\u9020\u6210\u4E0D\u53EF\u9006\u7684\u8D44\u6E90\u635F\u5931\u3002"
+      ],
+      "preconditions": [],
+      "invalidatesWhen": [
+        "\u83B7\u5F97\u65B0\u7684\u53EF\u9760\u8BC6\u522B\u8BC1\u636E\u3002"
+      ],
+      "missingInformation": [],
+      "sources": []
+    }
+  ],
+  "warnings": [
+    "\u6295\u8D44\u73AF\u5883\u6CBF\u7528\u672C\u5C40\u5DF2\u786E\u8BA4\u7ED3\u679C\uFF1B\u5F53\u524D\u5E27\u672A\u91CD\u590D\u8BC6\u522B\u3002",
+    "\u91D1\u5E01\u73B0\u6709\u8BC6\u522B\u7ED3\u679C\u4E0D\u786E\u5B9A\uFF1B\u672A\u5C06\u5176\u731C\u6210\u786E\u5B9A\u503C\u3002",
+    "\u4EE5\u4E0B\u5B57\u6BB5\u5728\u8FD9\u5F20\u622A\u56FE\u4E2D\u4E0D\u53EF\u53EF\u9760\u786E\u5B9A\uFF1AactionPoints(Unknown)\u3001damage(Unknown)\u3001shop(Unknown)\u3001expertAdvisors(Unknown)\u3001enemies(Unknown)"
+  ],
+  "unknownFields": [
+    "actionPoints(Unknown)",
+    "damage(Unknown)",
+    "shop(Unknown)",
+    "expertAdvisors(Unknown)",
+    "enemies(Unknown)"
+  ],
+  "operationalState": {
+    "pageFamily": "preparation",
+    "pageId": "preparation_generic",
+    "nodeId": {
+      "status": "known",
+      "value": "1-2",
+      "confidence": 0.72,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "ocr:preparation-node",
+          "summary": "1-2",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "enemyDifficulty": {
+      "status": "known",
+      "value": 120,
+      "confidence": 0.65,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "ocr:enemy-difficulty",
+          "summary": "120",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "storeLevel": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "interest": {
+      "status": "stale",
+      "value": 1,
+      "confidence": 0,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050009700.png",
+          "locator": "template:interest-localized-digits",
+          "summary": "value=1; confidence=0.901; runner-up=0.553",
+          "capturedAt": "2026-08-06T05:00:09.7007701+00:00",
+          "confidence": 0.9006407260894775
+        }
+      ],
+      "uncertainty": [
+        "\u5229\u606F\u5728\u5F53\u524D\u5E27\u6682\u4E0D\u53EF\u89C1\uFF1B\u6CBF\u7528\u6700\u8FD1\u4E00\u6B21\u53EF\u9760\u503C\uFF0C\u53EF\u80FD\u5DF2\u8FC7\u671F\u3002"
+      ],
+      "observedAt": "2026-08-06T05:00:09.7007701+00:00"
+    },
+    "cumulativeSpend": {
+      "status": "known",
+      "value": 0,
+      "confidence": 0.72,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "template:cumulative-spend-localized-digits",
+          "summary": "value=0; confidence=0.977; runner-up=0.657",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.9768248176574708
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "playerProgress": {
+      "status": "stale",
+      "value": {
+        "level": 3,
+        "experience": 0,
+        "experienceToNextLevel": 4
+      },
+      "confidence": 0,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050009700.png",
+          "locator": "ocr:player-progress\u002Blocalized-level",
+          "summary": "\u5C71\u5E97 0/4 | localized-level=3",
+          "capturedAt": "2026-08-06T05:00:09.7007701+00:00"
+        }
+      ],
+      "uncertainty": [
+        "\u73A9\u5BB6\u8FDB\u5EA6\u5728\u5F53\u524D\u5E27\u6682\u4E0D\u53EF\u89C1\uFF1B\u6CBF\u7528\u6700\u8FD1\u4E00\u6B21\u53EF\u9760\u503C\uFF0C\u53EF\u80FD\u5DF2\u8FC7\u671F\u3002"
+      ],
+      "observedAt": "2026-08-06T05:00:09.7007701+00:00"
+    },
+    "formation": {
+      "status": "known",
+      "value": [
+        {
+          "zone": "front",
+          "slotIndex": 0,
+          "characterId": "currency_wars_character_34",
+          "standing": "\u524D\u53F0",
+          "equipmentIds": [],
+          "confidence": 0.6561216167332857,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+            "locator": "vision:formation:Front:0",
+            "summary": "\u9EC4\u6CC9",
+            "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+          },
+          "canDriveDecisions": true,
+          "cardRegion": {
+            "x": 0.3546875,
+            "y": 0.30462962962962964,
+            "width": 0.06666666666666667,
+            "height": 0.12962962962962962
+          },
+          "equipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.3546875,
+                "y": 0.42907407407407405,
+                "width": 0.02266666666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Front:1:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.3766875,
+                "y": 0.42907407407407405,
+                "width": 0.02266666666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Front:1:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.39868750000000003,
+                "y": 0.42907407407407405,
+                "width": 0.02266666666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Front:1:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ],
+          "finalEquipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.3546875,
+                "y": 0.42907407407407405,
+                "width": 0.02266666666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Front:1:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.3766875,
+                "y": 0.42907407407407405,
+                "width": 0.02266666666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Front:1:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.39868750000000003,
+                "y": 0.42907407407407405,
+                "width": 0.02266666666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Front:1:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ]
+        },
+        {
+          "zone": "front",
+          "slotIndex": 1,
+          "characterId": "currency_wars_character_04",
+          "standing": "\u524D\u540E\u53F0",
+          "equipmentIds": [],
+          "confidence": 0.636253521147456,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+            "locator": "vision:formation:Front:1",
+            "summary": "\u8FDC\u5742\u51DB",
+            "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+          },
+          "canDriveDecisions": true,
+          "cardRegion": {
+            "x": 0.43072916666666666,
+            "y": 0.30462962962962964,
+            "width": 0.06354166666666666,
+            "height": 0.12962962962962962
+          },
+          "equipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.43072916666666666,
+                "y": 0.42907407407407405,
+                "width": 0.021604166666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Front:2:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.45169791666666664,
+                "y": 0.42907407407407405,
+                "width": 0.021604166666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Front:2:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.4726666666666667,
+                "y": 0.42907407407407405,
+                "width": 0.021604166666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Front:2:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ],
+          "finalEquipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.43072916666666666,
+                "y": 0.42907407407407405,
+                "width": 0.021604166666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Front:2:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.45169791666666664,
+                "y": 0.42907407407407405,
+                "width": 0.021604166666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Front:2:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.4726666666666667,
+                "y": 0.42907407407407405,
+                "width": 0.021604166666666667,
+                "height": 0.04148148148148149
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Front:2:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ]
+        },
+        {
+          "zone": "back",
+          "slotIndex": 5,
+          "characterId": "currency_wars_character_02",
+          "starLevel": 1,
+          "standing": "\u540E\u53F0",
+          "equipmentIds": [],
+          "confidence": 0.621712820463965,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+            "locator": "vision:formation:Back:5",
+            "summary": "\u5343\u51B6\u2022\u5203",
+            "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+          },
+          "canDriveDecisions": true,
+          "cardRegion": {
+            "x": 0.3578125,
+            "y": 0.5555555555555556,
+            "width": 0.06770833333333333,
+            "height": 0.13425925925925927
+          },
+          "equipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.3578125,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Back:6:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.38015625,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Back:6:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.40249999999999997,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Back:6:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ],
+          "finalEquipmentSlots": [
+            {
+              "slotIndex": 0,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.3578125,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Back:6:1",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 1,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.38015625,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Back:6:2",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            },
+            {
+              "slotIndex": 2,
+              "occupancy": "empty",
+              "candidateEquipmentIds": [],
+              "confidence": 0.9,
+              "region": {
+                "x": 0.40249999999999997,
+                "y": 0.6844444444444445,
+                "width": 0.023020833333333334,
+                "height": 0.04296296296296296
+              },
+              "evidence": {
+                "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+                "locator": "vision:advanced-equipment-empty:Back:6:3",
+                "summary": "\u88C5\u5907\u69FD\u6CA1\u6709\u68C0\u6D4B\u5230\u53EF\u89C1\u88C5\u5907\u524D\u666F",
+                "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+                "confidence": 0.9
+              },
+              "canDriveDecisions": true
+            }
+          ]
+        }
+      ],
+      "confidence": 0.6380293194482356,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:formation-slots",
+          "summary": "\u8BC6\u522B\u5230 3 \u4E2A\u89D2\u8272\u3002",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "activeSynergies": {
+      "status": "known",
+      "value": [
+        {
+          "synergyId": "bond_\u5DE1\u6D77\u6E38\u4FA0",
+          "slotKey": "Synergy-2",
+          "confidence": 1,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+            "locator": "named:Synergy:Synergy-2",
+            "summary": "\u5DE1\u6D77\u6E38\u4FA0",
+            "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+            "confidence": 1
+          }
+        },
+        {
+          "synergyId": "bond_\u71C3\u8840",
+          "slotKey": "Synergy-3",
+          "confidence": 1,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+            "locator": "named:Synergy:Synergy-3",
+            "summary": "\u71C3\u8840",
+            "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+            "confidence": 1
+          }
+        },
+        {
+          "synergyId": "bond_\u6218\u6280\u70B9",
+          "slotKey": "Synergy-4",
+          "confidence": 1,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+            "locator": "named:Synergy:Synergy-4",
+            "summary": "\u6218\u6280\u70B9",
+            "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+            "confidence": 1
+          }
+        },
+        {
+          "synergyId": "bond_\u661F\u6838\u730E\u624B",
+          "slotKey": "Synergy-5",
+          "confidence": 1,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+            "locator": "named:Synergy:Synergy-5",
+            "summary": "\u661F\u6838\u730E\u624B",
+            "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+            "confidence": 1
+          }
+        },
+        {
+          "synergyId": "bond_\u547D\u8FD0\u5723\u676F",
+          "slotKey": "Synergy-6",
+          "confidence": 1,
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+            "locator": "named:Synergy:Synergy-6",
+            "summary": "\u547D\u8FD0\u5723\u676F",
+            "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+            "confidence": 1
+          }
+        }
+      ],
+      "confidence": 1,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "named:Synergy:Synergy-2",
+          "summary": "\u5DE1\u6D77\u6E38\u4FA0",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 1
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "named:Synergy:Synergy-3",
+          "summary": "\u71C3\u8840",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 1
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "named:Synergy:Synergy-4",
+          "summary": "\u6218\u6280\u70B9",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 1
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "named:Synergy:Synergy-5",
+          "summary": "\u661F\u6838\u730E\u624B",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 1
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "named:Synergy:Synergy-6",
+          "summary": "\u547D\u8FD0\u5723\u676F",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 1
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "dismantleToolCount": {
+      "status": "known",
+      "value": 1,
+      "confidence": 0.72,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "template:dismantle-tools-localized-digits",
+          "summary": "value=1; confidence=0.891; runner-up=0.580",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.8909776210784912
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "simpleEquipmentIds": {
+      "status": "known",
+      "value": [
+        "currency_wars_equipment_042",
+        "currency_wars_equipment_047"
+      ],
+      "confidence": 0.8766151901013584,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:inventory:SimpleEquipment",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "specialItemIds": {
+      "status": "known",
+      "value": [],
+      "confidence": 0.8766151901013584,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:inventory:SpecialItem",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "inventorySlots": {
+      "status": "known",
+      "value": [
+        {
+          "slotIndex": 0,
+          "occupancy": "equipped",
+          "itemKind": "simpleEquipment",
+          "itemId": "currency_wars_equipment_042",
+          "candidateItemIds": [
+            "currency_wars_equipment_042"
+          ],
+          "confidence": 0.9312393318085805,
+          "region": {
+            "x": 0.94,
+            "y": 0.19,
+            "width": 0.04,
+            "height": 0.071
+          },
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+            "locator": "crop:inventory-item:1",
+            "summary": "2560x1440",
+            "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+            "confidence": 0.9312393318085805
+          },
+          "canDriveDecisions": true
+        },
+        {
+          "slotIndex": 1,
+          "occupancy": "equipped",
+          "itemKind": "simpleEquipment",
+          "itemId": "currency_wars_equipment_047",
+          "candidateItemIds": [
+            "currency_wars_equipment_047"
+          ],
+          "confidence": 0.925375857213361,
+          "region": {
+            "x": 0.94,
+            "y": 0.265,
+            "width": 0.04,
+            "height": 0.071
+          },
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050009700.png",
+            "locator": "crop:inventory-item:2",
+            "summary": "2560x1440",
+            "capturedAt": "2026-08-06T05:00:09.7007701+00:00",
+            "confidence": 0.925375857213361
+          },
+          "canDriveDecisions": true
+        },
+        {
+          "slotIndex": 2,
+          "occupancy": "empty",
+          "itemKind": "unknown",
+          "candidateItemIds": [],
+          "confidence": 0.9,
+          "region": {
+            "x": 0.94,
+            "y": 0.33999999999999997,
+            "width": 0.04,
+            "height": 0.071
+          },
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+            "locator": "vision:inventory-empty:3",
+            "summary": "2560x1440",
+            "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+            "confidence": 0.9
+          },
+          "canDriveDecisions": true
+        },
+        {
+          "slotIndex": 3,
+          "occupancy": "empty",
+          "itemKind": "unknown",
+          "candidateItemIds": [],
+          "confidence": 0.9,
+          "region": {
+            "x": 0.94,
+            "y": 0.415,
+            "width": 0.04,
+            "height": 0.071
+          },
+          "evidence": {
+            "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+            "locator": "vision:inventory-empty:4",
+            "summary": "2560x1440",
+            "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+            "confidence": 0.9
+          },
+          "canDriveDecisions": true
+        }
+      ],
+      "confidence": 0.9141537972554854,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045954617.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:54.6177546+00:00",
+          "confidence": 0.9217351644520199
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045954617.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:54.6177546+00:00",
+          "confidence": 0.9253769628795216
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045954617.png",
+          "locator": "vision:inventory-empty:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:54.6177546+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045954617.png",
+          "locator": "vision:inventory-empty:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:54.6177546+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.9217435449490242
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.9253760658296177
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:inventory-empty:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:inventory-empty:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.9217438995966606
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.9253758363517355
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:inventory-empty:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:inventory-empty:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050007545.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:07.5459271+00:00",
+          "confidence": 0.9217436909804039
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050007545.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:07.5459271+00:00",
+          "confidence": 0.925375857213361
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050007545.png",
+          "locator": "vision:inventory-empty:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:07.5459271+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050007545.png",
+          "locator": "vision:inventory-empty:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:07.5459271+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050009700.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:09.7007701+00:00",
+          "confidence": 0.9217438995966606
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050009700.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:09.7007701+00:00",
+          "confidence": 0.925375857213361
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050009700.png",
+          "locator": "vision:inventory-empty:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:09.7007701+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050009700.png",
+          "locator": "vision:inventory-empty:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:09.7007701+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "crop:inventory-item:1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.9312393318085805
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "crop:inventory-item:2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.775221428596853
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:inventory-empty:3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.9
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:inventory-empty:4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.9
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "negativeAffixIds": {
+      "status": "unknown",
+      "value": [],
+      "confidence": 0,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045950415.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:50.4155988+00:00",
+          "confidence": 0.45235076546669006
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045950415.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:50.4155988+00:00",
+          "confidence": 0.3130172789096832
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045950415.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:50.4155988+00:00",
+          "confidence": 0.24487189948558807
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045950415.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:50.4155988+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045952489.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:52.489645+00:00",
+          "confidence": 0.45235076546669006
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045952489.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:52.489645+00:00",
+          "confidence": 0.3130172789096832
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045952489.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:52.489645+00:00",
+          "confidence": 0.24487189948558807
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045952489.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:52.489645+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045954617.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:54.6177546+00:00",
+          "confidence": 0.45235076546669006
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045954617.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:54.6177546+00:00",
+          "confidence": 0.3130172789096832
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045954617.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:54.6177546+00:00",
+          "confidence": 0.24487189948558807
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045954617.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:54.6177546+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045956605.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:56.6054217+00:00",
+          "confidence": 0.28072115778923035
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045956605.png",
+          "locator": "vision:NegativeAffix:2",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T04:59:56.6054217+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045956605.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:56.6054217+00:00",
+          "confidence": 0.34144511818885803
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045956605.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:56.6054217+00:00",
+          "confidence": 0.3014713525772095
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050001011.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:00:01.0112124+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050001011.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:01.0112124+00:00",
+          "confidence": 0.3355201482772827
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050001011.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:01.0112124+00:00",
+          "confidence": 0.24710768461227417
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050001011.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:01.0112124+00:00",
+          "confidence": 0.2639414966106415
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.3355201482772827
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.24710768461227417
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.2639414966106415
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:NegativeAffix:1",
+          "summary": "The expected negative-affix slot could not be resolved from this frame.",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00"
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.3355201482772827
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.24710768461227417
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.2639414966106415
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050010821.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:10.8217622+00:00",
+          "confidence": 0.45235076546669006
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050010821.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:10.8217622+00:00",
+          "confidence": 0.3130172789096832
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050010821.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:10.8217622+00:00",
+          "confidence": 0.24487189948558807
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050010821.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:10.8217622+00:00",
+          "confidence": 0.3210281729698181
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.2876012921333313
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.45894938707351685
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.24487189948558807
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.3210281729698181
+        }
+      ],
+      "uncertainty": [
+        "template library pending",
+        "negative affixes recognized 0/4; partial identities remain non-authoritative.",
+        "negative-affix \u6CA1\u6709\u5F97\u5230\u53EF\u9760\u7684 OCR \u6216\u7528\u9014\u9650\u5B9A\u56FE\u6807\u8BC1\u636E"
+      ],
+      "observedAt": "2026-08-06T05:00:26.4130191+00:00"
+    },
+    "investmentEnvironmentId": {
+      "status": "known",
+      "value": "investment_environment_011",
+      "confidence": 0.6701998114585876,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045950415.png",
+          "locator": "vision:InvestmentEnvironment:InvestmentEnvironment-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:50.4155988+00:00",
+          "confidence": 0.6701998114585876
+        }
+      ],
+      "uncertainty": [],
+      "observedAt": "2026-08-06T04:59:50.4155988+00:00"
+    },
+    "investmentStrategyIds": {
+      "status": "known",
+      "value": [],
+      "confidence": 1,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.21085648238658905
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.2861824035644531
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050003225.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:03.2251177+00:00",
+          "confidence": 0.10358335077762604
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.4397677481174469
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.13108713924884796
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050005392.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:05.3928895+00:00",
+          "confidence": 0.10358335077762604
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050007545.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:07.5459271+00:00",
+          "confidence": 0.3517429828643799
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050007545.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:07.5459271+00:00",
+          "confidence": 0.13452614843845367
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050007545.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:07.5459271+00:00",
+          "confidence": 0.15823251008987427
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050009700.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:09.7007701+00:00",
+          "confidence": 0.28659388422966003
+        },
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050009700.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:09.7007701+00:00",
+          "confidence": 0.10358335077762604
+        }
+      ],
+      "uncertainty": []
+    },
+    "battleDamage": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "battleSynergyDamage": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "battleUnresolvedDamage": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "battleScreenDamageCandidate": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "settlementDamage": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "settlementScreenDamageCandidate": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "settlementGoldReward": {
+      "status": "unknown",
+      "value": 0,
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "remainingActionValue": {
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": [],
+      "uncertainty": [
+        "not observed"
+      ]
+    },
+    "finalBattle": {
+      "status": "unknown",
+      "value": {
+        "nodeId": "1-1",
+        "characterDamage": [
+          {
+            "rank": 1,
+            "characterId": "unknown-character-13",
+            "damage": 0,
+            "rawText": "0",
+            "avatarConfidence": 0.4548022449016571,
+            "damageConfidence": 0.68,
+            "avatarRegion": {
+              "x": 0.852,
+              "y": 0.232,
+              "width": 0.03,
+              "height": 0.05
+            },
+            "damageRegion": {
+              "x": 0.883,
+              "y": 0.232,
+              "width": 0.06,
+              "height": 0.038
+            },
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+              "locator": "partial:battle-character-damage-row-1",
+              "summary": "0",
+              "capturedAt": "2026-08-06T05:00:16.2902457+00:00",
+              "confidence": 0.4548022449016571
+            },
+            "temporaryId": "unknown-character-13",
+            "candidateCharacterIds": [
+              "currency_wars_character_46"
+            ],
+            "failureReason": "\u89D2\u8272\u5934\u50CF\u65E0\u6CD5\u552F\u4E00\u8BC6\u522B\uFF1B\u4F24\u5BB3\u6570\u503C\u5DF2\u4FDD\u7559\u3002",
+            "canDriveDecisions": false
+          },
+          {
+            "rank": 2,
+            "characterId": "unknown-character-14",
+            "damage": 0,
+            "rawText": "0",
+            "avatarConfidence": 0.41192612051963806,
+            "damageConfidence": 0.68,
+            "avatarRegion": {
+              "x": 0.852,
+              "y": 0.29600000000000004,
+              "width": 0.03,
+              "height": 0.05
+            },
+            "damageRegion": {
+              "x": 0.883,
+              "y": 0.29600000000000004,
+              "width": 0.06,
+              "height": 0.038
+            },
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+              "locator": "partial:battle-character-damage-row-2",
+              "summary": "0",
+              "capturedAt": "2026-08-06T05:00:16.2902457+00:00",
+              "confidence": 0.41192612051963806
+            },
+            "temporaryId": "unknown-character-14",
+            "candidateCharacterIds": [
+              "currency_wars_character_34",
+              "currency_wars_character_46",
+              "currency_wars_character_15",
+              "currency_wars_character_41"
+            ],
+            "failureReason": "\u89D2\u8272\u5934\u50CF\u65E0\u6CD5\u552F\u4E00\u8BC6\u522B\uFF1B\u4F24\u5BB3\u6570\u503C\u5DF2\u4FDD\u7559\u3002",
+            "canDriveDecisions": false
+          },
+          {
+            "rank": 3,
+            "characterId": "unknown-character-15",
+            "damage": 0,
+            "rawText": "0",
+            "avatarConfidence": 0.4212626814842224,
+            "damageConfidence": 0.68,
+            "avatarRegion": {
+              "x": 0.852,
+              "y": 0.36,
+              "width": 0.03,
+              "height": 0.05
+            },
+            "damageRegion": {
+              "x": 0.883,
+              "y": 0.36,
+              "width": 0.06,
+              "height": 0.038
+            },
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+              "locator": "partial:battle-character-damage-row-3",
+              "summary": "0",
+              "capturedAt": "2026-08-06T05:00:16.2902457+00:00",
+              "confidence": 0.4212626814842224
+            },
+            "temporaryId": "unknown-character-15",
+            "candidateCharacterIds": [
+              "currency_wars_character_34"
+            ],
+            "failureReason": "\u89D2\u8272\u5934\u50CF\u65E0\u6CD5\u552F\u4E00\u8BC6\u522B\uFF1B\u4F24\u5BB3\u6570\u503C\u5DF2\u4FDD\u7559\u3002",
+            "canDriveDecisions": false
+          },
+          {
+            "rank": 4,
+            "characterId": "unknown-character-16",
+            "damage": 0,
+            "rawText": "0 (empty battle damage bar)",
+            "avatarConfidence": 0.2830600440502167,
+            "damageConfidence": 0.35,
+            "avatarRegion": {
+              "x": 0.852,
+              "y": 0.42400000000000004,
+              "width": 0.03,
+              "height": 0.05
+            },
+            "damageRegion": {
+              "x": 0.883,
+              "y": 0.42400000000000004,
+              "width": 0.06,
+              "height": 0.038
+            },
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+              "locator": "partial:battle-character-damage-row-4",
+              "summary": "0 (empty battle damage bar)",
+              "capturedAt": "2026-08-06T05:00:16.2902457+00:00",
+              "confidence": 0.2830600440502167
+            },
+            "temporaryId": "unknown-character-16",
+            "candidateCharacterIds": [
+              "currency_wars_character_21",
+              "currency_wars_character_68",
+              "currency_wars_character_10"
+            ],
+            "failureReason": "\u89D2\u8272\u5934\u50CF\u65E0\u6CD5\u552F\u4E00\u8BC6\u522B\uFF1B\u4F24\u5BB3\u6570\u503C\u5DF2\u4FDD\u7559\u3002",
+            "canDriveDecisions": false
+          },
+          {
+            "rank": 5,
+            "characterId": "unknown-character-17",
+            "damage": 0,
+            "rawText": "0 (empty battle damage bar)",
+            "avatarConfidence": -0.03659050911664963,
+            "damageConfidence": 0.35,
+            "avatarRegion": {
+              "x": 0.852,
+              "y": 0.488,
+              "width": 0.03,
+              "height": 0.05
+            },
+            "damageRegion": {
+              "x": 0.883,
+              "y": 0.488,
+              "width": 0.06,
+              "height": 0.038
+            },
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+              "locator": "partial:battle-character-damage-row-5",
+              "summary": "0 (empty battle damage bar)",
+              "capturedAt": "2026-08-06T05:00:16.2902457+00:00",
+              "confidence": -0.03659050911664963
+            },
+            "temporaryId": "unknown-character-17",
+            "candidateCharacterIds": [
+              "currency_wars_character_04"
+            ],
+            "failureReason": "\u89D2\u8272\u5934\u50CF\u65E0\u6CD5\u552F\u4E00\u8BC6\u522B\uFF1B\u4F24\u5BB3\u6570\u503C\u5DF2\u4FDD\u7559\u3002",
+            "canDriveDecisions": false
+          }
+        ],
+        "capturedAt": "2026-08-06T05:00:22.0243932+00:00",
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+          "locator": "partial:battle-character-damage-row-1",
+          "summary": "0",
+          "capturedAt": "2026-08-06T05:00:16.2902457+00:00",
+          "confidence": 0.4548022449016571
+        },
+        "synergyDamage": [],
+        "isComplete": false,
+        "canDriveDecisions": false,
+        "uncertainty": [
+          "\u90E8\u5206\u4F24\u5BB3\u6765\u6E90\u65E0\u6CD5\u533A\u5206\u89D2\u8272\u4E0E\u7F81\u7ECA\uFF1B\u5DF2\u4FDD\u7559\u5176\u4ED6\u53EF\u786E\u8BA4\u884C\u3002",
+          "\u90E8\u5206\u4F24\u5BB3\u6765\u6E90\u6682\u4E0D\u53EF\u89C1\u6216\u5B58\u5728\u89D2\u8272/\u7F81\u7ECA\u51B2\u7A81\uFF1B\u5DF2\u4FDD\u7559\u5176\u4ED6\u53EF\u786E\u8BA4\u7684\u7F81\u7ECA\u4F24\u5BB3\u884C\u3002",
+          "\u6218\u6597\u6700\u540E\u4E00\u5E27\u6CA1\u6709\u53EF\u53EF\u9760\u6C42\u548C\u7684\u4F24\u5BB3\u6570\u503C\u3002",
+          "\u7ED3\u7B97\u524D\u4E09\u540D\u6709\u4F24\u5BB3\u6570\u503C\u6682\u4E0D\u53EF\u89C1\uFF1B\u5DF2\u4FDD\u7559\u5176\u4F59\u53EF\u8BFB\u884C\u3002",
+          "\u7ED3\u7B97\u524D\u4E09\u540D\u6570\u503C\u4E0D\u5B8C\u6574\uFF1B\u5F53\u524D\u548C\u4EC5\u4F5C\u6B8B\u7F3A\u5019\u9009\u3002",
+          "character-or-synergy-unresolved"
+        ],
+        "degradedObservations": [
+          {
+            "category": "characterAvatar",
+            "slotKey": "damage-character-or-synergy-1",
+            "region": {
+              "x": 0.852,
+              "y": 0.232,
+              "width": 0.03,
+              "height": 0.05
+            },
+            "templateId": "currency_wars_character_46",
+            "confidence": 0.4548022449016571,
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+              "locator": "crop:battle-damage-source:1",
+              "summary": "0",
+              "capturedAt": "2026-08-06T05:00:16.2902457+00:00"
+            },
+            "status": "character-or-synergy-unresolved",
+            "candidateTemplateIds": [
+              "currency_wars_character_46",
+              "bond_\u80FD\u91CF_inactive",
+              "bond_\u80FD\u91CF_p10",
+              "bond_\u80FD\u91CF_p3",
+              "bond_\u80FD\u91CF_p5",
+              "bond_\u80FD\u91CF_p7",
+              "bond_\u91CF\u5B50\u540C\u9891_inactive",
+              "bond_\u91CF\u5B50\u540C\u9891_p2",
+              "bond_\u91CF\u5B50\u540C\u9891_p3"
+            ],
+            "temporaryId": "unknown-character-18",
+            "recognizedFields": {
+              "damage": "0",
+              "rawText": "0",
+              "sourceType": "character"
+            },
+            "canDriveDecisions": false
+          },
+          {
+            "category": "characterAvatar",
+            "slotKey": "damage-character-or-synergy-2",
+            "region": {
+              "x": 0.852,
+              "y": 0.29600000000000004,
+              "width": 0.03,
+              "height": 0.05
+            },
+            "templateId": "currency_wars_character_34",
+            "confidence": 0.41192612051963806,
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+              "locator": "crop:battle-damage-source:2",
+              "summary": "0",
+              "capturedAt": "2026-08-06T05:00:16.2902457+00:00"
+            },
+            "status": "character-or-synergy-unresolved",
+            "candidateTemplateIds": [
+              "currency_wars_character_34",
+              "currency_wars_character_46",
+              "currency_wars_character_15",
+              "currency_wars_character_41",
+              "bond_\u80FD\u91CF_inactive",
+              "bond_\u80FD\u91CF_p10",
+              "bond_\u80FD\u91CF_p3",
+              "bond_\u80FD\u91CF_p5",
+              "bond_\u80FD\u91CF_p7"
+            ],
+            "temporaryId": "unknown-character-19",
+            "recognizedFields": {
+              "damage": "0",
+              "rawText": "0",
+              "sourceType": "character"
+            },
+            "canDriveDecisions": false
+          },
+          {
+            "category": "characterAvatar",
+            "slotKey": "damage-character-or-synergy-3",
+            "region": {
+              "x": 0.852,
+              "y": 0.36,
+              "width": 0.03,
+              "height": 0.05
+            },
+            "templateId": "currency_wars_character_34",
+            "confidence": 0.4212626814842224,
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+              "locator": "crop:battle-damage-source:3",
+              "summary": "0",
+              "capturedAt": "2026-08-06T05:00:16.2902457+00:00"
+            },
+            "status": "character-or-synergy-unresolved",
+            "candidateTemplateIds": [
+              "currency_wars_character_34",
+              "bond_\u9B54\u672F\u5E08_inactive",
+              "bond_\u9B54\u672F\u5E08_p1",
+              "bond_\u6218\u6280\u70B9_inactive",
+              "bond_\u6218\u6280\u70B9_p2",
+              "bond_\u6218\u6280\u70B9_p4",
+              "bond_\u6218\u6280\u70B9_p6",
+              "bond_\u6218\u6280\u70B9_p8",
+              "bond_\u80FD\u91CF_inactive"
+            ],
+            "temporaryId": "unknown-character-20",
+            "recognizedFields": {
+              "damage": "0",
+              "rawText": "0",
+              "sourceType": "character"
+            },
+            "canDriveDecisions": false
+          },
+          {
+            "category": "characterAvatar",
+            "slotKey": "damage-character-or-synergy-4",
+            "region": {
+              "x": 0.852,
+              "y": 0.42400000000000004,
+              "width": 0.03,
+              "height": 0.05
+            },
+            "templateId": "currency_wars_character_21",
+            "confidence": 0.2830600440502167,
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+              "locator": "crop:battle-damage-source:4",
+              "summary": "0 (empty battle damage bar)",
+              "capturedAt": "2026-08-06T05:00:16.2902457+00:00"
+            },
+            "status": "character-or-synergy-unresolved",
+            "candidateTemplateIds": [
+              "currency_wars_character_21",
+              "currency_wars_character_68",
+              "currency_wars_character_10",
+              "bond_\u4ED9\u821F_inactive",
+              "bond_\u4ED9\u821F_p10",
+              "bond_\u4ED9\u821F_p3",
+              "bond_\u4ED9\u821F_p5",
+              "bond_\u4ED9\u821F_p7",
+              "bond_\u516C\u53F8_inactive",
+              "bond_\u516C\u53F8_p2",
+              "bond_\u516C\u53F8_p3"
+            ],
+            "temporaryId": "unknown-character-21",
+            "recognizedFields": {
+              "damage": "0",
+              "rawText": "0 (empty battle damage bar)",
+              "sourceType": "character"
+            },
+            "canDriveDecisions": false
+          },
+          {
+            "category": "characterAvatar",
+            "slotKey": "damage-character-or-synergy-5",
+            "region": {
+              "x": 0.852,
+              "y": 0.488,
+              "width": 0.03,
+              "height": 0.05
+            },
+            "templateId": "currency_wars_character_04",
+            "confidence": -0.03659050911664963,
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+              "locator": "crop:battle-damage-source:5",
+              "summary": "0 (empty battle damage bar)",
+              "capturedAt": "2026-08-06T05:00:16.2902457+00:00"
+            },
+            "status": "character-or-synergy-unresolved",
+            "candidateTemplateIds": [
+              "currency_wars_character_04",
+              "bond_\u4ED9\u821F_inactive",
+              "bond_\u4ED9\u821F_p10",
+              "bond_\u4ED9\u821F_p3",
+              "bond_\u4ED9\u821F_p5",
+              "bond_\u4ED9\u821F_p7",
+              "bond_\u516C\u53F8_inactive",
+              "bond_\u516C\u53F8_p2",
+              "bond_\u516C\u53F8_p3"
+            ],
+            "temporaryId": "unknown-character-22",
+            "recognizedFields": {
+              "damage": "0",
+              "rawText": "0 (empty battle damage bar)",
+              "sourceType": "character"
+            },
+            "canDriveDecisions": false
+          }
+        ],
+        "partialFields": [],
+        "unresolvedDamage": [],
+        "battleScreenDamageCandidate": 0,
+        "settlementScreenDamageCandidate": 0,
+        "selectedDamageSource": "unavailable",
+        "settlementTopThree": [
+          {
+            "rank": 2,
+            "characterId": "unknown-character-23",
+            "damage": 0,
+            "rawText": "0 (empty settlement damage bar)",
+            "avatarConfidence": 0.3036044239997864,
+            "damageConfidence": 0.45,
+            "avatarRegion": {
+              "x": 0.582,
+              "y": 0.637,
+              "width": 0.04,
+              "height": 0.062
+            },
+            "damageRegion": {
+              "x": 0.622,
+              "y": 0.6499999999999999,
+              "width": 0.105,
+              "height": 0.052
+            },
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050022024.png",
+              "locator": "partial:settlement-damage-row-2",
+              "summary": "0 (empty settlement damage bar)",
+              "capturedAt": "2026-08-06T05:00:22.0243932+00:00",
+              "confidence": 0.3036044239997864
+            },
+            "temporaryId": "unknown-character-23",
+            "candidateCharacterIds": [
+              "currency_wars_character_63"
+            ],
+            "failureReason": "\u7ED3\u7B97\u4F24\u5BB3\u6570\u503C\u53EF\u8BFB\uFF0C\u4F46\u89D2\u8272\u6216\u7279\u6B8A\u5355\u4F4D\u5934\u50CF\u65E0\u6CD5\u552F\u4E00\u8BC6\u522B\u3002",
+            "canDriveDecisions": false
+          },
+          {
+            "rank": 3,
+            "characterId": "unknown-character-24",
+            "damage": 0,
+            "rawText": "0 (empty settlement damage bar)",
+            "avatarConfidence": 0.3256789445877075,
+            "damageConfidence": 0.45,
+            "avatarRegion": {
+              "x": 0.582,
+              "y": 0.7120000000000001,
+              "width": 0.04,
+              "height": 0.062
+            },
+            "damageRegion": {
+              "x": 0.622,
+              "y": 0.725,
+              "width": 0.105,
+              "height": 0.052
+            },
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050022024.png",
+              "locator": "partial:settlement-damage-row-3",
+              "summary": "0 (empty settlement damage bar)",
+              "capturedAt": "2026-08-06T05:00:22.0243932+00:00",
+              "confidence": 0.3256789445877075
+            },
+            "temporaryId": "unknown-character-24",
+            "candidateCharacterIds": [
+              "currency_wars_character_07",
+              "currency_wars_character_71"
+            ],
+            "failureReason": "\u7ED3\u7B97\u4F24\u5BB3\u6570\u503C\u53EF\u8BFB\uFF0C\u4F46\u89D2\u8272\u6216\u7279\u6B8A\u5355\u4F4D\u5934\u50CF\u65E0\u6CD5\u552F\u4E00\u8BC6\u522B\u3002",
+            "canDriveDecisions": false
+          }
+        ],
+        "goldReward": 22,
+        "preBattleHealth": 80,
+        "clearStatus": "perfect",
+        "baseMaximumActionValue": 180,
+        "theoreticalDamageQuality": "unknown",
+        "theoreticalDamageRule": "final damage is unavailable",
+        "isRewardNode": true,
+        "healthDepleted": false,
+        "finalSynergyDamage": [],
+        "finalUncertainty": [
+          "\u90E8\u5206\u4F24\u5BB3\u6765\u6E90\u65E0\u6CD5\u533A\u5206\u89D2\u8272\u4E0E\u7F81\u7ECA\uFF1B\u5DF2\u4FDD\u7559\u5176\u4ED6\u53EF\u786E\u8BA4\u884C\u3002",
+          "\u90E8\u5206\u4F24\u5BB3\u6765\u6E90\u6682\u4E0D\u53EF\u89C1\u6216\u5B58\u5728\u89D2\u8272/\u7F81\u7ECA\u51B2\u7A81\uFF1B\u5DF2\u4FDD\u7559\u5176\u4ED6\u53EF\u786E\u8BA4\u7684\u7F81\u7ECA\u4F24\u5BB3\u884C\u3002",
+          "\u6218\u6597\u6700\u540E\u4E00\u5E27\u6CA1\u6709\u53EF\u53EF\u9760\u6C42\u548C\u7684\u4F24\u5BB3\u6570\u503C\u3002",
+          "\u7ED3\u7B97\u524D\u4E09\u540D\u6709\u4F24\u5BB3\u6570\u503C\u6682\u4E0D\u53EF\u89C1\uFF1B\u5DF2\u4FDD\u7559\u5176\u4F59\u53EF\u8BFB\u884C\u3002",
+          "\u7ED3\u7B97\u524D\u4E09\u540D\u6570\u503C\u4E0D\u5B8C\u6574\uFF1B\u5F53\u524D\u548C\u4EC5\u4F5C\u6B8B\u7F3A\u5019\u9009\u3002",
+          "character-or-synergy-unresolved"
+        ],
+        "finalDegradedObservations": [
+          {
+            "category": "characterAvatar",
+            "slotKey": "damage-character-or-synergy-1",
+            "region": {
+              "x": 0.852,
+              "y": 0.232,
+              "width": 0.03,
+              "height": 0.05
+            },
+            "templateId": "currency_wars_character_46",
+            "confidence": 0.4548022449016571,
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+              "locator": "crop:battle-damage-source:1",
+              "summary": "0",
+              "capturedAt": "2026-08-06T05:00:16.2902457+00:00"
+            },
+            "status": "character-or-synergy-unresolved",
+            "candidateTemplateIds": [
+              "currency_wars_character_46",
+              "bond_\u80FD\u91CF_inactive",
+              "bond_\u80FD\u91CF_p10",
+              "bond_\u80FD\u91CF_p3",
+              "bond_\u80FD\u91CF_p5",
+              "bond_\u80FD\u91CF_p7",
+              "bond_\u91CF\u5B50\u540C\u9891_inactive",
+              "bond_\u91CF\u5B50\u540C\u9891_p2",
+              "bond_\u91CF\u5B50\u540C\u9891_p3"
+            ],
+            "temporaryId": "unknown-character-18",
+            "recognizedFields": {
+              "damage": "0",
+              "rawText": "0",
+              "sourceType": "character"
+            },
+            "canDriveDecisions": false
+          },
+          {
+            "category": "characterAvatar",
+            "slotKey": "damage-character-or-synergy-2",
+            "region": {
+              "x": 0.852,
+              "y": 0.29600000000000004,
+              "width": 0.03,
+              "height": 0.05
+            },
+            "templateId": "currency_wars_character_34",
+            "confidence": 0.41192612051963806,
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+              "locator": "crop:battle-damage-source:2",
+              "summary": "0",
+              "capturedAt": "2026-08-06T05:00:16.2902457+00:00"
+            },
+            "status": "character-or-synergy-unresolved",
+            "candidateTemplateIds": [
+              "currency_wars_character_34",
+              "currency_wars_character_46",
+              "currency_wars_character_15",
+              "currency_wars_character_41",
+              "bond_\u80FD\u91CF_inactive",
+              "bond_\u80FD\u91CF_p10",
+              "bond_\u80FD\u91CF_p3",
+              "bond_\u80FD\u91CF_p5",
+              "bond_\u80FD\u91CF_p7"
+            ],
+            "temporaryId": "unknown-character-19",
+            "recognizedFields": {
+              "damage": "0",
+              "rawText": "0",
+              "sourceType": "character"
+            },
+            "canDriveDecisions": false
+          },
+          {
+            "category": "characterAvatar",
+            "slotKey": "damage-character-or-synergy-3",
+            "region": {
+              "x": 0.852,
+              "y": 0.36,
+              "width": 0.03,
+              "height": 0.05
+            },
+            "templateId": "currency_wars_character_34",
+            "confidence": 0.4212626814842224,
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+              "locator": "crop:battle-damage-source:3",
+              "summary": "0",
+              "capturedAt": "2026-08-06T05:00:16.2902457+00:00"
+            },
+            "status": "character-or-synergy-unresolved",
+            "candidateTemplateIds": [
+              "currency_wars_character_34",
+              "bond_\u9B54\u672F\u5E08_inactive",
+              "bond_\u9B54\u672F\u5E08_p1",
+              "bond_\u6218\u6280\u70B9_inactive",
+              "bond_\u6218\u6280\u70B9_p2",
+              "bond_\u6218\u6280\u70B9_p4",
+              "bond_\u6218\u6280\u70B9_p6",
+              "bond_\u6218\u6280\u70B9_p8",
+              "bond_\u80FD\u91CF_inactive"
+            ],
+            "temporaryId": "unknown-character-20",
+            "recognizedFields": {
+              "damage": "0",
+              "rawText": "0",
+              "sourceType": "character"
+            },
+            "canDriveDecisions": false
+          },
+          {
+            "category": "characterAvatar",
+            "slotKey": "damage-character-or-synergy-4",
+            "region": {
+              "x": 0.852,
+              "y": 0.42400000000000004,
+              "width": 0.03,
+              "height": 0.05
+            },
+            "templateId": "currency_wars_character_21",
+            "confidence": 0.2830600440502167,
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+              "locator": "crop:battle-damage-source:4",
+              "summary": "0 (empty battle damage bar)",
+              "capturedAt": "2026-08-06T05:00:16.2902457+00:00"
+            },
+            "status": "character-or-synergy-unresolved",
+            "candidateTemplateIds": [
+              "currency_wars_character_21",
+              "currency_wars_character_68",
+              "currency_wars_character_10",
+              "bond_\u4ED9\u821F_inactive",
+              "bond_\u4ED9\u821F_p10",
+              "bond_\u4ED9\u821F_p3",
+              "bond_\u4ED9\u821F_p5",
+              "bond_\u4ED9\u821F_p7",
+              "bond_\u516C\u53F8_inactive",
+              "bond_\u516C\u53F8_p2",
+              "bond_\u516C\u53F8_p3"
+            ],
+            "temporaryId": "unknown-character-21",
+            "recognizedFields": {
+              "damage": "0",
+              "rawText": "0 (empty battle damage bar)",
+              "sourceType": "character"
+            },
+            "canDriveDecisions": false
+          },
+          {
+            "category": "characterAvatar",
+            "slotKey": "damage-character-or-synergy-5",
+            "region": {
+              "x": 0.852,
+              "y": 0.488,
+              "width": 0.03,
+              "height": 0.05
+            },
+            "templateId": "currency_wars_character_04",
+            "confidence": -0.03659050911664963,
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+              "locator": "crop:battle-damage-source:5",
+              "summary": "0 (empty battle damage bar)",
+              "capturedAt": "2026-08-06T05:00:16.2902457+00:00"
+            },
+            "status": "character-or-synergy-unresolved",
+            "candidateTemplateIds": [
+              "currency_wars_character_04",
+              "bond_\u4ED9\u821F_inactive",
+              "bond_\u4ED9\u821F_p10",
+              "bond_\u4ED9\u821F_p3",
+              "bond_\u4ED9\u821F_p5",
+              "bond_\u4ED9\u821F_p7",
+              "bond_\u516C\u53F8_inactive",
+              "bond_\u516C\u53F8_p2",
+              "bond_\u516C\u53F8_p3"
+            ],
+            "temporaryId": "unknown-character-22",
+            "recognizedFields": {
+              "damage": "0",
+              "rawText": "0 (empty battle damage bar)",
+              "sourceType": "character"
+            },
+            "canDriveDecisions": false
+          }
+        ],
+        "finalPartialFields": [],
+        "finalUnresolvedDamage": [],
+        "allRecordedDamage": 0,
+        "finalSettlementTopThree": [
+          {
+            "rank": 2,
+            "characterId": "unknown-character-23",
+            "damage": 0,
+            "rawText": "0 (empty settlement damage bar)",
+            "avatarConfidence": 0.3036044239997864,
+            "damageConfidence": 0.45,
+            "avatarRegion": {
+              "x": 0.582,
+              "y": 0.637,
+              "width": 0.04,
+              "height": 0.062
+            },
+            "damageRegion": {
+              "x": 0.622,
+              "y": 0.6499999999999999,
+              "width": 0.105,
+              "height": 0.052
+            },
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050022024.png",
+              "locator": "partial:settlement-damage-row-2",
+              "summary": "0 (empty settlement damage bar)",
+              "capturedAt": "2026-08-06T05:00:22.0243932+00:00",
+              "confidence": 0.3036044239997864
+            },
+            "temporaryId": "unknown-character-23",
+            "candidateCharacterIds": [
+              "currency_wars_character_63"
+            ],
+            "failureReason": "\u7ED3\u7B97\u4F24\u5BB3\u6570\u503C\u53EF\u8BFB\uFF0C\u4F46\u89D2\u8272\u6216\u7279\u6B8A\u5355\u4F4D\u5934\u50CF\u65E0\u6CD5\u552F\u4E00\u8BC6\u522B\u3002",
+            "canDriveDecisions": false
+          },
+          {
+            "rank": 3,
+            "characterId": "unknown-character-24",
+            "damage": 0,
+            "rawText": "0 (empty settlement damage bar)",
+            "avatarConfidence": 0.3256789445877075,
+            "damageConfidence": 0.45,
+            "avatarRegion": {
+              "x": 0.582,
+              "y": 0.7120000000000001,
+              "width": 0.04,
+              "height": 0.062
+            },
+            "damageRegion": {
+              "x": 0.622,
+              "y": 0.725,
+              "width": 0.105,
+              "height": 0.052
+            },
+            "evidence": {
+              "sourceId": "run:run-20260806-125919/screenshots/20260806-050022024.png",
+              "locator": "partial:settlement-damage-row-3",
+              "summary": "0 (empty settlement damage bar)",
+              "capturedAt": "2026-08-06T05:00:22.0243932+00:00",
+              "confidence": 0.3256789445877075
+            },
+            "temporaryId": "unknown-character-24",
+            "candidateCharacterIds": [
+              "currency_wars_character_07",
+              "currency_wars_character_71"
+            ],
+            "failureReason": "\u7ED3\u7B97\u4F24\u5BB3\u6570\u503C\u53EF\u8BFB\uFF0C\u4F46\u89D2\u8272\u6216\u7279\u6B8A\u5355\u4F4D\u5934\u50CF\u65E0\u6CD5\u552F\u4E00\u8BC6\u522B\u3002",
+            "canDriveDecisions": false
+          }
+        ]
+      },
+      "confidence": 0,
+      "evidence": [
+        {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050016290.png",
+          "locator": "partial:battle-character-damage-row-1",
+          "summary": "0",
+          "capturedAt": "2026-08-06T05:00:16.2902457+00:00",
+          "confidence": 0.4548022449016571
+        }
+      ],
+      "uncertainty": [
+        "\u90E8\u5206\u4F24\u5BB3\u6765\u6E90\u65E0\u6CD5\u533A\u5206\u89D2\u8272\u4E0E\u7F81\u7ECA\uFF1B\u5DF2\u4FDD\u7559\u5176\u4ED6\u53EF\u786E\u8BA4\u884C\u3002",
+        "\u90E8\u5206\u4F24\u5BB3\u6765\u6E90\u6682\u4E0D\u53EF\u89C1\u6216\u5B58\u5728\u89D2\u8272/\u7F81\u7ECA\u51B2\u7A81\uFF1B\u5DF2\u4FDD\u7559\u5176\u4ED6\u53EF\u786E\u8BA4\u7684\u7F81\u7ECA\u4F24\u5BB3\u884C\u3002",
+        "\u6218\u6597\u6700\u540E\u4E00\u5E27\u6CA1\u6709\u53EF\u53EF\u9760\u6C42\u548C\u7684\u4F24\u5BB3\u6570\u503C\u3002",
+        "\u7ED3\u7B97\u524D\u4E09\u540D\u6709\u4F24\u5BB3\u6570\u503C\u6682\u4E0D\u53EF\u89C1\uFF1B\u5DF2\u4FDD\u7559\u5176\u4F59\u53EF\u8BFB\u884C\u3002",
+        "\u7ED3\u7B97\u524D\u4E09\u540D\u6570\u503C\u4E0D\u5B8C\u6574\uFF1B\u5F53\u524D\u548C\u4EC5\u4F5C\u6B8B\u7F3A\u5019\u9009\u3002",
+        "character-or-synergy-unresolved"
+      ],
+      "observedAt": "2026-08-06T05:00:22.0243932+00:00"
+    },
+    "namedContent": [
+      {
+        "kind": "negativeAffix",
+        "slotKey": "NegativeAffix-1",
+        "status": "unknown",
+        "rawOcrTexts": [],
+        "confidence": 0,
+        "region": {
+          "x": 0.113,
+          "y": 0.06,
+          "width": 0.014,
+          "height": 0.029
+        },
+        "evidenceKind": "icon",
+        "candidateIds": [
+          "enemy_affix_t2_01",
+          "enemy_affix_t3_16"
+        ],
+        "conflicts": [],
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.2876012921333313
+        }
+      },
+      {
+        "kind": "negativeAffix",
+        "slotKey": "NegativeAffix-2",
+        "status": "unknown",
+        "rawOcrTexts": [],
+        "confidence": 0,
+        "region": {
+          "x": 0.128,
+          "y": 0.06,
+          "width": 0.014,
+          "height": 0.029
+        },
+        "evidenceKind": "icon",
+        "candidateIds": [
+          "enemy_affix_t3_23"
+        ],
+        "conflicts": [],
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.45894938707351685
+        }
+      },
+      {
+        "kind": "negativeAffix",
+        "slotKey": "NegativeAffix-3",
+        "status": "unknown",
+        "rawOcrTexts": [],
+        "confidence": 0,
+        "region": {
+          "x": 0.14300000000000002,
+          "y": 0.06,
+          "width": 0.014,
+          "height": 0.029
+        },
+        "evidenceKind": "icon",
+        "candidateIds": [
+          "enemy_affix_t3_14",
+          "enemy_affix_t2_07"
+        ],
+        "conflicts": [],
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.24487189948558807
+        }
+      },
+      {
+        "kind": "negativeAffix",
+        "slotKey": "NegativeAffix-4",
+        "status": "unknown",
+        "rawOcrTexts": [],
+        "confidence": 0,
+        "region": {
+          "x": 0.158,
+          "y": 0.06,
+          "width": 0.014,
+          "height": 0.029
+        },
+        "evidenceKind": "icon",
+        "candidateIds": [
+          "enemy_affix_t1_01",
+          "enemy_affix_t1_02",
+          "enemy_affix_t1_05"
+        ],
+        "conflicts": [],
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.3210281729698181
+        }
+      },
+      {
+        "kind": "investmentEnvironment",
+        "slotKey": "InvestmentEnvironment-1",
+        "status": "known",
+        "objectId": "investment_environment_011",
+        "standardName": "\u51CF\u76CA\u6982\u5FF5\u80A1",
+        "rawOcrTexts": [],
+        "confidence": 0.6701998114585876,
+        "region": {
+          "x": 0.447,
+          "y": 0.109,
+          "width": 0.02,
+          "height": 0.041
+        },
+        "evidenceKind": "iconOnlyWithoutText",
+        "candidateIds": [
+          "investment_environment_011"
+        ],
+        "conflicts": [],
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-045950415.png",
+          "locator": "vision:InvestmentEnvironment:InvestmentEnvironment-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T04:59:50.4155988+00:00",
+          "confidence": 0.6701998114585876
+        }
+      },
+      {
+        "kind": "investmentStrategy",
+        "slotKey": "InvestmentStrategy-1",
+        "status": "unknown",
+        "rawOcrTexts": [],
+        "confidence": 0,
+        "region": {
+          "x": 0.47100000000000003,
+          "y": 0.109,
+          "width": 0.02,
+          "height": 0.041
+        },
+        "evidenceKind": "icon",
+        "candidateIds": [
+          "investment_strategy_262",
+          "investment_strategy_133",
+          "investment_strategy_325",
+          "investment_strategy_090",
+          "investment_strategy_227"
+        ],
+        "conflicts": [],
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050007545.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:07.5459271+00:00",
+          "confidence": 0.3517429828643799
+        }
+      },
+      {
+        "kind": "investmentStrategy",
+        "slotKey": "InvestmentStrategy-2",
+        "status": "unknown",
+        "rawOcrTexts": [],
+        "confidence": 0,
+        "region": {
+          "x": 0.495,
+          "y": 0.109,
+          "width": 0.02,
+          "height": 0.041
+        },
+        "evidenceKind": "icon",
+        "candidateIds": [
+          "investment_strategy_029",
+          "investment_strategy_030"
+        ],
+        "conflicts": [],
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050010149.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:10.1494976+00:00",
+          "confidence": 0.28659388422966003
+        }
+      },
+      {
+        "kind": "investmentStrategy",
+        "slotKey": "InvestmentStrategy-3",
+        "status": "unknown",
+        "rawOcrTexts": [],
+        "confidence": 0,
+        "region": {
+          "x": 0.519,
+          "y": 0.109,
+          "width": 0.02,
+          "height": 0.041
+        },
+        "evidenceKind": "icon",
+        "candidateIds": [
+          "investment_strategy_277",
+          "investment_strategy_317",
+          "investment_strategy_194",
+          "investment_strategy_096",
+          "investment_strategy_192",
+          "investment_strategy_057",
+          "investment_strategy_058",
+          "investment_strategy_260"
+        ],
+        "conflicts": [],
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050010149.png",
+          "locator": "vision:InvestmentStrategy:InvestmentStrategy-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:10.1494976+00:00",
+          "confidence": 0.10358335077762604
+        }
+      },
+      {
+        "kind": "synergy",
+        "slotKey": "Synergy-1",
+        "status": "unknown",
+        "rawOcrTexts": [],
+        "confidence": 0,
+        "region": {
+          "x": 0.024,
+          "y": 0.13,
+          "width": 0.025,
+          "height": 0.038
+        },
+        "evidenceKind": "icon",
+        "candidateIds": [
+          "bond_\u91CF\u5B50\u540C\u9891_inactive",
+          "bond_\u91CF\u5B50\u540C\u9891_p2",
+          "bond_\u91CF\u5B50\u540C\u9891_p3",
+          "bond_\u91CF\u5B50\u540C\u9891_p4",
+          "bond_\u91CF\u5B50\u540C\u9891_p5",
+          "bond_\u6B22\u6109_inactive",
+          "bond_\u6B22\u6109_p3",
+          "bond_\u6B22\u6109_p4"
+        ],
+        "conflicts": [],
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:Synergy:Synergy-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.3825276792049408
+        }
+      },
+      {
+        "kind": "synergy",
+        "slotKey": "Synergy-2",
+        "status": "known",
+        "objectId": "bond_\u5DE1\u6D77\u6E38\u4FA0",
+        "standardName": "\u5DE1\u6D77\u6E38\u4FA0",
+        "rawOcrTexts": [
+          "\u5DE1\u6D77\u6E38\u4FA0"
+        ],
+        "confidence": 1,
+        "region": {
+          "x": 0.024,
+          "y": 0.20500000000000002,
+          "width": 0.025,
+          "height": 0.038
+        },
+        "evidenceKind": "ocr",
+        "candidateIds": [
+          "bond_\u51FB\u7834_inactive",
+          "bond_\u51FB\u7834_p2",
+          "bond_\u51FB\u7834_p4",
+          "bond_\u51FB\u7834_p6",
+          "bond_\u51FB\u7834_p9",
+          "bond_\u80FD\u91CF_inactive",
+          "bond_\u80FD\u91CF_p10",
+          "bond_\u80FD\u91CF_p3"
+        ],
+        "conflicts": [],
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "named:Synergy:Synergy-2",
+          "summary": "\u5DE1\u6D77\u6E38\u4FA0",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 1
+        }
+      },
+      {
+        "kind": "synergy",
+        "slotKey": "Synergy-3",
+        "status": "known",
+        "objectId": "bond_\u71C3\u8840",
+        "standardName": "\u71C3\u8840",
+        "rawOcrTexts": [
+          "\u71C3\u8840"
+        ],
+        "confidence": 1,
+        "region": {
+          "x": 0.024,
+          "y": 0.28,
+          "width": 0.025,
+          "height": 0.038
+        },
+        "evidenceKind": "ocr",
+        "candidateIds": [
+          "bond_\u71C3\u8840_inactive",
+          "bond_\u71C3\u8840_p2",
+          "bond_\u71C3\u8840_p4",
+          "bond_\u71C3\u8840_p6",
+          "bond_\u71C3\u8840_p8"
+        ],
+        "conflicts": [],
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "named:Synergy:Synergy-3",
+          "summary": "\u71C3\u8840",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 1
+        }
+      },
+      {
+        "kind": "synergy",
+        "slotKey": "Synergy-4",
+        "status": "known",
+        "objectId": "bond_\u6218\u6280\u70B9",
+        "standardName": "\u6218\u6280\u70B9",
+        "rawOcrTexts": [
+          "\u6218\u6280\u70B9"
+        ],
+        "confidence": 1,
+        "region": {
+          "x": 0.024,
+          "y": 0.355,
+          "width": 0.025,
+          "height": 0.038
+        },
+        "evidenceKind": "ocr",
+        "candidateIds": [
+          "bond_\u5E08\u5F92_inactive",
+          "bond_\u5E08\u5F92_p2",
+          "bond_\u5E08\u5F92_p3"
+        ],
+        "conflicts": [],
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "named:Synergy:Synergy-4",
+          "summary": "\u6218\u6280\u70B9",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 1
+        }
+      },
+      {
+        "kind": "synergy",
+        "slotKey": "Synergy-5",
+        "status": "known",
+        "objectId": "bond_\u661F\u6838\u730E\u624B",
+        "standardName": "\u661F\u6838\u730E\u624B",
+        "rawOcrTexts": [
+          "\u661F\u6838\u730E\u624B"
+        ],
+        "confidence": 1,
+        "region": {
+          "x": 0.024,
+          "y": 0.43,
+          "width": 0.025,
+          "height": 0.038
+        },
+        "evidenceKind": "ocr",
+        "candidateIds": [
+          "bond_\u547D\u8FD0\u535C\u8005_inactive",
+          "bond_\u547D\u8FD0\u535C\u8005_p1",
+          "bond_\u6551\u4E16\u4E3B_inactive",
+          "bond_\u6551\u4E16\u4E3B_p1",
+          "bond_\u5E08\u5F92_inactive",
+          "bond_\u5E08\u5F92_p2",
+          "bond_\u5E08\u5F92_p3"
+        ],
+        "conflicts": [],
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "named:Synergy:Synergy-5",
+          "summary": "\u661F\u6838\u730E\u624B",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 1
+        }
+      },
+      {
+        "kind": "synergy",
+        "slotKey": "Synergy-6",
+        "status": "known",
+        "objectId": "bond_\u547D\u8FD0\u5723\u676F",
+        "standardName": "\u547D\u8FD0\u5723\u676F",
+        "rawOcrTexts": [
+          "\u547D\u8FD0\u5723\u676F"
+        ],
+        "confidence": 1,
+        "region": {
+          "x": 0.024,
+          "y": 0.505,
+          "width": 0.025,
+          "height": 0.038
+        },
+        "evidenceKind": "ocr",
+        "candidateIds": [
+          "bond_\u91CF\u5B50\u540C\u9891_inactive",
+          "bond_\u91CF\u5B50\u540C\u9891_p2",
+          "bond_\u91CF\u5B50\u540C\u9891_p3",
+          "bond_\u91CF\u5B50\u540C\u9891_p4",
+          "bond_\u91CF\u5B50\u540C\u9891_p5"
+        ],
+        "conflicts": [],
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "named:Synergy:Synergy-6",
+          "summary": "\u547D\u8FD0\u5723\u676F",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 1
+        }
+      }
+    ],
+    "pendingIcons": [
+      {
+        "category": "negativeAffix",
+        "slotKey": "NegativeAffix-1",
+        "region": {
+          "x": 0.113,
+          "y": 0.06,
+          "width": 0.014,
+          "height": 0.029
+        },
+        "templateId": "enemy_affix_t2_01",
+        "confidence": 0.2876012921333313,
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.2876012921333313
+        },
+        "status": "ambiguous-visual-identity",
+        "candidateTemplateIds": [
+          "enemy_affix_t2_01",
+          "enemy_affix_t3_16"
+        ],
+        "canDriveDecisions": false,
+        "cropFile": "unresolved-icons/20260806-050026413-00-NegativeAffix-NegativeAffix-1.png"
+      },
+      {
+        "category": "negativeAffix",
+        "slotKey": "NegativeAffix-2",
+        "region": {
+          "x": 0.128,
+          "y": 0.06,
+          "width": 0.014,
+          "height": 0.029
+        },
+        "templateId": "enemy_affix_t3_23",
+        "confidence": 0.45894938707351685,
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-2",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.45894938707351685
+        },
+        "status": "unresolved",
+        "candidateTemplateIds": [
+          "enemy_affix_t3_23"
+        ],
+        "canDriveDecisions": false,
+        "cropFile": "unresolved-icons/20260806-050026413-01-NegativeAffix-NegativeAffix-2.png"
+      },
+      {
+        "category": "negativeAffix",
+        "slotKey": "NegativeAffix-3",
+        "region": {
+          "x": 0.14300000000000002,
+          "y": 0.06,
+          "width": 0.014,
+          "height": 0.029
+        },
+        "templateId": "enemy_affix_t3_14",
+        "confidence": 0.24487189948558807,
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-3",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.24487189948558807
+        },
+        "status": "ambiguous-visual-identity",
+        "candidateTemplateIds": [
+          "enemy_affix_t3_14",
+          "enemy_affix_t2_07"
+        ],
+        "canDriveDecisions": false,
+        "cropFile": "unresolved-icons/20260806-050026413-02-NegativeAffix-NegativeAffix-3.png"
+      },
+      {
+        "category": "negativeAffix",
+        "slotKey": "NegativeAffix-4",
+        "region": {
+          "x": 0.158,
+          "y": 0.06,
+          "width": 0.014,
+          "height": 0.029
+        },
+        "templateId": "visual_enemy_affix_F300F519EBDD",
+        "confidence": 0.3210281729698181,
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:NegativeAffix:NegativeAffix-4",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.3210281729698181
+        },
+        "status": "ambiguous-visual-identity",
+        "candidateTemplateIds": [
+          "enemy_affix_t1_01",
+          "enemy_affix_t1_02",
+          "enemy_affix_t1_05"
+        ],
+        "canDriveDecisions": false,
+        "cropFile": "unresolved-icons/20260806-050026413-03-NegativeAffix-NegativeAffix-4.png"
+      },
+      {
+        "category": "synergy",
+        "slotKey": "Synergy-1",
+        "region": {
+          "x": 0.024,
+          "y": 0.13,
+          "width": 0.025,
+          "height": 0.038
+        },
+        "templateId": "bond_\u91CF\u5B50\u540C\u9891",
+        "confidence": 0.3825276792049408,
+        "evidence": {
+          "sourceId": "run:run-20260806-125919/screenshots/20260806-050026413.png",
+          "locator": "vision:Synergy:Synergy-1",
+          "summary": "2560x1440",
+          "capturedAt": "2026-08-06T05:00:26.4130191+00:00",
+          "confidence": 0.3825276792049408
+        },
+        "status": "ambiguous-visual-identity",
+        "candidateTemplateIds": [
+          "bond_\u91CF\u5B50\u540C\u9891_inactive",
+          "bond_\u91CF\u5B50\u540C\u9891_p2",
+          "bond_\u91CF\u5B50\u540C\u9891_p3",
+          "bond_\u91CF\u5B50\u540C\u9891_p4",
+          "bond_\u91CF\u5B50\u540C\u9891_p5",
+          "bond_\u6B22\u6109_inactive",
+          "bond_\u6B22\u6109_p3",
+          "bond_\u6B22\u6109_p4"
+        ],
+        "canDriveDecisions": false,
+        "cropFile": "unresolved-icons/20260806-050026413-04-Synergy-Synergy-1.png"
+      }
+    ],
+    "partialFields": [],
+    "recognitionTrace": [
+      {
+        "field": "nodeId",
+        "nodeId": "1-2",
+        "sourcePageId": "preparation_generic",
+        "rawOcr": [
+          "1-2"
+        ],
+        "normalizedValue": "1-2",
+        "status": "known",
+        "confidence": 0.72,
+        "attempt": 1,
+        "region": {
+          "x": 0.225,
+          "y": 0.04,
+          "width": 0.055,
+          "height": 0.05
+        },
+        "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+      },
+      {
+        "field": "health",
+        "nodeId": "1-2",
+        "sourcePageId": "preparation_generic",
+        "rawOcr": [
+          "82"
+        ],
+        "normalizedValue": "82",
+        "status": "known",
+        "confidence": 0.65,
+        "attempt": 1,
+        "region": {
+          "x": 0.797,
+          "y": 0.064,
+          "width": 0.035,
+          "height": 0.05
+        },
+        "capturedAt": "2026-08-06T05:00:26.4130191+00:00"
+      }
+    ],
+    "diagnostics": [
+      "\u6295\u8D44\u73AF\u5883\u6CBF\u7528\u672C\u5C40\u5DF2\u786E\u8BA4\u7ED3\u679C\uFF1B\u5F53\u524D\u5E27\u672A\u91CD\u590D\u8BC6\u522B\u3002",
+      "\u91D1\u5E01\u73B0\u6709\u8BC6\u522B\u7ED3\u679C\u4E0D\u786E\u5B9A\uFF1B\u672A\u5C06\u5176\u731C\u6210\u786E\u5B9A\u503C\u3002"
+    ]
+  }
+}

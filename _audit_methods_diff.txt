@@ -1,0 +1,37 @@
+===== ReadStoreLevelAsync: 842[4242-4342] vs 855[5419-5528] =====
+--- 
++++ 
+@@ -29,5 +29,8 @@
+                 .OrderByDescending(g => g.Region.X)
+                 .First().Digit;
+-            if (resolvedValue == 0)
++            // 用户规则（2026-08-10）：商店 Lv 只可能是 3-10 级——
++            // 识别到 1 或 0 均视为 Lv.10（Lv.10 的十位 1 或个位 0
++            // 被模板单独取到，如 000032 实测反相拉伸后 1/0 混淆）。
++            if (resolvedValue is 0 or 1)
+             {
+                 resolvedValue = 10;
+@@ -64,6 +67,11 @@
+                 CultureInfo.InvariantCulture,
+                 out var level) &&
+-            level is >= 1 and <= 20)
++            level is >= 0 and <= 20)
+         {
++            if (level is 0 or 1)
++            {
++                level = 10;
++            }
++
+             return Observation<int>.Known(
+                 level,
+@@ -80,6 +88,7 @@
+         if (values.Length == 1)
+         {
++            var fallbackDigit = values[0] is 0 or 1 ? 10 : values[0];
+             return Observation<int>.Known(
+-                values[0],
++                fallbackDigit,
+                 0.62,
+                 [evidence with
+===== ReadNodeOnceAsync: 842[4865-4900] vs 855[6090-6125] =====
+===== ReadNodeAsync: 842[4681-4800] vs 855[5906-6025] =====

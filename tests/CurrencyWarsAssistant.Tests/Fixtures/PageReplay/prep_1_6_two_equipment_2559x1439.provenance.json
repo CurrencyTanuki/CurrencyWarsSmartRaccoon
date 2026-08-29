@@ -1,0 +1,29 @@
+{
+  "fixture": "prep_1_6_two_equipment_2559x1439.png",
+  "source": "C:\\Users\\zzz81\\AppData\\Local\\Temp\\codex-clipboard-5355b907-d200-4000-9ed4-78194c4fed76.png",
+  "captured_context": "User-supplied real preparation-stage 1-6 screenshot",
+  "width": 2559,
+  "height": 1439,
+  "sha256": "9574DB17525B20D7FF6CAA0517F26F84AC587090E4B3595C7A74F63DE9A8F806",
+  "ground_truth": {
+    "zone": "Front",
+    "character_slot_index": 1,
+    "character_id": "currency_wars_character_10",
+    "character_name": "爻光",
+    "equipment_left_to_right": [
+      {
+        "id": "currency_wars_equipment_064",
+        "name": "永动机",
+        "privileged": false
+      },
+      {
+        "id": "currency_wars_equipment_066",
+        "name": "火力风暴潮",
+        "privileged": false
+      }
+    ],
+    "third_slot": "Empty"
+  },
+  "ground_truth_source": "User correction in Codex task on 2026-08-09",
+  "notes": "The game centers one, two, or three equipped icons as a group. This frame is the two-icon layout; three fixed thirds cut both icons and create false matches."
+}

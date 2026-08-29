@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><title>人口区域对比图</title>
+<style>body{font-family:"Microsoft YaHei";margin:18px;background:#f5f6fa}.card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:14px;margin-bottom:16px}.card img{max-width:100%;display:block;border:1px solid #ccc;margin-top:8px}h2{margin:0 0 4px;color:#c0392b}.ok{color:#27ae60;font-weight:bold}.bad{color:#c0392b;font-weight:bold}</style></head>
+<body>
+<h1>人口识别区域（软件从这块 OCR 读人口 N/N）</h1>
+<div class="card"><h2 class="bad">① 人口=Unknown（OCR 读到乱码）——preparation-1-3-gold</h2>
+<div>软件 OCR 读出的是「／／／／／前台布局」之类，不是 N/N 数字。请你确认：<b>这块区域里是不是根本没有「5/5」这种数字，而是其他文字/布局？</b></div>
+<img src="pop_prep13.png"></div>
+<div class="card"><h2 class="bad">② 人口=Unknown（OCR 读出空）——preparation-1-2-blank-board</h2>
+<div>OCR 这块读出空白。请确认这块是不是本来就没字。</div>
+<img src="pop_prep12.png"></div>
+<div class="card"><h2 class="ok">③ 人口=5（正常对照）——preparation-1-7</h2>
+<div>这块能认出 N/N。请对照看：<b>正常的人口区域长这样</b>。</div>
+<img src="pop_prep17.png"></div>
+<div class="card"><h2 class="ok">④ 人口=5（正常对照）——preparation-1-4</h2>
+<div>同样能认出。</div>
+<img src="pop_prep14.png"></div>
+</body></html>

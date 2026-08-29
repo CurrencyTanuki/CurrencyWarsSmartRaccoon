@@ -1,0 +1,15 @@
+{
+    "schema_version":  "1.0.0",
+    "game_version":  "4.4",
+    "dataset":  "equipment",
+    "inputs":  {
+                   "records":  {
+                                   "file":  "records.json",
+                                   "sha256":  "06E2A3D821429CCC2B305310B9F6F3F657B6FEA3600B4C11A741A7D3CF60DDD3"
+                               },
+                   "icon_manifest":  {
+                                         "file":  "icon-manifest.json",
+                                         "sha256":  "BD7F6426E4A091627117EC0B8483F1834804A3103837F22110F39A7EC45A3DA7"
+                                     }
+               }
+}

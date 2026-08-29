@@ -1,0 +1,51 @@
+{
+  "ShowLogOverlay": true,
+  "EnableUnknownPageEscapeRecovery": true,
+  "EnableRewardStageAutomation": true,
+  "EnableEarlyStrongFormationPurchase": true,
+  "IsLogOverlayClickThrough": false,
+  "LogOverlayOpacity": 0.5096153846153846,
+  "GameMode": 0,
+  "RetainedCharacterIds": [],
+  "AutoPurchaseCharacterIds": [],
+  "PreferredInvestmentStrategyIds": [],
+  "RerollProfiles": [],
+  "BenchSaleMode": 2,
+  "BenchSaleInterestThreshold": 10,
+  "EnableGalaxyScholarRewardStrategy": true,
+  "InvestmentEnvironmentFilters": [
+    {
+      "Id": "investment_environment_073",
+      "SelectionMode": 1
+    },
+    {
+      "Id": "investment_environment_074",
+      "SelectionMode": 1
+    },
+    {
+      "Id": "investment_environment_082",
+      "SelectionMode": 1
+    }
+  ],
+  "CompetitorFilters": [],
+  "EnemyAffixFilters": [],
+  "SpecialCombinations": [
+    {
+      "Id": "death_dragon_plus_extra_strike",
+      "Name": "\u7070\u624B\u751F\u547D\u79D1\u6280 \u002B \u989D\u5916\u6253\u51FB",
+      "Condition": 2,
+      "InvestmentEnvironments": "\u4E0D\u9650\u5236",
+      "Competitors": "\u7070\u624B\u751F\u547D\u79D1\u6280",
+      "EnemyAffixes": "\u989D\u5916\u6253\u51FB",
+      "IsBuiltIn": true
+    }
+  ],
+  "EnableDiagnosticLogging": true,
+  "GameSource": 0,
+  "LastWindowProcessName": "StarRail",
+  "LastWindowTitle": "\u5D29\u574F\uFF1A\u661F\u7A79\u94C1\u9053",
+  "LastGameArea": null,
+  "LastGameAreaSource": null,
+  "DeleteScreenshotsAfterRunCompletion": false,
+  "FastReroll": 1
+}

@@ -1,0 +1,221 @@
+##### ObserveInventory: 842=[(3025, 3167)] 855=[(3889, 4034)]
+--- 
++++ 
+@@ -4,7 +4,5 @@
+         ICollection<PendingIconObservation> pending)
+     {
+-        var slots = Phase2RecognitionRegions.InventoryIconSlots
+-            .Skip(1)
+-            .ToArray();
++        var slots = Phase2RecognitionRegions.InventoryIconSlots.ToArray();
+         var occupiedIndices = Enumerable.Range(0, slots.Length)
+             .Where(index => HasDetailedForeground(frame, slots[index]))
+@@ -43,5 +41,10 @@
+             }
+ 
+-            var candidates = item.CandidateTemplateIds ?? [];
++            var candidates = (item.CandidateTemplateIds ?? [])
++                .Append(item.TemplateId)
++                .Where(value => !string.IsNullOrWhiteSpace(value))
++                .Select(value => value!)
++                .Distinct(StringComparer.OrdinalIgnoreCase)
++                .ToArray();
+             var candidateKinds = candidates
+                 .Select(id => _inventoryKindById.GetValueOrDefault(
+@@ -72,5 +75,5 @@
+             }
+ 
+-            var reason = candidates.Count > 1
++            var reason = candidates.Count() > 1
+                 ? "背包图标存在多个视觉相同或近似候选，已保留全部候选。"
+                 : "背包槽有内容，但图标未达到可靠识别条件。";
+@@ -93,5 +96,5 @@
+                 item.Confidence,
+                 slotEvidence,
+-                candidates.Count > 1
++                candidates.Count() > 1
+                     ? "ambiguous-visual-identity"
+                     : "unresolved",
+@@ -136,5 +139,5 @@
+             ProjectInventoryIds(
+                 values,
+-                InventoryItemKind.SpecialItem,
++                [InventoryItemKind.SpecialItem, InventoryItemKind.DismantleTool],
+                 allResolved,
+                 evidence,
+##### MergeSpecialItemObservations: 842=None 855=[(4166, 4208)]
+(new in 855)
+    private static Observation<IReadOnlyList<string>> MergeSpecialItemObservations(
+        Observation<IReadOnlyList<string>> inventory,
+        BenchSpecialItemObservation bench,
+        DateTimeOffset observedAt)
+    {
+        if (!bench.WasEvaluated)
+        {
+            return inventory;
+        }
+
+        var ids = (inventory.Value ?? [])
+            .Concat(bench.ItemIds.Value ?? [])
+            .ToArray();
+        var evidence = inventory.Evidence
+            .Concat(bench.ItemIds.Evidence)
+            .Distinct()
+            .ToArray();
+        if (inventory.Status == ObservationStatus.Known &&
+            bench.ItemIds.Status == ObservationStatus.Known)
+        {
+            return Observation<IReadOnlyList<string>>.Known(
+                ids,
+                (inventory.Confidence + bench.ItemIds.Confidence) / 2,
+                evidence,
+                observedAt);
+        }
+
+        var uncertainty = inventory.Uncertainty
+            .Concat(bench.ItemIds.Uncertainty)
+            .Distinct(StringComparer.Ordinal)
+            .ToArray();
+        return new Observation<IReadOnlyList<string>>
+        {
+            Status = ObservationStatus.Unknown,
+            Value = ids,
+            Confidence = 0,
+            Evidence = evidence,
+            Uncertainty = uncertainty.Length == 0
+                ? ["库存或备战席特殊物品尚未完整解析。"]
+                : uncertainty,
+            ObservedAt = observedAt
+        };
+    }
+##### ObserveBenchSpecialItems: 842=None 855=[(4036, 4164)]
+(new in 855)
+    private BenchSpecialItemObservation ObserveBenchSpecialItems(
+        CaptureFrame frame,
+        IReadOnlyList<CharacterCardSlotRecognition> bench,
+        EvidenceReference evidence,
+        ICollection<PendingIconObservation> pending)
+    {
+        if (_benchSpecialItemTemplates.Count == 0)
+        {
+            return new BenchSpecialItemObservation(
+                Observation<IReadOnlyList<string>>.Unknown(
+                    "未经实测验证的备战席特殊物品模板未启用。",
+                    [evidence],
+                    frame.CapturedAt),
+                new HashSet<int>(),
+                WasEvaluated: false);
+        }
+
+        // The normal card pass remains authoritative for characters. This
+        // narrow second pass only examines unresolved/special-occupied bench
+        // slots and contains exactly the live-verified 004 template.
+        var candidates = bench.Where(item => item.State is
+                CharacterCardSlotState.Uncertain or
+                CharacterCardSlotState.SpecialOccupied)
+            .ToArray();
+        var observationEvidence = evidence with
+        {
+            Locator = "vision:bench-special-items",
+            Summary = "备战席特殊物品局部二次识别"
+        };
+        if (candidates.Length == 0)
+        {
+            return new BenchSpecialItemObservation(
+                Observation<IReadOnlyList<string>>.Known(
+                    [],
+                    1,
+                    [observationEvidence],
+                    frame.CapturedAt),
+                new HashSet<int>(),
+                WasEvaluated: true);
+        }
+
+        var regions = candidates
+            .Select(item => ToNormalized(item.ReferenceBounds))
+            .ToArray();
+        var recognitions = RecognizeIconsSafely(
+            frame,
+            BenchSpecialItemCategory,
+            regions,
+            _benchSpecialItemTemplates);
+        var ids = new List<string>();
+        var confidences = new List<double>();
+        var recognizedSlots = new HashSet<int>();
+        var hasUnresolvedLikelyItem = false;
+
+        for (var index = 0; index < candidates.Length; index++)
+        {
+            var slot = candidates[index];
+            var item = index < recognitions.Count
+                ? recognitions[index]
+                : null;
+            if (item is { IsKnown: true } &&
+                string.Equals(
+                    item.TemplateId,
+                    SimpleArmamentBoxId,
+                    StringComparison.Ordinal))
+            {
+                ids.Add(SimpleArmamentBoxId);
+                confidences.Add(item.Confidence);
+                recognizedSlots.Add(slot.SlotIndex);
+                var slotEvidence = evidence with
+                {
+                    Locator = $"crop:bench-special-item:{slot.SlotIndex + 1}",
+                    Summary = "简易武装箱",
+                    Confidence = item.Confidence
+                };
+                pending.Add(new PendingIconObservation(
+                    PendingIconCategory.SpecialItem,
+                    $"bench-special-item-{slot.SlotIndex + 1}",
+                    ToRelative(slot.ReferenceBounds),
+                    SimpleArmamentBoxId,
+                    item.Confidence,
+                    slotEvidence,
+                    "bench-special-item-recognized",
+                    [SimpleArmamentBoxId],
+                    $"bench-special-item-Bench-{slot.SlotIndex + 1}",
+                    new Dictionary<string, string>(StringComparer.Ordinal)
+                    {
+                        ["zone"] = "Bench",
+                        ["slotIndex"] = slot.SlotIndex.ToString(
+                            CultureInfo.InvariantCulture),
+                        ["itemId"] = SimpleArmamentBoxId,
+                        ["sourceType"] = BenchSpecialItemCategory
+                    },
+                    false));
+                continue;
+            }
+
+            // A first-pass SpecialOccupied result is definitely not a normal
+            // character. A near-threshold 004 match may be an animated frame.
+            // Keep the observation Unknown in either case so StateTracker
+            // carries the previous reliable value instead of erasing it.
+            hasUnresolvedLikelyItem |=
+                slot.State == CharacterCardSlotState.SpecialOccupied ||
+                item is { Confidence: >= BenchSpecialItemPossibleConfidence };
+        }
+
+        var itemObservation = hasUnresolvedLikelyItem
+            ? new Observation<IReadOnlyList<string>>
+            {
+                Status = ObservationStatus.Unknown,
+                Value = ids,
+                Confidence = 0,
+                Evidence = [observationEvidence],
+                Uncertainty =
+                [
+                    "备战席仍有特殊占用或接近阈值的槽位；已确认物品被保留为部分证据。"
+                ],
+                ObservedAt = frame.CapturedAt
+            }
+            : Observation<IReadOnlyList<string>>.Known(
+                ids,
+                confidences.Count == 0 ? 1 : confidences.Average(),
+                [observationEvidence],
+                frame.CapturedAt);
+        return new BenchSpecialItemObservation(
+            itemObservation,
+            recognizedSlots,
+            WasEvaluated: true);
+    }

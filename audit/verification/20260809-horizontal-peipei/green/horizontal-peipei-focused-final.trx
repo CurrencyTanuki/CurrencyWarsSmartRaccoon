@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="882a3e7e-6293-4379-a7aa-9bb65e5c918f" name="zzz81@ZZZ的电脑 2026-08-09 18:38:21" runUser="ZZZ的电脑\zzz81" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-08-09T18:38:21.5149771+08:00" queuing="2026-08-09T18:38:21.5149773+08:00" start="2026-08-09T18:38:19.3471748+08:00" finish="2026-08-09T18:38:21.5193829+08:00" />
+  <TestSettings name="default" id="dfdfe9ff-5e44-4199-9b34-1569a63f9c65">
+    <Deployment runDeploymentRoot="zzz81_ZZZ的电脑_2026-08-09_18_38_21" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="7b78f035-5135-4429-8ba1-abe65c35a44a" testId="8d30cbd2-4f21-04ee-b67b-b72fc665efaa" testName="CurrencyWarsAssistant.Tests.HorizontalSpecialUnitRecognitionTests.HorizontalPeipeiIsRecognizedAtSupportedResolutions(fixtureName: &quot;prep_3_7_142723217.png&quot;, expectedWidth: 2560, expectedHeight: 1440)" computerName="ZZZ的电脑" duration="00:00:00.0558535" startTime="2026-08-09T18:38:21.3236464+08:00" endTime="2026-08-09T18:38:21.3236468+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7b78f035-5135-4429-8ba1-abe65c35a44a" />
+    <UnitTestResult executionId="65990850-6ee1-4f1f-8b90-ea6bb872f11c" testId="80c2a791-3d54-6190-1497-48f2ebc70a6b" testName="CurrencyWarsAssistant.Tests.HorizontalSpecialUnitRecognitionTests.FramesWithoutHorizontalPeipeiRemainNegative(fixtureName: &quot;preparation_nine_cards_low_confidence_2048x1152.pn&quot;···)" computerName="ZZZ的电脑" duration="00:00:00.0492000" startTime="2026-08-09T18:38:21.4150803+08:00" endTime="2026-08-09T18:38:21.4150808+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="65990850-6ee1-4f1f-8b90-ea6bb872f11c" />
+    <UnitTestResult executionId="a39d205f-405a-400b-a0ce-d311c677aaab" testId="ae05be8d-3435-e467-0491-6eeabcdcc16b" testName="CurrencyWarsAssistant.Tests.HorizontalSpecialUnitRecognitionTests.TrackerPreservesRecognizedSpecialIdentityWithoutDecisionAuthority" computerName="ZZZ的电脑" duration="00:00:00.0419751" startTime="2026-08-09T18:38:21.3657974+08:00" endTime="2026-08-09T18:38:21.3657976+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a39d205f-405a-400b-a0ce-d311c677aaab" />
+    <UnitTestResult executionId="f3cb8276-7eeb-4df3-a3e3-c8f55e18b0e6" testId="0e0a8bc4-7cf9-77cf-de37-b73de5d44f84" testName="CurrencyWarsAssistant.Tests.HorizontalSpecialUnitRecognitionTests.HorizontalPeipeiIsRecognizedAtSupportedResolutions(fixtureName: &quot;p37_1080p_clean.png&quot;, expectedWidth: 1920, expectedHeight: 1080)" computerName="ZZZ的电脑" duration="00:00:00.0771088" startTime="2026-08-09T18:38:21.2681370+08:00" endTime="2026-08-09T18:38:21.2681475+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f3cb8276-7eeb-4df3-a3e3-c8f55e18b0e6" />
+    <UnitTestResult executionId="12e5c637-aac7-4687-a6cc-418914653a62" testId="234c46be-3b69-acf1-5ffe-14374bbfe4e3" testName="CurrencyWarsAssistant.Tests.HorizontalSpecialUnitRecognitionTests.FramesWithoutHorizontalPeipeiRemainNegative(fixtureName: &quot;preparation_1_3_stable_2559x1439.png&quot;)" computerName="ZZZ的电脑" duration="00:00:00.0458926" startTime="2026-08-09T18:38:21.4610980+08:00" endTime="2026-08-09T18:38:21.4610983+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="12e5c637-aac7-4687-a6cc-418914653a62" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="CurrencyWarsAssistant.Tests.HorizontalSpecialUnitRecognitionTests.HorizontalPeipeiIsRecognizedAtSupportedResolutions(fixtureName: &quot;p37_1080p_clean.png&quot;, expectedWidth: 1920, expectedHeight: 1080)" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\debug\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="0e0a8bc4-7cf9-77cf-de37-b73de5d44f84">
+      <Execution id="f3cb8276-7eeb-4df3-a3e3-c8f55e18b0e6" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Debug\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.HorizontalSpecialUnitRecognitionTests" name="HorizontalPeipeiIsRecognizedAtSupportedResolutions" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.HorizontalSpecialUnitRecognitionTests.FramesWithoutHorizontalPeipeiRemainNegative(fixtureName: &quot;preparation_nine_cards_low_confidence_2048x1152.pn&quot;···)" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\debug\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="80c2a791-3d54-6190-1497-48f2ebc70a6b">
+      <Execution id="65990850-6ee1-4f1f-8b90-ea6bb872f11c" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Debug\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.HorizontalSpecialUnitRecognitionTests" name="FramesWithoutHorizontalPeipeiRemainNegative" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.HorizontalSpecialUnitRecognitionTests.TrackerPreservesRecognizedSpecialIdentityWithoutDecisionAuthority" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\debug\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="ae05be8d-3435-e467-0491-6eeabcdcc16b">
+      <Execution id="a39d205f-405a-400b-a0ce-d311c677aaab" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Debug\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.HorizontalSpecialUnitRecognitionTests" name="TrackerPreservesRecognizedSpecialIdentityWithoutDecisionAuthority" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.HorizontalSpecialUnitRecognitionTests.FramesWithoutHorizontalPeipeiRemainNegative(fixtureName: &quot;preparation_1_3_stable_2559x1439.png&quot;)" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\debug\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="234c46be-3b69-acf1-5ffe-14374bbfe4e3">
+      <Execution id="12e5c637-aac7-4687-a6cc-418914653a62" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Debug\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.HorizontalSpecialUnitRecognitionTests" name="FramesWithoutHorizontalPeipeiRemainNegative" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.HorizontalSpecialUnitRecognitionTests.HorizontalPeipeiIsRecognizedAtSupportedResolutions(fixtureName: &quot;prep_3_7_142723217.png&quot;, expectedWidth: 2560, expectedHeight: 1440)" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\debug\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="8d30cbd2-4f21-04ee-b67b-b72fc665efaa">
+      <Execution id="7b78f035-5135-4429-8ba1-abe65c35a44a" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Debug\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.HorizontalSpecialUnitRecognitionTests" name="HorizontalPeipeiIsRecognizedAtSupportedResolutions" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="8d30cbd2-4f21-04ee-b67b-b72fc665efaa" executionId="7b78f035-5135-4429-8ba1-abe65c35a44a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="80c2a791-3d54-6190-1497-48f2ebc70a6b" executionId="65990850-6ee1-4f1f-8b90-ea6bb872f11c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ae05be8d-3435-e467-0491-6eeabcdcc16b" executionId="a39d205f-405a-400b-a0ce-d311c677aaab" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0e0a8bc4-7cf9-77cf-de37-b73de5d44f84" executionId="f3cb8276-7eeb-4df3-a3e3-c8f55e18b0e6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="234c46be-3b69-acf1-5ffe-14374bbfe4e3" executionId="12e5c637-aac7-4687-a6cc-418914653a62" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="5" executed="5" passed="5" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.29)&#xD;
+[xUnit.net 00:00:01.44]   Discovering: CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:01.52]   Discovered:  CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:01.52]   Starting:    CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:01.82]   Finished:    CurrencyWarsAssistant.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

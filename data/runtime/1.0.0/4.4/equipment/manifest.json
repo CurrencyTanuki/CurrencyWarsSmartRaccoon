@@ -1,0 +1,12 @@
+{
+    "schema_version":  "1.0.0",
+    "game_version":  "4.4",
+    "dataset":  "equipment",
+    "files":  [
+                  {
+                      "file":  "equipment.json",
+                      "sha256":  "4B525D125B38B86EF68852C3D06BB23A28A7190A3389D9821AB814F7CBCB3554",
+                      "record_count":  157
+                  }
+              ]
+}

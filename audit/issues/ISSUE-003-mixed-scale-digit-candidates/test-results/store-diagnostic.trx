@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="4f748977-60e7-431a-b086-2457326df3b0" name="zzz81@ZZZ的电脑 2026-08-08 23:29:35" runUser="ZZZ的电脑\zzz81" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-08-08T23:29:35.0936225+08:00" queuing="2026-08-08T23:29:35.0936228+08:00" start="2026-08-08T23:29:32.3939194+08:00" finish="2026-08-08T23:29:35.0988470+08:00" />
+  <TestSettings name="default" id="094a4478-d00a-46b7-a6a6-b5bd4647c932">
+    <Deployment runDeploymentRoot="zzz81_ZZZ的电脑_2026-08-08_23_29_35" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="64c260b0-1af1-4817-acc9-a0ecccb34697" testId="e2ff0063-f191-e4ec-3b8e-1d19d962d3d9" testName="CurrencyWarsAssistant.Tests.UserReferenceDiagnosisTests.Diagnose032RemainingFields" computerName="ZZZ的电脑" duration="00:00:02.0309746" startTime="2026-08-08T23:29:35.0093400+08:00" endTime="2026-08-08T23:29:35.0093518+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="64c260b0-1af1-4817-acc9-a0ecccb34697">
+      <Output>
+        <StdOut>frame 2559x1439&#xD;
+DetectBackSlotCount = 7&#xD;
+back slots: [460,600,130,145], [605,600,130,145], [750,600,130,145], [895,600,130,145], [1040,600,130,145], [1185,600,130,145], [1330,600,130,145]&#xD;
+templates count = 79; has peipei = True&#xD;
+刃星区诊断: maxR=255 maxG=239 maxB=203 超亮(R&gt;200 G&gt;180)=71px&#xD;
+刃槽星核诊断: 带=(936,925)-(988,957) 星核像素=0 簇(≥3px)=0&#xD;
+back slot idx=0 state=Empty best=() conf=0 star=null&#xD;
+back slot idx=1 state=Recognized best=currency_wars_character_02(千冶•刃) conf=0.6947708994150162 star=1&#xD;
+back slot idx=2 state=Recognized best=currency_wars_character_trailblazer(开拓者) conf=0.787936556339264 star=1&#xD;
+back slot idx=3 state=Recognized best=currency_wars_character_10(爻光) conf=0.6705877038846906 star=2&#xD;
+back slot idx=4 state=Empty best=() conf=0 star=null&#xD;
+back slot idx=5 state=Empty best=() conf=0 star=null&#xD;
+back slot idx=6 state=SpecialOccupied best=special_unit_peipei(佩佩) conf=0.6824744649436543 star=null&#xD;
+StoreLevel region px = PixelRect { X = 379, Y = 1137, Width = 243, Height = 101, Right = 622, Bottom = 1238, Center = PixelPoint { X = 500, Y = 1187 }, IsEmpty = False }&#xD;
+StoreLevel digit: recognized=False value=null conf=0 fail=No unambiguous digit components were found.&#xD;
+Population OCR text: '罾 8 / 8 吕 前 台 区 域 | 罾 8 / 8 | 吕 前 台 区 域 | 罾 8 / 8 前 台 区 域 | 前 台 区 域'&#xD;
+StoreLevel OCR text: ''&#xD;
+StoreLevel robust OCR text: ''&#xD;
+StoreLevel inverted digits: recognized=False value=null conf=0.39577836411609496 fail=At least one digit was below the category-local confidence or margin requirement. projected=54,0,57,288;295,0,3,307; selected=54,0,57,288;295,0,3,307; sliding=Sliding digit candidates mixed incompatible glyph scales: 1@284,82,21x32;bottom=114;confidence=0.831,1@284,262,21x32;bottom=294;confidence=0.820,1@284,4,21x32;bottom=36;confidence=0.810,1@374,79,13x20;bottom=99;confidence=0.790,1@375,222,11x16;bottom=238;confidence=0.769,1@375,164,11x16;bottom=180;confidence=0.760,1@374,178,13x20;bottom=198;confidence=0.747,1@374,209,13x20;bottom=229;confidence=0.735,1@280,35,27x40;bottom=75;confidence=0.727,7@153,10,27x40;bottom=50;confidence=0.714,8@143,29,11x16;bottom=45;confidence=0.661,0@99,51,11x16;bottom=67;confidence=0.645,8@123,34,11x16;bottom=50;confidence=0.633,8@67,32,11x16;bottom=48;confidence=0.631,8@117,11,13x20;bottom=31;confidence=0.621,8@71,0,16x24;bottom=24;confidence=0.585,0@99,24,16x24;bottom=48;confidence=0.584,0@67,140,43x64;bottom=204;confidence=0.533,9@88,29,11x16;bottom=45;confidence=0.528,6@112,47,13x20;bottom=67;confidence=0.509,0@45,198,43x64;bottom=262;confidence=0.503,7@290,101,11x16;bottom=117;confidence=0.489,9@95,3,21x32;bottom=35;confidence=0.481&#xD;
+  glyph digit=7 conf=0.396 region=(190,40,57,288)</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="CurrencyWarsAssistant.Tests.UserReferenceDiagnosisTests.Diagnose032RemainingFields" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="e2ff0063-f191-e4ec-3b8e-1d19d962d3d9">
+      <Execution id="64c260b0-1af1-4817-acc9-a0ecccb34697" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.UserReferenceDiagnosisTests" name="Diagnose032RemainingFields" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="e2ff0063-f191-e4ec-3b8e-1d19d962d3d9" executionId="64c260b0-1af1-4817-acc9-a0ecccb34697" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.29)&#xD;
+[xUnit.net 00:00:00.07]   Discovering: CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:00.18]   Discovered:  CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:00.18]   Starting:    CurrencyWarsAssistant.Tests&#xD;
+[DetectBackSlotCount] centers=674,816,960,1382&#xD;
+[xUnit.net 00:00:02.25]   Finished:    CurrencyWarsAssistant.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -1,0 +1,11 @@
+{
+  "manifest_jsonl_records": 630,
+  "unique_ids": 630,
+  "available_records": 630,
+  "missing_records": 0,
+  "derived_asset_records": 3,
+  "ambiguous_bond_colour_records": 33,
+  "blank_raw_images": [],
+  "reused_source_sha256_groups": 81,
+  "all_available_paths_exist": true
+}

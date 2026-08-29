@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0.0",
+  "gameVersion": "4.4",
+  "entries": [
+    {
+      "templateId": "bond_昼之半神",
+      "recognitionEnabled": false,
+      "reason": "The supplied icon does not match the 昼之半神 icon visible in real fixture 125924.png; keep the source asset for review but do not emit a known identity."
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0",
+  "accountChecks": {
+    "realNameVerified": false,
+    "livePermissionConfirmed": false,
+    "roomId": "",
+    "category": "",
+    "streamKeyStoredOutsideProject": true
+  },
+  "video": {
+    "canvasWidth": 2560,
+    "canvasHeight": 1440,
+    "outputWidth": 1920,
+    "outputHeight": 1080,
+    "fps": 30,
+    "encoder": "AMD AMF H.264",
+    "rateControl": "CBR",
+    "videoBitrateKbps": 5000,
+    "keyframeIntervalSeconds": 2,
+    "audioBitrateKbps": 160
+  },
+  "sources": {
+    "gameCaptureConfigured": false,
+    "displayCaptureDisabled": true,
+    "uidMaskVerifiedAcrossPages": false,
+    "desktopNotificationsDisabled": false,
+    "microphoneTested": false,
+    "gameAudioTested": false
+  },
+  "safety": {
+    "emergencyStopHotkey": "Ctrl+Shift+F12",
+    "emergencyStopVerified": false,
+    "privacySceneVerified": false,
+    "localRecordingReviewed": false,
+    "thirtyMinuteTestCompleted": false,
+    "testDroppedFramesPercent": null,
+    "testEncoderOverloadCount": null
+  },
+  "secrets": {
+    "streamServer": "DO_NOT_STORE_HERE",
+    "streamKey": "DO_NOT_STORE_HERE"
+  }
+}
+

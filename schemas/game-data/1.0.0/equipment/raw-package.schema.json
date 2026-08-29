@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "currency-wars://schemas/game-data/1.0.0/equipment/raw-package",
+  "title": "Currency Wars equipment raw package",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "game_version",
+    "dataset",
+    "inputs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "game_version": {
+      "const": "4.4"
+    },
+    "dataset": {
+      "const": "equipment"
+    },
+    "inputs": {
+      "type": "object",
+      "required": [
+        "records",
+        "icon_manifest"
+      ],
+      "properties": {
+        "records": {
+          "type": "object",
+          "required": ["file", "sha256"],
+          "properties": {
+            "file": {
+              "type": "string",
+              "pattern": "^[^\\\\/].*\\.json$"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{64}$"
+            }
+          },
+          "additionalProperties": false
+        },
+        "icon_manifest": {
+          "type": "object",
+          "required": ["file", "sha256"],
+          "properties": {
+            "file": {
+              "type": "string",
+              "pattern": "^[^\\\\/].*\\.json$"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9A-F]{64}$"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

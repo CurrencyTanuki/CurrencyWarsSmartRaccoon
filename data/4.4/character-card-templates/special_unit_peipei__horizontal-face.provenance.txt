@@ -1,0 +1,7 @@
+asset=special_unit_peipei__horizontal-face.png
+source=tests/CurrencyWarsAssistant.Tests/Fixtures/PageReplay/p37_1080p_clean.png
+source_sha256=5231499EF1BD8C1C91BF29906321EE8A994DCFFB00B3E31B6234FE49D1EB49B7
+reference_resolution=1920x1080
+crop=x400,y315,width40,height30
+extraction=ffmpeg crop filter; no generated pixels
+asset_sha256=BE31105667834C7EA911B7A07C5F6E1BB48864184B30B9A5D15A096B56CDA68A

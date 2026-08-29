@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="2c3de874-d634-40e9-9a8d-83ca4f08aba5" name="zzz81@ZZZ的电脑 2026-08-08 23:15:32" runUser="ZZZ的电脑\zzz81" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-08-08T23:15:32.5595301+08:00" queuing="2026-08-08T23:15:32.5595305+08:00" start="2026-08-08T23:15:30.6926110+08:00" finish="2026-08-08T23:15:33.6776039+08:00" />
+  <TestSettings name="default" id="facc22d1-7697-4cc7-b75c-be937bce5e3e">
+    <Deployment runDeploymentRoot="zzz81_ZZZ的电脑_2026-08-08_23_15_32" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="89d017b8-a28b-4646-b1a9-7c348b6ad4a1" testId="b84e87a2-0ef1-0ac2-9a92-a2881b862dc4" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.LocalizedUiDigitsReadLivePreparationResourcesWithoutGeneralOcr" computerName="ZZZ的电脑" duration="00:00:00.1820820" startTime="2026-08-08T23:15:32.7849801+08:00" endTime="2026-08-08T23:15:32.7849803+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="89d017b8-a28b-4646-b1a9-7c348b6ad4a1">
+      <Output>
+        <StdOut>difficulty: value=; confidence=0.318; runner-up=0.255; reason=At least one digit was below the category-local confidence or margin requirement. projected=25,0,13,40;41,0,8,40; selected=25,0,13,40;41,0,8,40; sliding=Sliding digit sequence 12 is outside the allowed range.; glyphs=1@PixelRect { X = 177, Y = 81, Width = 13, Height = 40, Right = 190, Bottom = 121, Center = PixelPoint { X = 183, Y = 101 }, IsEmpty = False }&#xD;
+tools: value=2; confidence=0.787; runner-up=0.634; reason=; glyphs=2@PixelRect { X = 2490, Y = 239, Width = 19, Height = 28, Right = 2509, Bottom = 267, Center = PixelPoint { X = 2499, Y = 253 }, IsEmpty = False }&#xD;
+spend: value=2; confidence=0.853; runner-up=0.643; reason=; glyphs=2@PixelRect { X = 2024, Y = 1171, Width = 19, Height = 28, Right = 2043, Bottom = 1199, Center = PixelPoint { X = 2033, Y = 1185 }, IsEmpty = False }&#xD;
+interest: value=3; confidence=0.835; runner-up=0.740; reason=; glyphs=3@PixelRect { X = 2174, Y = 1138, Width = 21, Height = 32, Right = 2195, Bottom = 1170, Center = PixelPoint { X = 2184, Y = 1154 }, IsEmpty = False }&#xD;
+economy: value=328; confidence=0.533; runner-up=0.591; reason=; glyphs=3@PixelRect { X = 2176, Y = 1208, Width = 27, Height = 40, Right = 2203, Bottom = 1248, Center = PixelPoint { X = 2189, Y = 1228 }, IsEmpty = False },2@PixelRect { X = 2202, Y = 1206, Width = 27, Height = 40, Right = 2229, Bottom = 1246, Center = PixelPoint { X = 2215, Y = 1226 }, IsEmpty = False },8@PixelRect { X = 2203, Y = 1232, Width = 11, Height = 16, Right = 2214, Bottom = 1248, Center = PixelPoint { X = 2208, Y = 1240 }, IsEmpty = False }</StdOut>
+        <ErrorInfo>
+          <Message>Assert.Empty() Failure: Collection was not empty&#xD;
+Collection: ["difficulty: expected=126, value=, reason=At least "···, "economy: expected=32, value=328, reason="]</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.LocalizedUiDigitsReadLivePreparationResourcesWithoutGeneralOcr() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs:line 912&#xD;
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a8be8c83-d730-4414-a1e3-d9fb9f90c2ce" testId="d8ddea9f-a67f-e33f-267e-a177a7d3bb76" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationSnapshotReadsAbsoluteHealthAndGoldFromTightRegions" computerName="ZZZ的电脑" duration="00:00:00.2606796" startTime="2026-08-08T23:15:33.1590651+08:00" endTime="2026-08-08T23:15:33.1590653+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a8be8c83-d730-4414-a1e3-d9fb9f90c2ce">
+      <Output>
+        <StdOut>health=Known/84; uncertainty=; evidence=84&#xD;
+economy=Known/0; uncertainty=; evidence=style=DarkOnLight; value=328; confidence=0.533; runner-up=0.591; reason= | style=BrightOnDark; value=0; confidence=0.574; runner-up=0.499; reason= | style=DarkOnLight; value=284; confidence=0.502; runner-up=0.591; reason= | style=BrightOnDark; value=0; confidence=0.629; runner-up=0.499; reason= | 当前分析所用的原始截图。 | 当前分析所用的原始截图。</StdOut>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ&#xD;
+Expected: 32&#xD;
+Actual:   0</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationSnapshotReadsAbsoluteHealthAndGoldFromTightRegions() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs:line 1022&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="9a0f8e96-33f0-4482-9081-75c679cd53c4" testId="c5999687-95bf-24f8-25a8-da1078fd2e0a" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedShopEconomyUsesTightEvidenceInsteadOfAdjacentZero" computerName="ZZZ的电脑" duration="00:00:00.4204246" startTime="2026-08-08T23:15:33.5803537+08:00" endTime="2026-08-08T23:15:33.5803538+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9a0f8e96-33f0-4482-9081-75c679cd53c4">
+      <Output>
+        <StdOut>localized=86; confidence=0.502; runner-up=0.649; ; glyphs=8:PixelRect { X = 2186, Y = 1229, Width = 11, Height = 16, Right = 2197, Bottom = 1245, Center = PixelPoint { X = 2191, Y = 1237 }, IsEmpty = False },6:PixelRect { X = 2187, Y = 1208, Width = 27, Height = 40, Right = 2214, Bottom = 1248, Center = PixelPoint { X = 2200, Y = 1228 }, IsEmpty = False }&#xD;
+interest=1; confidence=0.700; runner-up=0.577; &#xD;
+shop economy=7; status=Known; evidence=style=DarkOnLight; value=0; confidence=0.536; runner-up=0.439; reason= | style=BrightOnDark; value=86; confidence=0.502; runner-up=0.649; reason= | style=DarkOnLight; value=unknown; confidence=0.000; runner-up=0.000; reason=No unambiguous digit components were found. | style=BrightOnDark; value=7; confidence=0.589; runner-up=0.507; reason= | 当前分析所用的原始截图。 | 当前分析所用的原始截图。</StdOut>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ&#xD;
+Expected: 6&#xD;
+Actual:   7</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedShopEconomyUsesTightEvidenceInsteadOfAdjacentZero() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs:line 1102&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="faeca878-4948-4c4d-b06e-17ab82ee109c" testId="b799cabe-f137-0a9b-0f05-7af1ed05951c" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.GlowingActionValueUsesLocalizedDigitTemplatesWithoutRelaxingOcr" computerName="ZZZ的电脑" duration="00:00:00.8202466" startTime="2026-08-08T23:15:32.1037873+08:00" endTime="2026-08-08T23:15:32.1038005+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="faeca878-4948-4c4d-b06e-17ab82ee109c">
+      <Output>
+        <StdOut>value=87; confidence=0.589; runner-up=0.523; reason=; glyphs=8@0.589/0.509:PixelRect { X = 170, Y = 1013, Width = 27, Height = 40, Right = 197, Bottom = 1053, Center = PixelPoint { X = 183, Y = 1033 }, IsEmpty = False } | 7@0.672/0.523:PixelRect { X = 206, Y = 1038, Width = 11, Height = 16, Right = 217, Bottom = 1054, Center = PixelPoint { X = 211, Y = 1046 }, IsEmpty = False }</StdOut>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ&#xD;
+Expected: 80&#xD;
+Actual:   87</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.GlowingActionValueUsesLocalizedDigitTemplatesWithoutRelaxingOcr() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs:line 685&#xD;
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d425f4fc-dc12-42ac-96a3-c9625d461c9a" testId="4a594a0e-876a-28c6-df09-2ccaa49af9f9" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedEconomyCropDoesNotPrependCoinIconToSingleDigitGold" computerName="ZZZ的电脑" duration="00:00:00.1118799" startTime="2026-08-08T23:15:32.8972217+08:00" endTime="2026-08-08T23:15:32.8972219+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d425f4fc-dc12-42ac-96a3-c9625d461c9a">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ&#xD;
+Expected: 3&#xD;
+Actual:   38</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedEconomyCropDoesNotPrependCoinIconToSingleDigitGold() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs:line 1359&#xD;
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b38799bd-0ed9-4aad-8986-5ea5b32f1628" testId="8a469658-213e-76b5-6845-af750b2ee727" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationEconomyKeepsLeadingDigitAtShopCardBoundary" computerName="ZZZ的电脑" duration="00:00:00.4979729" startTime="2026-08-08T23:15:32.6018465+08:00" endTime="2026-08-08T23:15:32.6018467+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b38799bd-0ed9-4aad-8986-5ea5b32f1628">
+      <Output>
+        <StdOut>economy=Known/0; evidence=template:economy-wide-candidate:style=DarkOnLight; value=238; confidence=0.534; runner-up=0.591; reason= | template:economy-wide-candidate:style=BrightOnDark; value=0; confidence=0.522; runner-up=0.484; reason= | template:economy-narrow-candidate:style=DarkOnLight; value=38; confidence=0.534; runner-up=0.591; reason= | template:economy-narrow-candidate:style=BrightOnDark; value=0; confidence=0.585; runner-up=0.484; reason= | ocr:economy-wide:当前分析所用的原始截图。 | ocr:economy-narrow:当前分析所用的原始截图。</StdOut>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ&#xD;
+Expected: 23&#xD;
+Actual:   0</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationEconomyKeepsLeadingDigitAtShopCardBoundary() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs:line 1152&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedEconomyCropDoesNotPrependCoinIconToSingleDigitGold" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="4a594a0e-876a-28c6-df09-2ccaa49af9f9">
+      <Execution id="d425f4fc-dc12-42ac-96a3-c9625d461c9a" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="ExpandedEconomyCropDoesNotPrependCoinIconToSingleDigitGold" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.LocalizedUiDigitsReadLivePreparationResourcesWithoutGeneralOcr" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="b84e87a2-0ef1-0ac2-9a92-a2881b862dc4">
+      <Execution id="89d017b8-a28b-4646-b1a9-7c348b6ad4a1" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="LocalizedUiDigitsReadLivePreparationResourcesWithoutGeneralOcr" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationSnapshotReadsAbsoluteHealthAndGoldFromTightRegions" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="d8ddea9f-a67f-e33f-267e-a177a7d3bb76">
+      <Execution id="a8be8c83-d730-4414-a1e3-d9fb9f90c2ce" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="PreparationSnapshotReadsAbsoluteHealthAndGoldFromTightRegions" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.GlowingActionValueUsesLocalizedDigitTemplatesWithoutRelaxingOcr" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="b799cabe-f137-0a9b-0f05-7af1ed05951c">
+      <Execution id="faeca878-4948-4c4d-b06e-17ab82ee109c" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="GlowingActionValueUsesLocalizedDigitTemplatesWithoutRelaxingOcr" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationEconomyKeepsLeadingDigitAtShopCardBoundary" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="8a469658-213e-76b5-6845-af750b2ee727">
+      <Execution id="b38799bd-0ed9-4aad-8986-5ea5b32f1628" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="PreparationEconomyKeepsLeadingDigitAtShopCardBoundary" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedShopEconomyUsesTightEvidenceInsteadOfAdjacentZero" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="c5999687-95bf-24f8-25a8-da1078fd2e0a">
+      <Execution id="9a0f8e96-33f0-4482-9081-75c679cd53c4" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="ExpandedShopEconomyUsesTightEvidenceInsteadOfAdjacentZero" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="b84e87a2-0ef1-0ac2-9a92-a2881b862dc4" executionId="89d017b8-a28b-4646-b1a9-7c348b6ad4a1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d8ddea9f-a67f-e33f-267e-a177a7d3bb76" executionId="a8be8c83-d730-4414-a1e3-d9fb9f90c2ce" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c5999687-95bf-24f8-25a8-da1078fd2e0a" executionId="9a0f8e96-33f0-4482-9081-75c679cd53c4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b799cabe-f137-0a9b-0f05-7af1ed05951c" executionId="faeca878-4948-4c4d-b06e-17ab82ee109c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4a594a0e-876a-28c6-df09-2ccaa49af9f9" executionId="d425f4fc-dc12-42ac-96a3-c9625d461c9a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8a469658-213e-76b5-6845-af750b2ee727" executionId="b38799bd-0ed9-4aad-8986-5ea5b32f1628" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="6" executed="6" passed="0" failed="6" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.29)&#xD;
+[xUnit.net 00:00:00.08]   Discovering: CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:00.18]   Discovered:  CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:00.18]   Starting:    CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:01.04]       Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:01.04]       Expected: 80&#xD;
+[xUnit.net 00:00:01.04]       Actual:   87&#xD;
+[xUnit.net 00:00:01.04]       Stack Trace:&#xD;
+[xUnit.net 00:00:01.04]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs(685,0): at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.GlowingActionValueUsesLocalizedDigitTemplatesWithoutRelaxingOcr()&#xD;
+[xUnit.net 00:00:01.04]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)&#xD;
+[xUnit.net 00:00:01.04]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:01.04]       Output:&#xD;
+[xUnit.net 00:00:01.04]         value=87; confidence=0.589; runner-up=0.523; reason=; glyphs=8@0.589/0.509:PixelRect { X = 170, Y = 1013, Width = 27, Height = 40, Right = 197, Bottom = 1053, Center = PixelPoint { X = 183, Y = 1033 }, IsEmpty = False } | 7@0.672/0.523:PixelRect { X = 206, Y = 1038, Width = 11, Height = 16, Right = 217, Bottom = 1054, Center = PixelPoint { X = 211, Y = 1046 }, IsEmpty = False }&#xD;
+[xUnit.net 00:00:01.54]       Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:01.54]       Expected: 23&#xD;
+[xUnit.net 00:00:01.54]       Actual:   0&#xD;
+[xUnit.net 00:00:01.54]       Stack Trace:&#xD;
+[xUnit.net 00:00:01.54]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs(1152,0): at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationEconomyKeepsLeadingDigitAtShopCardBoundary()&#xD;
+[xUnit.net 00:00:01.54]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:01.54]       Output:&#xD;
+[xUnit.net 00:00:01.54]         economy=Known/0; evidence=template:economy-wide-candidate:style=DarkOnLight; value=238; confidence=0.534; runner-up=0.591; reason= | template:economy-wide-candidate:style=BrightOnDark; value=0; confidence=0.522; runner-up=0.484; reason= | template:economy-narrow-candidate:style=DarkOnLight; value=38; confidence=0.534; runner-up=0.591; reason= | template:economy-narrow-candidate:style=BrightOnDark; value=0; confidence=0.585; runner-up=0.484; reason= | ocr:economy-wide:当前分析所用的原始截图。 | ocr:economy-narrow:当前分析所用的原始截图。&#xD;
+[xUnit.net 00:00:01.72]       Assert.Empty() Failure: Collection was not empty&#xD;
+[xUnit.net 00:00:01.72]       Collection: ["difficulty: expected=126, value=, reason=At least "···, "economy: expected=32, value=328, reason="]&#xD;
+[xUnit.net 00:00:01.72]       Stack Trace:&#xD;
+[xUnit.net 00:00:01.72]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs(912,0): at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.LocalizedUiDigitsReadLivePreparationResourcesWithoutGeneralOcr()&#xD;
+[xUnit.net 00:00:01.72]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)&#xD;
+[xUnit.net 00:00:01.72]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:01.72]       Output:&#xD;
+[xUnit.net 00:00:01.72]         difficulty: value=; confidence=0.318; runner-up=0.255; reason=At least one digit was below the category-local confidence or margin requirement. projected=25,0,13,40;41,0,8,40; selected=25,0,13,40;41,0,8,40; sliding=Sliding digit sequence 12 is outside the allowed range.; glyphs=1@PixelRect { X = 177, Y = 81, Width = 13, Height = 40, Right = 190, Bottom = 121, Center = PixelPoint { X = 183, Y = 101 }, IsEmpty = False }&#xD;
+[xUnit.net 00:00:01.72]         tools: value=2; confidence=0.787; runner-up=0.634; reason=; glyphs=2@PixelRect { X = 2490, Y = 239, Width = 19, Height = 28, Right = 2509, Bottom = 267, Center = PixelPoint { X = 2499, Y = 253 }, IsEmpty = False }&#xD;
+[xUnit.net 00:00:01.72]         spend: value=2; confidence=0.853; runner-up=0.643; reason=; glyphs=2@PixelRect { X = 2024, Y = 1171, Width = 19, Height = 28, Right = 2043, Bottom = 1199, Center = PixelPoint { X = 2033, Y = 1185 }, IsEmpty = False }&#xD;
+[xUnit.net 00:00:01.72]         interest: value=3; confidence=0.835; runner-up=0.740; reason=; glyphs=3@PixelRect { X = 2174, Y = 1138, Width = 21, Height = 32, Right = 2195, Bottom = 1170, Center = PixelPoint { X = 2184, Y = 1154 }, IsEmpty = False }&#xD;
+[xUnit.net 00:00:01.72]         economy: value=328; confidence=0.533; runner-up=0.591; reason=; glyphs=3@PixelRect { X = 2176, Y = 1208, Width = 27, Height = 40, Right = 2203, Bottom = 1248, Center = PixelPoint { X = 2189, Y = 1228 }, IsEmpty = False },2@PixelRect { X = 2202, Y = 1206, Width = 27, Height = 40, Right = 2229, Bottom = 1246, Center = PixelPoint { X = 2215, Y = 1226 }, IsEmpty = False },8@PixelRect { X = 2203, Y = 1232, Width = 11, Height = 16, Right = 2214, Bottom = 1248, Center = PixelPoint { X = 2208, Y = 1240 }, IsEmpty = False }&#xD;
+[xUnit.net 00:00:01.83]       Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:01.83]       Expected: 3&#xD;
+[xUnit.net 00:00:01.83]       Actual:   38&#xD;
+[xUnit.net 00:00:01.83]       Stack Trace:&#xD;
+[xUnit.net 00:00:01.83]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs(1359,0): at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedEconomyCropDoesNotPrependCoinIconToSingleDigitGold()&#xD;
+[xUnit.net 00:00:01.83]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)&#xD;
+[xUnit.net 00:00:01.83]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:02.09]       Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:02.09]       Expected: 32&#xD;
+[xUnit.net 00:00:02.09]       Actual:   0&#xD;
+[xUnit.net 00:00:02.10]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.10]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs(1022,0): at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationSnapshotReadsAbsoluteHealthAndGoldFromTightRegions()&#xD;
+[xUnit.net 00:00:02.10]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:02.10]       Output:&#xD;
+[xUnit.net 00:00:02.10]         health=Known/84; uncertainty=; evidence=84&#xD;
+[xUnit.net 00:00:02.10]         economy=Known/0; uncertainty=; evidence=style=DarkOnLight; value=328; confidence=0.533; runner-up=0.591; reason= | style=BrightOnDark; value=0; confidence=0.574; runner-up=0.499; reason= | style=DarkOnLight; value=284; confidence=0.502; runner-up=0.591; reason= | style=BrightOnDark; value=0; confidence=0.629; runner-up=0.499; reason= | 当前分析所用的原始截图。 | 当前分析所用的原始截图。&#xD;
+[xUnit.net 00:00:02.52]       Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:02.52]       Expected: 6&#xD;
+[xUnit.net 00:00:02.52]       Actual:   7&#xD;
+[xUnit.net 00:00:02.52]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.52]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs(1102,0): at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedShopEconomyUsesTightEvidenceInsteadOfAdjacentZero()&#xD;
+[xUnit.net 00:00:02.52]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:02.52]       Output:&#xD;
+[xUnit.net 00:00:02.52]         localized=86; confidence=0.502; runner-up=0.649; ; glyphs=8:PixelRect { X = 2186, Y = 1229, Width = 11, Height = 16, Right = 2197, Bottom = 1245, Center = PixelPoint { X = 2191, Y = 1237 }, IsEmpty = False },6:PixelRect { X = 2187, Y = 1208, Width = 27, Height = 40, Right = 2214, Bottom = 1248, Center = PixelPoint { X = 2200, Y = 1228 }, IsEmpty = False }&#xD;
+[xUnit.net 00:00:02.52]         interest=1; confidence=0.700; runner-up=0.577; &#xD;
+[xUnit.net 00:00:02.52]         shop economy=7; status=Known; evidence=style=DarkOnLight; value=0; confidence=0.536; runner-up=0.439; reason= | style=BrightOnDark; value=86; confidence=0.502; runner-up=0.649; reason= | style=DarkOnLight; value=unknown; confidence=0.000; runner-up=0.000; reason=No unambiguous digit components were found. | style=BrightOnDark; value=7; confidence=0.589; runner-up=0.507; reason= | 当前分析所用的原始截图。 | 当前分析所用的原始截图。&#xD;
+[xUnit.net 00:00:02.52]   Finished:    CurrencyWarsAssistant.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-08T23:15:32.1018204+08:00">
+        <Text>[xUnit.net 00:00:01.04]     CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.GlowingActionValueUsesLocalizedDigitTemplatesWithoutRelaxingOcr [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-08T23:15:32.6015493+08:00">
+        <Text>[xUnit.net 00:00:01.54]     CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationEconomyKeepsLeadingDigitAtShopCardBoundary [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-08T23:15:32.7849294+08:00">
+        <Text>[xUnit.net 00:00:01.72]     CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.LocalizedUiDigitsReadLivePreparationResourcesWithoutGeneralOcr [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-08T23:15:32.8970428+08:00">
+        <Text>[xUnit.net 00:00:01.83]     CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedEconomyCropDoesNotPrependCoinIconToSingleDigitGold [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-08T23:15:33.1587469+08:00">
+        <Text>[xUnit.net 00:00:02.09]     CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationSnapshotReadsAbsoluteHealthAndGoldFromTightRegions [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-08T23:15:33.5802893+08:00">
+        <Text>[xUnit.net 00:00:02.52]     CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedShopEconomyUsesTightEvidenceInsteadOfAdjacentZero [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

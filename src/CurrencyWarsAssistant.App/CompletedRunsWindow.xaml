@@ -1,0 +1,195 @@
+﻿<Window x:Class="CurrencyWarsAssistant.App.CompletedRunsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:CurrencyWarsAssistant.App"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        Title="历史对局"
+        Width="1020"
+        Height="700"
+        MinWidth="760"
+        MinHeight="500"
+        WindowStyle="None"
+        ResizeMode="CanResizeWithGrip"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        KeyDown="OnWindowKeyDown"
+        FontFamily="Microsoft YaHei UI"
+        TextOptions.TextFormattingMode="Display"
+        TextOptions.TextRenderingMode="ClearType">
+    <Window.Resources>
+        <SolidColorBrush x:Key="PrimaryText" Color="#FFF3F7FA" />
+        <SolidColorBrush x:Key="SecondaryText" Color="#FF91A3B4" />
+        <SolidColorBrush x:Key="AccentText" Color="#FFE7CA82" />
+        <SolidColorBrush x:Key="CoolText" Color="#FF83D4E3" />
+        <SolidColorBrush x:Key="Hairline" Color="#526D8295" />
+        <local:PointStringConverter x:Key="PointString" />
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+        </Style>
+        <Style x:Key="OutlineButton" TargetType="Button">
+            <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="#7595A7B7" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="12,4" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="LineFrame"
+                                Background="Transparent"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="2"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="LineFrame" Property="BorderBrush" Value="#DDE7CA82" />
+                                <Setter Property="Foreground" Value="{StaticResource AccentText}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="LineFrame" Property="Opacity" Value="0.65" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource PrimaryText}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="Frame"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                BorderThickness="1,0,0,0"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Frame" Property="BorderBrush" Value="#FFE7CA82" />
+                                <Setter TargetName="Frame" Property="Background" Value="#2EE7CA82" />
+                                <Setter Property="Foreground" Value="{StaticResource AccentText}" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Frame" Property="Background" Value="#0AFFFFFF" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Border Margin="2"
+            CornerRadius="9"
+            Background="#FA0E1621"
+            BorderBrush="#8795A7B7"
+            BorderThickness="1">
+        <Grid Margin="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="34" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="TitleBar">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border x:Name="TitleDragSurface"
+                        Grid.Column="0"
+                        Background="Transparent"
+                        MouseLeftButtonDown="OnTitleBarMouseDown">
+                    <TextBlock VerticalAlignment="Center"
+                               Foreground="{StaticResource AccentText}"
+                               FontSize="17"
+                               FontWeight="SemiBold"
+                               Text="历史对局" />
+                </Border>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Style="{StaticResource OutlineButton}"
+                            Content="刷新"
+                            Margin="0,0,8,0"
+                            Click="OnRefreshClick" />
+                    <Button x:Name="CloseButton"
+                            Style="{StaticResource OutlineButton}"
+                            Content="关闭"
+                            Click="OnCloseClick" />
+                </StackPanel>
+            </Grid>
+
+            <TextBlock Grid.Row="1"
+                       Margin="0,7,0,9"
+                       Foreground="{StaticResource SecondaryText}"
+                       FontSize="11.5"
+                       Text="已完成对局的完整记录：概览、经济、构筑、阵容装备、战斗结果及可展开的识别证据。未知字段不会被隐藏或当作 0。" />
+
+            <Grid Grid.Row="2" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="260" />
+                    <ColumnDefinition Width="1" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <ListBox x:Name="RunsList"
+                         ItemsSource="{Binding CompletedRuns}"
+                         SelectedItem="{Binding SelectedCompletedRun, Mode=TwoWay}"
+                         SelectionChanged="OnRunsSelectionChanged"
+                         PreviewMouseLeftButtonDown="OnRunsPreviewMouseDown"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="2,6"
+                                        ToolTip="{Binding RunId}">
+                                <TextBlock FontSize="13"
+                                           FontWeight="SemiBold"
+                                           Text="{Binding Summary}"
+                                           TextTrimming="CharacterEllipsis" />
+                                <TextBlock Margin="0,2,0,0"
+                                           Foreground="{StaticResource SecondaryText}"
+                                           FontSize="10.5"
+                                           Text="{Binding CompletedAt, StringFormat=yyyy-MM-dd HH:mm:ss}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <Border Grid.Column="1" Background="{StaticResource Hairline}" />
+
+                <Grid Grid.Column="2" Margin="16,0,0,0">
+                    <wv2:WebView2 x:Name="ReportBrowser" />
+                    <TextBlock x:Name="ReportLoading"
+                               Text="正在加载对局报告…"
+                               Background="#FF0E1621"
+                               Foreground="#FF91A3B4"
+                               FontSize="13"
+                               FontFamily="Microsoft YaHei UI"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Stretch"
+                               TextAlignment="Center"
+                               Padding="0,40,0,0" />
+                </Grid>
+            </Grid>
+
+            <ResizeGrip Grid.Row="2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Foreground="#A0F4F6F8" />
+        </Grid>
+    </Border>
+</Window>
+

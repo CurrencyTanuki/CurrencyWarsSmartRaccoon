@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="3bea0677-5759-4842-acab-c05f56846bf1" name="zzz81@ZZZ的电脑 2026-08-09 12:24:00" runUser="ZZZ的电脑\zzz81" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-08-09T12:24:00.0653199+08:00" queuing="2026-08-09T12:24:00.0653201+08:00" start="2026-08-09T12:23:54.3502870+08:00" finish="2026-08-09T12:24:00.0696413+08:00" />
+  <TestSettings name="default" id="72d24aa7-181a-44b2-8ee1-dd31b01de3f7">
+    <Deployment runDeploymentRoot="zzz81_ZZZ的电脑_2026-08-09_12_24_00" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="7733f28e-ccc8-45a6-ad21-500f3c90e3f3" testId="5496734e-9e35-2fbf-d42d-a9f233b5bce5" testName="CurrencyWarsAssistant.Tests.Phase2RealtimeFrameBufferTests.RealtimePipelineKeepsCapturingWhileRealFramesAreRecognizedInBackground" computerName="ZZZ的电脑" duration="00:00:05.1509438" startTime="2026-08-09T12:23:59.9810477+08:00" endTime="2026-08-09T12:23:59.9810571+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7733f28e-ccc8-45a6-ad21-500f3c90e3f3" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2RealtimeFrameBufferTests.RealtimePipelineKeepsCapturingWhileRealFramesAreRecognizedInBackground" storage="d:\codex-2\work\currencywarsassistant-0.2.839-confirmed-20260809\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="5496734e-9e35-2fbf-d42d-a9f233b5bce5">
+      <Execution id="7733f28e-ccc8-45a6-ad21-500f3c90e3f3" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-confirmed-20260809\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2RealtimeFrameBufferTests" name="RealtimePipelineKeepsCapturingWhileRealFramesAreRecognizedInBackground" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="5496734e-9e35-2fbf-d42d-a9f233b5bce5" executionId="7733f28e-ccc8-45a6-ad21-500f3c90e3f3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.29)&#xD;
+[xUnit.net 00:00:00.06]   Discovering: CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:00.14]   Discovered:  CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:00.15]   Starting:    CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:05.33]   Finished:    CurrencyWarsAssistant.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

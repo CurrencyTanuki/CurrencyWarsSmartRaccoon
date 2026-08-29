@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ML.OnnxRuntime.DirectML" Version="1.24.4" />
+    <ProjectReference Include="..\CurrencyWarsAssistant.Advisor\CurrencyWarsAssistant.Advisor.csproj" />
+    <ProjectReference Include="..\CurrencyWarsAssistant.Core\CurrencyWarsAssistant.Core.csproj" />
+    <ProjectReference Include="..\CurrencyWarsAssistant.Vision\CurrencyWarsAssistant.Vision.csproj" />
+    <ProjectReference Include="..\CurrencyWarsAssistant.Game\CurrencyWarsAssistant.Game.csproj" />
+    <ProjectReference Include="..\CurrencyWarsAssistant.Automation\CurrencyWarsAssistant.Automation.csproj" />
+  </ItemGroup>
+</Project>

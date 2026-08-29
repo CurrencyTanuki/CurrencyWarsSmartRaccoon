@@ -1,0 +1,5 @@
+quad=FrontEquip[3][0][1] ([722,463],[760,463],[720,500],[758,500])
+frame=D:\CWAFix-20260814\tests\CurrencyWarsAssistant.Tests\Fixtures\phase2-2026-07-28\132307.png (2559x1439)
+result: IsKnown=True TemplateId=currency_wars_equipment_046 Conf=0.950 Region=PixelRect { X = 0, Y = 0, Width = 52, Height = 52, Right = 52, Bottom = 52, Center = PixelPoint { X = 26, Y = 26 }, IsEmpty = False }
+CandidateTemplateIds=[null]
+crop saved: D:\CWAFix-20260814\tools\diag\046_slot_warp.png

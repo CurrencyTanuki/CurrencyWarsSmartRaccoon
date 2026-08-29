@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="5720a663-b013-4d55-a562-c1f7b0f02e80" name="zzz81@ZZZ的电脑 2026-08-09 00:35:39" runUser="ZZZ的电脑\zzz81" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-08-09T00:35:39.7139567+08:00" queuing="2026-08-09T00:35:39.7139570+08:00" start="2026-08-09T00:35:37.8919562+08:00" finish="2026-08-09T00:36:39.5996230+08:00" />
+  <TestSettings name="default" id="9e7fcbd8-c5b0-42e9-ba96-ca051ee39df9">
+    <Deployment runDeploymentRoot="zzz81_ZZZ的电脑_2026-08-09_00_35_39" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="49120587-f27a-48c7-b46d-13270cefd8eb" testId="a6e90f0c-8daa-f64e-2f9b-82f449ce1365" testName="CurrencyWarsAssistant.Tests.CharacterCardRecognizerTests.LivePreparationRecognizesCharacterIdentityAndStarLevelPerSlot" computerName="ZZZ的电脑" duration="00:00:01.3477091" startTime="2026-08-09T00:35:39.7333659+08:00" endTime="2026-08-09T00:35:39.7333663+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="49120587-f27a-48c7-b46d-13270cefd8eb" />
+    <UnitTestResult executionId="190e0b46-cbce-433a-a3c0-aca33dc1275b" testId="919d8ae7-a6bd-f0b9-2cde-b04c2d89de1f" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.LiveCapturedPreparationProducesVisibleCoreStateWithinRealtimeBudget" computerName="ZZZ的电脑" duration="00:00:03.5244136" startTime="2026-08-09T00:36:04.6578433+08:00" endTime="2026-08-09T00:36:04.6578435+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="190e0b46-cbce-433a-a3c0-aca33dc1275b">
+      <Output>
+        <StdOut>preparation-1-7: 1365.8 ms; node=Known/1-7; difficulty=Known/126; interest=Known/3; spend=Known/2&#xD;
+difficulty evidence: value=126; confidence=0.612; runner-up=0.532&#xD;
+interest evidence: value=3; confidence=0.835; runner-up=0.740&#xD;
+spend evidence: value=2; confidence=0.853; runner-up=0.592&#xD;
+Front[0]=currency_wars_character_24; slot0:Equipped/currency_wars_equipment_073/0.739/[currency_wars_equipment_073|currency_wars_equipment_112], slot1:Equipped/currency_wars_equipment_061/0.918/[currency_wars_equipment_061|currency_wars_equipment_100], slot2:Empty/-/0.900/[]&#xD;
+Front[1]=currency_wars_character_21; slot0:Empty/-/0.900/[], slot1:Empty/-/0.900/[], slot2:Empty/-/0.900/[]&#xD;
+Front[2]=currency_wars_character_59; slot0:Empty/-/0.900/[], slot1:Empty/-/0.900/[], slot2:Empty/-/0.900/[]&#xD;
+Front[3]=currency_wars_character_47; slot0:Empty/-/0.900/[], slot1:Empty/-/0.900/[], slot2:Empty/-/0.900/[]&#xD;
+Back[6]=currency_wars_character_02; slot0:Empty/-/0.900/[], slot1:Empty/-/0.900/[], slot2:Empty/-/0.900/[]&#xD;
+Bench[1]=currency_wars_character_39; &#xD;
+Bench[2]=currency_wars_character_23; &#xD;
+inventory: slot0:Equipped/SimpleEquipment/currency_wars_equipment_044/0.750/[currency_wars_equipment_044], slot1:Equipped/SimpleEquipment/currency_wars_equipment_045/0.913/[currency_wars_equipment_045], slot2:Empty/Unknown/-/0.900/[], slot3:Empty/Unknown/-/0.900/[]</StdOut>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ&#xD;
+Expected: Empty&#xD;
+Actual:   Equipped</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.LiveCapturedPreparationProducesVisibleCoreStateWithinRealtimeBudget() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs:line 792&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="83b66de9-083d-4e04-8631-7f60c66bb059" testId="a96cf6a6-5963-a4ad-c7cb-6b504f0b823f" testName="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.BackContainsPeipei" computerName="ZZZ的电脑" duration="00:00:05.4541477" startTime="2026-08-09T00:36:28.2615542+08:00" endTime="2026-08-09T00:36:28.2615544+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="83b66de9-083d-4e04-8631-7f60c66bb059">
+      <Output>
+        <StdOut>Back: special_unit_peipei, currency_wars_character_02, currency_wars_character_trailblazer, currency_wars_character_10</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1a32a12c-f112-4735-935d-b37dfd7813ef" testId="1e8f1105-d216-cad8-12d2-419ffb2c3174" testName="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.PopulationRecognizesAs8" computerName="ZZZ的电脑" duration="00:00:06.4281579" startTime="2026-08-09T00:35:59.6730039+08:00" endTime="2026-08-09T00:35:59.6730050+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1a32a12c-f112-4735-935d-b37dfd7813ef" />
+    <UnitTestResult executionId="3fba91ed-31ad-4bbb-a3b0-1d6a9c50e199" testId="19c92788-cd28-53df-383e-a5767f88b2bc" testName="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.FrontContainsSpark" computerName="ZZZ的电脑" duration="00:00:05.7587608" startTime="2026-08-09T00:36:22.8073389+08:00" endTime="2026-08-09T00:36:22.8073391+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3fba91ed-31ad-4bbb-a3b0-1d6a9c50e199">
+      <Output>
+        <StdOut>Front: currency_wars_character_07, currency_wars_character_05, currency_wars_character_09, currency_wars_character_69</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2fbc0a4b-a8ba-457d-9d17-9dc732a36533" testId="c0c65342-3a64-90a1-be8e-09837d2072cd" testName="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.BackStarLevelsMatchGroundTruth" computerName="ZZZ的电脑" duration="00:00:06.2094027" startTime="2026-08-09T00:36:05.8825742+08:00" endTime="2026-08-09T00:36:05.8825743+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2fbc0a4b-a8ba-457d-9d17-9dc732a36533">
+      <Output>
+        <StdOut>Back special_unit_peipei star=null&#xD;
+Back currency_wars_character_02 star=1&#xD;
+Back currency_wars_character_trailblazer star=1&#xD;
+Back currency_wars_character_10 star=2</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b02f5dfc-d3f1-4061-8fb3-eba1855967cd" testId="0c175af0-41d0-9896-4074-81c2667228c9" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.UnknownFormationEvidenceUsesReferenceSpaceAtAnyResolution" computerName="ZZZ的电脑" duration="00:00:00.1172184" startTime="2026-08-09T00:35:48.5621405+08:00" endTime="2026-08-09T00:35:48.5621412+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b02f5dfc-d3f1-4061-8fb3-eba1855967cd" />
+    <UnitTestResult executionId="c3716ae4-a15a-437a-9ca0-700c0a125c7f" testId="db76ce81-e771-c6d4-f15c-c167bdd98c1c" testName="CurrencyWarsAssistant.Tests.Phase2FormationRewardShopIsolationTests.RewardShopFrameKeepsPreviousPreparationFormationAsStale" computerName="ZZZ的电脑" duration="00:00:00.0603004" startTime="2026-08-09T00:35:38.4480469+08:00" endTime="2026-08-09T00:35:38.4480575+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c3716ae4-a15a-437a-9ca0-700c0a125c7f" />
+    <UnitTestResult executionId="f68ce7e3-a019-46da-9a53-9a431cb99d6e" testId="ae0d202b-72f2-d50f-3af7-eedbf6f6c04b" testName="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.StoreLevelRecognizesAs7" computerName="ZZZ的电脑" duration="00:00:05.5987762" startTime="2026-08-09T00:36:17.0484715+08:00" endTime="2026-08-09T00:36:17.0484717+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f68ce7e3-a019-46da-9a53-9a431cb99d6e">
+      <Output>
+        <StdOut>StoreLevel = 7 (status Known)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f1c5745a-e348-4de4-a115-2b1396f2b041" testId="baca79d1-ffe0-0969-afea-44c92d338b15" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedShopFormationUsesTheCompactReferenceLayout" computerName="ZZZ的电脑" duration="00:00:00.2469221" startTime="2026-08-09T00:35:48.8094021+08:00" endTime="2026-08-09T00:35:48.8094024+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f1c5745a-e348-4de4-a115-2b1396f2b041">
+      <Output>
+        <StdOut>shop slot 0: Recognized; id=currency_wars_character_44; score=0.689; runner-up=currency_wars_character_37/0.469; bounds=PixelRect { X = 730, Y = 414, Width = 116, Height = 142, Right = 846, Bottom = 556, Center = PixelPoint { X = 788, Y = 485 }, IsEmpty = False }&#xD;
+shop slot 1: Recognized; id=currency_wars_character_34; score=0.799; runner-up=currency_wars_character_26/0.395; bounds=PixelRect { X = 845, Y = 414, Width = 116, Height = 142, Right = 961, Bottom = 556, Center = PixelPoint { X = 903, Y = 485 }, IsEmpty = False }&#xD;
+shop slot 2: Recognized; id=currency_wars_character_36; score=0.688; runner-up=currency_wars_character_25/0.529; bounds=PixelRect { X = 960, Y = 414, Width = 116, Height = 142, Right = 1076, Bottom = 556, Center = PixelPoint { X = 1018, Y = 485 }, IsEmpty = False }&#xD;
+shop slot 3: Empty; id=; score=0.000; runner-up=/0.000; bounds=PixelRect { X = 1075, Y = 414, Width = 116, Height = 142, Right = 1191, Bottom = 556, Center = PixelPoint { X = 1133, Y = 485 }, IsEmpty = False }&#xD;
+shop slot 4: Recognized; id=currency_wars_character_43; score=0.563; runner-up=currency_wars_character_10/0.503; bounds=PixelRect { X = 580, Y = 620, Width = 150, Height = 160, Right = 730, Bottom = 780, Center = PixelPoint { X = 655, Y = 700 }, IsEmpty = False }&#xD;
+shop slot 5: Empty; id=; score=0.000; runner-up=/0.000; bounds=PixelRect { X = 712, Y = 620, Width = 150, Height = 160, Right = 862, Bottom = 780, Center = PixelPoint { X = 787, Y = 700 }, IsEmpty = False }&#xD;
+shop slot 6: Empty; id=; score=0.000; runner-up=/0.000; bounds=PixelRect { X = 844, Y = 620, Width = 150, Height = 160, Right = 994, Bottom = 780, Center = PixelPoint { X = 919, Y = 700 }, IsEmpty = False }&#xD;
+shop slot 7: Empty; id=; score=0.000; runner-up=/0.000; bounds=PixelRect { X = 976, Y = 620, Width = 150, Height = 160, Right = 1126, Bottom = 780, Center = PixelPoint { X = 1051, Y = 700 }, IsEmpty = False }&#xD;
+shop slot 8: Empty; id=; score=0.000; runner-up=/0.000; bounds=PixelRect { X = 1108, Y = 620, Width = 150, Height = 160, Right = 1258, Bottom = 780, Center = PixelPoint { X = 1183, Y = 700 }, IsEmpty = False }&#xD;
+shop slot 9: Empty; id=; score=0.000; runner-up=/0.000; bounds=PixelRect { X = 1240, Y = 620, Width = 150, Height = 160, Right = 1390, Bottom = 780, Center = PixelPoint { X = 1315, Y = 700 }, IsEmpty = False }</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f8bd3b43-a803-422d-b55e-c9c005ab15bd" testId="d3019817-754f-7455-dc89-691d1cbad8d4" testName="CurrencyWarsAssistant.Tests.Phase2FormationRewardShopIsolationTests.RewardShopCompactSlotsDoNotPolluteSubsequentPreparationFormation" computerName="ZZZ的电脑" duration="00:00:00.0012940" startTime="2026-08-09T00:35:38.4504290+08:00" endTime="2026-08-09T00:35:38.4504291+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f8bd3b43-a803-422d-b55e-c9c005ab15bd" />
+    <UnitTestResult executionId="f1211137-d79a-43c4-b8fb-c98e1483bf11" testId="31c526af-b053-04c8-980e-76699e6ff48d" testName="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.SlotIndicesAreCorrect" computerName="ZZZ的电脑" duration="00:00:05.7368274" startTime="2026-08-09T00:36:33.9985829+08:00" endTime="2026-08-09T00:36:33.9985832+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f1211137-d79a-43c4-b8fb-c98e1483bf11" />
+    <UnitTestResult executionId="23c0ead6-655f-4489-851d-da49e8880382" testId="d2888133-18cd-35e2-5433-a486778d2259" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationReferencesExposeNodeDifficultyAndFormation(fileName: &quot;132307.png&quot;, expectedNode: &quot;2-4&quot;, expectedDifficulty: 123)" computerName="ZZZ的电脑" duration="00:00:06.3614870" startTime="2026-08-09T00:36:01.1322648+08:00" endTime="2026-08-09T00:36:01.1322650+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="23c0ead6-655f-4489-851d-da49e8880382">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.NotEmpty() Failure: Collection was empty</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationReferencesExposeNodeDifficultyAndFormation(String fileName, String expectedNode, Int32 expectedDifficulty) in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs:line 2313&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="943e49b4-8685-4ebe-a031-2d36bf647125" testId="f6c30d87-6727-f2f3-50ac-654f6a9537d5" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationReferencesExposeNodeDifficultyAndFormation(fileName: &quot;125924.png&quot;, expectedNode: &quot;1-8&quot;, expectedDifficulty: 120)" computerName="ZZZ的电脑" duration="00:00:05.9584790" startTime="2026-08-09T00:35:54.7700207+08:00" endTime="2026-08-09T00:35:54.7700212+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="943e49b4-8685-4ebe-a031-2d36bf647125">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.NotEmpty() Failure: Collection was empty</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationReferencesExposeNodeDifficultyAndFormation(String fileName, String expectedNode, Int32 expectedDifficulty) in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs:line 2313&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b25b334b-f26c-40c9-aa01-3052e1c3b43a" testId="b68599d6-25ab-fad5-0c1c-90f4872bcf28" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.KnownSpecialFormationUnitIsPreservedAsNonDecisionEvidence" computerName="ZZZ的电脑" duration="00:00:00.0615689" startTime="2026-08-09T00:36:04.7189985+08:00" endTime="2026-08-09T00:36:04.7189986+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b25b334b-f26c-40c9-aa01-3052e1c3b43a" />
+    <UnitTestResult executionId="5a60bb03-1212-4eac-a8e1-2519825ed27c" testId="ff4608c0-04f6-e693-bdfc-c9fdd5a6887d" testName="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.BenchRecognizesFourCards" computerName="ZZZ的电脑" duration="00:00:14.8592152" startTime="2026-08-09T00:35:53.2448223+08:00" endTime="2026-08-09T00:35:53.2448226+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5a60bb03-1212-4eac-a8e1-2519825ed27c">
+      <Output>
+        <StdOut>Bench: 4 卡</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="add5dd81-991d-476d-b490-ccb9a491fdf8" testId="3763b439-9d59-a6e5-9eef-0e6f41970212" testName="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedShopAnalyzerKeepsVisibleFormationWithCompactEvidenceRegions" computerName="ZZZ的电脑" duration="00:00:10.0505488" startTime="2026-08-09T00:35:48.4494202+08:00" endTime="2026-08-09T00:35:48.4494205+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="add5dd81-991d-476d-b490-ccb9a491fdf8">
+      <Output>
+        <StdOut>Front[0]=currency_wars_character_44; slot0:Empty/-/0.900/[], slot1:Equipped/currency_wars_equipment_080/0.745/[currency_wars_equipment_080|currency_wars_equipment_119], slot2:Empty/-/0.900/[]&#xD;
+Front[1]=currency_wars_character_34; slot0:Empty/-/0.900/[], slot1:Empty/-/0.900/[], slot2:Empty/-/0.900/[]&#xD;
+Front[2]=currency_wars_character_36; slot0:Empty/-/0.900/[], slot1:Empty/-/0.900/[], slot2:Empty/-/0.900/[]&#xD;
+Back[4]=currency_wars_character_43; slot0:Empty/-/0.900/[], slot1:Empty/-/0.900/[], slot2:Empty/-/0.900/[]&#xD;
+Bench[0]=unknown-formation-unit-Bench-1; slot0:Empty/-/0.900/[], slot1:Empty/-/0.900/[], slot2:Empty/-/0.900/[]&#xD;
+inventory: slot0:Equipped/SimpleEquipment/currency_wars_equipment_044/0.922/[currency_wars_equipment_044], slot1:Equipped/SimpleEquipment/currency_wars_equipment_045/0.913/[currency_wars_equipment_045], slot2:Equipped/SimpleEquipment/currency_wars_equipment_041/0.935/[currency_wars_equipment_041], slot3:Equipped/AdvancedEquipment/currency_wars_equipment_123/0.781/[currency_wars_equipment_123]</StdOut>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ&#xD;
+Expected: Unknown&#xD;
+Actual:   Equipped</Message>
+          <StackTrace>   at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedShopAnalyzerKeepsVisibleFormationWithCompactEvidenceRegions() in D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs:line 1494&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="65a5ccf6-86e5-4792-b75a-ccfe4de6b6d6" testId="dae2c460-7a45-750b-810a-a05bbcc37e0f" testName="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.HealthRecognizesAs98" computerName="ZZZ的电脑" duration="00:00:05.5669923" startTime="2026-08-09T00:36:11.4495991+08:00" endTime="2026-08-09T00:36:11.4495994+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="65a5ccf6-86e5-4792-b75a-ccfe4de6b6d6" />
+    <UnitTestResult executionId="38033d58-72aa-4e8b-b5e6-2541942c3f73" testId="e835df96-974c-4a64-41db-538dbeb625bc" testName="CurrencyWarsAssistant.Tests.Phase2FormationRewardShopIsolationTests.ConfirmedRewardShopFramesDoNotPollutePreparationFormation" computerName="ZZZ的电脑" duration="00:00:00.0008490" startTime="2026-08-09T00:35:38.4501874+08:00" endTime="2026-08-09T00:35:38.4501875+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="38033d58-72aa-4e8b-b5e6-2541942c3f73" />
+    <UnitTestResult executionId="6f617250-03f6-4855-88b3-826500de5d5f" testId="800349aa-2494-6f16-3849-2fd35bb6741f" testName="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.SynergyNextThresholdPopulated" computerName="ZZZ的电脑" duration="00:00:05.5293710" startTime="2026-08-09T00:36:39.5283597+08:00" endTime="2026-08-09T00:36:39.5283600+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6f617250-03f6-4855-88b3-826500de5d5f">
+      <Output>
+        <StdOut>bond_头号玩家 active=1 next=已满级&#xD;
+bond_欢愉 active=5 next=7&#xD;
+bond_星间旅人 active=2 next=3&#xD;
+bond_星核猎手 active=2 next=3&#xD;
+bond_仙舟 active=2 next=3&#xD;
+bond_燃血 active=1 next=2&#xD;
+bond_列车同行 active=1 next=2</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.UnknownFormationEvidenceUsesReferenceSpaceAtAnyResolution" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="0c175af0-41d0-9896-4074-81c2667228c9">
+      <Execution id="b02f5dfc-d3f1-4061-8fb3-eba1855967cd" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="UnknownFormationEvidenceUsesReferenceSpaceAtAnyResolution" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationReferencesExposeNodeDifficultyAndFormation(fileName: &quot;132307.png&quot;, expectedNode: &quot;2-4&quot;, expectedDifficulty: 123)" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="d2888133-18cd-35e2-5433-a486778d2259">
+      <Execution id="23c0ead6-655f-4489-851d-da49e8880382" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="PreparationReferencesExposeNodeDifficultyAndFormation" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.SlotIndicesAreCorrect" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="31c526af-b053-04c8-980e-76699e6ff48d">
+      <Execution id="f1211137-d79a-43c4-b8fb-c98e1483bf11" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests" name="SlotIndicesAreCorrect" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedShopFormationUsesTheCompactReferenceLayout" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="baca79d1-ffe0-0969-afea-44c92d338b15">
+      <Execution id="f1c5745a-e348-4de4-a115-2b1396f2b041" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="ExpandedShopFormationUsesTheCompactReferenceLayout" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.PopulationRecognizesAs8" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="1e8f1105-d216-cad8-12d2-419ffb2c3174">
+      <Execution id="1a32a12c-f112-4735-935d-b37dfd7813ef" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests" name="PopulationRecognizesAs8" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.FrontContainsSpark" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="19c92788-cd28-53df-383e-a5767f88b2bc">
+      <Execution id="3fba91ed-31ad-4bbb-a3b0-1d6a9c50e199" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests" name="FrontContainsSpark" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.StoreLevelRecognizesAs7" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="ae0d202b-72f2-d50f-3af7-eedbf6f6c04b">
+      <Execution id="f68ce7e3-a019-46da-9a53-9a431cb99d6e" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests" name="StoreLevelRecognizesAs7" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedShopAnalyzerKeepsVisibleFormationWithCompactEvidenceRegions" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="3763b439-9d59-a6e5-9eef-0e6f41970212">
+      <Execution id="add5dd81-991d-476d-b490-ccb9a491fdf8" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="ExpandedShopAnalyzerKeepsVisibleFormationWithCompactEvidenceRegions" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2FormationRewardShopIsolationTests.RewardShopFrameKeepsPreviousPreparationFormationAsStale" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="db76ce81-e771-c6d4-f15c-c167bdd98c1c">
+      <Execution id="c3716ae4-a15a-437a-9ca0-700c0a125c7f" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2FormationRewardShopIsolationTests" name="RewardShopFrameKeepsPreviousPreparationFormationAsStale" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.BackStarLevelsMatchGroundTruth" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="c0c65342-3a64-90a1-be8e-09837d2072cd">
+      <Execution id="2fbc0a4b-a8ba-457d-9d17-9dc732a36533" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests" name="BackStarLevelsMatchGroundTruth" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.KnownSpecialFormationUnitIsPreservedAsNonDecisionEvidence" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="b68599d6-25ab-fad5-0c1c-90f4872bcf28">
+      <Execution id="b25b334b-f26c-40c9-aa01-3052e1c3b43a" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="KnownSpecialFormationUnitIsPreservedAsNonDecisionEvidence" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2FormationRewardShopIsolationTests.ConfirmedRewardShopFramesDoNotPollutePreparationFormation" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="e835df96-974c-4a64-41db-538dbeb625bc">
+      <Execution id="38033d58-72aa-4e8b-b5e6-2541942c3f73" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2FormationRewardShopIsolationTests" name="ConfirmedRewardShopFramesDoNotPollutePreparationFormation" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.BenchRecognizesFourCards" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="ff4608c0-04f6-e693-bdfc-c9fdd5a6887d">
+      <Execution id="5a60bb03-1212-4eac-a8e1-2519825ed27c" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests" name="BenchRecognizesFourCards" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2FormationRewardShopIsolationTests.RewardShopCompactSlotsDoNotPolluteSubsequentPreparationFormation" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="d3019817-754f-7455-dc89-691d1cbad8d4">
+      <Execution id="f8bd3b43-a803-422d-b55e-c9c005ab15bd" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2FormationRewardShopIsolationTests" name="RewardShopCompactSlotsDoNotPolluteSubsequentPreparationFormation" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.SynergyNextThresholdPopulated" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="800349aa-2494-6f16-3849-2fd35bb6741f">
+      <Execution id="6f617250-03f6-4855-88b3-826500de5d5f" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests" name="SynergyNextThresholdPopulated" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.HealthRecognizesAs98" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="dae2c460-7a45-750b-810a-a05bbcc37e0f">
+      <Execution id="65a5ccf6-86e5-4792-b75a-ccfe4de6b6d6" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests" name="HealthRecognizesAs98" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.CharacterCardRecognizerTests.LivePreparationRecognizesCharacterIdentityAndStarLevelPerSlot" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="a6e90f0c-8daa-f64e-2f9b-82f449ce1365">
+      <Execution id="49120587-f27a-48c7-b46d-13270cefd8eb" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.CharacterCardRecognizerTests" name="LivePreparationRecognizesCharacterIdentityAndStarLevelPerSlot" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.LiveCapturedPreparationProducesVisibleCoreStateWithinRealtimeBudget" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="919d8ae7-a6bd-f0b9-2cde-b04c2d89de1f">
+      <Execution id="190e0b46-cbce-433a-a3c0-aca33dc1275b" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="LiveCapturedPreparationProducesVisibleCoreStateWithinRealtimeBudget" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationReferencesExposeNodeDifficultyAndFormation(fileName: &quot;125924.png&quot;, expectedNode: &quot;1-8&quot;, expectedDifficulty: 120)" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="f6c30d87-6727-f2f3-50ac-654f6a9537d5">
+      <Execution id="943e49b4-8685-4ebe-a031-2d36bf647125" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests" name="PreparationReferencesExposeNodeDifficultyAndFormation" />
+    </UnitTest>
+    <UnitTest name="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests.BackContainsPeipei" storage="d:\codex-2\work\currencywarsassistant-0.2.839-audit-20260808\tests\currencywarsassistant.tests\bin\release\net8.0-windows10.0.19041.0\currencywarsassistant.tests.dll" id="a96cf6a6-5963-a4ad-c7cb-6b504f0b823f">
+      <Execution id="83b66de9-083d-4e04-8631-7f60c66bb059" />
+      <TestMethod codeBase="D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\bin\Release\net8.0-windows10.0.19041.0\CurrencyWarsAssistant.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="CurrencyWarsAssistant.Tests.UserReferenceGroundTruthTests" name="BackContainsPeipei" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="a6e90f0c-8daa-f64e-2f9b-82f449ce1365" executionId="49120587-f27a-48c7-b46d-13270cefd8eb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="919d8ae7-a6bd-f0b9-2cde-b04c2d89de1f" executionId="190e0b46-cbce-433a-a3c0-aca33dc1275b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a96cf6a6-5963-a4ad-c7cb-6b504f0b823f" executionId="83b66de9-083d-4e04-8631-7f60c66bb059" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1e8f1105-d216-cad8-12d2-419ffb2c3174" executionId="1a32a12c-f112-4735-935d-b37dfd7813ef" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="19c92788-cd28-53df-383e-a5767f88b2bc" executionId="3fba91ed-31ad-4bbb-a3b0-1d6a9c50e199" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c0c65342-3a64-90a1-be8e-09837d2072cd" executionId="2fbc0a4b-a8ba-457d-9d17-9dc732a36533" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0c175af0-41d0-9896-4074-81c2667228c9" executionId="b02f5dfc-d3f1-4061-8fb3-eba1855967cd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="db76ce81-e771-c6d4-f15c-c167bdd98c1c" executionId="c3716ae4-a15a-437a-9ca0-700c0a125c7f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ae0d202b-72f2-d50f-3af7-eedbf6f6c04b" executionId="f68ce7e3-a019-46da-9a53-9a431cb99d6e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="baca79d1-ffe0-0969-afea-44c92d338b15" executionId="f1c5745a-e348-4de4-a115-2b1396f2b041" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d3019817-754f-7455-dc89-691d1cbad8d4" executionId="f8bd3b43-a803-422d-b55e-c9c005ab15bd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="31c526af-b053-04c8-980e-76699e6ff48d" executionId="f1211137-d79a-43c4-b8fb-c98e1483bf11" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d2888133-18cd-35e2-5433-a486778d2259" executionId="23c0ead6-655f-4489-851d-da49e8880382" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f6c30d87-6727-f2f3-50ac-654f6a9537d5" executionId="943e49b4-8685-4ebe-a031-2d36bf647125" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b68599d6-25ab-fad5-0c1c-90f4872bcf28" executionId="b25b334b-f26c-40c9-aa01-3052e1c3b43a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ff4608c0-04f6-e693-bdfc-c9fdd5a6887d" executionId="5a60bb03-1212-4eac-a8e1-2519825ed27c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3763b439-9d59-a6e5-9eef-0e6f41970212" executionId="add5dd81-991d-476d-b490-ccb9a491fdf8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dae2c460-7a45-750b-810a-a05bbcc37e0f" executionId="65a5ccf6-86e5-4792-b75a-ccfe4de6b6d6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e835df96-974c-4a64-41db-538dbeb625bc" executionId="38033d58-72aa-4e8b-b5e6-2541942c3f73" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="800349aa-2494-6f16-3849-2fd35bb6741f" executionId="6f617250-03f6-4855-88b3-826500de5d5f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="20" executed="20" passed="16" failed="4" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.29)&#xD;
+[xUnit.net 00:00:00.06]   Discovering: CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:00.14]   Discovered:  CurrencyWarsAssistant.Tests&#xD;
+[xUnit.net 00:00:00.15]   Starting:    CurrencyWarsAssistant.Tests&#xD;
+[DetectBackSlotCount] centers=674,816,960,1382&#xD;
+[xUnit.net 00:00:10.24]       Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:10.24]       Expected: Unknown&#xD;
+[xUnit.net 00:00:10.24]       Actual:   Equipped&#xD;
+[xUnit.net 00:00:10.24]       Stack Trace:&#xD;
+[xUnit.net 00:00:10.24]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs(1494,0): at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedShopAnalyzerKeepsVisibleFormationWithCompactEvidenceRegions()&#xD;
+[xUnit.net 00:00:10.24]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:10.24]       Output:&#xD;
+[xUnit.net 00:00:10.24]         Front[0]=currency_wars_character_44; slot0:Empty/-/0.900/[], slot1:Equipped/currency_wars_equipment_080/0.745/[currency_wars_equipment_080|currency_wars_equipment_119], slot2:Empty/-/0.900/[]&#xD;
+[xUnit.net 00:00:10.24]         Front[1]=currency_wars_character_34; slot0:Empty/-/0.900/[], slot1:Empty/-/0.900/[], slot2:Empty/-/0.900/[]&#xD;
+[xUnit.net 00:00:10.24]         Front[2]=currency_wars_character_36; slot0:Empty/-/0.900/[], slot1:Empty/-/0.900/[], slot2:Empty/-/0.900/[]&#xD;
+[xUnit.net 00:00:10.24]         Back[4]=currency_wars_character_43; slot0:Empty/-/0.900/[], slot1:Empty/-/0.900/[], slot2:Empty/-/0.900/[]&#xD;
+[xUnit.net 00:00:10.24]         Bench[0]=unknown-formation-unit-Bench-1; slot0:Empty/-/0.900/[], slot1:Empty/-/0.900/[], slot2:Empty/-/0.900/[]&#xD;
+[xUnit.net 00:00:10.24]         inventory: slot0:Equipped/SimpleEquipment/currency_wars_equipment_044/0.922/[currency_wars_equipment_044], slot1:Equipped/SimpleEquipment/currency_wars_equipment_045/0.913/[currency_wars_equipment_045], slot2:Equipped/SimpleEquipment/currency_wars_equipment_041/0.935/[currency_wars_equipment_041], slot3:Equipped/AdvancedEquipment/currency_wars_equipment_123/0.781/[currency_wars_equipment_123]&#xD;
+[DetectBackSlotCount] centers=585,674,817&#xD;
+[DetectBackSlotCount] centers=674,816,960,1382&#xD;
+[xUnit.net 00:00:16.56]       Assert.NotEmpty() Failure: Collection was empty&#xD;
+[xUnit.net 00:00:16.56]       Stack Trace:&#xD;
+[xUnit.net 00:00:16.56]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs(2313,0): at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationReferencesExposeNodeDifficultyAndFormation(String fileName, String expectedNode, Int32 expectedDifficulty)&#xD;
+[xUnit.net 00:00:16.56]         --- End of stack trace from previous location ---&#xD;
+[DetectBackSlotCount] centers=587,674,817&#xD;
+[DetectBackSlotCount] centers=674,816,960,1382&#xD;
+[xUnit.net 00:00:22.93]       Assert.NotEmpty() Failure: Collection was empty&#xD;
+[xUnit.net 00:00:22.93]       Stack Trace:&#xD;
+[xUnit.net 00:00:22.93]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs(2313,0): at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationReferencesExposeNodeDifficultyAndFormation(String fileName, String expectedNode, Int32 expectedDifficulty)&#xD;
+[xUnit.net 00:00:22.93]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:26.45]       Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:26.45]       Expected: Empty&#xD;
+[xUnit.net 00:00:26.45]       Actual:   Equipped&#xD;
+[xUnit.net 00:00:26.45]       Stack Trace:&#xD;
+[xUnit.net 00:00:26.45]         D:\Codex-2\work\CurrencyWarsAssistant-0.2.839-audit-20260808\tests\CurrencyWarsAssistant.Tests\Phase2OperationalCollectionTests.cs(792,0): at CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.LiveCapturedPreparationProducesVisibleCoreStateWithinRealtimeBudget()&#xD;
+[xUnit.net 00:00:26.45]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:26.45]       Output:&#xD;
+[xUnit.net 00:00:26.45]         preparation-1-7: 1365.8 ms; node=Known/1-7; difficulty=Known/126; interest=Known/3; spend=Known/2&#xD;
+[xUnit.net 00:00:26.45]         difficulty evidence: value=126; confidence=0.612; runner-up=0.532&#xD;
+[xUnit.net 00:00:26.45]         interest evidence: value=3; confidence=0.835; runner-up=0.740&#xD;
+[xUnit.net 00:00:26.45]         spend evidence: value=2; confidence=0.853; runner-up=0.592&#xD;
+[xUnit.net 00:00:26.45]         Front[0]=currency_wars_character_24; slot0:Equipped/currency_wars_equipment_073/0.739/[currency_wars_equipment_073|currency_wars_equipment_112], slot1:Equipped/currency_wars_equipment_061/0.918/[currency_wars_equipment_061|currency_wars_equipment_100], slot2:Empty/-/0.900/[]&#xD;
+[xUnit.net 00:00:26.45]         Front[1]=currency_wars_character_21; slot0:Empty/-/0.900/[], slot1:Empty/-/0.900/[], slot2:Empty/-/0.900/[]&#xD;
+[xUnit.net 00:00:26.45]         Front[2]=currency_wars_character_59; slot0:Empty/-/0.900/[], slot1:Empty/-/0.900/[], slot2:Empty/-/0.900/[]&#xD;
+[xUnit.net 00:00:26.45]         Front[3]=currency_wars_character_47; slot0:Empty/-/0.900/[], slot1:Empty/-/0.900/[], slot2:Empty/-/0.900/[]&#xD;
+[xUnit.net 00:00:26.45]         Back[6]=currency_wars_character_02; slot0:Empty/-/0.900/[], slot1:Empty/-/0.900/[], slot2:Empty/-/0.900/[]&#xD;
+[xUnit.net 00:00:26.45]         Bench[1]=currency_wars_character_39; &#xD;
+[xUnit.net 00:00:26.45]         Bench[2]=currency_wars_character_23; &#xD;
+[xUnit.net 00:00:26.45]         inventory: slot0:Equipped/SimpleEquipment/currency_wars_equipment_044/0.750/[currency_wars_equipment_044], slot1:Equipped/SimpleEquipment/currency_wars_equipment_045/0.913/[currency_wars_equipment_045], slot2:Empty/Unknown/-/0.900/[], slot3:Empty/Unknown/-/0.900/[]&#xD;
+[DetectBackSlotCount] centers=674,816,960,1382&#xD;
+[DetectBackSlotCount] centers=674,816,960,1382&#xD;
+[DetectBackSlotCount] centers=674,816,960,1382&#xD;
+[DetectBackSlotCount] centers=674,816,960,1382&#xD;
+[DetectBackSlotCount] centers=674,816,960,1382&#xD;
+[DetectBackSlotCount] centers=674,816,960,1382&#xD;
+[xUnit.net 00:01:01.33]   Finished:    CurrencyWarsAssistant.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-09T00:35:48.4461383+08:00">
+        <Text>[xUnit.net 00:00:10.24]     CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.ExpandedShopAnalyzerKeepsVisibleFormationWithCompactEvidenceRegions [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-09T00:35:54.7696368+08:00">
+        <Text>[xUnit.net 00:00:16.56]     CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationReferencesExposeNodeDifficultyAndFormation(fileName: "125924.png", expectedNode: "1-8", expectedDifficulty: 120) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-09T00:36:01.1317765+08:00">
+        <Text>[xUnit.net 00:00:22.93]     CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.PreparationReferencesExposeNodeDifficultyAndFormation(fileName: "132307.png", expectedNode: "2-4", expectedDifficulty: 123) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ZZZ的电脑" outcome="Error" timestamp="2026-08-09T00:36:04.6573959+08:00">
+        <Text>[xUnit.net 00:00:26.45]     CurrencyWarsAssistant.Tests.Phase2OperationalCollectionTests.LiveCapturedPreparationProducesVisibleCoreStateWithinRealtimeBudget [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

@@ -338,15 +338,16 @@ public sealed class GrailSnapshotAssemblerTests
         holder.ApplyTrialResponse(new GrailTrialResponse(
             GrailTrialResponseKind.SelectLetterTrial,
             GrailTrialSide.Left,
-            "令咒决议·回路过载",
-            OpenLettersAfter: true,
+            "令咒决议·行为限制",
+            OpenLettersAfter: false,
             "test",
-            "F11"), healthAtSelection: 95);
+            "F12"), healthAtSelection: 95);
 
         var after = GrailSnapshotAssembler.Assemble(
             State(formation: [Slot(FormationZone.Front, "currency_wars_character_04")]),
             null, GameData, holder, GrailUserGoal.Single, Now, StaleAfter);
+        // 行为限制 = 刷新价格+1（回路过载则是买经验价格+1，两者分开）
         Assert.Equal(GrailRunSnapshot.MinRefreshGold + 1, after.RefreshGoldCost);
-        Assert.Equal(2, after.LettersObtained);
+        Assert.Equal(GrailRunSnapshot.XpPurchaseGoldCost, after.XpPurchaseTotalCost);
     }
 }

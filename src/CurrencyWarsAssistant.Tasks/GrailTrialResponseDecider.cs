@@ -71,6 +71,9 @@ public static class GrailTrialResponseDecider
     public const string CauldronKeyword = "无限之釜";
     public const string LetterRewardKeyword = "五费聘用书";
 
+    /// <summary>"四费聘用书"与"五费聘用书"编辑距离为 1，模糊匹配必须显式排除（数据中确有四费聘用书奖励）。</summary>
+    public const string FourCostLetterKeyword = "四费聘用书";
+
     /// <summary>对一个弹框做响应决策（F2 路由）。纯函数，不改状态；状态落地见 <see cref="ApplyTo"/>。</summary>
     public static GrailTrialResponse Decide(GrailRunSnapshot s, GrailTrialPairContext ctx)
     {
@@ -224,7 +227,7 @@ public static class GrailTrialResponseDecider
             GrailTrialResponseKind.SelectOtherSide,
             other,
             ctx.NameOf(other) ?? string.Empty,
-            OpenLettersAfter: Matches(ctx.RewardOf(other), LetterRewardKeyword),
+            OpenLettersAfter: MatchesLetterReward(ctx.RewardOf(other)),
             reason,
             treeNode);
     }
@@ -261,6 +264,11 @@ public static class GrailTrialResponseDecider
 
     private static bool Matches(string? text, string keyword) =>
         GrailFuzzyText.ContainsFuzzy(text, keyword);
+
+    /// <summary>聘用书奖励判定：模糊匹配"五费聘用书"，但显式排除"四费聘用书"（距离1，模糊匹配会误命中）。</summary>
+    private static bool MatchesLetterReward(string? text) =>
+        GrailFuzzyText.ContainsFuzzy(text, LetterRewardKeyword)
+        && !(text ?? string.Empty).Contains(FourCostLetterKeyword, StringComparison.Ordinal);
 }
 
 /// <summary>

@@ -29,7 +29,8 @@ public sealed class GrailRunStateHolder
     private bool _infiniteCauldronSelected;
     private bool _fiveBondGivenUp;
     private bool _newBondMemberAvailable;
-    private bool _refreshSurcharge;
+    private bool _refreshSurcharge; // 行为限制/行为禁锢：刷新价格+1
+    private bool _xpSurcharge;      // 回路过载/回路超频：购买经验价格+1
 
     private int? _lastHealth;
     private DateTimeOffset? _healthCapturedAt;
@@ -108,11 +109,17 @@ public sealed class GrailRunStateHolder
                 _infiniteCauldronSelected = true;
             }
 
-            // 令咒决议·回路过载/行为限制的诅咒代价 = 商店刷新价格 +1 金（用户 2026-08-29 确认）
-            if (GrailFuzzyText.ContainsFuzzy(selected, GrailTrialResponseDecider.OverloadKeyword)
-                || GrailFuzzyText.ContainsFuzzy(selected, GrailTrialResponseDecider.RestrictKeyword))
+            // 诅咒代价按数据文档分开判定：行为限制(禁锢)=刷新价格+1；回路过载(超频)=购买经验价格+1
+            if (GrailFuzzyText.ContainsFuzzy(selected, "行为限制")
+                || GrailFuzzyText.ContainsFuzzy(selected, "行为禁锢"))
             {
                 _refreshSurcharge = true;
+            }
+
+            if (GrailFuzzyText.ContainsFuzzy(selected, "回路过载")
+                || GrailFuzzyText.ContainsFuzzy(selected, "回路超频"))
+            {
+                _xpSurcharge = true;
             }
 
             if (response.OpenLettersAfter)
@@ -163,12 +170,21 @@ public sealed class GrailRunStateHolder
         }
     }
 
-    /// <summary>令咒决议诅咒是否已使商店刷新价格 +1（回路过载/行为限制选中后为真，保守全程生效）。</summary>
+    /// <summary>令咒决议诅咒是否已使商店刷新价格 +1（行为限制系选中后为真，保守全程生效）。</summary>
     public bool PeekRefreshSurcharge()
     {
         lock (_gate)
         {
             return _refreshSurcharge;
+        }
+    }
+
+    /// <summary>令咒决议诅咒是否已使购买经验价格 +1（回路过载系选中后为真；买经验两次共+2金）。</summary>
+    public bool PeekXpSurcharge()
+    {
+        lock (_gate)
+        {
+            return _xpSurcharge;
         }
     }
 

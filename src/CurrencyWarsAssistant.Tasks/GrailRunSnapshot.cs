@@ -40,6 +40,9 @@ public sealed record GrailRunSnapshot
     /// </summary>
     public int RefreshGoldCost { get; init; } = MinRefreshGold;
 
+    /// <summary>当前买经验两次的总价：基础 8 金；回路过载诅咒（购买经验价格+1）期间为 10 金。</summary>
+    public int XpPurchaseTotalCost { get; init; } = XpPurchaseGoldCost;
+
     /// <summary>命运圣杯羁绊中可从商店购买的三名成员（Archer 商店 0%，不在此列）。</summary>
     public static readonly string[] ShopBondMemberNames = ["远坂凛", "吉尔伽美什", "Saber"];
 

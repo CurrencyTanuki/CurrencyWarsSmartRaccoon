@@ -181,6 +181,7 @@ public static class GrailSnapshotAssembler
             FiveBondGivenUp = eventState.FiveBondGivenUp,
             NewBondMemberAvailable = eventState.NewBondMemberAvailable,
             RefreshGoldCost = GrailRunSnapshot.MinRefreshGold + (holder.PeekRefreshSurcharge() ? 1 : 0),
+            XpPurchaseTotalCost = GrailRunSnapshot.XpPurchaseGoldCost + (holder.PeekXpSurcharge() ? 2 : 0),
             SellableBeyondKeepLineCount = sellableBeyondKeepLine,
             CapturedAt = now,
         };

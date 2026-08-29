@@ -69,7 +69,7 @@ public static class GrailLoopOperationDecider
         if (needXpForNextMember)
         {
             // N17：金币是否足够购买经验把人口升到 5（需 ≥8 金币）
-            if (s.Gold >= GrailRunSnapshot.XpPurchaseGoldCost)
+            if (s.Gold >= s.XpPurchaseTotalCost)
                 return new(
                     GrailLoopOperationKind.BuyXpThenDeployMember,
                     TargetGold: 0,
@@ -80,7 +80,7 @@ public static class GrailLoopOperationDecider
             if (s.SellableBeyondKeepLineCount > 0)
                 return new(
                     GrailLoopOperationKind.SellForXpGold,
-                    TargetGold: GrailRunSnapshot.XpPurchaseGoldCost,
+                    TargetGold: s.XpPurchaseTotalCost,
                     $"金币不足 {GrailRunSnapshot.XpPurchaseGoldCost}，先按保留线出售非命杯、非星徽携带者角色凑金币（5 费绝不卖）。",
                     "N17→S1A");
 

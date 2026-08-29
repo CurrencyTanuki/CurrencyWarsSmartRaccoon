@@ -153,4 +153,17 @@ public sealed class GrailRunLoop(
             DateTimeOffset.Now,
             staleAfter: TimeSpan.FromSeconds(15));
     }
+
+    /// <summary>构造可接受的开局过滤器（只收 067 英雄登场 / 019 命运圣杯邀请；018 已剔除）。</summary>
+    public static OpeningFilterSet BuildViableEnvironmentFilter()
+    {
+        return new OpeningFilterSet
+        {
+            InvestmentEnvironments = new OpeningItemFilter[]
+            {
+                new("investment_environment_067", "英雄登场", OpeningFilterState.Require),
+                new("investment_environment_019", "命运圣杯邀请", OpeningFilterState.Require),
+            },
+        };
+    }
 }

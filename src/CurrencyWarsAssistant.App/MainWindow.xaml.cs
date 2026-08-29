@@ -42,7 +42,7 @@ public partial class MainWindow : Window
     // 「1-3 三星五费」运行支持（0 = 未运行；非 0 = 正在刷）。
     private CancellationTokenSource? _threeStarFiveCostCts;
     private Task? _threeStarFiveCostTask;
-    private FateGrailLiveSnapshotSource? _threeStarFiveCostSnapshotSource;
+    private GrailRecognitionListener? _threeStarFiveCostListener;
     // 注入的服务（供现场组装 FateGrailRunLoop）。
     private readonly IGameWindowService _gameWindowService;
     private readonly RewardStageAutomationController _rewardController;
@@ -50,6 +50,8 @@ public partial class MainWindow : Window
     private readonly GameDataCatalog _gameData;
     private readonly IPhase2LiveCollectionService _liveCollection;
     private readonly OpeningRerollLoopCoordinator _openingCoordinator;
+    private readonly PreparationBoardController _preparationBoard;
+    private readonly TrialRecruitSelectionAutomation _trialRecruit;
     private readonly IGameCapture _capture;
     // 「刷三星五费」录像输出目录（点击「打开录像文件夹」按钮即打开这里）。
     private static readonly string RecordingOutputDirectory =
@@ -66,6 +68,8 @@ public partial class MainWindow : Window
         GameDataCatalog gameData,
         IPhase2LiveCollectionService liveCollection,
         OpeningRerollLoopCoordinator openingCoordinator,
+        PreparationBoardController preparationBoard,
+        TrialRecruitSelectionAutomation trialRecruit,
         IGameCapture capture)
     {
         _viewModel = viewModel;
@@ -78,6 +82,8 @@ public partial class MainWindow : Window
         _gameData = gameData;
         _liveCollection = liveCollection;
         _openingCoordinator = openingCoordinator;
+        _preparationBoard = preparationBoard;
+        _trialRecruit = trialRecruit;
         _capture = capture;
         InitializeComponent();
         DataContext = _viewModel;
@@ -333,8 +339,8 @@ public partial class MainWindow : Window
         }
 
         var goal = ThreeStarFiveCostTargetCombo.SelectedIndex == 1
-            ? FateGrailRunEngine.UserGoal.All
-            : FateGrailRunEngine.UserGoal.AnyOne;
+            ? GrailUserGoal.All
+            : GrailUserGoal.Single;
 
         // 滚动录屏：勾选启用时先定位 ffmpeg；未装则不启动并自动打开下载页（用户拍板）。
         FateGrailRecordingOptions? recording = null;
@@ -367,25 +373,21 @@ public partial class MainWindow : Window
 
         try
         {
-            var assembled = FateGrailRunLoopFactory.Create(
-                _rewardController,
-                _trialSelection,
-                _gameData,
-                _liveCollection,
-                _openingCoordinator,
-                gameWindow,
-                goal,
-                recording);
-            _threeStarFiveCostSnapshotSource = assembled.SnapshotSource;
+            var stateHolder = new GrailRunStateHolder();
+            var listener = new GrailRecognitionListener(_liveCollection);
+            _threeStarFiveCostListener = listener;
+            var executor = new GrailOperationExecutor(
+                _rewardController, _preparationBoard, _trialSelection, _trialRecruit, stateHolder);
+            var loop = new GrailRunLoop(_openingCoordinator, executor, stateHolder, listener, _gameData);
 
             _threeStarFiveCostCts = new CancellationTokenSource();
             _eventSink.Publish(new TaskEvent(
                 DateTimeOffset.Now,
                 TaskEventLevel.Information,
                 "ThreeStarFiveCostStarted",
-                $"「刷三星五费」开始（目标：{(goal == FateGrailRunEngine.UserGoal.All ? "全员" : "单人")}）。"));
+                $"「刷三星五费」开始（目标：{(goal == GrailUserGoal.All ? "全员" : "单人")}）。"));
 
-            var filters = FateGrailRunLoopFactory.BuildViableEnvironmentFilter();
+            var filters = GrailRunLoop.BuildViableEnvironmentFilter();
             // 三星五费：命中的可推进环境（067/018/019）必须真正进入 1-1 并打完
             // 1-1/1-2 奖励关，才能到 1-3 决策；否则只停在投资环境页/打完 1-1 就停，
             // 走不到三星五费决策（刷到环境就停、刷到 1-1 就停的病根）。
@@ -408,26 +410,26 @@ public partial class MainWindow : Window
                         System.StringComparer.OrdinalIgnoreCase),
                 },
             };
-            var loop = assembled.Loop;
             var cts = _threeStarFiveCostCts;
-            var snapshotSource = assembled.SnapshotSource;
+            var snapshotSource = listener;
             _threeStarFiveCostTask = Task.Run(async () =>
             {
                 try
                 {
                     var result = await loop.RunAsync(
+                        gameWindow.Handle,
+                        goal,
                         filters,
                         options,
-                        goal,
-                        maxRounds: 20,
+                        new GrailLoopOptions { MaxRounds = 20 },
                         cts.Token);
                     _eventSink.Publish(new TaskEvent(
                         DateTimeOffset.Now,
                         result.Succeeded ? TaskEventLevel.Information : TaskEventLevel.Warning,
                         "ThreeStarFiveCostFinished",
                         result.Succeeded
-                            ? $"「刷三星五费」达成：{result.AchievedMessage}"
-                            : $"「刷三星五费」未达成（已刷 {result.RoundsPlayed} 局）：{result.AchievedMessage}"));
+                            ? $"「刷三星五费」达成：{result.Message}"
+                            : $"「刷三星五费」未达成（已刷 {result.RoundsPlayed} 局）：{result.Message}"));
                 }
                 finally
                 {
@@ -450,8 +452,8 @@ public partial class MainWindow : Window
     private void OnStopThreeStarFiveCostClick(object sender, RoutedEventArgs e)
     {
         _threeStarFiveCostCts?.Cancel();
-        _threeStarFiveCostSnapshotSource?.Unsubscribe();
-        _threeStarFiveCostSnapshotSource = null;
+        _threeStarFiveCostListener?.Unsubscribe();
+        _threeStarFiveCostListener = null;
         _eventSink.Publish(new TaskEvent(
             DateTimeOffset.Now,
             TaskEventLevel.Information,

@@ -82,32 +82,41 @@ public sealed class GrailRunLoop(
                 using var openingCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
                 var dialogPump = PumpDialogsAsync(windowHandle, openingCts.Token);
 
-                var opening = await openingLoop(
-                    windowHandle, environmentFilter, openingOptions, cancellationToken);
-                openingCts.Cancel();
-                try { await dialogPump; } catch (OperationCanceledException) { }
-                if (!opening.Succeeded)
+                GrailLoopOutcome? outcome = null;
+                try
                 {
-                    // 局末必须停掉本轮采集会话（continue 跳过局末 Cancel，这里补上）
+                    var opening = await openingLoop(
+                        windowHandle, environmentFilter, openingOptions, cancellationToken);
+                    if (!opening.Succeeded)
+                    {
+                        continue; // 导航失败等：下一轮重试（finally 停会话）
+                    }
+
+                    // ② 1-3 运营循环直至判定通过或山穷水尽
+                    outcome = await RunPreparationLoopAsync(
+                        windowHandle, goal, options, round, cancellationToken);
+                    if (outcome.Succeeded)
+                    {
+                        return outcome;
+                    }
+                }
+                finally
+                {
+                    // 会话/弹框泵取消兜底：任何路径（异常/取消/失败/成功）都不泄漏
                     sessionCts.Cancel();
-                    try { await collectionTask; } catch (OperationCanceledException) { }
-                    continue; // 导航失败等：下一轮重试
-                }
+                    try { await collectionTask; }
+                    catch (Exception ex) when (ex is not OperationCanceledException)
+                    {
+                        // 采集器收尾错误不击穿主循环（记录性吞掉）
+                    }
 
-                // ② 1-3 运营循环直至判定通过或山穷水尽
-                var outcome = await RunPreparationLoopAsync(
-                    windowHandle, goal, options, round, cancellationToken);
-                if (RoundRecorder is not null)
-                {
-                    await RoundRecorder.FinishAsync(outcome.Succeeded, RecordingOutputDirectory);
-                }
+                    openingCts.Cancel();
+                    try { await dialogPump; } catch (OperationCanceledException) { }
 
-                sessionCts.Cancel();
-                try { await collectionTask; } catch (OperationCanceledException) { }
-
-                if (outcome.Succeeded)
-                {
-                    return outcome;
+                    if (outcome is not null && RoundRecorder is not null)
+                    {
+                        await RoundRecorder.FinishAsync(outcome.Succeeded, RecordingOutputDirectory);
+                    }
                 }
             }
 

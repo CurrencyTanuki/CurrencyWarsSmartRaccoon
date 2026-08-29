@@ -415,6 +415,9 @@ public partial class MainWindow : Window
             {
                 DeployMatchedOpening = true,
                 CompleteRewardStages = true,
+                // 每轮只做一次 opening 尝试：失败立即返回 NavigationFailed，
+                // 由 GrailRunLoop 外层重开（否则协调器进入无限被动监测，外层循环失效）
+                MaximumRounds = 1,
                 // N1：命杯成员绝不自动卖出（商店只买命运圣杯羁绊成员）——其余配置见 RewardStage（商店只买命运圣杯羁绊成员）。
                 BenchSaleMode = PreparationBenchSaleMode.None,
                 // 投资策略偏好：二极管276（补血）+ 采购专员（抬5费刷出概率），由 Rewards 阶段选。
@@ -456,6 +459,14 @@ public partial class MainWindow : Window
                         result.Succeeded
                             ? $"「刷三星五费」达成：{result.Message}"
                             : $"「刷三星五费」未达成（已刷 {result.RoundsPlayed} 局）：{result.Message}"));
+                }
+                catch (OperationCanceledException)
+                {
+                    _eventSink.Publish(new TaskEvent(
+                        DateTimeOffset.Now,
+                        TaskEventLevel.Information,
+                        "ThreeStarFiveCostStopped",
+                        "「刷三星五费」已停止。"));
                 }
                 catch (Exception exception)
                 {

@@ -5357,7 +5357,7 @@ public sealed class Phase2OperationalCollectionTests
             PixelRect referenceRegion) => new(value, 0.99, 0.10);
     }
 
-    private sealed class FixedPageClassifier(string pageId) : IGamePageClassifier
+    private sealed class FixedPageClassifier(string pageId) : IAutomationPageClassifier
     {
         public PageClassificationResult? Classify(CaptureFrame frame) => new(
             pageId,

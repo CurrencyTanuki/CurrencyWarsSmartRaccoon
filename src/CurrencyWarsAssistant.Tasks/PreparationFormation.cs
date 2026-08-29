@@ -844,7 +844,7 @@ public sealed partial class PreparationBoardController(
     PreparationBenchSalePlanner salePlanner,
     IInputController input,
     IGameForegroundGuard foregroundGuard,
-    IGamePageClassifier pageClassifier,
+    IAutomationPageClassifier pageClassifier,
     IOfflineOcr ocr,
     ITaskEventSink eventSink) :
     IPreparationBoardController,

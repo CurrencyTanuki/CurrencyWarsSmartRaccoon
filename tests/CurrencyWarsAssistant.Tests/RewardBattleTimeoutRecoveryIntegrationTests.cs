@@ -275,7 +275,7 @@ public sealed class RewardBattleTimeoutRecoveryIntegrationTests
 
     private sealed class RecoveryClassifier(
         RecoveryInputController input,
-        bool singlePauseFrameOnly) : IGamePageClassifier
+        bool singlePauseFrameOnly) : IAutomationPageClassifier
     {
         private int _pauseFrames;
 

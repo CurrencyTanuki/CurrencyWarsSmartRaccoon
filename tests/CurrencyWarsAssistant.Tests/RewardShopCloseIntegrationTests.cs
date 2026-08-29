@@ -267,9 +267,9 @@ public sealed class RewardShopCloseIntegrationTests
     }
 
     private sealed class DelayedFirstPageClassifier(
-        IGamePageClassifier inner,
+        IAutomationPageClassifier inner,
         string pageId,
-        TimeSpan delay) : IGamePageClassifier
+        TimeSpan delay) : IAutomationPageClassifier
     {
         private int _delayApplied;
 
@@ -293,7 +293,7 @@ public sealed class RewardShopCloseIntegrationTests
     }
 
     private sealed class PostClickPageClassifier(string? postClickPageId)
-        : IGamePageClassifier
+        : IAutomationPageClassifier
     {
         private int _classifications;
 

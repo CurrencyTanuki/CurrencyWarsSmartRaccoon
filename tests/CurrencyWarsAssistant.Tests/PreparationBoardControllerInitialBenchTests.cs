@@ -181,7 +181,7 @@ public sealed class PreparationBoardControllerInitialBenchTests
         }
     }
 
-    private sealed class PreparationPageClassifier : IGamePageClassifier
+    private sealed class PreparationPageClassifier : IAutomationPageClassifier
     {
         public PageClassificationResult? Classify(CaptureFrame frame) =>
             new("preparation_1_1", "1-1备战", 0.99, []);

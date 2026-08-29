@@ -99,7 +99,7 @@ public interface IRewardStageAutomationController
 
 public sealed partial class RewardStageAutomationController(
     IGameCapture capture,
-    IGamePageClassifier pageClassifier,
+    IAutomationPageClassifier pageClassifier,
     RewardShopReader shopReader,
     RewardShopPurchasePlanner shopPurchasePlanner,
     InvestmentStrategyPageReader strategyReader,

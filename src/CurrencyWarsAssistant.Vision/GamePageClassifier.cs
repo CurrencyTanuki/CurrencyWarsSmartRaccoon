@@ -23,6 +23,50 @@ public interface IGamePageClassifier
     PageClassificationResult? Classify(CaptureFrame frame);
 }
 
+/// <summary>
+/// 自动化组件（奖励关/备战/祈愿/聘用书）专用的页面分类器标记：
+/// 实例只装载自动化所需页面的锚点模板，单次分类成本约为全量分类器的 1/2.5。
+/// 页面判定语义与全量分类器一致，仅覆盖自动化会检查的页面。
+/// </summary>
+public interface IAutomationPageClassifier : IGamePageClassifier
+{
+}
+
+/// <summary>自动化组件需要识别的页面集合（全部页面定义的子集）。</summary>
+public static class AutomationPageIds
+{
+    public static readonly IReadOnlySet<string> Ids = new HashSet<string>(StringComparer.Ordinal)
+    {
+        "currency_wars_home",
+        "preparation_generic",
+        "preparation_1_1",
+        "preparation_1_2",
+        "reward_shop",
+        "reward_battle",
+        "reward_battle_pause",
+        "battle_generic",
+        "incomplete_lineup_prompt",
+        "challenge_success",
+        "challenge_failed",
+        "challenge_health_depleted",
+        "investment_environment",
+        "investment_strategy",
+        "wish_trial_selection",
+        "companion_selection",
+    };
+
+    /// <summary>从全量页面定义中筛出自动化子集并构造分类器。</summary>
+    public static TemplateGamePageClassifier Create(
+        ITemplateMatcher templateMatcher,
+        IReadOnlyList<GamePageDefinition> pages)
+    {
+        var selected = pages
+            .Where(page => Ids.Contains(page.Id))
+            .ToArray();
+        return new TemplateGamePageClassifier(templateMatcher, selected);
+    }
+}
+
 public sealed record PageAnchorDiagnostic(
     string PageId,
     string AnchorId,
@@ -38,6 +82,7 @@ public sealed class TemplateGamePageClassifier(
     ITemplateMatcher templateMatcher,
     IReadOnlyList<GamePageDefinition> pages) :
     IGamePageClassifier,
+    IAutomationPageClassifier,
     IGamePageClassifierDiagnostics
 {
     public IReadOnlyList<PageAnchorDiagnostic> LastDiagnostics { get; private set; } = [];

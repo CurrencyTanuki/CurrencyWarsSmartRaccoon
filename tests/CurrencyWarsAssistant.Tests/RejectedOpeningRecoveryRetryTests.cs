@@ -257,7 +257,7 @@ public sealed class RejectedOpeningRecoveryRetryTests
         }
     }
 
-    private sealed class FixedClassifier(string pageId) : IGamePageClassifier
+    private sealed class FixedClassifier(string pageId) : IAutomationPageClassifier
     {
         public PageClassificationResult? Classify(CaptureFrame frame) =>
             new(

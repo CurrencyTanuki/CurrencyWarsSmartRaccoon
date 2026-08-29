@@ -197,6 +197,12 @@ public partial class App : Application
         services.AddSingleton<IGoldDigitRecognizer, OpenCvGoldDigitRecognizer>();
         services.AddSingleton<IPhase2IconRecognizer, OpenCvPhase2IconRecognizer>();
         services.AddSingleton<IGamePageClassifier, TemplateGamePageClassifier>();
+        // 自动化组件（奖励关/备战/祈愿）用限定页面子集的轻量分类器：全量 38 页全探太慢，
+        // 单次分类成本约 1/2.5，热路径（出战轮询/商店稳定读取/部署验证/弹框检测）累计省数分钟
+        services.AddSingleton<IAutomationPageClassifier>(serviceProvider =>
+            AutomationPageIds.Create(
+                serviceProvider.GetRequiredService<ITemplateMatcher>(),
+                serviceProvider.GetRequiredService<IReadOnlyList<GamePageDefinition>>()));
         services.AddSingleton<IPhase2FastPageClassifier>(provider =>
             new Phase2FastPageClassifier(
                 provider.GetRequiredService<ITemplateMatcher>(),

@@ -58,7 +58,7 @@ public enum WishTrialConfirmOutcome
 /// </summary>
 public sealed class WishTrialSelectionAutomation(
     IGameCapture capture,
-    IGamePageClassifier pageClassifier,
+    IAutomationPageClassifier pageClassifier,
     PpOcrOfflineOcr ocr,
     IInputController input,
     IGameForegroundGuard foregroundGuard,

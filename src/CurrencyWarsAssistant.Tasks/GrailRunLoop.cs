@@ -9,7 +9,7 @@ public sealed record GrailLoopOptions
     public int MaxRounds { get; init; } = 20;
 
     /// <summary>备战页 ID（1-1/1-2/1-3 布局全局一致；商店/上场动作的页门禁用）。</summary>
-    public string PreparationPageId { get; init; } = "preparation_1_3";
+    public string PreparationPageId { get; init; } = "preparation_generic";
 
     /// <summary>循环 tick 间隔（毫秒）。</summary>
     public int TickDelayMs { get; init; } = 600;
@@ -39,11 +39,11 @@ public sealed class GrailRunLoop(
     }
 
     /// <summary>录像输出目录（成功局 MP4 保留位置）。</summary>
-    public string RecordingOutputDirectory { get; init; } =
+    public string RecordingOutputDirectory { get; set; } =
         System.IO.Path.Combine(AppContext.BaseDirectory, "Recordings");
 
     /// <summary>可选录屏器（编排层组装时注入）。</summary>
-    public IRoundRecorder? RoundRecorder { get; init; }
+    public IRoundRecorder? RoundRecorder { get; set; }
     public async Task<GrailLoopOutcome> RunAsync(
         nint windowHandle,
         GrailUserGoal goal,
@@ -63,8 +63,14 @@ public sealed class GrailRunLoop(
                     await RoundRecorder.StartAsync($"grail-round-{round}", cancellationToken);
                 }
 
+                // W1：1-1/1-2 也会强制弹祈愿（019 星徽上场即可能升档）——opening 期间挂弹框泵
+                using var openingCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                var dialogPump = PumpDialogsAsync(windowHandle, openingCts.Token);
+
                 var opening = await openingCoordinator.RunAsync(
                     windowHandle, environmentFilter, openingOptions, cancellationToken);
+                openingCts.Cancel();
+                try { await dialogPump; } catch (OperationCanceledException) { }
                 if (!opening.Succeeded)
                 {
                     continue; // 导航失败等：下一轮重试
@@ -115,6 +121,8 @@ public sealed class GrailRunLoop(
                 continue;
             }
 
+            executor.LatestSnapshot = snapshot;
+
             var verdict = GrailFinalJudge.Judge(snapshot);
             if (verdict.Kind == GrailVerdictKind.Success)
             {
@@ -160,14 +168,28 @@ public sealed class GrailRunLoop(
         return new GrailLoopOutcome(false, round, "已取消。");
     }
 
+    /// <summary>opening 阶段的弹框泵：轮询边沿标志并响应祈愿（弹框阻塞游戏输入，必须有人应答）。</summary>
+    private async Task PumpDialogsAsync(nint windowHandle, CancellationToken cancellationToken)
+    {
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            if (listener.IsWishDialogOpen)
+            {
+                await executor.ExecuteWishDialogAsync(windowHandle, cancellationToken);
+            }
+
+            await Task.Delay(800, cancellationToken);
+        }
+    }
+
     private GrailRunSnapshot? AssembleLatest(GrailUserGoal goal)
     {
-        if (listener.LatestAnalysis?.OperationalState is not { } state)
+        var analysis = listener.LatestAnalysis;
+        if (analysis?.OperationalState is not { } state)
         {
             return null;
         }
 
-        var analysis = listener.LatestAnalysis;
         return GrailSnapshotAssembler.Assemble(
             state,
             analysis.Snapshot,

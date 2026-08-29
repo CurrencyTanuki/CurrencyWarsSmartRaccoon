@@ -338,6 +338,16 @@ public partial class MainWindow : Window
             return;
         }
 
+        if (_viewModel.IsPassiveCollectionRunning || _viewModel.IsRunning)
+        {
+            _eventSink.Publish(new TaskEvent(
+                DateTimeOffset.Now,
+                TaskEventLevel.Error,
+                "ThreeStarFiveCostBusy",
+                "识别流或自动化已在运行（开始记录/刷开局），请先停止再启动「刷三星五费」。"));
+            return;
+        }
+
         var goal = ThreeStarFiveCostTargetCombo.SelectedIndex == 1
             ? GrailUserGoal.All
             : GrailUserGoal.Single;
@@ -379,6 +389,16 @@ public partial class MainWindow : Window
             var executor = new GrailOperationExecutor(
                 _rewardController, _preparationBoard, _trialSelection, _trialRecruit, stateHolder);
             var loop = new GrailRunLoop(_openingCoordinator, executor, stateHolder, listener, _gameData);
+            if (recording is not null)
+            {
+                loop.RoundRecorder = new GrailRollingRecorder(
+                    recording.Capture,
+                    gameWindow,
+                    recording.Quality,
+                    recording.FfmpegPath,
+                    recording.TempDirectory);
+                loop.RecordingOutputDirectory = recording.OutputDirectory;
+            }
 
             _threeStarFiveCostCts = new CancellationTokenSource();
             _eventSink.Publish(new TaskEvent(
@@ -437,9 +457,17 @@ public partial class MainWindow : Window
                             ? $"「刷三星五费」达成：{result.Message}"
                             : $"「刷三星五费」未达成（已刷 {result.RoundsPlayed} 局）：{result.Message}"));
                 }
+                catch (Exception exception)
+                {
+                    _eventSink.Publish(new TaskEvent(
+                        DateTimeOffset.Now,
+                        TaskEventLevel.Error,
+                        "ThreeStarFiveCostCrashed",
+                        $"「刷三星五费」循环异常终止：{exception.Message}"));
+                }
                 finally
                 {
-                    // 任务结束（达成/上限/取消）都退订快照源，防止泄漏 & 挂住 Updated 事件。
+                    // 任务结束（达成/上限/取消/异常）都退订识别流，防止泄漏 & 挂住 Updated 事件。
                     snapshotSource.Unsubscribe();
                 }
             }, cts.Token);

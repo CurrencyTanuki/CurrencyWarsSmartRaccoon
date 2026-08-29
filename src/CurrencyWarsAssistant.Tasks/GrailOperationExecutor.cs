@@ -48,16 +48,30 @@ public sealed class GrailOperationExecutor(
             windowHandle, expectedPreparationPageId, cancellationToken);
         var bought = bench?.FirstOrDefault(item =>
             string.Equals(item.Character.Name, pass.BoughtCharacterName, StringComparison.OrdinalIgnoreCase));
-        if (bought is not null)
+        if (bought is null)
         {
-            await preparationBoard.GrailDeployBenchCharacterAsync(
-                windowHandle, bought, PreparationLane.Front, _frontDeployCount++ % 4,
+            return true;
+        }
+
+        // N14 语义：昔涟只买不上场（不占上场人口、不触发关店-上场仪式）
+        var boughtIsXilian = string.Equals(pass.BoughtCharacterName, GrailRunSnapshot.XilianName, StringComparison.Ordinal);
+        if (!boughtIsXilian)
+        {
+            var slot = Math.Min(_frontDeployCount, 3);
+            var lane = _frontDeployCount < 4 ? PreparationLane.Front : PreparationLane.Back;
+            var backSlot = Math.Min(Math.Max(_frontDeployCount - 4, 0), 5);
+            var deployed = await preparationBoard.GrailDeployBenchCharacterAsync(
+                windowHandle, bought,
+                lane, lane == PreparationLane.Front ? slot : backSlot,
                 expectedPreparationPageId, cancellationToken);
-            if (string.Equals(pass.BoughtCharacterName, GrailRunSnapshot.XilianName, StringComparison.Ordinal))
+            if (deployed)
             {
-                // 昔涟买即触发 J1（全员模式判定依赖她在场）
-                stateHolder.MarkNewBondMemberAvailable();
+                _frontDeployCount++;
             }
+        }
+        else
+        {
+            stateHolder.MarkNewBondMemberAvailable();
         }
 
         return true;
@@ -78,7 +92,8 @@ public sealed class GrailOperationExecutor(
         var bench = await preparationBoard.ReadStableBenchCharactersAsync(
             windowHandle, expectedPreparationPageId, cancellationToken) ?? [];
         var sellable = bench
-            .Where(item => !snapshot.OwnedBondMemberNames().Contains(item.Character.Name)
+            .Where(item => !item.Character.BondNames.Any(
+                bond => bond is not null && bond.Contains("命运圣杯", StringComparison.Ordinal))
                 && !(item.Character.Costs ?? []).Contains(5))
             .Take(snapshot.SellableBeyondKeepLineCount)
             .ToArray();
@@ -147,24 +162,29 @@ public sealed class GrailOperationExecutor(
 
     private async Task OpenLettersAsync(nint windowHandle, GrailUserGoal goal, CancellationToken cancellationToken)
     {
+        // 目标集：全员优先昔涟（判定必需）；单人=昔涟/Archer（组件唯一命中才点，歧义保守不点）
         var targets = goal == GrailUserGoal.All
             ? (IReadOnlySet<string>)new HashSet<string> { GrailRunSnapshot.XilianName }
             : new HashSet<string> { GrailRunSnapshot.XilianName, GrailRunSnapshot.ArcherName };
-        for (var letter = 0; letter < 2; letter++)
+
+        // 带重试：第二本书可能不在固定格/候选暂不匹配——重试直到两本全开或尝试耗尽
+        for (var attempt = 0; attempt < 6; attempt++)
         {
+            var (_, obtained, opened, _, _, _, _, _) = stateHolder.PeekEventState();
+            if (opened >= obtained)
+            {
+                return;
+            }
+
             var status = await trialRecruit.TryOpenAndSelectAsync(
                 windowHandle, targets, cancellationToken);
             if (status == TrialRecruitSelectionStatus.Selected)
             {
                 stateHolder.MarkLetterOpened();
             }
+
+            await Task.Delay(1200, cancellationToken);
         }
     }
 }
 
-/// <summary>便捷扩展：上场命杯成员名单。</summary>
-internal static class GrailSnapshotExtensions
-{
-    public static IReadOnlySet<string> OwnedBondMemberNames(this GrailRunSnapshot snapshot) =>
-        snapshot.DeployedBondMembers;
-}

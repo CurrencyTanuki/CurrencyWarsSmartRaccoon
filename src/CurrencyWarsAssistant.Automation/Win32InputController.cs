@@ -137,6 +137,16 @@ public sealed class Win32InputController : IInputController
                 diagnostic);
         }
 
+        if (InputKillSwitch.Armed)
+        {
+            return ActionResult.Failure("输入急停闸生效，已拒绝本次模拟输入。");
+        }
+
+        if (InputKillSwitch.Armed)
+        {
+            return ActionResult.Failure("输入急停闸生效，已拒绝本次模拟输入。");
+        }
+
         var mouseDownSendCount = _backend.SendLeftDown();
         EnsureSent(mouseDownSendCount, "模拟鼠标按下失败。");
         uint mouseUpSendCount;
@@ -194,23 +204,36 @@ public sealed class Win32InputController : IInputController
 
         var start = CoordinateMapper.ClientToScreen(refreshed, source.ClientBounds.Center);
         var end = CoordinateMapper.ClientToScreen(refreshed, targetClientPoint);
+        if (InputKillSwitch.Armed)
+        {
+            return ActionResult.Failure("输入急停闸生效，已拒绝本次模拟输入。");
+        }
+
         EnsureSent(_backend.MoveMouse(start), "模拟鼠标移动失败。");
         EnsureSent(_backend.SendLeftDown(), "模拟鼠标按下失败。");
 
         const int steps = 12;
         var stepDelay = TimeSpan.FromTicks(Math.Max(1, duration.Ticks / steps));
-        for (var index = 1; index <= steps; index++)
+        try
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            var progress = index / (double)steps;
-            EnsureSent(_backend.MoveMouse(new PixelPoint(
-                (int)Math.Round(start.X + (end.X - start.X) * progress),
-                (int)Math.Round(start.Y + (end.Y - start.Y) * progress))),
-                "模拟鼠标移动失败。");
-            await Task.Delay(stepDelay, cancellationToken);
+            for (var index = 1; index <= steps; index++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                var progress = index / (double)steps;
+                EnsureSent(_backend.MoveMouse(new PixelPoint(
+                    (int)Math.Round(start.X + (end.X - start.X) * progress),
+                    (int)Math.Round(start.Y + (end.Y - start.Y) * progress))),
+                    "模拟鼠标移动失败。");
+                await Task.Delay(stepDelay, cancellationToken);
+            }
+        }
+        finally
+        {
+            // 无论取消/异常，左键必须释放，否则游戏内卡在拖拽状态
+            var upSendCount = _backend.SendLeftUp();
+            EnsureSent(upSendCount, "模拟鼠标抬起失败。");
         }
 
-        EnsureSent(_backend.SendLeftUp(), "模拟鼠标抬起失败。");
         await Task.Delay(policy.AfterActionDelay, cancellationToken);
         return ActionResult.Success($"已拖动：{source.DisplayName}");
     }

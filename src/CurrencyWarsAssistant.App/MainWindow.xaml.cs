@@ -148,6 +148,8 @@ public partial class MainWindow : Window
         _shutdownRequested = true;
         IsEnabled = false;
         PublishShutdownStage("ShutdownCloseEntered", "主窗口关闭流程已进入。");
+        InputKillSwitch.Armed = true;
+        _threeStarFiveCostCts?.Cancel();
         _viewModel.RequestShutdownStop();
         _situationAnalysis.RequestShutdownStop();
         PublishShutdownStage(
@@ -395,7 +397,19 @@ public partial class MainWindow : Window
             {
                 Goal = goal,
             };
+            GrailRollingRecorder? assembledRecorder = null;
             var loop = new GrailRunLoop(_openingCoordinator.RunAsync, executor, stateHolder, listener, _gameData, _liveCollection);
+            if (recording is not null)
+            {
+                assembledRecorder = new GrailRollingRecorder(
+                    recording.Capture,
+                    gameWindow,
+                    recording.Quality,
+                    recording.FfmpegPath,
+                    recording.TempDirectory);
+                loop.RoundRecorder = assembledRecorder;
+                loop.RecordingOutputDirectory = recording.OutputDirectory;
+            }
             if (recording is not null)
             {
                 loop.RoundRecorder = new GrailRollingRecorder(
@@ -485,9 +499,23 @@ public partial class MainWindow : Window
                 }
                 finally
                 {
-                    // 任务结束（达成/上限/取消/异常）都退订识别流并释放互斥标志。
+                    // 任务结束（达成/上限/取消/异常）都退订识别流并释放互斥标志与急停闸
+                    //（闸随任务解除：grail 已停，普通功能输入应恢复）
                     snapshotSource.Unsubscribe();
                     _viewModel.EndGrailRun();
+
+                    // 录屏收尾：以 None 令牌执行（成功转正/失败删除/停止收尾），不因取消跳过
+                    if (assembledRecorder is not null)
+                    {
+                        try
+                        {
+                            await assembledRecorder.FinishAsync(
+                                false, RecordingOutputDirectory, CancellationToken.None);
+                        }
+                        catch { /* 停止路径收尾失败不掩盖主流程结果 */ }
+                    }
+
+                    InputKillSwitch.Armed = false;
                 }
             }, cts.Token);
         }
@@ -908,6 +936,9 @@ public partial class MainWindow : Window
     {
         if (message == WmHotKey && wordParameter == StopHotKeyId)
         {
+            // 紧急停止必须覆盖三星五费：置急停闸 + 取消其令牌（否则热键停止后 grail 继续点屏）
+            InputKillSwitch.Armed = true;
+            _threeStarFiveCostCts?.Cancel();
             _viewModel.RequestStop();
             handled = true;
         }

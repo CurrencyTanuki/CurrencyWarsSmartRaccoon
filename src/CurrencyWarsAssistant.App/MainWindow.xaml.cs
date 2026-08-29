@@ -395,11 +395,17 @@ public partial class MainWindow : Window
             {
                 DeployMatchedOpening = true,
                 CompleteRewardStages = true,
-                // 命杯成员绝不自动卖出（商店只买命运圣杯羁绊成员）。
+                // N1：命杯成员绝不自动卖出（商店只买命运圣杯羁绊成员）——其余配置见 RewardStage（商店只买命运圣杯羁绊成员）。
                 BenchSaleMode = PreparationBenchSaleMode.None,
                 // 投资策略偏好：二极管276（补血）+ 采购专员（抬5费刷出概率），由 Rewards 阶段选。
                 RewardStage = new RewardStageAutomationOptions
                 {
+                    // N1：三仙舟+2DOT 购买预设禁用；银河学者（猫猫糕）策略启用；
+                    // 1-1/1-2 商店买入命杯成员（同名只买一次），禁卖命杯与星徽携带者
+                    EnableEarlyStrongFormationPurchase = false,
+                    EnableGalaxyScholarRewardStrategy = true,
+                    AutoPurchaseCharacterNames = new HashSet<string>(["远坂凛", "吉尔伽美什", "Saber"]),
+                    RetainedCharacterNames = new HashSet<string>(["远坂凛", "吉尔伽美什", "Saber", "Archer"]),
                     PreferredInvestmentStrategyIds = new HashSet<string>(
                         new[]
                         {

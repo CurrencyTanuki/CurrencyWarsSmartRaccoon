@@ -1097,6 +1097,14 @@ public sealed partial class RewardStageAutomationController
             return selection;
         }
 
+        if (_softInvestmentStrategyRequirement)
+        {
+            // 定稿树：禁止因投资策略直接结算——识别降级也只推进页面，不弃局
+            return new RewardStageAutomationResult(
+                RewardStageAutomationStatus.InvestmentStrategySelected,
+                reason + "；已选择第一槽完成页面推进（软门槛：不弃局）。");
+        }
+
         return new RewardStageAutomationResult(
             RewardStageAutomationStatus.InvestmentStrategyNotFound,
             reason + "；已选择第一槽完成页面推进，本轮按未命中目标策略重开。");

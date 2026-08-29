@@ -101,13 +101,15 @@ public sealed class WishTrialSelectionAutomation(
 
     /// <summary>处理祈愿试炼弹框：若弹框出现则读名称并按策略选择。</summary>
     /// <param name="select">
-    /// 选择策略：给定左右名称，返回要选哪一个（侧面/索引）。默认 null 时返回选左侧。
-    /// "具体哪个更合适"的规则由调用方实现后传入；本轮先用默认（选左侧）把链路打通。
+    /// 选择策略：给定左右名称，返回要选哪一个（&lt;=0 点左，&gt;0 点右，<c>null</c> = 不点击）。
+    /// null 返回值用于"识别不全/条件不满足、绝不误点"的防御路径（2026-08-29 定稿决策树 F2/F10 防御）；
+    /// 返回 null 时本方法以 <see cref="WishTrialSelectionStatus.RecognitionFailed"/> 结束且不点击。
+    /// 不传 select 时用内置 PickWinningSide（两侧都不可达成 → 不点击）。
     /// </param>
     public async Task<WishTrialSelectionStatus> TryHandleSelectionAsync(
         nint windowHandle,
         CancellationToken cancellationToken,
-        Func<string?, string?, int>? select = null)
+        Func<string?, string?, int?>? select = null)
     {
         var window = await foregroundGuard.WaitUntilForegroundAsync(
             windowHandle,
@@ -169,6 +171,17 @@ public sealed class WishTrialSelectionAutomation(
         if (select is not null)
         {
             side = select(leftName, rightName);
+            if (side is null)
+            {
+                eventSink.Publish(new TaskEvent(
+                    DateTimeOffset.Now,
+                    TaskEventLevel.Warning,
+                    "WishTrialSelectAbstained",
+                    $"选择策略弃权（左=[{leftName ?? "未读出"}]/奖励=[{leftReward ?? "未读出"}]，" +
+                    $"右=[{rightName ?? "未读出"}]/奖励=[{rightReward ?? "未读出"}]）；不点击，等待识别重试。"));
+                // 保留 LatestTrialInfo 供调用方重试判定（弹框仍在屏上），不清空。
+                return WishTrialSelectionStatus.RecognitionFailed;
+            }
         }
         else
         {

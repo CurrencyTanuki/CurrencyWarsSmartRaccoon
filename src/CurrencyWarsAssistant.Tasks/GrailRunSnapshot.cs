@@ -10,6 +10,13 @@ public enum GrailUserGoal
     All,
 }
 
+/// <summary>场上已部署角色的决策视图（卖人与换位执行的数据源）。</summary>
+public sealed record GrailDeployedCharacter(
+    string Name,
+    bool IsBondMember,
+    bool IsFiveCost,
+    CurrencyWarsAssistant.Advisor.RelativeRegion CardRegion);
+
 /// <summary>祈愿弹框的某一侧（F2 识别的左右两个试炼）。</summary>
 public enum GrailTrialSide
 {
@@ -119,6 +126,13 @@ public sealed record GrailRunSnapshot
     public bool FiveBondGivenUp { get; init; }
 
     /// <summary>可出售角色数（执行层按“非命杯成员、非星徽携带者、非任何已拥有 5 费”过滤，并已扣除保留线=星徽数）。</summary>
+    /// <summary>
+    /// 场上（前台/后台）的非命杯角色（含卡牌归一化区域）：1-3 后可按用户确认的卖法
+    /// 直接拖到出售区（出售区坐标沿用既有 SellTargetPoints）。组装器回填；5 费不在其中。
+    /// </summary>
+    public IReadOnlyList<GrailDeployedCharacter> DeployedNonGrailCharacters { get; init; } =
+        Array.Empty<GrailDeployedCharacter>();
+
     public int SellableBeyondKeepLineCount { get; init; }
 
     /// <summary>命运圣杯羁绊在场计数 = 上场命杯成员（按角色去重）+ 上场星徽携带者中的非成员角色数（N4/羁绊档位口径）。</summary>

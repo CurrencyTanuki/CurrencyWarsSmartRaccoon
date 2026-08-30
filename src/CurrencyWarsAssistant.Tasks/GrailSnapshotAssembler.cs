@@ -71,6 +71,7 @@ public static class GrailSnapshotAssembler
         var xilianOnField = false;
         var benchSellablePool = 0;
 
+        var deployedNonGrail = new List<GrailDeployedCharacter>();
         foreach (var slot in slots)
         {
             var character = ResolveCharacter(gameData, slot.CharacterId);
@@ -81,8 +82,15 @@ public static class GrailSnapshotAssembler
 
             ownedNames.Add(character.Name);
             var isBondMember = IsBondMember(character);
+            // 5 费判定：银狼LV.999 是唯一多费用角色（costs=[3,4,5]），按纯 [5] 严格判
             var isFiveCost = (character.Costs ?? Array.Empty<int>()).Contains(5);
             var deployed = slot.Zone is FormationZone.Front or FormationZone.Back;
+
+            if (deployed && !isBondMember && !isFiveCost && slot.CardRegion is not null)
+            {
+                deployedNonGrail.Add(new GrailDeployedCharacter(
+                    character.Name, isBondMember, isFiveCost, slot.CardRegion));
+            }
 
             if (isFiveCost)
             {
@@ -165,6 +173,7 @@ public static class GrailSnapshotAssembler
             Population = population,
             Gold = gold,
             DeployedBondMembers = deployedBondMembers,
+            DeployedNonGrailCharacters = deployedNonGrail,
             BadgeCarrierNonMembers = badgeCarriersNonMembers,
             UncarriedStarBadges = uncarriedBadges,
             TotalStarBadgesObtained = totalBadges,

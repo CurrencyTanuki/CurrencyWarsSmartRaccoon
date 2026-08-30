@@ -206,6 +206,8 @@ public sealed partial class RewardStageAutomationController
         IDictionary<string, CurrencyWarsCharacterData> ownedCharacters,
         ISet<string> shopPurchasedRetentionNames,
         bool allowGalaxyScholarPairPurchase,
+        // 审计#17：当前实际部署（1-1 补员后由调用方刷新），供规划器实时满员判定
+        IReadOnlyList<PreparationPlacement>? currentDeployedPlacements,
         CancellationToken cancellationToken)
     {
         // One snapshot, one plan, one trusted click per planned slot. Purchased
@@ -229,7 +231,8 @@ public sealed partial class RewardStageAutomationController
                 presetPurchaseSuppressedNames,
                 formationReservedNames,
                 ownedCharacters.Values,
-                allowGalaxyScholarPairPurchase)
+                allowGalaxyScholarPairPurchase,
+                currentDeployedPlacements)
             .GroupBy(item => item.Slot.Slot)
             .Select(group => group.First())
             .OrderBy(item => item.Slot.Slot)

@@ -249,6 +249,7 @@ public sealed partial class RewardStageAutomationController(
                 ownedCharacters,
                 shopPurchasedRetentionNames,
                 allowGalaxyScholarPairPurchase: true,
+                currentFormationPlacements,
                 cancellationToken: cancellationToken))
         {
             return Failed(
@@ -353,6 +354,7 @@ public sealed partial class RewardStageAutomationController(
                 ownedCharacters,
                 shopPurchasedRetentionNames,
                 allowGalaxyScholarPairPurchase: false,
+                currentFormationPlacements,
                 cancellationToken: cancellationToken))
         {
             return Failed(

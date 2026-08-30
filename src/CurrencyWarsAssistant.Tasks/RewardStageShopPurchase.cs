@@ -23,7 +23,10 @@ public sealed class RewardShopPurchasePlanner
         IEnumerable<string> presetPurchaseSuppressedNames,
         IEnumerable<string> formationReservedNames,
         IEnumerable<CurrencyWarsCharacterData>? ownedCharacters = null,
-        bool allowGalaxyScholarPairPurchase = true)
+        bool allowGalaxyScholarPairPurchase = true,
+        // 审计#17：传入"当前实际部署"覆盖 options.InitialFormationPlacements 旧快照；
+        // 此前 1-2 商店仍按进奖励关前的旧布阵算满员，可能重复购买已部署角色。
+        IReadOnlyList<PreparationPlacement>? currentDeployedPlacements = null)
     {
         ArgumentNullException.ThrowIfNull(slots);
         ArgumentNullException.ThrowIfNull(options);
@@ -32,7 +35,7 @@ public sealed class RewardShopPurchasePlanner
         // formationNames 统计"场上已部署的不同角色"（而非全部拥有角色）：
         // 只有名单内的已部署角色计入；满 InitialTeamCapacity 人后，
         // 不再为凑阵容购买名单内角色（只保留三仙舟+2DOT 预设与银河学者补位）。
-        var deployedFormationNames = options.InitialFormationPlacements
+        var deployedFormationNames = (currentDeployedPlacements ?? options.InitialFormationPlacements)
             .Select(item => item.Source.Character.Name)
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToHashSet(StringComparer.OrdinalIgnoreCase);

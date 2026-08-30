@@ -194,7 +194,9 @@ public sealed class GrailRunLoop(
                     noSnapshotSince ??= DateTimeOffset.Now;
                     if (DateTimeOffset.Now - noSnapshotSince.Value >= stuckBudget)
                     {
-                        // 主动弃局兜底（用户拍板：绝不空转卡死，也不整体终止）
+                        // 主动弃局兜底（用户拍板：绝不空转卡死，也不整体终止）。
+                        // 弃局后必须 return：主页帧会被备战页门禁拒绝组装，留在本循环=活锁；
+                        // 外层 for 启动下一轮，opening 从主页重新导航正好衔接。
                         if (runAbandoner is not null)
                         {
                             try { await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken); }
@@ -202,7 +204,7 @@ public sealed class GrailRunLoop(
                             catch { /* 弃局失败也继续下一轮 */ }
                         }
 
-                        noSnapshotSince = null;
+                        return new GrailLoopOutcome(false, round, $"第 {round} 局 180 秒无可用备战快照，已弃局，续刷下一局。");
                     }
                 }
 
@@ -265,7 +267,19 @@ public sealed class GrailRunLoop(
         {
             if (listener.IsWishDialogOpen)
             {
-                await executor.ExecuteWishDialogAsync(windowHandle, cancellationToken);
+                try
+                {
+                    await executor.ExecuteWishDialogAsync(windowHandle, cancellationToken);
+                }
+                catch (OperationCanceledException)
+                {
+                    throw;
+                }
+                catch (Exception exception)
+                {
+                    // 泵故障不外泄（外泄会杀死整跑）：记录后继续轮询
+                    _ = exception;
+                }
             }
 
             await Task.Delay(800, cancellationToken);

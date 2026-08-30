@@ -25,6 +25,10 @@ public sealed class GrailOperationExecutor(
     /// <summary>用户目标（opening 期无识别快照时构建最小快照用）。</summary>
     public GrailUserGoal Goal { get; set; } = GrailUserGoal.Single;
 
+    /// <summary>5 费判定（唯一口径）：纯 [5] 才算——银狼LV.999（costs=[3,4,5]）按用户拍板视作 3 费（审计#13）。</summary>
+    private static bool IsPureFiveCost(CurrencyWarsCharacterData character) =>
+        (character.Costs ?? []).Count == 1 && (character.Costs ?? [])[0] == 5;
+
     /// <summary>opening 期无识别管线时，用持有器事件态构建最小快照（首祈愿盲选左不依赖识别；奇迹代偿因血量未知自动保守拒绝）。</summary>
     private GrailRunSnapshot BuildMinimalSnapshot()
     {
@@ -62,13 +66,14 @@ public sealed class GrailOperationExecutor(
             expectedPreparationPageId,
             cancellationToken,
             shopAlreadyOpen);
+        // 无论是否买到都关商店：页面必须回到 preparation_* 才能进入决策流
+        //（不关店会让 N14/ShopPass 路由永久停留在商店页——复审阻断 2）
+        await rewardStage.CloseShopAsync(windowHandle, expectedPreparationPageId, cancellationToken);
+
         if (pass.BoughtCharacterName is null)
         {
             return false;
         }
-
-        // 买后即退（N14：关商店→上场→选祈愿→重开商店）
-        await rewardStage.CloseShopAsync(windowHandle, expectedPreparationPageId, cancellationToken);
 
         // 上场：读到该角色后拖到前台（部署计数由本执行器维护，避免拖上已占槽）
         var bench = await preparationBoard.ReadStableBenchCharactersAsync(
@@ -121,7 +126,7 @@ public sealed class GrailOperationExecutor(
         var sellable = bench
             .Where(item => !item.Character.BondNames.Any(
                 bond => bond is not null && bond.Contains("命运圣杯", StringComparison.Ordinal))
-                && !(item.Character.Costs ?? []).Contains(5))
+                && !IsPureFiveCost(item.Character))
             .Take(snapshot.SellableBeyondKeepLineCount)
             .ToArray();
         return await preparationBoard.GrailSellUntilGoldAsync(

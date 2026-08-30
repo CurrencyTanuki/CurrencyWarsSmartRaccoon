@@ -413,16 +413,6 @@ public partial class MainWindow : Window
                 loop.RoundRecorder = assembledRecorder;
                 loop.RecordingOutputDirectory = recording.OutputDirectory;
             }
-            if (recording is not null)
-            {
-                loop.RoundRecorder = new GrailRollingRecorder(
-                    recording.Capture,
-                    gameWindow,
-                    recording.Quality,
-                    recording.FfmpegPath,
-                    recording.TempDirectory);
-                loop.RecordingOutputDirectory = recording.OutputDirectory;
-            }
 
             _threeStarFiveCostCts = new CancellationTokenSource();
             _eventSink.Publish(new TaskEvent(
@@ -477,7 +467,7 @@ public partial class MainWindow : Window
                         goal,
                         filters,
                         options,
-                        new GrailLoopOptions { MaxRounds = 20 },
+                        new GrailLoopOptions { MaxRounds = 0 },
                         cts.Token);
                     _eventSink.Publish(new TaskEvent(
                         DateTimeOffset.Now,

@@ -205,7 +205,12 @@ public sealed class OpeningRerollLoopCoordinator(
                     windowHandle, TimeSpan.FromSeconds(20), cancellationToken);
                 if (string.IsNullOrEmpty(recoveredPage) && runAbandoner is not null)
                 {
-                    await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken);
+                    try { await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken); }
+                    catch (Exception abandonException) when (abandonException is not OperationCanceledException)
+                    {
+                        Publish(OpeningRerollLoopState.Recovering, 0,
+                            $"弃局兜底自身异常，继续循环：{abandonException.Message}", OpeningRerollMilestone.None);
+                    }
                 }
                 continue;
             }
@@ -224,7 +229,12 @@ public sealed class OpeningRerollLoopCoordinator(
                 windowHandle, TimeSpan.FromSeconds(20), cancellationToken);
             if (string.IsNullOrEmpty(recoveredAfterFailure) && runAbandoner is not null)
             {
-                await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken);
+                try { await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken); }
+                catch (Exception abandonException) when (abandonException is not OperationCanceledException)
+                {
+                    Publish(OpeningRerollLoopState.Recovering, 0,
+                        $"弃局兜底自身异常，继续循环：{abandonException.Message}", OpeningRerollMilestone.None);
+                }
             }
         }
     }

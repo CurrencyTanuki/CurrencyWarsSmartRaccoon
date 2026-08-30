@@ -83,7 +83,9 @@ public static class GrailSnapshotAssembler
             ownedNames.Add(character.Name);
             var isBondMember = IsBondMember(character);
             // 5 费判定：银狼LV.999 是唯一多费用角色（costs=[3,4,5]），按纯 [5] 严格判
-            var isFiveCost = (character.Costs ?? Array.Empty<int>()).Contains(5);
+            // 银狼LV.999（costs=[3,4,5] 变费）按用户拍板一律视作 3 费：5 费判定=纯 [5]
+            var isFiveCost = (character.Costs ?? Array.Empty<int>()).Count == 1
+                && (character.Costs ?? Array.Empty<int>())[0] == 5;
             var deployed = slot.Zone is FormationZone.Front or FormationZone.Back;
 
             if (deployed && !isBondMember && !isFiveCost && slot.CardRegion is not null)

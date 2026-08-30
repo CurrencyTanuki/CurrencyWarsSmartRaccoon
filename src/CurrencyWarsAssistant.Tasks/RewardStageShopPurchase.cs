@@ -26,7 +26,9 @@ public sealed class RewardShopPurchasePlanner
         bool allowGalaxyScholarPairPurchase = true,
         // 审计#17：传入"当前实际部署"覆盖 options.InitialFormationPlacements 旧快照；
         // 此前 1-2 商店仍按进奖励关前的旧布阵算满员，可能重复购买已部署角色。
-        IReadOnlyList<PreparationPlacement>? currentDeployedPlacements = null)
+        IReadOnlyList<PreparationPlacement>? currentDeployedPlacements = null,
+        // 同名只买一次（用户拍板）：已购过的保留名在此集合内则不再重复购买
+        ISet<string>? purchasedRetentionNames = null)
     {
         ArgumentNullException.ThrowIfNull(slots);
         ArgumentNullException.ThrowIfNull(options);
@@ -61,8 +63,10 @@ public sealed class RewardShopPurchasePlanner
             var character = slot.Character!;
             var retainedPurchase =
                 options.RetainedCharacterNames.Contains(character.Name);
-            var customPurchase = retainedPurchase ||
-                options.AutoPurchaseCharacterNames.Contains(character.Name);
+            var customPurchase = (retainedPurchase ||
+                options.AutoPurchaseCharacterNames.Contains(character.Name))
+                && !(purchasedRetentionNames ?? new HashSet<string>())
+                    .Contains(character.Name);
             var presetCandidate =
                 options.EnableEarlyStrongFormationPurchase &&
                 EarlyStrongFormationCharacterPolicy.IsCandidate(character) &&

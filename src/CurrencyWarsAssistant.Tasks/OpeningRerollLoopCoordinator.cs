@@ -152,7 +152,8 @@ public sealed class OpeningRerollLoopCoordinator(
     IPreparationBoardController? preparationBoardController = null,
     IRewardStageAutomationController? rewardStageController = null,
     Func<int, int>? randomIndexSelector = null,
-    IPassiveRecoveryMonitor? passiveRecoveryMonitor = null)
+    IPassiveRecoveryMonitor? passiveRecoveryMonitor = null,
+    IRunAbandoner? runAbandoner = null)
 {
     private TimeSpan _pauseBaseline;
 
@@ -199,9 +200,13 @@ public sealed class OpeningRerollLoopCoordinator(
                     TaskEventLevel.Error,
                     "RerollLoopExceptionEnteringPassiveMonitor",
                     $"自动流程异常，转入只读页面监测：{exception.Message}"));
-                await passiveRecoveryMonitor!.WaitForSafeEntryPageAsync(
-                    windowHandle,
-                    cancellationToken);
+                // R1/R2：监测最长 20 秒；未回安全页 → 主动弃局 → 继续循环（绝不无限卡死）
+                var recoveredPage = await passiveRecoveryMonitor!.WaitForSafeEntryPageAsync(
+                    windowHandle, TimeSpan.FromSeconds(20), cancellationToken);
+                if (string.IsNullOrEmpty(recoveredPage) && runAbandoner is not null)
+                {
+                    await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken);
+                }
                 continue;
             }
 
@@ -214,9 +219,13 @@ public sealed class OpeningRerollLoopCoordinator(
                 OpeningRerollLoopState.WaitingForRecovery,
                 result.CompletedRounds,
                 "本轮未完成，转入只读页面监测；只在安全入口页稳定出现后恢复。" );
-            await passiveRecoveryMonitor!.WaitForSafeEntryPageAsync(
-                windowHandle,
-                cancellationToken);
+            // R2：失败后监测最长 20 秒；未回安全页 → 主动弃局 → 继续下一轮（绝不无限卡死）
+            var recoveredAfterFailure = await passiveRecoveryMonitor!.WaitForSafeEntryPageAsync(
+                windowHandle, TimeSpan.FromSeconds(20), cancellationToken);
+            if (string.IsNullOrEmpty(recoveredAfterFailure) && runAbandoner is not null)
+            {
+                await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken);
+            }
         }
     }
 

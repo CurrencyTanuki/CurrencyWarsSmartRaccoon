@@ -263,6 +263,7 @@ public partial class App : Application
             RewardStageAutomationController>();
         services.AddTransient<IRejectedOpeningRecovery, CurrencyWarsRejectedOpeningRecovery>();
         services.AddTransient<IAbandonSettlementRecovery, CurrencyWarsRejectedOpeningRecovery>();
+        services.AddTransient<IRunAbandoner, CurrencyWarsRejectedOpeningRecovery>();
         services.AddSingleton<UiTaskEventSink>();
         services.AddSingleton<ITaskEventSink>(
             provider => provider.GetRequiredService<UiTaskEventSink>());

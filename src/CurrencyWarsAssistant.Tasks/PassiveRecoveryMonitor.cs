@@ -6,6 +6,12 @@ namespace CurrencyWarsAssistant.Tasks;
 
 public interface IPassiveRecoveryMonitor
 {
+    /// <summary>带超时版（R1 修复）：超时未到安全页返回 null，调用方转主动弃局，避免无限卡死。</summary>
+    Task<string?> WaitForSafeEntryPageAsync(
+        nint windowHandle,
+        TimeSpan timeout,
+        CancellationToken cancellationToken);
+
     Task<string> WaitForSafeEntryPageAsync(
         nint windowHandle,
         CancellationToken cancellationToken);
@@ -27,6 +33,34 @@ public sealed class PassiveRecoveryMonitor(
             "currency_wars_home",
             "normal_hud"
         };
+
+    /// <summary>带超时版（R1 修复）：超时未到安全页返回 null，调用方转主动弃局，避免无限卡死。</summary>
+    public async Task<string?> WaitForSafeEntryPageAsync(
+        nint windowHandle,
+        TimeSpan timeout,
+        CancellationToken cancellationToken)
+    {
+        var deadline = DateTimeOffset.Now + timeout;
+        while (DateTimeOffset.Now < deadline)
+        {
+            using var attemptCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            attemptCts.CancelAfter(TimeSpan.FromSeconds(5));
+            try
+            {
+                var pageId = await WaitForSafeEntryPageAsync(windowHandle, attemptCts.Token);
+                if (!string.IsNullOrEmpty(pageId))
+                {
+                    return pageId;
+                }
+            }
+            catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+            {
+                // 单次 5 秒尝试超时（页面识别异常/无帧）：继续下一轮，直到总截止时间
+            }
+        }
+
+        return null;
+    }
 
     public async Task<string> WaitForSafeEntryPageAsync(
         nint windowHandle,

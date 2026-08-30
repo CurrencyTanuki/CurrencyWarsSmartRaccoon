@@ -904,6 +904,12 @@ public sealed class OpeningRerollLoopCoordinatorTests
         public TaskCompletionSource Entered { get; } = new(
             TaskCreationOptions.RunContinuationsAsynchronously);
 
+        public Task<string?> WaitForSafeEntryPageAsync(
+            nint windowHandle,
+            TimeSpan timeout,
+            CancellationToken cancellationToken) =>
+            Task.FromResult<string?>(null); // 测试桩：超时版默认未恢复
+
         public async Task<string> WaitForSafeEntryPageAsync(
             nint windowHandle,
             CancellationToken cancellationToken)

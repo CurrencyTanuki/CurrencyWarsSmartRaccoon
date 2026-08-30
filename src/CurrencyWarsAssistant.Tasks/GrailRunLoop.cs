@@ -30,7 +30,8 @@ public sealed class GrailRunLoop(
     GrailRunStateHolder stateHolder,
     GrailRecognitionListener listener,
     GameDataCatalog gameData,
-    IPhase2LiveCollectionService collectionService)
+    IPhase2LiveCollectionService collectionService,
+    IRunAbandoner? runAbandoner = null)
 {
     /// <summary>滚动录屏（可选；成功局保留、失败局删除）。语义与旧 IRoundRecorder 一致。</summary>
     public interface IRoundRecorder
@@ -79,9 +80,25 @@ public sealed class GrailRunLoop(
                 try { await dialogPump; } catch (OperationCanceledException) { }
                 if (!opening.Succeeded)
                 {
-                    // opening 内部已负责"未命中→重开"的重刷循环；返回失败即硬失败
-                    //（用户停止/导航失败/被动监测放弃）——如实终止整个流程，由用户决定是否重试
-                    return new GrailLoopOutcome(false, round, $"开局阶段终止：{opening.Message}");
+                    // R3（用户拍板：全程无人工干预，绝不整体终止）：仅用户停止才终止；
+                    // 其余失败一律弃局兜底后继续下一轮
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        return new GrailLoopOutcome(false, round, $"开局阶段终止：{opening.Message}");
+                    }
+
+                    if (runAbandoner is not null)
+                    {
+                        try { await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken); }
+                        catch (OperationCanceledException) { throw; }
+                        catch (Exception abandonException)
+                        {
+                            // 弃局兜底自身失败也继续（下轮 opening 会再尝试恢复）
+                            _ = abandonException;
+                        }
+                    }
+
+                    continue;
                 }
 
                 // 命中后自起独立采集会话（1-3 快照与弹框依赖它；重刷导航期不跑，省 CPU）
@@ -136,6 +153,12 @@ public sealed class GrailRunLoop(
         int round,
         CancellationToken cancellationToken)
     {
+        // R4 卡死兜底：帧在流动但持续无可用备战快照（疑似未知弹窗/未适配页）→ 弃局续刷。
+        // 帧停流（最小化/失焦）不计入——那是"等待"不是"卡死"。
+        var stuckBudget = TimeSpan.FromSeconds(180);
+        var frameFreshness = TimeSpan.FromSeconds(30);
+        DateTimeOffset? noSnapshotSince = null;
+
         while (!cancellationToken.IsCancellationRequested)
         {
             // 弹框优先：祈愿响应是唯一能翻转判定的事件
@@ -148,10 +171,31 @@ public sealed class GrailRunLoop(
             var snapshot = AssembleLatest(goal);
             if (snapshot is null)
             {
+                // 帧停流检测：最新帧 30 秒内仍在更新 → 识别在跑但组装不出（真卡死）；否则是等待
+                var frameAge = DateTimeOffset.Now
+                    - (listener.LatestAnalysis?.Snapshot.AsOf ?? DateTimeOffset.MinValue);
+                if (frameAge <= frameFreshness)
+                {
+                    noSnapshotSince ??= DateTimeOffset.Now;
+                    if (DateTimeOffset.Now - noSnapshotSince.Value >= stuckBudget)
+                    {
+                        // 主动弃局兜底（用户拍板：绝不空转卡死，也不整体终止）
+                        if (runAbandoner is not null)
+                        {
+                            try { await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken); }
+                            catch (OperationCanceledException) { throw; }
+                            catch { /* 弃局失败也继续下一轮 */ }
+                        }
+
+                        noSnapshotSince = null;
+                    }
+                }
+
                 await Task.Delay(options.TickDelayMs, cancellationToken);
                 continue;
             }
 
+            noSnapshotSince = null;
             executor.LatestSnapshot = snapshot;
 
             var verdict = GrailFinalJudge.Judge(snapshot);

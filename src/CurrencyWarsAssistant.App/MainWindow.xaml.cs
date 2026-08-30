@@ -51,6 +51,7 @@ public partial class MainWindow : Window
     private readonly GameDataCatalog _gameData;
     private readonly IPhase2LiveCollectionService _liveCollection;
     private readonly OpeningRerollLoopCoordinator _openingCoordinator;
+    private readonly IRunAbandoner _runAbandoner;
     private readonly PreparationBoardController _preparationBoard;
     private readonly TrialRecruitSelectionAutomation _trialRecruit;
     private readonly IGameCapture _capture;
@@ -69,6 +70,7 @@ public partial class MainWindow : Window
         GameDataCatalog gameData,
         IPhase2LiveCollectionService liveCollection,
         OpeningRerollLoopCoordinator openingCoordinator,
+        IRunAbandoner runAbandoner,
         PreparationBoardController preparationBoard,
         TrialRecruitSelectionAutomation trialRecruit,
         IGameCapture capture)
@@ -83,6 +85,7 @@ public partial class MainWindow : Window
         _gameData = gameData;
         _liveCollection = liveCollection;
         _openingCoordinator = openingCoordinator;
+        _runAbandoner = runAbandoner;
         _preparationBoard = preparationBoard;
         _trialRecruit = trialRecruit;
         _capture = capture;
@@ -398,7 +401,7 @@ public partial class MainWindow : Window
                 Goal = goal,
             };
             GrailRollingRecorder? assembledRecorder = null;
-            var loop = new GrailRunLoop(_openingCoordinator.RunAsync, executor, stateHolder, listener, _gameData, _liveCollection);
+            var loop = new GrailRunLoop(_openingCoordinator.RunAsync, executor, stateHolder, listener, _gameData, _liveCollection, _runAbandoner);
             if (recording is not null)
             {
                 assembledRecorder = new GrailRollingRecorder(

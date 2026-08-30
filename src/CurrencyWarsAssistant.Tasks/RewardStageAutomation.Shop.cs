@@ -232,7 +232,8 @@ public sealed partial class RewardStageAutomationController
                 formationReservedNames,
                 ownedCharacters.Values,
                 allowGalaxyScholarPairPurchase,
-                currentDeployedPlacements)
+                currentDeployedPlacements,
+                shopPurchasedRetentionNames)
             .GroupBy(item => item.Slot.Slot)
             .Select(group => group.First())
             .OrderBy(item => item.Slot.Slot)

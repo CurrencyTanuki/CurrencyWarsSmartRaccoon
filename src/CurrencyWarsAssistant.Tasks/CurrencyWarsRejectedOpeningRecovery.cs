@@ -129,6 +129,14 @@ public static class CurrencyWarsHomeEvidence
 /// abandons the run, advances the settlement pages and verifies that the
 /// Currency Wars home page has returned.
 /// </summary>
+/// <summary>弃局兜底：主动放弃当前对局并回到安全入口页。异常不外泄，失败也继续（四轮 R1-R5）。</summary>
+public interface IRunAbandoner
+{
+    Task<RejectedOpeningRecoveryResult> AbandonCurrentRunAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken);
+}
+
 public sealed class CurrencyWarsRejectedOpeningRecovery(
     ICurrencyWarsOpeningNavigator navigator,
     IGameCapture capture,
@@ -137,7 +145,8 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
     IGameForegroundGuard foregroundGuard,
     ITaskEventSink eventSink) :
     IRejectedOpeningRecovery,
-    IAbandonSettlementRecovery
+    IAbandonSettlementRecovery,
+    IRunAbandoner
 {
     private const int ReferenceWidth = 1920;
     private const int ReferenceHeight = 1080;
@@ -150,6 +159,59 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
     private DateTimeOffset ActiveUtcNow =>
         DateTimeOffset.UtcNow -
         (foregroundGuard.TotalPausedDuration - _pauseBaseline);
+
+    /// <summary>
+    /// 弃局兜底入口（不依赖开局快照，卡在任意页面均可）：Esc 进入放弃确认弹窗 →
+    /// 完成结算推进回主页；Esc 无效时用左上角退出按钮兜底。最多 3 轮。
+    /// </summary>
+    public async Task<RejectedOpeningRecoveryResult> AbandonCurrentRunAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        _pauseBaseline = foregroundGuard.TotalPausedDuration;
+        for (var attempt = 1; attempt <= 3; attempt++)
+        {
+            var exitPrompt = await PressKeyUntilPageAsync(
+                windowHandle,
+                InputKey.Escape,
+                "使用 Esc 退出当前对局",
+                "abandon_settlement_prompt",
+                TimeSpan.FromSeconds(4),
+                1,
+                cancellationToken);
+
+            if (exitPrompt is null)
+            {
+                // 左上角退出按钮兜底（与 RecoverAsync 同款逻辑）
+                var clickResult = await ClickStandardPointAsync(
+                    windowHandle,
+                    $"grail_abandon_exit_{attempt}",
+                    "退出当前对局",
+                    ExitRunPoint,
+                    new ActionPolicy(),
+                    cancellationToken);
+                if (clickResult.Succeeded)
+                {
+                    exitPrompt = await WaitForPageAsync(
+                        windowHandle,
+                        "abandon_settlement_prompt",
+                        TimeSpan.FromSeconds(4),
+                        cancellationToken);
+                }
+            }
+
+            if (exitPrompt is not null)
+            {
+                return await CompleteFromAbandonSettlementPromptCoreAsync(
+                    windowHandle,
+                    cancellationToken);
+            }
+
+            await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+        }
+
+        return Failed("弃局兜底：Esc 与退出按钮均未能进入放弃结算确认页；已达到安全重试上限。");
+    }
 
     public async Task<RejectedOpeningRecoveryResult> RecoverAsync(
         nint windowHandle,

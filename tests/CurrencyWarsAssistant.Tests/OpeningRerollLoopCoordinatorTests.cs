@@ -904,11 +904,14 @@ public sealed class OpeningRerollLoopCoordinatorTests
         public TaskCompletionSource Entered { get; } = new(
             TaskCreationOptions.RunContinuationsAsynchronously);
 
+        // 测试桩：超时版转调原阻塞实现——保持与改动前完全一致的测试节拍
+        //（协调器的 20 秒上限只在生产环境真实监测器上生效）
         public Task<string?> WaitForSafeEntryPageAsync(
             nint windowHandle,
             TimeSpan timeout,
             CancellationToken cancellationToken) =>
-            Task.FromResult<string?>(null); // 测试桩：超时版默认未恢复
+            WaitForSafeEntryPageAsync(windowHandle, cancellationToken).ContinueWith(
+                task => (string?)task.Result, cancellationToken);
 
         public async Task<string> WaitForSafeEntryPageAsync(
             nint windowHandle,

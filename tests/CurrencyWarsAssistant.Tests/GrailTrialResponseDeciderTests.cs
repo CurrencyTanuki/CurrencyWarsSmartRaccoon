@@ -72,19 +72,20 @@ public class GrailTrialResponseDeciderTests
 
         Assert.Equal(GrailTrialResponseKind.SelectMiracleCompensation, response.Kind);
         Assert.Equal(GrailTrialSide.Left, response.Side);
-        Assert.Equal("F13→F14a→F14", response.TreeNode);
+        Assert.Equal("F13→F14", response.TreeNode);
     }
 
     [Fact]
-    public void F14a_NoFiveCostBody_SelectOtherSide()
+    public void F14_NoFiveCostBody_StillSelectsMiracle()
     {
+        // 用户 2026-08-30 拍板：奇迹代偿血≥89 必选，本体不作当场前置（选完再凑，凑不到才重开）
         var s = Snapshot(health: 95, hasFiveCost: false);
         var response = GrailTrialResponseDecider.Decide(
             s, Pair(leftName: "令咒决议·奇迹代偿", rightName: "铸剑"));
 
-        Assert.Equal(GrailTrialResponseKind.SelectOtherSide, response.Kind);
-        Assert.Equal(GrailTrialSide.Right, response.Side);
-        Assert.Equal("F14a→F15a", response.TreeNode);
+        Assert.Equal(GrailTrialResponseKind.SelectMiracleCompensation, response.Kind);
+        Assert.Equal(GrailTrialSide.Left, response.Side);
+        Assert.Equal("F13→F14", response.TreeNode);
     }
 
     [Fact]

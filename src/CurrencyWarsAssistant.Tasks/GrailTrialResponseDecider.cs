@@ -102,23 +102,20 @@ public static class GrailTrialResponseDecider
         if (FindSide(ctx, MiracleKeyword) is { } miracle)
         {
             // F13：血量识别 >88（即 ≥89）。识别失败按不满足处理——点了会被游戏拒绝并卡死流程。
+            // 用户 2026-08-30 拍板：血≥89 即必选奇迹代偿——5 费本体不作当场前置
+            //（弹框强制二选一，拒选=永久失去唯一机会；本体选完之后走 L 系列继续凑，
+            //  聘用书/067/采购专员刷出均可，实在拿不到才山穷水尽重开）。
             if ((s.TeamHealth ?? 0) >= GrailFinalJudge.MiracleHealthThreshold)
             {
-                // F14a：场上（前台/后台/备战席，067 放备战席的也算）是否已有 5 费本体？
-                // 弹框阻塞一切操作，无法临时获取本体；没有本体就点 = 8 台限时投影仪没有复制目标，浪费唯一机会。
-                if (s.HasFiveCostBody)
-                    return new(
-                        GrailTrialResponseKind.SelectMiracleCompensation,
-                        miracle,
-                        ctx.NameOf(miracle) ?? MiracleKeyword,
-                        OpenLettersAfter: false,
-                        "血量≥89 且场上已有 5 费本体，选择奇迹代偿。",
-                        "F13→F14a→F14");
-                return OtherSideResponse(
-                    ctx,
+                return new(
+                    GrailTrialResponseKind.SelectMiracleCompensation,
                     miracle,
-                    "场上没有 5 费本体，8 台投影仪没有复制目标，绝不能点奇迹代偿，选另一侧。",
-                    "F14a→F15a");
+                    ctx.NameOf(miracle) ?? MiracleKeyword,
+                    OpenLettersAfter: false,
+                    s.HasFiveCostBody
+                        ? "血量≥89，选择奇迹代偿（场上已有 5 费本体）。"
+                        : "血量≥89，选择奇迹代偿（本体暂缺，选完继续凑：聘用书/067/采购专员）。",
+                    "F13→F14");
             }
 
             return OtherSideResponse(

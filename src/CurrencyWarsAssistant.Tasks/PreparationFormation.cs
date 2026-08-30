@@ -1207,11 +1207,56 @@ public sealed partial class PreparationBoardController(
             .ToArray();
         if (bench.Length == 0)
         {
-            return Result(
-                PreparationBoardStatus.RecognitionFailed,
-                [],
-                [],
-                "快速版备战：单帧识别未发现任何角色；已安全停止。");
+            // 五轮动画竞态容错：门禁单帧放行时备战页入场动画可能尚未结束——
+            // 有限重试单帧，仍为 0 再回退稳定版识别（与原版等待语义一致），绝不把合格开局误判失败
+            for (var attempt = 2; bench.Length == 0 && attempt <= 4; attempt++)
+            {
+                Publish(
+                    TaskEventLevel.Warning,
+                    "PreparationFastRecognitionEmpty",
+                    $"快速版备战：第 {attempt - 1} 次单帧识别未发现角色（入场动画可能未结束），等待后重试。");
+                await Task.Delay(TimeSpan.FromMilliseconds(450), cancellationToken);
+                var recaptured = await CaptureVerifiedPreparationAsync(windowHandle,
+                    "preparation_generic", allowEscapeRecovery: false, cancellationToken);
+                if (recaptured is null)
+                {
+                    return Result(
+                        PreparationBoardStatus.RecognitionFailed,
+                        [],
+                        [],
+                        "快速版备战：重试时备战页门禁未通过；已安全停止。");
+                }
+
+                var retrySlots = recognizer.Recognize(
+                    recaptured.Value.Frame,
+                    templates,
+                    BenchSlots);
+                bench = retrySlots
+                    .Where(item =>
+                        item.State == CharacterCardSlotState.Recognized &&
+                        item.CharacterId is not null)
+                    .Select(item => new RecognizedBenchCharacter(
+                        item.SlotIndex,
+                        _characters[item.CharacterId!],
+                        item.Confidence))
+                    .ToArray();
+            }
+
+            if (bench.Length == 0)
+            {
+                var stableBench = await ReadStableBenchAsync(windowHandle, 3,
+                    BenchSlots.Count, true, "preparation_generic", cancellationToken);
+                if (stableBench is null || stableBench.Count == 0)
+                {
+                    return Result(
+                        PreparationBoardStatus.RecognitionFailed,
+                        [],
+                        [],
+                        "快速版备战：重试与稳定版识别均未发现任何角色；已安全停止。");
+                }
+
+                bench = [.. stableBench];
+            }
         }
 
         var plan = planner.Plan(

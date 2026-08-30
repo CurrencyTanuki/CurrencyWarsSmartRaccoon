@@ -52,14 +52,16 @@ public sealed class GrailOperationExecutor(
         nint windowHandle,
         GrailRunSnapshot snapshot,
         string expectedPreparationPageId,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        bool shopAlreadyOpen = false)
     {
         var pass = await rewardStage.GrailShopPassAsync(
             windowHandle,
             ShopPurchaseNames,
             snapshot.OwnedCharacterNames,
             expectedPreparationPageId,
-            cancellationToken);
+            cancellationToken,
+            shopAlreadyOpen);
         if (pass.BoughtCharacterName is null)
         {
             return false;

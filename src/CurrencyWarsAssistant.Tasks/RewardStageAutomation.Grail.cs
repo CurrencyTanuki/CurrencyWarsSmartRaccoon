@@ -34,12 +34,14 @@ public sealed partial class RewardStageAutomationController
         IReadOnlySet<string> purchaseNames,
         IReadOnlySet<string> ownedNames,
         string expectedPreparationPage,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        bool shopAlreadyOpen = false)
     {
         ArgumentNullException.ThrowIfNull(purchaseNames);
         ArgumentNullException.ThrowIfNull(ownedNames);
 
-        if (!await OpenShopAsync(windowHandle, expectedPreparationPage, cancellationToken))
+        // N14 衔接：策略确认后游戏可能停在商店页（reward_shop 已开）——此时跳过开店直接读
+        if (!shopAlreadyOpen && !await OpenShopAsync(windowHandle, expectedPreparationPage, cancellationToken))
         {
             return new GrailShopPassResult(
                 ShopOpened: false,

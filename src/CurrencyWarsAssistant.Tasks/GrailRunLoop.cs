@@ -168,6 +168,21 @@ public sealed class GrailRunLoop(
                 await Task.Delay(900, cancellationToken); // 确认后等识别跟上
             }
 
+            // N14 衔接：策略确认后游戏可能停在商店页（商店已开）——直接读商店买命杯，
+            // 不走"开店"（页门禁会因当前页非备战页而拒绝）
+            var currentPageId = listener.LatestAnalysis?.Snapshot.PageId.Value;
+            if (string.Equals(currentPageId, "reward_shop", StringComparison.OrdinalIgnoreCase))
+            {
+                await executor.ExecuteShopPassAsync(
+                    windowHandle,
+                    executor.LatestSnapshot ?? new GrailRunSnapshot { Goal = goal },
+                    options.PreparationPageId,
+                    cancellationToken,
+                    shopAlreadyOpen: true);
+                await Task.Delay(options.TickDelayMs, cancellationToken);
+                continue;
+            }
+
             var snapshot = AssembleLatest(goal);
             if (snapshot is null)
             {

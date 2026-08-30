@@ -73,6 +73,10 @@ public sealed class GrailRunLoop(
                 GrailLoopOutcome? outcome = null;
                 var opening = await openingLoop(
                     windowHandle, environmentFilter, openingOptions, cancellationToken);
+                // 弹框泵只覆盖 opening 阶段（1-1/1-2 的档位弹框）；返回后必须取消，
+                // 否则与 1-3 循环的弹框轮询并发应答同一弹框 → WishesResponded 双计数
+                openingCts.Cancel();
+                try { await dialogPump; } catch (OperationCanceledException) { }
                 if (!opening.Succeeded)
                 {
                     // opening 内部已负责"未命中→重开"的重刷循环；返回失败即硬失败
@@ -213,6 +217,14 @@ public sealed class GrailRunLoop(
     {
         var analysis = listener.LatestAnalysis;
         if (analysis?.OperationalState is not { } state)
+        {
+            return null;
+        }
+
+        // 页面门禁（审计#8）：商店/战斗/结算帧的阵容被强制 Unknown，
+        // 用它们组装会产出"空阵容快照"驱动错误决策——只有备战页帧才参与
+        var pageId = analysis.Snapshot.PageId.Value;
+        if (string.IsNullOrEmpty(pageId) || !pageId.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase))
         {
             return null;
         }

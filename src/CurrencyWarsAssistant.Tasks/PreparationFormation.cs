@@ -1123,12 +1123,8 @@ public sealed partial class PreparationBoardController(
                     "极速版备战：游戏窗口失效；已安全停止。");
             }
 
-            var sourcePoint = new PixelPoint(
-                source.X + source.Width / 2,
-                source.Y + source.Height / 2);
-            var targetPoint = new PixelPoint(
-                target.X + target.Width / 2,
-                target.Y + target.Height / 2);
+            var sourcePoint = MapReferencePoint(window, source.Center);
+            var targetPoint = MapReferencePoint(window, target.Center);
             var drag = await input.DragAsync(
                 new ClickTarget(
                     "extreme_deploy_" + (slot + 1),
@@ -1258,12 +1254,8 @@ public sealed partial class PreparationBoardController(
             var target = placement.Lane == PreparationLane.Front
                 ? FrontSlots[Math.Min(placement.TargetSlot, FrontSlots.Count - 1)]
                 : BenchSlots[BenchSlots.Count - 1];
-            var sourcePoint = new PixelPoint(
-                source.X + source.Width / 2,
-                source.Y + source.Height / 2);
-            var targetPoint = new PixelPoint(
-                target.X + target.Width / 2,
-                target.Y + target.Height / 2);
+            var sourcePoint = MapReferencePoint(window, source.Center);
+            var targetPoint = MapReferencePoint(window, target.Center);
             var drag = await input.DragAsync(
                 new ClickTarget(
                     "fast_deploy_" + placement.Source.BenchSlot,
@@ -1523,12 +1515,8 @@ public sealed partial class PreparationBoardController(
             var target = placement.Lane == PreparationLane.Front
                 ? FrontSlots[Math.Min(placement.TargetSlot, FrontSlots.Count - 1)]
                 : BenchSlots[BenchSlots.Count - 1];
-            var sourcePoint = new PixelPoint(
-                source.X + source.Width / 2,
-                source.Y + source.Height / 2);
-            var targetPoint = new PixelPoint(
-                target.X + target.Width / 2,
-                target.Y + target.Height / 2);
+            var sourcePoint = MapReferencePoint(window, source.Center);
+            var targetPoint = MapReferencePoint(window, target.Center);
             var drag = await input.DragAsync(
                 new ClickTarget(
                     "fast_shop_deploy_" + placement.Source.BenchSlot,

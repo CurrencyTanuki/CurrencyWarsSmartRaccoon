@@ -109,6 +109,13 @@ public sealed class GrailRunStateHolder
                 _infiniteCauldronSelected = true;
             }
 
+            if (isMiracle)
+            {
+                // 奇迹代偿代价 = 扣 88 血 + 全部金币：选中即把金币缓存清 0（决策层不得再高估）
+                _lastGold = 0;
+                _goldCapturedAt = DateTimeOffset.Now;
+            }
+
             // 诅咒代价按数据文档分开判定：行为限制(禁锢)=刷新价格+1；回路过载(超频)=购买经验价格+1
             if (GrailFuzzyText.ContainsFuzzy(selected, "行为限制")
                 || GrailFuzzyText.ContainsFuzzy(selected, "行为禁锢"))

@@ -436,6 +436,8 @@ public partial class MainWindow : Window
             {
                 DeployMatchedOpening = true,
                 CompleteRewardStages = true,
+                // 三轮（用户拍板）：启用快速状态机——拖拽走裸拖+单帧兜底复查（缩放/竞态已修）
+                FastReroll = FastRerollMode.Fast,
                 // N1：命杯成员绝不自动卖出（商店只买命运圣杯羁绊成员）——其余配置见 RewardStage（商店只买命运圣杯羁绊成员）。
                 BenchSaleMode = PreparationBenchSaleMode.None,
                 // 投资策略偏好：二极管276（补血）+ 采购专员（抬5费刷出概率），由 Rewards 阶段选。
@@ -453,9 +455,10 @@ public partial class MainWindow : Window
                     PreferredInvestmentStrategyIds = new HashSet<string>(
                         new[]
                         {
-                            GrailInvestmentStrategyDecider.DiodeId,
                             InvestmentStrategyPicker.PurchaseSpecialistColor,
+                            GrailInvestmentStrategyDecider.ItIsHisFaultId,
                             InvestmentStrategyPicker.PurchaseSpecialistGold,
+                            GrailInvestmentStrategyDecider.DiodeId,
                         },
                         System.StringComparer.OrdinalIgnoreCase),
                 },

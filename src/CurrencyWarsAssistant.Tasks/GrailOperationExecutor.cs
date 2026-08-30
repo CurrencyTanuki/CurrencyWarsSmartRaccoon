@@ -203,7 +203,7 @@ public sealed class GrailOperationExecutor(
                 stateHolder.MarkLetterOpened();
             }
 
-            await Task.Delay(1200, cancellationToken);
+            await Task.Delay(300, cancellationToken); // 提速（用户拍板）：开书后 1200→300
         }
     }
 }

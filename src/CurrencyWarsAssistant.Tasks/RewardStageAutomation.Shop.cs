@@ -674,7 +674,7 @@ public sealed partial class RewardStageAutomationController
         IDictionary<string, CurrencyWarsCharacterData> ownedCharacters,
         CancellationToken cancellationToken)
     {
-        await Task.Delay(TimeSpan.FromMilliseconds(900), cancellationToken);
+        await Task.Delay(TimeSpan.FromMilliseconds(200), cancellationToken); // 提速（用户拍板）：900→200
         var bench = await preparationCompletionController
             .ReadStableBenchCharactersAsync(
                 windowHandle,

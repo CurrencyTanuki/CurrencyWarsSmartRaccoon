@@ -784,8 +784,9 @@ public sealed partial class RewardStageAutomationController(
                 stability.Reset();
             }
 
+            // 提速（用户拍板）：轮询间隔 350→50ms；此处的连续 2 帧危险输入确认闸保持不变
             await Task.Delay(
-                TimeSpan.FromMilliseconds(350),
+                TimeSpan.FromMilliseconds(50),
                 cancellationToken);
         }
 

@@ -6,8 +6,8 @@ namespace CurrencyWarsAssistant.Tasks;
 /// <summary>整局循环配置。</summary>
 public sealed record GrailLoopOptions
 {
-    /// <summary>整局安全阀：最多刷多少局。</summary>
-    public int MaxRounds { get; init; } = 20;
+    /// <summary>整局安全阀：最多刷多少局（0=不限——三星五费条件苛刻，可能上百局；仅用户停止终止）。</summary>
+    public int MaxRounds { get; init; } = 0;
 
     /// <summary>备战页 ID（1-1/1-2/1-3 布局全局一致；商店/上场动作的页门禁用）。</summary>
     public string PreparationPageId { get; init; } = "preparation_generic";
@@ -57,7 +57,7 @@ public sealed class GrailRunLoop(
         listener.Subscribe();
         try
         {
-            for (var round = 1; round <= options.MaxRounds; round++)
+            for (var round = 1; options.MaxRounds <= 0 || round <= options.MaxRounds; round++)
             {
                 // ① 重刷开局（环境过滤器只收 067/019；命中后进 1-1/1-2/1-3）
                 if (RoundRecorder is not null)

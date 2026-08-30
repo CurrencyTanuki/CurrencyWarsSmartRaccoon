@@ -51,8 +51,8 @@ public sealed class CurrencyWarsNavigationConfig
 {
     public int ReferenceWidth { get; init; } = 1920;
     public int ReferenceHeight { get; init; } = 1080;
-    public int PollIntervalMilliseconds { get; init; } = 300;
-    public int StableDetections { get; init; } = 2;
+    public int PollIntervalMilliseconds { get; init; } = 50;
+    public int StableDetections { get; init; } = 1;
     public int InitialPageTimeoutMilliseconds { get; init; } = 10000;
     public int MaximumRuntimeMilliseconds { get; init; } = 120000;
     public string PreparationPageId { get; init; } = "preparation_1_1";

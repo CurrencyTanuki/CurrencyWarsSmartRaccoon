@@ -84,12 +84,18 @@ public sealed class TrialRecruitSelectionAutomation(
     /// </param>
     /// <returns><see cref="TrialRecruitSelectionStatus.Selected"/> 表示成功选中；其余为失败/未触发。
     /// 若识别到候选但无目标匹配，返回 <see cref="TrialRecruitSelectionStatus.NoTargetMatch"/>，
+    /// 单人目标（anyFiveCost=true）例外：任意 5 费都可能是目标——歧义/无匹配时选第一张，
+    /// 绝不让聘用书废在手里（用户公理：机会优先，条件后补），
+
     /// 不会盲目点击（避免白耗聘用书）。</returns>
     public async Task<TrialRecruitSelectionStatus> TryOpenAndSelectAsync(
         nint windowHandle,
         IReadOnlySet<string> targetNames,
         CancellationToken cancellationToken,
-        PixelPoint? recruitSlotCenter2K = null)
+        PixelPoint? recruitSlotCenter2K = null,
+        // 用户公理"机会优先，条件后补"：无匹配/歧义时选第一张可读候选（0 张可读才放弃）。
+        // 单人目标=任意 5 费都可能是本体；歧义保守不点会让聘用书废在手里。
+        bool fallbackPickFirst = false)
     {
         var triggerPoint = recruitSlotCenter2K ?? RecruitSlotCenter2K;
 
@@ -145,6 +151,21 @@ public sealed class TrialRecruitSelectionAutomation(
 
             // ③ 找出匹配目标角色的卡牌。
             var matchedIndex = FindTargetCard(names, targetNames);
+            if (matchedIndex < 0 && fallbackPickFirst)
+            {
+                // 兜底（用户公理）：无匹配/歧义时选第一张可读候选——聘用书开了就必须拿人
+                matchedIndex = Array.FindIndex(names, name => !string.IsNullOrWhiteSpace(name));
+                if (matchedIndex >= 0)
+                {
+                    eventSink.Publish(new TaskEvent(
+                        DateTimeOffset.Now,
+                        TaskEventLevel.Warning,
+                        "TrialRecruitFallbackPick",
+                        $"候选=[{string.Join(" / ", names.Select(n => n ?? "?"))}]，" +
+                        $"未命中目标；按兜底策略选择第 {matchedIndex + 1} 张（机会优先，条件后补）。"));
+                }
+            }
+
             if (matchedIndex < 0)
             {
                 eventSink.Publish(new TaskEvent(

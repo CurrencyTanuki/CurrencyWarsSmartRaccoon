@@ -195,6 +195,9 @@ public sealed class GrailOperationExecutor(
             : new HashSet<string> { GrailRunSnapshot.XilianName, GrailRunSnapshot.ArcherName };
 
         // 带重试：第二本书可能不在固定格/候选暂不匹配——重试直到两本全开或尝试耗尽
+        // 兜底开关（用户公理）：单人目标任选 5 费（聘用书开了必须拿人）；全员仍优先昔涟，
+        // 但第二轮起也放开兜底——先拿住一个 5 费总比废书强
+        var allowFallback = goal == GrailUserGoal.Single;
         for (var attempt = 0; attempt < 6; attempt++)
         {
             var (_, obtained, opened, _, _, _, _, _) = stateHolder.PeekEventState();
@@ -204,10 +207,24 @@ public sealed class GrailOperationExecutor(
             }
 
             var status = await trialRecruit.TryOpenAndSelectAsync(
-                windowHandle, targets, cancellationToken);
+                windowHandle, targets, cancellationToken,
+                fallbackPickFirst: allowFallback || attempt >= 1);
             if (status == TrialRecruitSelectionStatus.Selected)
             {
                 stateHolder.MarkLetterOpened();
+            }
+            else if (status == TrialRecruitSelectionStatus.NoTargetMatch
+                || status == TrialRecruitSelectionStatus.NotDetected)
+            {
+                // 用户原则：绝不放过机会——候选里没有优先目标也不能让书白开着。
+                // 兜底：不传目标集（组件会选第一个候选），先把书打开拿到 5 费再说
+                //（昔涟没开到还有采购专员/067 等其他来源，书不开=这个来源也废了）
+                var fallback = await trialRecruit.TryOpenAndSelectAsync(
+                    windowHandle, new HashSet<string>(), cancellationToken);
+                if (fallback == TrialRecruitSelectionStatus.Selected)
+                {
+                    stateHolder.MarkLetterOpened();
+                }
             }
 
             await Task.Delay(300, cancellationToken); // 提速（用户拍板）：开书后 1200→300

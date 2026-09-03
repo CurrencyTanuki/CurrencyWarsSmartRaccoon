@@ -81,6 +81,15 @@ public sealed class CommandTestWindow : Window
     /// 同一指令连续失败计数；≥2 且页面不在健康备战态 → 自动弃局，绝不挂死。</summary>
     private string? _lastFailureKey;
     private int _sameFailureStreak;
+    private string? _currentCommandKind;
+    /// <summary>识别流自动复活（2026-09-04 用户提速令）：会话死亡/帧冻结 ≥45 秒时
+    /// 自动 STOP/START 重连——识别流反复死亡是实测最大的隐性耗时源。节流 300 秒防会话重叠。</summary>
+    private DateTimeOffset _lastStreamReviveAt = DateTimeOffset.MinValue;
+    private bool _streamReviveInProgress;
+    /// <summary>决策层引擎（2026-09-04 用户令：决策层软件化）——DECIDE 启动/停止。</summary>
+    private GrailDecisionEngine? _decisionEngine;
+    private CancellationTokenSource? _decisionCts;
+    private Task? _decisionTask;
 
     public CommandTestWindow(
         GameDataCatalog gameData,
@@ -138,6 +147,7 @@ public sealed class CommandTestWindow : Window
             // 2026-09-02 事故：只停识别会话时，协调器任务在关窗后仍持续
             // 自愈弃局/重开导航一个多小时（事件日志 01:20~02:05 可证）。
             _activeCommandCts?.Cancel();
+            _decisionCts?.Cancel();
             _collectionCts?.Cancel();
             _listener.Unsubscribe();
             if (_collectionMessageSubscribed)
@@ -240,8 +250,78 @@ public sealed class CommandTestWindow : Window
 
     // ---- 指令轮询与执行 ----
 
+    /// <summary>
+    /// 识别流自动复活：会话死亡→直接重启；会话在跑但 ≥45 秒无新帧→STOP/START 重连。
+    /// 与指令执行互不阻塞（识别流与操作层捕获是两套独立采集）。节流 90 秒防抖。
+    /// </summary>
+    private void CheckStreamHealth()
+    {
+        if (_streamReviveInProgress
+            || (DateTimeOffset.Now - _lastStreamReviveAt).TotalSeconds < 300)
+        {
+            return;
+        }
+
+        // M8 执行期间不复活：M8 导航有自己的捕获，泵在开局面也不需要识别流；
+        // 反复复活会在导航中制造重叠会话（实测 03:38-03:42 每九十秒一个）。
+        if (_busy && _lastFailureKey is null && _currentCommandKind is "M8")
+        {
+            return;
+        }
+
+        var analysis = _listener.LatestAnalysis;
+        var lastFrameAt = analysis?.Snapshot.AsOf;
+        var stale = lastFrameAt is null
+            || DateTimeOffset.Now - lastFrameAt.Value > TimeSpan.FromSeconds(45);
+        var dead = _collectionTask is null || _collectionTask.IsCompleted;
+        if (!dead && !stale)
+        {
+            return;
+        }
+
+        _streamReviveInProgress = true;
+        _lastStreamReviveAt = DateTimeOffset.Now;
+        var reason = dead ? "识别流已死亡" : "识别流冻结（45 秒无新帧）";
+        AppendLog($"⚠ {reason}，自动重启识别会话。");
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                if (!dead)
+                {
+                    _collectionCts?.Cancel();
+                    _listener.Unsubscribe();
+                    if (_collectionMessageSubscribed)
+                    {
+                        _collectionService.Updated -= OnCollectionMessage;
+                        _collectionMessageSubscribed = false;
+                    }
+                    var running = _collectionTask;
+                    if (running is not null)
+                    {
+                        try { await running; }
+                        catch (OperationCanceledException) { }
+                    }
+
+                    _collectionTask = null;
+                    await Task.Delay(1500);
+                }
+
+                if (_collectionTask is null || _collectionTask.IsCompleted)
+                {
+                    BeginInvokeIfAlive(() => StartCollectionAsync());
+                }
+            }
+            finally
+            {
+                _streamReviveInProgress = false;
+            }
+        });
+    }
+
     private async Task PollCommandFileAsync()
     {
+        CheckStreamHealth();
         if (_busy)
         {
             return;
@@ -295,6 +375,7 @@ public sealed class CommandTestWindow : Window
         finally
         {
             _busy = false;
+            _currentCommandKind = null;
             RefreshStatus();
         }
     }
@@ -308,6 +389,7 @@ public sealed class CommandTestWindow : Window
         }
 
         var tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        _currentCommandKind = tokens[0].ToUpperInvariant();
         AppendLog($"▶ {line}");
         try
         {
@@ -325,6 +407,9 @@ public sealed class CommandTestWindow : Window
                     return;
                 case "GOAL":
                     SetGoal(tokens);
+                    return;
+                case "DECIDE":
+                    HandleDecide(tokens);
                     return;
             }
 
@@ -604,6 +689,66 @@ public sealed class CommandTestWindow : Window
         var goalSummary = $"目标模式={(_goal == GrailUserGoal.All ? "全员" : "单人")}（影响 M3/M4 决策语义）";
         AppendLog(goalSummary + "。");
         AppendResult("GOAL", ok: true, summary: goalSummary);
+    }
+
+    /// <summary>DECIDE 开始|停止：启动/停止决策层引擎（整局自主：M8→1-1→1-2→1-3→终局/重开）。</summary>
+    private void HandleDecide(string[] tokens)
+    {
+        var action = tokens.Length >= 2 ? tokens[1] : "开始";
+        if (action.StartsWith("停", StringComparison.Ordinal) || action.StartsWith("S", StringComparison.OrdinalIgnoreCase))
+        {
+            if (_decisionTask is null || _decisionTask.IsCompleted)
+            {
+                AppendResult("DECIDE", ok: false, summary: "决策层未在运行");
+                return;
+            }
+
+            _decisionCts?.Cancel();
+            AppendResult("DECIDE", ok: true, summary: "已请求停止决策层");
+            return;
+        }
+
+        if (_decisionTask is not null && !_decisionTask.IsCompleted)
+        {
+            AppendResult("DECIDE", ok: false, summary: "决策层已在运行（先 DECIDE 停止）");
+            return;
+        }
+
+        var window = FindGameWindow();
+        if (window is null)
+        {
+            AppendResult("DECIDE", ok: false, summary: "未找到游戏窗口");
+            return;
+        }
+
+        var handle = window.Handle;
+        _decisionCts = new CancellationTokenSource();
+        _decisionEngine = new GrailDecisionEngine(
+            _dispatcher, _stateHolder, _executor, _gameData,
+            emit: text =>
+            {
+                AppendLog(text);
+                AppendResult("决策层", ok: true, summary: text);
+            });
+        var cts = _decisionCts;
+        _decisionTask = Task.Run(async () =>
+        {
+            try
+            {
+                await _decisionEngine.RunAsync(handle, _goal, cts.Token);
+                AppendResult("DECIDE", ok: true, summary: "决策层已结束");
+            }
+            catch (OperationCanceledException)
+            {
+                AppendResult("DECIDE", ok: true, summary: "决策层已停止");
+            }
+            catch (Exception exception)
+            {
+                AppendResult("DECIDE", ok: false, summary: $"决策层异常 {exception.GetType().Name}: {exception.Message}");
+            }
+        });
+        AppendLog("▶ 决策层引擎已启动（自主整局）。");
+        AppendResult("DECIDE", ok: true, summary: "决策层已启动");
     }
 
     // ---- 识别会话 ----

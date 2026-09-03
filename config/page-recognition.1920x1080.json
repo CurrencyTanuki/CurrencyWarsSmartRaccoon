@@ -565,12 +565,12 @@
           "displayName": "祈愿试炼标题横幅（诅咒红色主题共用）",
           "file": "templates/1920x1080/pages/wish-trial-title-red.png",
           "searchRegion": {
-            "x": 0.3,
-            "y": 0.0,
-            "width": 0.4,
-            "height": 0.2
+            "x": 0.38,
+            "y": 0.02,
+            "width": 0.26,
+            "height": 0.12
           },
-          "threshold": 0.55
+          "threshold": 0.72
         }
       ]
     }

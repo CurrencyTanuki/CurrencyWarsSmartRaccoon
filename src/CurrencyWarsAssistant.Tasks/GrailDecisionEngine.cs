@@ -19,7 +19,8 @@ public sealed class GrailDecisionEngine(
     GrailOperationExecutor executor,
     GameDataCatalog gameData,
     Action<string> emit,
-    Func<nint, int, int, CancellationToken, Task<bool>>? genericClick = null)
+    Func<nint, int, int, CancellationToken, Task<bool>>? genericClick = null,
+    Func<nint, CancellationToken, Task<bool>>? pressInteractKey = null)
 {
     private readonly Stopwatch _runClock = Stopwatch.StartNew();
 
@@ -323,6 +324,13 @@ public sealed class GrailDecisionEngine(
                     await genericClick(window, 1290, 615, ct);
                     await Task.Delay(TimeSpan.FromSeconds(3), ct);
                 }
+
+                if (pressInteractKey is not null)
+                {
+                    await pressInteractKey(window, ct);
+                    await Task.Delay(TimeSpan.FromSeconds(3), ct);
+                }
+
                 await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
                 await Task.Delay(TimeSpan.FromSeconds(5), ct);
                 continue;

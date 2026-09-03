@@ -734,7 +734,9 @@ public sealed class CommandTestWindow : Window
                 AppendResult("决策层", ok: true, summary: text);
             },
             genericClick: (handle, x, y, token) =>
-                board.GrailClickReferencePointAsync(handle, x, y, token));
+                board.GrailClickReferencePointAsync(handle, x, y, token),
+            pressInteractKey: (handle, token) =>
+                board.GrailPressInteractKeyAsync(handle, token));
         var cts = _decisionCts;
         _decisionTask = Task.Run(async () =>
         {

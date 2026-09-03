@@ -519,6 +519,26 @@ public sealed partial class PreparationBoardController
         return click.Succeeded;
     }
 
+    /// <summary>
+    /// 按交互键 Enter（2026-09-04 夜间：世界内"货币战争"交互提示实测对点击无响应，
+    /// 推测需要交互键触发）。只回输入事实，交互是否生效由调用方 I1 复核。
+    /// </summary>
+    public async Task<bool> GrailPressInteractKeyAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        var window = await foregroundGuard.WaitUntilForegroundAsync(
+            windowHandle,
+            cancellationToken);
+        var press = await input.PressKeyAsync(
+            window,
+            InputKey.Enter,
+            new ActionPolicy { AfterActionDelay = TimeSpan.FromMilliseconds(500) },
+            cancellationToken);
+        await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+        return press.Succeeded;
+    }
+
     /// <summary>0..1 相对区域 → 1920×1080 参考系矩形（识别器 Recognize 的槽表契约域；审查 P1）。</summary>
     private static PixelRect RegionToReferenceRect(RelativeRegion region) => new(
         (int)Math.Round(region.X * OpenCvTemplateMatcher.ReferenceWidth),

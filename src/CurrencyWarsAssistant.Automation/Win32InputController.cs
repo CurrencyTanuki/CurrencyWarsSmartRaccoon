@@ -414,6 +414,7 @@ public sealed class Win32InputController : IInputController
             InputKey.Escape => 0x1B,
             InputKey.LeftAlt => 0x12,
             InputKey.V => 0x56,
+            InputKey.Enter => 0x0D,
             _ => throw new ArgumentOutOfRangeException(nameof(key), key, null)
         };
 

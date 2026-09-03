@@ -313,8 +313,16 @@ public sealed class GrailDecisionEngine(
 
             if (!arrived)
             {
-                emit("[决策层] M8 三次尝试未到达备战席——先尝试通用弹窗解除，再 A9 重开外层循环。");
+                emit("[决策层] M8 三次尝试未到达备战席——通用弹窗解除 + 世界内交互，再 A9 重开外层循环。");
                 await DismissBlockingPopupsAsync(window, ct);
+                // 世界内处理（06:4x 实测）：角色可能站在货币战争圆桌旁（交互提示在屏），
+                // M8 导航对此无步骤、A9 弃局菜单也打不开——先点击交互提示进入战视图，
+                // A9 的 Esc/退出菜单在战视图内才能正常工作。
+                if (genericClick is not null)
+                {
+                    await genericClick(window, 1290, 615, ct);
+                    await Task.Delay(TimeSpan.FromSeconds(3), ct);
+                }
                 await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
                 await Task.Delay(TimeSpan.FromSeconds(5), ct);
                 continue;

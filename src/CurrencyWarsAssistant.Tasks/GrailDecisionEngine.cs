@@ -18,7 +18,8 @@ public sealed class GrailDecisionEngine(
     GrailRunStateHolder stateHolder,
     GrailOperationExecutor executor,
     GameDataCatalog gameData,
-    Action<string> emit)
+    Action<string> emit,
+    Func<nint, int, int, CancellationToken, Task<bool>>? genericClick = null)
 {
     private readonly Stopwatch _runClock = Stopwatch.StartNew();
 
@@ -160,6 +161,30 @@ public sealed class GrailDecisionEngine(
         }
     }
 
+    /// <summary>
+    /// 通用弹窗解除（2026-09-04 夜间批次）：卡在未知页时依次尝试——点右上 ✕ (1860,64)、
+    /// 点屏幕空白 (960,540)、再点 ✕；每步后 I1 验证，命中已知页立即返回。
+    /// </summary>
+    private async Task DismissBlockingPopupsAsync(nint window, CancellationToken ct)
+    {
+        if (genericClick is null)
+        {
+            return; // 未注入通用点击能力时跳过（交 A9/重开处理）
+        }
+
+        (int X, int Y)[] attempts = [(1860, 64), (960, 540), (1860, 64)];
+        foreach (var (x, y) in attempts)
+        {
+            await genericClick(window, x, y, ct);
+            await Task.Delay(TimeSpan.FromSeconds(2), ct);
+            var page = await PageAsync(window, ct);
+            if (page is not null && !string.IsNullOrWhiteSpace(page.PageId))
+            {
+                return; // 页面已可识别=解除成功
+            }
+        }
+    }
+
     /// <summary>A4：仅当非 067 局且物品栏有未携带星徽（I7）时装配到 1 号位角色。</summary>
     private async Task AssembleBadgeIfAvailableAsync(nint window, CancellationToken ct, bool is067Run)
     {
@@ -288,7 +313,8 @@ public sealed class GrailDecisionEngine(
 
             if (!arrived)
             {
-                emit("[决策层] M8 三次尝试未到达备战席——A9 后重开外层循环。");
+                emit("[决策层] M8 三次尝试未到达备战席——先尝试通用弹窗解除，再 A9 重开外层循环。");
+                await DismissBlockingPopupsAsync(window, ct);
                 await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
                 await Task.Delay(TimeSpan.FromSeconds(5), ct);
                 continue;

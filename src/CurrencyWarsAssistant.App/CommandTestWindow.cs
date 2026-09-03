@@ -48,6 +48,7 @@ public sealed class CommandTestWindow : Window
         Path.Combine(AppContext.BaseDirectory, "指令测试-abort.txt");
 
     private readonly GrailRunStateHolder _stateHolder = new();
+    private readonly PreparationBoardController _preparationBoard;
     private readonly GrailRecognitionListener _listener;
     private readonly GrailOperationExecutor _executor;
     private readonly GrailCommandDispatcher _dispatcher;
@@ -102,6 +103,7 @@ public sealed class CommandTestWindow : Window
         IGameWindowService gameWindowService,
         OpeningRerollLoopCoordinator openingCoordinator)
     {
+        _preparationBoard = preparationBoard;
         _collectionService = collectionService;
         _gameWindowService = gameWindowService;
         _gameData = gameData;
@@ -723,13 +725,16 @@ public sealed class CommandTestWindow : Window
 
         var handle = window.Handle;
         _decisionCts = new CancellationTokenSource();
+        var board = _preparationBoard;
         _decisionEngine = new GrailDecisionEngine(
             _dispatcher, _stateHolder, _executor, _gameData,
             emit: text =>
             {
                 AppendLog(text);
                 AppendResult("决策层", ok: true, summary: text);
-            });
+            },
+            genericClick: (handle, x, y, token) =>
+                board.GrailClickReferencePointAsync(handle, x, y, token));
         var cts = _decisionCts;
         _decisionTask = Task.Run(async () =>
         {

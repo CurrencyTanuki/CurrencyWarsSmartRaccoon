@@ -494,6 +494,31 @@ public sealed partial class PreparationBoardController
         return new GrailDeployedSaleResult(false, false);
     }
 
+    /// <summary>
+    /// 通用参考点点击（2026-09-04 决策层夜间批次）：用于关闭识别表外的阻塞弹窗
+    /// （公告 ✕、活动弹窗等）。只回输入事实，页面是否恢复由调用方 I1 复核。
+    /// </summary>
+    public async Task<bool> GrailClickReferencePointAsync(
+        nint windowHandle,
+        int referenceX,
+        int referenceY,
+        CancellationToken cancellationToken)
+    {
+        var window = await foregroundGuard.WaitUntilForegroundAsync(
+            windowHandle,
+            cancellationToken);
+        var targetPoint = MapReferencePoint(window, new PixelPoint(referenceX, referenceY));
+        var click = await input.ClickAsync(
+            new ClickTarget(
+                "grail_generic_reference_click",
+                $"通用点击 ({referenceX},{referenceY})",
+                window,
+                BoundsAround(window, targetPoint)),
+            new ActionPolicy { AfterActionDelay = TimeSpan.FromMilliseconds(300) },
+            cancellationToken);
+        return click.Succeeded;
+    }
+
     /// <summary>0..1 相对区域 → 1920×1080 参考系矩形（识别器 Recognize 的槽表契约域；审查 P1）。</summary>
     private static PixelRect RegionToReferenceRect(RelativeRegion region) => new(
         (int)Math.Round(region.X * OpenCvTemplateMatcher.ReferenceWidth),

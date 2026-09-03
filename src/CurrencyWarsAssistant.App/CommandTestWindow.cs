@@ -334,6 +334,8 @@ public sealed class CommandTestWindow : Window
                 AppendLog($"✗ 解析失败：{parseError}");
                 AppendResult(line, ok: false, summary: parseError ?? "解析失败");
                 _flightRecorder.Record(line, ok: false, parseError ?? "解析失败", 0, "parse_error");
+                _sameFailureStreak = 0;
+                _lastFailureKey = null;
                 return;
             }
 
@@ -343,6 +345,8 @@ public sealed class CommandTestWindow : Window
                 AppendLog("✗ 未找到可自动化的游戏窗口。");
                 AppendResult(line, ok: false, summary: "未找到可自动化的游戏窗口");
                 _flightRecorder.Record(line, ok: false, "未找到可自动化的游戏窗口", 0, "no_window");
+                _sameFailureStreak = 0;
+                _lastFailureKey = null;
                 return;
             }
 
@@ -365,6 +369,8 @@ public sealed class CommandTestWindow : Window
                 AppendResult(line, ok: false, summary: "已急停中断；游戏当前状态用 I1 查看，用下一条指令接续");
                 _flightRecorder.Record(
                     line, ok: false, "已急停中断", flightStopwatch.ElapsedMilliseconds, "aborted");
+                _sameFailureStreak = 0;
+                _lastFailureKey = null;
                 return;
             }
             finally

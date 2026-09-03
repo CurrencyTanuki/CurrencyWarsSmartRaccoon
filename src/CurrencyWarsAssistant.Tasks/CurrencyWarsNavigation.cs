@@ -879,33 +879,14 @@ public sealed class CurrencyWarsNavigationTask(
 
         if (isEnemyPage)
         {
-            var stable = await ReadStableEnemyOverviewAsync(
-                windowHandle,
-                cancellationToken);
-            if (stable.Result is null)
-            {
-                return ActionResult.Failure(
-                    "敌人页面未取得任何可用识别帧，无法确认当前页面内容。");
-            }
-
-            _enemyOverview = stable.Result;
-            if (!stable.Succeeded)
-            {
-                PublishFallback(
-                    "EnemyOverviewRecognitionDegraded",
-                    "敌人信息未能全部稳定识别；未知阵营/负面词条按未命中用户黑名单处理，" +
-                    "仅使用已连续确认的项目继续本轮。");
-            }
-
+            // 2026-09-04 用户令：敌方阵营/负面词条识别已取消——敌人概览页直接跳过（零 OCR）。
+            // 敌情为空=过滤器敌情条件按未命中处理（命运圣杯过滤只含环境条件，与
+            // 「从投资环境页进入」的既有合法路径同口径）。顺带大幅加快刷开局轮速。
             Publish(
                 CurrencyWarsNavigationState.WaitingForPage,
                 pageId,
-                $"敌人阵营：{FormatItems(_enemyOverview.Competitors)}；" +
-                $"负面词条：{FormatItems(_enemyOverview.EnemyModifiers)}");
-            return ActionResult.Success(
-                stable.Succeeded
-                    ? "敌人信息已连续两次稳定识别。"
-                    : "敌人信息已按已确认项目降级继续。");
+                "敌人概览页：敌方阵营/词条识别已取消，直接跳过。");
+            return ActionResult.Success("敌人概览页按配置跳过识别。");
         }
 
         var stableInvestments = await ReadStableInvestmentEnvironmentsAsync(

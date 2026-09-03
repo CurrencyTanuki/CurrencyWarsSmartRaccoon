@@ -150,20 +150,36 @@ public sealed class GrailOperationCommands(
         GrailCommandContext context,
         CancellationToken cancellationToken)
     {
-        var index = 0;
+        // 审查 P2：选择类指令不得静默换选项——别名精确优先、包含次之，未知名直接 Fail。
+        var requested = "幸运星";
         if (command.Payload is GrailCharacterArgs args && !string.IsNullOrWhiteSpace(args.CharacterName))
         {
-            var name = args.CharacterName;
-            index = name.StartsWith("小刀", StringComparison.Ordinal) ? 1
-                : name.StartsWith("轮滑", StringComparison.Ordinal) ? 2
-                : name.StartsWith("手枪", StringComparison.Ordinal) ? 3
-                : 0; // 幸运星/未识别名=默认第一格
+            requested = args.CharacterName;
         }
+
+        (string Name, int Idx)[] aliases =
+        [
+            ("幸运星", 0), ("折叠小刀", 1), ("小刀", 1),
+            ("轮滑鞋", 2), ("和平手枪", 3), ("手枪", 3),
+        ];
+        var match = aliases.FirstOrDefault(a => string.Equals(a.Name, requested, StringComparison.Ordinal));
+        if (match.Name is null)
+        {
+            match = aliases.FirstOrDefault(a => a.Name.Contains(requested, StringComparison.Ordinal));
+        }
+
+        if (match.Name is null)
+        {
+            return GrailCommandResult.Fail(command.Kind,
+                $"未知简易装备名「{requested}」。可选：幸运星/折叠小刀/轮滑鞋/和平手枪。");
+        }
+
+        var index = match.Idx;
 
         var done = await preparationBoard.GrailChooseSimpleEquipmentAsync(
             context.WindowHandle, index, cancellationToken);
         return done
-            ? GrailCommandResult.Ok(command.Kind, $"已点击简易装备第 {index + 1} 项；弹框是否消失请 I1 复核。")
+            ? GrailCommandResult.Ok(command.Kind, $"已点击简易装备「{requested}」（第 {index + 1} 项）；弹框是否消失请 I1 复核。")
             : GrailCommandResult.Fail(command.Kind, "简易装备选择点击未完成（组件返回失败）。");
     }
 
@@ -380,7 +396,13 @@ public sealed class GrailOperationCommands(
         }
 
         var result = await runAbandoner.AbandonCurrentRunAsync(context.WindowHandle, cancellationToken);
-        return GrailCommandResult.Ok(GrailCommandKind.A9, result);
+        // 审查 P2：弃局序列失败时必须如实报失败（防"局没弃掉回执却成功"掩盖看门狗目标）。
+        if (result.Status == RejectedOpeningRecoveryStatus.Recovered)
+        {
+            return GrailCommandResult.Ok(GrailCommandKind.A9, result);
+        }
+
+        return GrailCommandResult.Fail(GrailCommandKind.A9, $"弃局未完成（{result.Status}）：{result.Message}");
     }
 
     private async Task<GrailCommandResult> SelectStrategyAsync(

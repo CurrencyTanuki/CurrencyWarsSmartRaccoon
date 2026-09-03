@@ -18,7 +18,7 @@ public sealed class GrailCommandDispatcher(
         {
             >= GrailCommandKind.I1 and <= GrailCommandKind.I10 =>
                 await recognition.HandleAsync(command, context, cancellationToken),
-            >= GrailCommandKind.A1 and <= GrailCommandKind.A14 =>
+            >= GrailCommandKind.A1 and <= GrailCommandKind.A15 =>
                 await operation.HandleAsync(command, context, cancellationToken),
             >= GrailCommandKind.M1 and <= GrailCommandKind.M8 =>
                 await DispatchMacroAsync(command, context, cancellationToken),

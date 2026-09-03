@@ -46,6 +46,22 @@ public sealed class GrailSnapshotAssemblerTests
             Evidence,
             EquipmentSlots: equipmentSlots);
 
+    private static FormationCharacterState SlotAt(
+        FormationZone zone,
+        int slotIndex,
+        string characterId,
+        IReadOnlyList<CharacterEquipmentSlotState>? equipmentSlots = null) =>
+        new(
+            zone,
+            slotIndex,
+            characterId,
+            StarLevel: 1,
+            Standing: "front",
+            EquipmentIds: [],
+            Confidence: 0.95,
+            Evidence,
+            EquipmentSlots: equipmentSlots);
+
     private static CharacterEquipmentSlotState StarBadgeSlot() => new(
         0,
         EquipmentSlotOccupancy.Equipped,
@@ -202,6 +218,126 @@ public sealed class GrailSnapshotAssemblerTests
             ]),
             null, GameData, holder3, GrailUserGoal.All, Now, StaleAfter);
         Assert.Equal(1, withFiveCost.SellableBeyondKeepLineCount); // 昔涟受保护，只剩万敌
+    }
+
+    // ---------- 星徽账本（2026-09-03 用户拍板：装上即本局恒携带，识别漏读由账本兜底） ----------
+
+    [Fact]
+    public void BadgeLedger_RecognitionMiss_StillCountsCarrier()
+    {
+        // A4 记账在挂起槽位（角色名未知），识别装备槽漏读徽章——账本必须兜底计入携带者。
+        var holder = new GrailRunStateHolder();
+        holder.RecordBadgeEquippedAtSlot(GrailSnapshotAssembler.BadgeLedgerSlotKey(FormationZone.Front, 1));
+        var state = State(formation:
+        [
+            SlotAt(FormationZone.Front, 1, "currency_wars_character_59"), // 万敌：装备识别全空
+        ]);
+        var snapshot = GrailSnapshotAssembler.Assemble(
+            state, null, GameData, holder, GrailUserGoal.Single, Now, StaleAfter);
+
+        Assert.Equal(1, snapshot.BadgeCarrierNonMembers);
+        Assert.Equal(1, snapshot.TotalStarBadgesObtained);
+        Assert.Contains("星徽", snapshot.DeployedCharacterDetails.Single()); // 明细可见
+        // 首次见到角色即提升为按名携带，挂起项消化
+        var (carriers, pending) = holder.PeekBadgeLedger();
+        Assert.Contains("万敌", carriers);
+        Assert.Empty(pending);
+    }
+
+    [Fact]
+    public void BadgeLedger_CarrierFollowsCharacterAcrossSlots()
+    {
+        // 徽绑定角色不绑槽位：角色从 F2 换到 F3 后，名字账本仍判携带。
+        var holder = new GrailRunStateHolder();
+        holder.RecordBadgeEquippedAtSlot(GrailSnapshotAssembler.BadgeLedgerSlotKey(FormationZone.Front, 1));
+        _ = GrailSnapshotAssembler.Assemble(
+            State(formation: [SlotAt(FormationZone.Front, 1, "currency_wars_character_59")]),
+            null, GameData, holder, GrailUserGoal.Single, Now, StaleAfter);
+
+        var moved = GrailSnapshotAssembler.Assemble(
+            State(formation: [SlotAt(FormationZone.Front, 2, "currency_wars_character_59")]),
+            null, GameData, holder, GrailUserGoal.Single, Now, StaleAfter);
+        Assert.Equal(1, moved.BadgeCarrierNonMembers);
+    }
+
+    [Fact]
+    public void BadgeLedger_UnresolvedCharacterAtPendingSlot_ConservativeCountWithAnomaly()
+    {
+        // 账本槽位有占用但角色未识别：按 1 名携带者保守计入 + 异常标注（宁计不漏）。
+        var holder = new GrailRunStateHolder();
+        holder.RecordBadgeEquippedAtSlot(GrailSnapshotAssembler.BadgeLedgerSlotKey(FormationZone.Front, 1));
+        var snapshot = GrailSnapshotAssembler.Assemble(
+            State(formation: [SlotAt(FormationZone.Front, 1, "unknown-formation-unit-1")]),
+            null, GameData, holder, GrailUserGoal.Single, Now, StaleAfter);
+
+        Assert.Equal(1, snapshot.BadgeCarrierNonMembers);
+        Assert.Equal(1, snapshot.TotalStarBadgesObtained); // 保留线口径一致（审查 P2）
+        Assert.Contains("星徽槽位角色未识别", snapshot.AnomalyNotes);
+    }
+
+    [Fact]
+    public void BadgeLedger_BenchCarrier_ExcludedFromSellablePool()
+    {
+        // 审查 P1：携带者换下场后在备战席仍受保护——不入可卖池、明细带 [星徽]。
+        // 时序=A4 帧先提升为按名携带，再读"已换下场"的盘面。
+        var holder = new GrailRunStateHolder();
+        holder.RecordBadgeEquippedAtSlot(GrailSnapshotAssembler.BadgeLedgerSlotKey(FormationZone.Front, 1));
+        _ = GrailSnapshotAssembler.Assemble(
+            State(formation: [SlotAt(FormationZone.Front, 1, "currency_wars_character_59")]),
+            null, GameData, holder, GrailUserGoal.Single, Now, StaleAfter);
+
+        var snapshot = GrailSnapshotAssembler.Assemble(
+            State(formation:
+            [
+                SlotAt(FormationZone.Bench, 0, "currency_wars_character_59"), // 换下场的携带者
+                SlotAt(FormationZone.Bench, 1, "currency_wars_character_38"), // 可卖
+            ]),
+            null, GameData, holder, GrailUserGoal.Single, Now, StaleAfter);
+
+        // 星徽总数含备战席携带者（保留线口径一致）
+        Assert.Equal(1, snapshot.TotalStarBadgesObtained);
+        Assert.Contains(snapshot.BenchCharacterDetails, item => item.Contains("万敌[星徽]", StringComparison.Ordinal));
+        // 可卖池只含 38（携带者被排除；未修版本会得 2）
+        Assert.Equal(1, snapshot.SellableBeyondKeepLineCount);
+    }
+
+    [Fact]
+    public void BadgeLedger_PendingSlotEmptyOnKnownFrame_PendingConsumed()
+    {
+        // 审查 P2+坑38 加固：Known 帧观测到挂起槽位为空 → 单帧缺席只计数不消化（防动画期丢槽误吃），
+        // 连续两帧缺席才消化；此后该槽新占位者不得被错记为携带者。
+        var holder = new GrailRunStateHolder();
+        holder.RecordBadgeEquippedAtSlot(GrailSnapshotAssembler.BadgeLedgerSlotKey(FormationZone.Front, 1));
+
+        var emptyFrame = State(formation: [SlotAt(FormationZone.Front, 0, "currency_wars_character_04")]);
+        _ = GrailSnapshotAssembler.Assemble(
+            emptyFrame, null, GameData, holder, GrailUserGoal.Single, Now, StaleAfter);
+        var (_, pendingAfterFirst) = holder.PeekBadgeLedger();
+        Assert.Single(pendingAfterFirst); // 单帧缺席不消化
+
+        _ = GrailSnapshotAssembler.Assemble(
+            emptyFrame, null, GameData, holder, GrailUserGoal.Single, Now, StaleAfter);
+        var (_, pendingAfterSecond) = holder.PeekBadgeLedger();
+        Assert.Empty(pendingAfterSecond); // 连续两帧缺席=真空槽，消化
+
+        // 该槽位出现新角色 → 不得记账本携带
+        var next = GrailSnapshotAssembler.Assemble(
+            State(formation: [SlotAt(FormationZone.Front, 1, "currency_wars_character_38")]),
+            null, GameData, holder, GrailUserGoal.Single, Now, StaleAfter);
+        Assert.Equal(0, next.BadgeCarrierNonMembers);
+    }
+
+    [Fact]
+    public void BadgeLedger_Reset_ClearsLedger()
+    {
+        var holder = new GrailRunStateHolder();
+        holder.RecordBadgeEquippedAtSlot("front:1");
+        holder.RecordBadgeCarrierName("万敌");
+        holder.Reset();
+
+        var (carriers, pending) = holder.PeekBadgeLedger();
+        Assert.Empty(carriers);
+        Assert.Empty(pending);
     }
 
     // ---------- 组装器：血量/人口/金币的 Known→缓存→陈旧度链 ----------

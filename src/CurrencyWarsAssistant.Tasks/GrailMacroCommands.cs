@@ -49,13 +49,32 @@ public sealed class GrailMacroCommands(
         }
 
         // 战斗预算沿用既有写死口径：默认 3 分钟（067/019 非「过热环境」，无 5 分钟档）。
-        var advanced = await rewardStage.AdvanceBattleToPageAsync(
-            context.WindowHandle,
-            args.PreparationPageId,
-            args.ExpectedPostBattlePageId,
-            RewardBattleTimingPolicy.DefaultBattleBudget,
-            allowIncompleteLineupConfirmation: true,
-            cancellationToken);
+        // 诚实包装（1.2.32 候选，2026-09-03 落地）：战斗组件抛出的异常（如 GPU TDR 崩溃把
+        // 游戏窗口打挂后的 COM/DXGI「参数错误」）必须包装成失败事实回传，绝不裸抛给通道层——
+        // 决策层拿到的是可解读事实而非神秘异常，页面状态未知须先 I1 核实。
+        bool advanced;
+        try
+        {
+            advanced = await rewardStage.AdvanceBattleToPageAsync(
+                context.WindowHandle,
+                args.PreparationPageId,
+                args.ExpectedPostBattlePageId,
+                RewardBattleTimingPolicy.DefaultBattleBudget,
+                allowIncompleteLineupConfirmation: true,
+                cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+            throw; // 急停/取消不是故障，交通道层按取消语义回执
+        }
+        catch (Exception exception)
+        {
+            return GrailCommandResult.Fail(
+                command.Kind,
+                $"战斗推进中组件抛出 {exception.GetType().Name}：{exception.Message}" +
+                "（常见诱因=游戏窗口失效/GPU 崩溃，当前页面状态未知）——先用 I1 核实游戏状态再接续。");
+        }
+
         return advanced
             ? GrailCommandResult.Ok(command.Kind, args.ExpectedPostBattlePageId)
             : GrailCommandResult.Fail(command.Kind, "未推进到预期落地页（战斗状态机返回失败；处置归决策层）。");
@@ -165,18 +184,65 @@ public sealed class GrailMacroCommands(
             ],
             StringComparer.OrdinalIgnoreCase);
 
+    /// <summary>
+    /// 上一局未结算守卫回执·入口拒绝版（2026-09-03 用户拍板，操作层）：M8 下发时最新帧已在
+    /// 备战页=当前就在未结算旧局里。M8 拒绝执行、未点击任何东西；重刷请先结算旧局
+    /// （宏只回事实，停止决策归决策层）。
+    /// </summary>
+    internal const string UnsettledRunGuardMessage =
+        "检测到游戏未经过敌人概览/投资环境选择页就直接进入了备战页——上一局对局未结算，" +
+        "已被游戏自动续局。为防止误结算影响你正在进行的对局，M8 刷开局已立即停止，" +
+        "未对该局做任何操作；如要继续刷开局，请先结算/退出这局对局后再发 M8。";
+
+    /// <summary>守卫回执·流程中止版：M8 已点击开局（可能触发续局）后中途发现续局签名并中止——
+    /// 未布阵、未进奖励关、未结算该局（审查 P2：不得声称"未做任何操作"）。</summary>
+    internal const string UnsettledRunInterruptedMessage =
+        "M8 中途检测到未经过敌人概览/投资环境选择页就直接进入了备战页——上一局对局未结算，" +
+        "已被游戏自动续局。为防止误结算影响你正在进行的对局，M8 已立即中止：" +
+        "未布阵、未进奖励关、未结算该局。如要继续刷开局，请先结算/退出这局对局后再发 M8。";
+
+    /// <summary>守卫回执·识别流不可用版（审查 P1：无新鲜帧时绝不伪造"续局"事实）。</summary>
+    internal const string RecognitionUnavailableAfterOpeningMessage =
+        "M8 已到达备战席，但识别流全程无新鲜帧，上一局未结算守卫无法判定（守卫需要识别流页面序列）。" +
+        "请先确认识别会话在运行（START），再用 I1/I10 核实当前盘面后再继续操作。";
+
+    /// <summary>该页是否为开局页序列的一员（敌人概览/投资环境选择——续局守卫的判据）。</summary>
+    private static bool IsRunEntryPage(string? pageId) =>
+        pageId is not null
+        && (pageId.StartsWith("enemy_overview", StringComparison.OrdinalIgnoreCase)
+            || pageId.StartsWith("investment_environment", StringComparison.OrdinalIgnoreCase));
+
     private async Task<GrailCommandResult> RunOpeningAsync(
         GrailCommand command,
         GrailCommandContext context,
         CancellationToken cancellationToken)
     {
+        // 守卫前置检查（先于一切重置——续局判定成立时连状态都不许清，旧局事实必须原样保留）：
+        // M8 下发时若最新帧已在备战页且帧新鲜，=当前就在未结算旧局里，立即拒绝。
+        var entryAnalysis = listener.LatestAnalysis;
+        if (entryAnalysis is not null
+            && entryAnalysis.Snapshot.PageId.Value is { } entryPageId
+            && entryPageId.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase)
+            && entryAnalysis.Snapshot.AsOf is { } entryAt
+            && DateTimeOffset.Now - entryAt <= TimeSpan.FromSeconds(10))
+        {
+            return GrailCommandResult.Fail(GrailCommandKind.M8, UnsettledRunGuardMessage);
+        }
+
         // 新对局边界：上一局遗留的进程级上场进度必须作废——否则本局会从上一局
         // 用过的槽位继续摆人（2026-09-02 跨局污染实测事故）。
         executor.ResetDeploymentProgressForNewMatch();
+        // 持有器跨局复位（规格「跨局重置」条款）：指令测试台路径没有 GrailRunLoop 的
+        // 每局 Reset，已购集合/事件态/星徽账本若不清，第 2 局会继承第 1 局的
+        // "已拥有"假象（M5 拒买真目标）与祈愿计数（G1 假判死）——M8=对局边界在此统一清零。
+        stateHolder.Reset();
         // M8 语义（用户拍板 2026-09-02 白天再定停靠点）：一条命令运行到底——重刷直到
         // 命中 067/019，命中后立刻选中进局，**进入 1-1 备战席立刻停**（不布阵、不进奖励关）。
         // 绝不停在环境选择页等下一条指令；布阵/1-1/1-2/策略由决策层逐条指令接手。
         // RewardStage 配置为预留：StopAtPreparationEntry=true 时永远走不到奖励关控制器。
+        // MaximumRuntime=30 分钟（审查 P1 修复）：同时关掉"失败后被动恢复监控自动弃局"兜底
+        // （ShouldMonitorAfterFailure 仅在无时限时为真）——兜底弃局会替用户结算未结算旧局，
+        // 与续局守卫直接冲突；M8 失败改为事实回决策层处置（等待必带上限，30 分钟=实测余量极大的界）。
         var options = new OpeningRerollLoopOptions
         {
             DeployMatchedOpening = true,
@@ -184,6 +250,7 @@ public sealed class GrailMacroCommands(
             CompleteRewardStages = false,
             FastReroll = FastRerollMode.Fast,
             BenchSaleMode = PreparationBenchSaleMode.None,
+            MaximumRuntime = TimeSpan.FromMinutes(30),
             RewardStage = new RewardStageAutomationOptions
             {
                 EnableEarlyStrongFormationPurchase = false,
@@ -203,13 +270,88 @@ public sealed class GrailMacroCommands(
         // 1-1/1-2 升档强弹祈愿，阻塞游戏输入，必须有人应答；应答后执行器自动开聘用书（F11a）。
         using var pumpCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         var pump = PumpDialogsAsync(context.WindowHandle, pumpCts.Token);
+        // 续局守卫状态（创建于 try 内——审查 P3：任何异常路径都不许泄漏轮询任务）。
+        // 看门狗：250ms 轮询识别流页面序列；①记录是否见过开局页（敌人概览/投资环境选择）；
+        // ②未见开局页却连续 2 帧读到新鲜备战页=续局签名 → 立即取消 openingLoop（抢在
+        // 任何兜底弃局之前停止一切操作）；③全程无新鲜帧 → 守卫不可判定（绝不伪造续局事实）。
+        var runEntryPagesSeen = false;
+        var sawFreshFrame = false;
+        var tripped = false;
+        var prepStrikes = 0;
+        using var guardCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        var pageTraceDone = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var pageTrace = Task.Run(async () =>
+        {
+            while (!pageTraceDone.Task.IsCompleted)
+            {
+                var analysis = listener.LatestAnalysis;
+                if (analysis is not null)
+                {
+                    if (analysis.Snapshot.AsOf is { } frameAt
+                        && DateTimeOffset.Now - frameAt <= TimeSpan.FromSeconds(10))
+                    {
+                        sawFreshFrame = true;
+                    }
+
+                    var page = analysis.Snapshot.PageId.Value;
+                    if (IsRunEntryPage(page))
+                    {
+                        runEntryPagesSeen = true;
+                        prepStrikes = 0;
+                    }
+                    else if (!tripped
+                        && page is not null
+                        && page.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase)
+                        && analysis.Snapshot.AsOf is { } prepFrameAt
+                        && DateTimeOffset.Now - prepFrameAt <= TimeSpan.FromSeconds(10))
+                    {
+                        prepStrikes++;
+                        if (prepStrikes >= 2 && !runEntryPagesSeen)
+                        {
+                            tripped = true;
+                            guardCts.Cancel(); // 抢在导航失败兜底/弃局之前停住一切
+                        }
+                    }
+                    else
+                    {
+                        prepStrikes = 0;
+                    }
+                }
+
+                try
+                {
+                    await Task.Delay(250, cancellationToken);
+                }
+                catch (OperationCanceledException)
+                {
+                    return;
+                }
+            }
+        });
         try
         {
-            var result = await openingLoop(
-                context.WindowHandle,
-                GrailRunLoop.BuildViableEnvironmentFilter(),
-                options,
-                cancellationToken);
+            OpeningRerollLoopResult result;
+            try
+            {
+                result = await openingLoop(
+                    context.WindowHandle,
+                    GrailRunLoop.BuildViableEnvironmentFilter(),
+                    options,
+                    guardCts.Token);
+            }
+            catch (OperationCanceledException) when (tripped)
+            {
+                // 续局签名已坐实、看门狗主动中止：以失败事实收场（急停取消不经此路，when 条件区分）。
+                return GrailCommandResult.Fail(GrailCommandKind.M8, UnsettledRunInterruptedMessage);
+            }
+
+            // 守卫兜底判定：循环自然结束（成功停靠）但全程未见开局页——续局签名（竞态兜底）。
+            // 三态判定（审查 P1）：识别流全程无新鲜帧时守卫不可判定，绝不伪造"续局"事实。
+            if (result.Succeeded && !runEntryPagesSeen)
+            {
+                return GrailCommandResult.Fail(GrailCommandKind.M8,
+                    sawFreshFrame ? UnsettledRunInterruptedMessage : RecognitionUnavailableAfterOpeningMessage);
+            }
 
             // 回报具体命中的环境（用户要求：返回是两个投资环境中的哪一个）。
             // 主源=导航器记录的选中环境；评估条件兜底。
@@ -234,6 +376,9 @@ public sealed class GrailMacroCommands(
         }
         finally
         {
+            pageTraceDone.TrySetResult();
+            try { await pageTrace; }
+            catch (OperationCanceledException) { }
             pumpCts.Cancel();
             try { await pump; }
             catch (OperationCanceledException) { }

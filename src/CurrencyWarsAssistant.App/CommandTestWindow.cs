@@ -51,6 +51,7 @@ public sealed class CommandTestWindow : Window
     private readonly GrailRecognitionListener _listener;
     private readonly GrailOperationExecutor _executor;
     private readonly GrailCommandDispatcher _dispatcher;
+    private readonly GrailFlightRecorder _flightRecorder = new();
     private readonly IPhase2LiveCollectionService _collectionService;
     private readonly IGameWindowService _gameWindowService;
     private readonly GameDataCatalog _gameData;
@@ -76,6 +77,10 @@ public sealed class CommandTestWindow : Window
     /// <summary>结果文件写锁：急停监听线程与 UI 线程可能并发回写，防止交错/冲突丢行。</summary>
     private readonly object _resultFileLock = new();
     private bool _collectionMessageSubscribed;
+    /// <summary>果断弃局看门狗（用户拍板 2026-09-03：操作不动就果断退出）——
+    /// 同一指令连续失败计数；≥2 且页面不在健康备战态 → 自动弃局，绝不挂死。</summary>
+    private string? _lastFailureKey;
+    private int _sameFailureStreak;
 
     public CommandTestWindow(
         GameDataCatalog gameData,
@@ -323,10 +328,12 @@ public sealed class CommandTestWindow : Window
                     return;
             }
 
+            var flightStopwatch = System.Diagnostics.Stopwatch.StartNew();
             if (TryParseCommand(tokens, out var command, out var parseError) is false)
             {
                 AppendLog($"✗ 解析失败：{parseError}");
                 AppendResult(line, ok: false, summary: parseError ?? "解析失败");
+                _flightRecorder.Record(line, ok: false, parseError ?? "解析失败", 0, "parse_error");
                 return;
             }
 
@@ -335,6 +342,7 @@ public sealed class CommandTestWindow : Window
             {
                 AppendLog("✗ 未找到可自动化的游戏窗口。");
                 AppendResult(line, ok: false, summary: "未找到可自动化的游戏窗口");
+                _flightRecorder.Record(line, ok: false, "未找到可自动化的游戏窗口", 0, "no_window");
                 return;
             }
 
@@ -355,6 +363,8 @@ public sealed class CommandTestWindow : Window
             catch (OperationCanceledException)
             {
                 AppendResult(line, ok: false, summary: "已急停中断；游戏当前状态用 I1 查看，用下一条指令接续");
+                _flightRecorder.Record(
+                    line, ok: false, "已急停中断", flightStopwatch.ElapsedMilliseconds, "aborted");
                 return;
             }
             finally
@@ -362,15 +372,72 @@ public sealed class CommandTestWindow : Window
                 _activeCommandCts = null;
             }
 
-            RefreshLatestSnapshot();
+            flightStopwatch.Stop();
             var summary = result.Error is null ? FormatPayload(result.Payload) : result.Error;
             AppendResult(line, ok: result.Error is null, summary);
             AppendLog(result.Error is null ? $"✔ OK {summary}" : $"✗ 失败 {result.Error}");
+            // 黑匣子（handoff 六.2）：每条指令的下发/结果/耗时旁路落盘，实机验证以日志为准。
+            // 先落盘再刷新快照（审查 P3）：刷新失败不得把成功指令污染成 exception。
+            _flightRecorder.Record(line, result.Error is null, summary, flightStopwatch.ElapsedMilliseconds);
+
+            // 果断弃局看门狗（用户拍板 2026-09-03：操作不动就果断退出）：同一指令连续失败 ≥2 次
+            // 且页面不在健康备战态（识别不到/非备战页/陈旧）→ 自动弃局，防止被识别表外的
+            // 阻塞模态或异常状态挂死。页面健康时绝不触发（复位计数）。
+            if (result.Error is not null)
+            {
+                var failureKey = tokens[0].ToUpperInvariant();
+                _sameFailureStreak = _lastFailureKey == failureKey ? _sameFailureStreak + 1 : 1;
+                _lastFailureKey = failureKey;
+                if (_sameFailureStreak >= 2)
+                {
+                    _sameFailureStreak = 0;
+                    var analysisNow = _listener.LatestAnalysis;
+                    var pageNow = analysisNow?.Snapshot.PageId.Value;
+                    var pageFresh = analysisNow?.Snapshot.AsOf is { } at
+                        && DateTimeOffset.Now - at <= TimeSpan.FromSeconds(15);
+                    var healthyPreparation = pageFresh
+                        && pageNow is not null
+                        && pageNow.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase);
+                    if (!healthyPreparation)
+                    {
+                        AppendLog("⚠ 连续 2 次同一指令失败且页面不在健康备战态——检测到操作不动，果断弃局退出。");
+                        var abandon = await _dispatcher.DispatchAsync(
+                            new GrailCommand(GrailCommandKind.A9), context, commandCts.Token);
+                        var abandonSummary = abandon.Error is null
+                            ? FormatPayload(abandon.Payload)
+                            : abandon.Error;
+                        AppendResult("AUTO-A9", ok: abandon.Error is null,
+                            summary: $"果断弃局（连续失败触发）：{abandonSummary}");
+                        _flightRecorder.Record("AUTO-A9", abandon.Error is null,
+                            abandonSummary ?? string.Empty, 0, "auto_exit");
+                    }
+                }
+            }
+            else
+            {
+                _sameFailureStreak = 0;
+                _lastFailureKey = null;
+            }
+
+            try
+            {
+                RefreshLatestSnapshot();
+            }
+            catch
+            {
+                // 快照刷新失败不影响本条指令的回执与黑匣子（下一条指令前置 I10 会再水合）。
+            }
         }
         catch (Exception exception)
         {
             AppendLog($"✗ 异常 {exception.GetType().Name}: {exception.Message}");
             AppendResult(line, ok: false, summary: $"异常 {exception.GetType().Name}: {exception.Message}");
+            _flightRecorder.Record(
+                line,
+                ok: false,
+                $"异常 {exception.GetType().Name}: {exception.Message}",
+                -1,
+                "exception");
         }
     }
 
@@ -476,6 +543,10 @@ public sealed class CommandTestWindow : Window
                 }
 
                 command = new GrailCommand(kind, new GrailBattleArgs(tokens[1], tokens[2]));
+                return true;
+            case GrailCommandKind.A15:
+                // A15 [幸运星|小刀|轮滑鞋|手枪]（缺省=幸运星）
+                command = new GrailCommand(kind, new GrailCharacterArgs(tokens.Length >= 2 ? tokens[1] : "幸运星"));
                 return true;
             case GrailCommandKind.M8:
                 // M8 语义（2026-09-02 用户拍板停靠点）：刷到命中→选中进局→1-1 备战席立刻停。

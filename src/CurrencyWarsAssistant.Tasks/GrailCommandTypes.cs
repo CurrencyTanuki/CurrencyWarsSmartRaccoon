@@ -8,7 +8,7 @@ public enum GrailCommandKind
 {
     I1 = 101, I2, I3, I4, I5, I6, I7, I8, I9, I10,
     A1 = 201, A2, A3, A4, A5, A6, A7,
-    A9 = 209, A10, A11, A12, A13, A14,
+    A9 = 209, A10, A11, A12, A13, A14, A15,
     M1 = 301, M2, M3, M4, M5, M6, M7, M8,
 }
 

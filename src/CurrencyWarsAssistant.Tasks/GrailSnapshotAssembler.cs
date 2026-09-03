@@ -56,6 +56,15 @@ public static class GrailSnapshotAssembler
             : null;
     }
 
+    /// <summary>星徽账本槽位键（组装器与 A4 命令层共用的唯一拼法；前缀区分前/后/备战）。
+    /// Bench 与 Special 共用 "bench:" 前缀无碍——A4 只产 front/back 键，键碰撞不可达。</summary>
+    public static string BadgeLedgerSlotKey(FormationZone zone, int slotIndex) => zone switch
+    {
+        FormationZone.Front => $"front:{slotIndex + 1}",
+        FormationZone.Back => $"back:{slotIndex + 1}",
+        _ => $"bench:{slotIndex + 1}",
+    };
+
     /// <summary>装备 ID 转短名：星徽用用户语义名，其余取 ID 尾码（data/4.4 无装备名映射，诚实报 ID 不编名）。</summary>
     private static string ShortEquipmentName(string equipmentId)
     {
@@ -127,6 +136,20 @@ public static class GrailSnapshotAssembler
         var deployedNonGrail = new List<GrailDeployedCharacter>();
         var deployedCharacterDetails = new List<string>();
         var benchCharacterDetails = new List<string>();
+        // 星徽账本（2026-09-03 用户拍板：装上即本局恒绑定，识别漏读由账本兜底、识别永不推翻账本）。
+        var (ledgerCarrierNames, ledgerPendingSlots) = holder.PeekBadgeLedger();
+        // 挂起槽位纠账（审查 P2）：仅在阵容 Known 的帧里，该槽位确实没有卡（不在占位清单）
+        // 时消化挂起项——防"A4 后角色被卖/换走，挂起键残留把下一个占位者错记成携带者"。
+        // Known 帧里被占但未识别的槽会以 unknown-formation-unit 占位出现（既有识别口径），
+        // 不在清单=真空槽，消化是安全的。
+        if (state.Formation?.Status == ObservationStatus.Known && ledgerPendingSlots.Count > 0)
+        {
+            var occupiedBadgeSlotKeys = new HashSet<string>(
+                slots.Select(slot => BadgeLedgerSlotKey(slot.Zone, slot.SlotIndex)),
+                StringComparer.OrdinalIgnoreCase);
+            holder.ConsumeBadgePendingSlotsExcept(occupiedBadgeSlotKeys);
+        }
+
         foreach (var slot in slots)
         {
             // 槽位占用记录（N14 部署用实际空槽）：CharacterId 非空即算已占（含 Uncertain 占位槽，
@@ -144,6 +167,18 @@ public static class GrailSnapshotAssembler
             var character = ResolveCharacter(gameData, slot.CharacterId);
             if (character is null)
             {
+                // 星徽账本指向的槽位有占用但角色未识别：按 1 名携带者保守计入
+                //（用户铁律"星徽一定要识别出来"，宁计不漏），并标注异常供决策层复核。
+                // 计数同步（审查 P2）：携带者同时计入星徽总数，保住"保留线=已获星徽数"口径一致。
+                if ((slot.Zone is FormationZone.Front or FormationZone.Back)
+                    && ledgerPendingSlots.ContainsKey(BadgeLedgerSlotKey(slot.Zone, slot.SlotIndex)))
+                {
+                    badgeCarriersNonMembers++;
+                    carriedBadges++;
+                    anomalyNotes.Append(
+                        $"⚠星徽槽位角色未识别:{BadgeLedgerSlotKey(slot.Zone, slot.SlotIndex)} ");
+                }
+
                 continue;
             }
 
@@ -155,9 +190,20 @@ public static class GrailSnapshotAssembler
                 && (character.Costs ?? Array.Empty<int>())[0] == 5;
             var deployed = slot.Zone is FormationZone.Front or FormationZone.Back;
 
-            // 星徽携带者：仅上场角色的装备槽被识别（备战席不识别装备是既有识别边界）
+            // 星徽携带者判定 = 识别 ∪ 账本（2026-09-03 用户拍板：识别漏读不推翻账本；
+            // 挂起槽位首次识别到角色即提升为按名携带——徽绑定角色不绑槽位，角色换槽仍随名携带）。
+            // 仅上场角色的装备槽被识别（备战席不识别装备是既有识别边界）。
+            var badgeSlotKey = BadgeLedgerSlotKey(slot.Zone, slot.SlotIndex);
+            if (ledgerPendingSlots.ContainsKey(badgeSlotKey))
+            {
+                // 无论识别是否命中，先消化挂起项（防换槽后旧槽位键永不解析）。
+                holder.PromoteBadgeCarrier(badgeSlotKey, character.Name);
+            }
+
             var carriesBadge = (slot.EquipmentSlots ?? Array.Empty<CharacterEquipmentSlotState>())
-                .Any(equipment => string.Equals(equipment.EquipmentId, StarBadgeEquipmentId, StringComparison.OrdinalIgnoreCase));
+                .Any(equipment => string.Equals(equipment.EquipmentId, StarBadgeEquipmentId, StringComparison.OrdinalIgnoreCase))
+                || ledgerCarrierNames.Contains(character.Name)
+                || ledgerPendingSlots.ContainsKey(badgeSlotKey);
             if (carriesBadge)
             {
                 carriedBadges++;
@@ -169,6 +215,10 @@ public static class GrailSnapshotAssembler
                 .Select(equipment => ShortEquipmentName(equipment.EquipmentId!))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .ToList();
+            if (carriesBadge && !carriedEquipment.Contains("星徽"))
+            {
+                carriedEquipment.Add("星徽"); // 账本兜底的携带也要在明细里可见
+            }
 
             if (deployed)
             {
@@ -206,7 +256,10 @@ public static class GrailSnapshotAssembler
                 }
 
                 benchPositions.Add($"B{slot.SlotIndex + 1}");
-                benchCharacterDetails.Add($"{slot.SlotIndex}:{character.Name}");
+                // P1 审查修复：备战席携带者同样不可卖（徽在人身上，账本/识别并集判定），
+                // 明细补 [星徽] 标签与上场角色同口径。
+                benchCharacterDetails.Add($"{slot.SlotIndex}:{character.Name}"
+                    + (carriesBadge ? "[星徽]" : ""));
             }
 
             if (isFiveCost)
@@ -236,7 +289,8 @@ public static class GrailSnapshotAssembler
                 }
             }
 
-            if (slot.Zone == FormationZone.Bench && !isBondMember && !isFiveCost)
+            // P1 审查修复：备战席可卖池排除星徽携带者——徽在人身上（识别或账本），换下场也绝不可卖。
+            if (slot.Zone == FormationZone.Bench && !isBondMember && !isFiveCost && !carriesBadge)
             {
                 benchSellablePool++;
             }
@@ -286,13 +340,22 @@ public static class GrailSnapshotAssembler
         var sellablePool = deployedSellablePool + benchSellablePool;
         var sellableBeyondKeepLine = Math.Max(0, sellablePool - Math.Min(uncarriedBadges, sellablePool));
 
-        // 1.2.31：同名多处=识别身份事故标记（坑 34/审计症状 D），供决策层拒采
+        // 1.2.31：同名多处=识别身份事故标记（坑 34/审计症状 D），供决策层拒采；
+        // 追加星徽账本状态（坑38 批次）：账本可诊断（名字携带者+挂起槽位），漏算可见。
         foreach (var kv in nameSlots)
         {
             if (kv.Value.Count > 1)
             {
                 anomalyNotes.Append($"⚠同名多处:{kv.Key}@{string.Join("/", kv.Value)} ");
             }
+        }
+
+        var (diagCarriers, diagPending) = holder.PeekBadgeLedger();
+        if (diagCarriers.Count > 0 || diagPending.Count > 0)
+        {
+            var carrierText = diagCarriers.Count > 0 ? string.Join(",", diagCarriers) : "无";
+            var pendingText = diagPending.Count > 0 ? string.Join(",", diagPending.Keys) : "无";
+            anomalyNotes.Append($"星徽账本[名:{carrierText}|挂起:{pendingText}] ");
         }
 
         return new GrailRunSnapshot

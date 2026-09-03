@@ -111,6 +111,14 @@ public sealed partial class RewardStageAutomationController(
     ITaskEventSink eventSink,
     IPhase2RecognitionFeed? recognitionFeed = null) : IRewardStageAutomationController
 {
+    /// <summary>
+    /// 禁选投资策略（2026-09-03 用户令）：investment_strategy_280「阿哈大悦」——
+    /// 选中会弹「为阿哈选择 1 件简易装备」模态（识别表外，阻塞指令流），
+    /// 且三件简易装备全部同质化。M7 全未命中回退时必须跳过。
+    /// </summary>
+    public static readonly IReadOnlySet<string> BannedInvestmentStrategyIds =
+        new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "investment_strategy_280" };
+
     private static readonly StandardPoint ShopTogglePoint =
         new(1620, 975);
     // 统一识别流：上次从 feed 取帧的版本号（Transient，每局重置）。

@@ -209,11 +209,37 @@ public sealed class Win32InputController : IInputController
             return ActionResult.Failure("输入急停闸生效，已拒绝本次模拟输入。");
         }
 
+        var moveSendCount = 0u;
+        PixelPoint? cursorAfterSourceMove = null;
+        var foregroundBeforeDrag = false;
+        var windowAtStart = nint.Zero;
         EnsureSent(_backend.MoveMouse(start), "模拟鼠标移动失败。");
+        moveSendCount++;
+        if (policy.PointerSettleDelay > TimeSpan.Zero)
+        {
+            await Task.Delay(policy.PointerSettleDelay, cancellationToken);
+        }
+
+        // 拖拽输入诊断（2026-09-03 补，"备战席拖拽输入已发送却没带走卡"问题的定位数据）：
+        // 拖拽路径此前零诊断（点击路径有完整 InputActionDiagnostic），失败后无从判断
+        // 光标是否到位/游戏是否前台/落点被谁遮挡。源点环境在按下前取，落点窗口在抬起后取。
+        cursorAfterSourceMove = _backend.GetCursorPosition();
+        foregroundBeforeDrag = _backend.GetForegroundWindow() == refreshed.Handle;
+        windowAtStart = _backend.WindowFromPoint(start);
+        if (cursorAfterSourceMove is null
+            || !IsWithinTolerance(cursorAfterSourceMove.Value, start, Math.Max(policy.PointerArrivalTolerance, 2)))
+        {
+            RecordInputDiagnostic(
+                "DragSourcePointerDrift",
+                $"target={source.DisplayName}; sourceScreen=({start.X},{start.Y}); " +
+                $"cursor=({cursorAfterSourceMove?.X ?? -1},{cursorAfterSourceMove?.Y ?? -1})");
+        }
+
         EnsureSent(_backend.SendLeftDown(), "模拟鼠标按下失败。");
 
         const int steps = 12;
         var stepDelay = TimeSpan.FromTicks(Math.Max(1, duration.Ticks / steps));
+        InputActionDiagnostic? diagnostic = null;
         try
         {
             // 物品类拖拽需要按下后停留一拍，游戏才把物品吸附到光标上
@@ -231,6 +257,7 @@ public sealed class Win32InputController : IInputController
                     (int)Math.Round(start.X + (end.X - start.X) * progress),
                     (int)Math.Round(start.Y + (end.Y - start.Y) * progress))),
                     "模拟鼠标移动失败。");
+                moveSendCount++;
                 await Task.Delay(stepDelay, cancellationToken);
             }
         }
@@ -239,10 +266,48 @@ public sealed class Win32InputController : IInputController
             // 无论取消/异常，左键必须释放，否则游戏内卡在拖拽状态
             var upSendCount = _backend.SendLeftUp();
             EnsureSent(upSendCount, "模拟鼠标抬起失败。");
+
+            // 每次完成的拖拽都落一条输入诊断（成功也记——"发送成功但没带走卡"
+            // 类问题的对照基线就来自成功样本；jsonl 写入失败静默吞掉，见 RecordInputDiagnostic）。
+            // 注意：结构化诊断的 WindowAtTarget 字段对拖拽=源点窗口（windowAtStart），
+            // 落点窗口只在本文本行的 windowAtEnd——按字段消费时勿误读（审查 P3）。
+            var windowAtEnd = _backend.WindowFromPoint(end);
+            diagnostic = new InputActionDiagnostic(
+                "Win32.SendInput/drag",
+                refreshed.Handle,
+                refreshed.ClientArea,
+                source.ClientBounds,
+                source.ClientBounds.Center,
+                start,
+                cursorAfterSourceMove,
+                foregroundBeforeDrag,
+                windowAtStart,
+                1,
+                moveSendCount,
+                1,
+                upSendCount,
+                policy.PointerSettleDelay,
+                policy.MouseButtonHoldDelay);
+            RecordInputDiagnostic(
+                "DragDiagnostics",
+                $"target={source.DisplayName}; " +
+                $"sourceClient=({source.ClientBounds.Center.X},{source.ClientBounds.Center.Y}); " +
+                $"sourceScreen=({start.X},{start.Y}); " +
+                $"endClient=({targetClientPoint.X},{targetClientPoint.Y}); " +
+                $"endScreen=({end.X},{end.Y}); " +
+                $"cursorAfterSourceMove=" +
+                (cursorAfterSourceMove is { } cursorValue
+                    ? $"({cursorValue.X},{cursorValue.Y})"
+                    : "读取失败") + "；" +
+                $"foregroundBeforeDrag={foregroundBeforeDrag}; " +
+                $"windowAtStart=0x{windowAtStart:X}; windowAtEnd=0x{windowAtEnd:X}; " +
+                $"sends=move:{moveSendCount},down:1,up:{upSendCount}; " +
+                $"holdMs={policy.MouseButtonHoldDelay.TotalMilliseconds:F0}; " +
+                $"durationMs={duration.TotalMilliseconds:F0}");
         }
 
         await Task.Delay(policy.AfterActionDelay, cancellationToken);
-        return ActionResult.Success($"已拖动：{source.DisplayName}");
+        return ActionResult.Success($"已拖动：{source.DisplayName}", diagnostic);
     }
 
     public async Task<ActionResult> PressKeyAsync(

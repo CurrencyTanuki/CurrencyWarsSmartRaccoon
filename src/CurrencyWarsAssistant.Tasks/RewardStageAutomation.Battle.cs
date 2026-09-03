@@ -1100,15 +1100,32 @@ public sealed partial class RewardStageAutomationController
 
         if (_softInvestmentStrategyRequirement)
         {
-            // 定稿树 N11：全未命中 → 按正常流程选最左一张，不为挑策略重刷（保留 067/昔涟等好开局）
-            Publish(
-                "InvestmentStrategySoftFallback",
-                "三连刷后三张策略仍未命中目标；按软门槛语义选择最左一张推进，不弃局。",
-                TaskEventLevel.Warning);
+            // 定稿树 N11：全未命中 → 选最左的非禁选策略推进，不为挑策略重刷（保留 067/昔涟等好开局）。
+            // 禁选（2026-09-03 用户令）：investment_strategy_280「阿哈大悦」——选中会弹
+            // 「为阿哈选择 1 件简易装备」模态（识别表外，阻塞指令流），且三件简易装备同质化。
+            var fallback = slots.FirstOrDefault(item =>
+                item.Strategy is not null &&
+                !BannedInvestmentStrategyIds.Contains(item.Strategy.Id));
+            string fallbackName;
+            if (fallback is not null)
+            {
+                fallbackName = fallback.Strategy!.Name;
+            }
+            else
+            {
+                // 三张全是禁选策略：宁可选一张推进也不卡死，如实公告（理论极难凑齐）。
+                fallback = slots.FirstOrDefault(item => item.Strategy is not null);
+                fallbackName = "禁选策略兜底（三张均为阿哈大悦）";
+                Publish(
+                    "InvestmentStrategyBannedFallback",
+                    "三张策略均为禁选的「阿哈大悦」；为避免卡死仍选择一张推进。",
+                    TaskEventLevel.Warning);
+            }
+
             return await SelectStrategyAndConfirmAsync(
                 windowHandle,
-                0,
-                "未命中偏好时的最左投资策略",
+                fallback?.Slot ?? 0,
+                fallbackName,
                 cancellationToken);
         }
 

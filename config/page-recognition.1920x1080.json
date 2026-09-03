@@ -559,6 +559,18 @@
             "height": 0.07
           },
           "threshold": 0.66
+        },
+        {
+          "id": "wish_trial_title_red_variant",
+          "displayName": "祈愿试炼标题横幅（诅咒红色主题共用）",
+          "file": "templates/1920x1080/pages/wish-trial-title-red.png",
+          "searchRegion": {
+            "x": 0.3,
+            "y": 0.0,
+            "width": 0.4,
+            "height": 0.2
+          },
+          "threshold": 0.55
         }
       ]
     }

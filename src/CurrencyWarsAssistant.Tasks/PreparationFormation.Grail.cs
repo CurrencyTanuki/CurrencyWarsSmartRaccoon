@@ -352,7 +352,7 @@ public sealed partial class PreparationBoardController
     /// 场上区域没有备战席的“空槽双帧验证”基建，拖拽输入成功即算成功（最多 3 次重试）；
     /// 若实际未卖掉，外层 1-3 循环下一帧快照仍会看到该角色并再次触发卖出（自限）。
     /// </summary>
-    internal async Task<bool> GrailSellDeployedCharacterAsync(
+    internal async Task<GrailDeployedSaleResult> GrailSellDeployedCharacterAsync(
         nint windowHandle,
         GrailDeployedCharacter candidate,
         string expectedPreparationPageId,
@@ -360,7 +360,7 @@ public sealed partial class PreparationBoardController
     {
         if (candidate.CardRegion is not { } region)
         {
-            return false;
+            return new GrailDeployedSaleResult(false, false);
         }
 
         for (var attempt = 1; attempt <= 3; attempt++)
@@ -372,7 +372,33 @@ public sealed partial class PreparationBoardController
                 cancellationToken);
             if (captured is null)
             {
-                return false;
+                return new GrailDeployedSaleResult(false, false);
+            }
+
+            // 坑38 修复①（拖前必查槽，连续两帧）：空槽=卡已不在（很可能此前已卖出成功），
+            // 绝不空拖——2026-09-03 实测"已卖出后仍连拖 6 次"的直接根因。
+            // 识别器契约=1920×1080 参考系矩形（审查 P1：CardRegion 相对参考系而非帧像素）。
+            var slotReferenceRect = RegionToReferenceRect(region);
+            var slotBefore = recognizer.Recognize(captured.Value.Frame, templates, [slotReferenceRect])[0];
+            if (slotBefore.State == CharacterCardSlotState.Empty)
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(250), cancellationToken);
+                var recaptured = await CaptureVerifiedPreparationAsync(
+                    windowHandle,
+                    expectedPreparationPageId,
+                    allowEscapeRecovery: false,
+                    cancellationToken);
+                var slotBeforeSecond = recaptured is null
+                    ? null
+                    : recognizer.Recognize(recaptured.Value.Frame, templates, [slotReferenceRect])[0];
+                if (slotBeforeSecond is not null && slotBeforeSecond.State == CharacterCardSlotState.Empty)
+                {
+                    Publish(
+                        TaskEventLevel.Information,
+                        "GrailDeployedSaleAlreadyCompleted",
+                        $"出售“{candidate.Name}”前复核发现目标槽位连续两帧为空（可能此前已卖出成功），按已完成处理，不再拖动。");
+                    return new GrailDeployedSaleResult(false, true);
+                }
             }
 
             // CardRegion 是 0..1 相对窗口客户区的卡牌区域（识别层 ToRelative 回填），
@@ -411,8 +437,10 @@ public sealed partial class PreparationBoardController
                 continue;
             }
 
-            // 卖出验证（2026-09-02 补：两次"输入成功"实未卖出的教训——识别卡位残留已修，
-            // 但场上无空槽双帧验证基建，用源卡位区域拖拽前后像素差自证，无变化=未卖出重试）。
+            // 坑38 修复②（拖后以"卡是否消失"为准，像素差分只作旁证）：
+            // 卖出=卡从槽位消失（且区域差分佐证≥6，矛盾=不确定）；卡还在且区域无变化=确实没卖出才允许重试；
+            // 卡还在但区域变化大（动画/位移，判据互相矛盾）=不确定——立即停手回事实，绝不重拖
+            //（2026-09-03 实测：动画期像素判定误报"未卖出"导致卖出后继续重拖）。
             var after = await CaptureVerifiedPreparationAsync(
                 windowHandle,
                 expectedPreparationPageId,
@@ -420,34 +448,104 @@ public sealed partial class PreparationBoardController
                 cancellationToken);
             if (after is null)
             {
-                return false;
+                return new GrailDeployedSaleResult(false, false);
             }
 
-            var saleRect = new PixelRect(
-                (int)Math.Round(region.X * after.Value.Frame.Width),
-                (int)Math.Round(region.Y * after.Value.Frame.Height),
-                Math.Max(8, (int)Math.Round(region.Width * after.Value.Frame.Width)),
-                Math.Max(8, (int)Math.Round(region.Height * after.Value.Frame.Height)));
+            var saleRect = RegionToPixelRect(region, after.Value.Frame);
             var saleDelta = SellRegionMeanDelta(
                 captured.Value.Frame, after.Value.Frame, saleRect);
-            if (saleDelta < 6.0)
+            var afterSlot = recognizer.Recognize(after.Value.Frame, templates, [slotReferenceRect])[0];
+            if (afterSlot.State == CharacterCardSlotState.Empty)
+            {
+                if (saleDelta < 6.0)
+                {
+                    // 判据矛盾（卡消失不可能差分≈0）：不确定即停，绝不谎报成功（审查 P3）。
+                    Publish(
+                        TaskEventLevel.Warning,
+                        "GrailDeployedSaleUncertain",
+                        $"出售场上“{candidate.Name}”第 {attempt}/3 次后槽读空但差分仅 {saleDelta:F1}，判据矛盾——停止重试，交由决策层复核。");
+                    return new GrailDeployedSaleResult(false, false);
+                }
+
+                Publish(
+                    TaskEventLevel.Information,
+                    "GrailDeployedSaleVerified",
+                    $"已确认场上“{candidate.Name}”槽位卡牌消失（差分 {saleDelta:F1}），判定卖出成功。");
+                await Task.Delay(TimeSpan.FromMilliseconds(250), cancellationToken);
+                return new GrailDeployedSaleResult(true, false);
+            }
+
+            if (saleDelta >= 6.0)
             {
                 Publish(
                     TaskEventLevel.Warning,
-                    "GrailDeployedSaleNotVerified",
-                    $"出售场上“{candidate.Name}”第 {attempt}/3 次拖拽后卡位无变化（差分 {saleDelta:F1}），判定未卖出，重试。");
-                continue;
+                    "GrailDeployedSaleUncertain",
+                    $"出售场上“{candidate.Name}”第 {attempt}/3 次后槽位仍有卡但区域变化大（差分 {saleDelta:F1}）" +
+                    "——卖出与否不确定，停止重试（防已卖出后继续重拖），交由决策层复核。");
+                return new GrailDeployedSaleResult(false, false);
             }
 
             Publish(
-                TaskEventLevel.Information,
-                "GrailDeployedSaleVerified",
-                $"已确认场上“{candidate.Name}”卡位变化（差分 {saleDelta:F1}），判定卖出成功。");
-            await Task.Delay(TimeSpan.FromMilliseconds(250), cancellationToken);
-            return true;
+                TaskEventLevel.Warning,
+                "GrailDeployedSaleNotVerified",
+                $"出售场上“{candidate.Name}”第 {attempt}/3 次拖拽后卡位无变化（差分 {saleDelta:F1}），判定未卖出，重试。");
         }
 
-        return false;
+        return new GrailDeployedSaleResult(false, false);
+    }
+
+    /// <summary>0..1 相对区域 → 1920×1080 参考系矩形（识别器 Recognize 的槽表契约域；审查 P1）。</summary>
+    private static PixelRect RegionToReferenceRect(RelativeRegion region) => new(
+        (int)Math.Round(region.X * OpenCvTemplateMatcher.ReferenceWidth),
+        (int)Math.Round(region.Y * OpenCvTemplateMatcher.ReferenceHeight),
+        Math.Max(8, (int)Math.Round(region.Width * OpenCvTemplateMatcher.ReferenceWidth)),
+        Math.Max(8, (int)Math.Round(region.Height * OpenCvTemplateMatcher.ReferenceHeight)));
+
+    /// <summary>0..1 相对区域 → 当前帧像素矩形（SellRegionMeanDelta 的像素域消费）。</summary>
+    private static PixelRect RegionToPixelRect(RelativeRegion region, CaptureFrame frame) => new(
+        (int)Math.Round(region.X * frame.Width),
+        (int)Math.Round(region.Y * frame.Height),
+        Math.Max(8, (int)Math.Round(region.Width * frame.Width)),
+        Math.Max(8, (int)Math.Round(region.Height * frame.Height)));
+
+    /// <summary>
+    /// A15 简易装备选择（2026-09-03 实测新增）：晶矿掉落的「为『阿哈』选择 1 件简易装备」
+    /// 模态不在页面识别表，会阻塞一切指令流。四个按钮一排排布、参考系 1920×1080 定点：
+    /// 幸运星(682,245)/折叠小刀(972,245)/轮滑鞋(1262,245)/和平手枪(1550,245)。
+    /// 直取窗口截屏（模态页无识别表项，不走备战页门禁）；点击后仅回输入事实，
+    /// 弹框是否消失由调用方 I1 复核。
+    /// </summary>
+    internal async Task<bool> GrailChooseSimpleEquipmentAsync(
+        nint windowHandle,
+        int buttonIndex,
+        CancellationToken cancellationToken)
+    {
+        PixelPoint[] buttonPoints =
+        [
+            new(682, 245),
+            new(972, 245),
+            new(1262, 245),
+            new(1550, 245),
+        ];
+        if (buttonIndex < 0 || buttonIndex >= buttonPoints.Length)
+        {
+            return false;
+        }
+
+        var window = await foregroundGuard.WaitUntilForegroundAsync(
+            windowHandle,
+            cancellationToken);
+        var targetPoint = MapReferencePoint(window, buttonPoints[buttonIndex]);
+        var click = await input.ClickAsync(
+            new ClickTarget(
+                "grail_simple_equipment_choice",
+                $"简易装备选择第 {buttonIndex + 1} 项",
+                window,
+                BoundsAround(window, targetPoint)),
+            new ActionPolicy { AfterActionDelay = TimeSpan.FromMilliseconds(300) },
+            cancellationToken);
+        await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+        return click.Succeeded;
     }
 
     /// <summary>
@@ -485,14 +583,21 @@ public sealed partial class PreparationBoardController
 
         for (var index = 0; index < deployedCandidates.Count; index++)
         {
-            var ok = await GrailSellDeployedCharacterAsync(
+            // 坑38 批次（审查 P3）：槽位已空（此前已卖出）= 不计金、不中断，继续卖下一个候选；
+            // 只有"确实没卖出"才中断批量序列。
+            var outcome = await GrailSellDeployedCharacterAsync(
                 windowHandle,
                 deployedCandidates[index],
                 expectedPreparationPageId,
                 cancellationToken);
-            if (!ok)
+            if (!outcome.Sold)
             {
-                break;
+                if (!outcome.AlreadyGone)
+                {
+                    break;
+                }
+
+                continue;
             }
 
             gold += deployedCandidates[index].SaleValue;
@@ -505,3 +610,9 @@ public sealed partial class PreparationBoardController
 
 /// <summary>TargetGold 卖人结果。</summary>
 public sealed record GrailSellResult(int SoldCount, int EstimatedGold, bool TargetReached);
+
+/// <summary>
+/// 场上单卡卖出结果（坑38 批次）：Sold=本次确认卖出；AlreadyGone=槽位已空（此前已卖出，
+/// 按已完成处理，调用方不计金不中断）；两者皆否=未卖出/不确定。
+/// </summary>
+public sealed record GrailDeployedSaleResult(bool Sold, bool AlreadyGone);

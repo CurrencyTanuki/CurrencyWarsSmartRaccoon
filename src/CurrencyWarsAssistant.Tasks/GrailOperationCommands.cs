@@ -44,6 +44,7 @@ public sealed class GrailOperationCommands(
             GrailCommandKind.A2 => await SellDeployedAsync(command, context, cancellationToken),
             GrailCommandKind.A4 => await AssembleBadgeAsync(command, context, cancellationToken),
             GrailCommandKind.A5 => await MoveToLeftSlotAsync(command, context, cancellationToken),
+            GrailCommandKind.A15 => await ChooseSimpleEquipmentAsync(command, context, cancellationToken),
             GrailCommandKind.A7 => GrailCommandResult.Fail(command.Kind,
                 "环境页免费刷新无独立实现（环境选择在 opening 刷开局流程内承载）。"),
             GrailCommandKind.A11 => GrailCommandResult.Fail(command.Kind,
@@ -80,14 +81,23 @@ public sealed class GrailOperationCommands(
         }
 
         var label = $"{(args.Lane == PreparationLane.Front ? "前台" : "后台")}{args.SlotIndex + 1}号位角色";
-        var sold = await preparationBoard.GrailSellDeployedCharacterAsync(
+        var outcome = await preparationBoard.GrailSellDeployedCharacterAsync(
             context.WindowHandle,
             new GrailDeployedCharacter(label, IsBondMember: false, IsFiveCost: false, region, SaleValue: 0),
             context.PreparationPageId,
             cancellationToken);
-        return sold
-            ? GrailCommandResult.Ok(command.Kind, $"已出售{label}。")
-            : GrailCommandResult.Fail(command.Kind, $"{label}出售拖放未完成（组件返回失败）。");
+        if (outcome.Sold)
+        {
+            return GrailCommandResult.Ok(command.Kind, $"已出售{label}。");
+        }
+
+        if (outcome.AlreadyGone)
+        {
+            // 坑38 批次：槽位已空=此前可能已卖出成功，如实回事实（不算失败，绝不再拖）。
+            return GrailCommandResult.Ok(command.Kind, $"{label}槽位已空（此前可能已卖出成功），未执行拖拽。");
+        }
+
+        return GrailCommandResult.Fail(command.Kind, $"{label}出售拖放未完成或结果不确定（详见事件日志 GrailDeployedSale*）；请用 I10/截图复核后再决定是否重发。");
     }
 
     /// <summary>A4 星徽装配（N2，2026-09-03 位置语义定稿）：把物品栏星徽拖到指定前台/后台槽位角色；
@@ -119,9 +129,42 @@ public sealed class GrailOperationCommands(
             context.PreparationPageId,
             cancellationToken);
         var slotLabel = (target.Lane == PreparationLane.Front ? "前台" : "后台") + (target.SlotIndex + 1) + "号位";
-        return assembled
-            ? GrailCommandResult.Ok(GrailCommandKind.A4, $"星徽已装配到{slotLabel}角色（拖后物品栏探测自证通过）。")
-            : GrailCommandResult.Fail(GrailCommandKind.A4, $"未装配：物品栏未探测到星徽，或 3 次拖后自证星徽仍在（详见事件日志 GrailBadgeAssembly*）。");
+        if (assembled)
+        {
+            // 星徽账本记账（2026-09-03 用户拍板）：装上即本局恒携带，角色装备识别漏读
+            // 由账本兜底（组装器并集合并），决策层无需重复确认识别。
+            executor.RecordBadgeEquippedAtSlot(GrailSnapshotAssembler.BadgeLedgerSlotKey(
+                target.Lane == PreparationLane.Front ? FormationZone.Front : FormationZone.Back,
+                target.SlotIndex));
+            return GrailCommandResult.Ok(GrailCommandKind.A4, $"星徽已装配到{slotLabel}角色（拖后物品栏探测自证通过）。");
+        }
+
+        return GrailCommandResult.Fail(GrailCommandKind.A4, $"未装配：物品栏未探测到星徽，或 3 次拖后自证星徽仍在（详见事件日志 GrailBadgeAssembly*）。");
+    }
+
+    /// <summary>
+    /// A15 简易装备选择（晶矿掉落模态，2026-09-03 实测新增）：参数=幸运星(默认)/小刀/轮滑鞋/手枪。
+    /// </summary>
+    private async Task<GrailCommandResult> ChooseSimpleEquipmentAsync(
+        GrailCommand command,
+        GrailCommandContext context,
+        CancellationToken cancellationToken)
+    {
+        var index = 0;
+        if (command.Payload is GrailCharacterArgs args && !string.IsNullOrWhiteSpace(args.CharacterName))
+        {
+            var name = args.CharacterName;
+            index = name.StartsWith("小刀", StringComparison.Ordinal) ? 1
+                : name.StartsWith("轮滑", StringComparison.Ordinal) ? 2
+                : name.StartsWith("手枪", StringComparison.Ordinal) ? 3
+                : 0; // 幸运星/未识别名=默认第一格
+        }
+
+        var done = await preparationBoard.GrailChooseSimpleEquipmentAsync(
+            context.WindowHandle, index, cancellationToken);
+        return done
+            ? GrailCommandResult.Ok(command.Kind, $"已点击简易装备第 {index + 1} 项；弹框是否消失请 I1 复核。")
+            : GrailCommandResult.Fail(command.Kind, "简易装备选择点击未完成（组件返回失败）。");
     }
 
     /// <summary>

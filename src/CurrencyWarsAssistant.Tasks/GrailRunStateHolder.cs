@@ -36,6 +36,18 @@ public sealed class GrailRunStateHolder
     /// <summary>本局已在商店买到的角色名（同名只买一次；买完立即记录，跨帧持久，供去重）。</summary>
     private readonly HashSet<string> _purchasedNames = new(StringComparer.OrdinalIgnoreCase);
 
+    /// <summary>
+    /// 本局星徽携带者账本（2026-09-03 用户拍板：星徽一旦装备到角色身上，本局内恒绑定该角色，
+    /// 不卸下/卖掉不转移——角色装备识别漏读由本账本兜底，识别读数与账本取并集，识别永不推翻账本）。
+    /// 记账两级：A4 只传位置语义，先落 <see cref="_badgePositionsPending"/>（槽位→角色名未定）；
+    /// 组装器首次在该槽位识别到角色时提升为按名记账（角色换槽后仍随名携带）。
+    /// </summary>
+    private readonly HashSet<string> _badgeCarrierNames = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, string?> _badgePositionsPending = new(StringComparer.OrdinalIgnoreCase);
+    /// <summary>挂起槽位连续缺席计数（坑38 批次修复：动画期单帧可能整体丢槽，
+    /// 单帧缺席不消化——连续 ≥2 帧 Known 缺席才认定真空槽）。</summary>
+    private readonly Dictionary<string, int> _badgeAbsenceStrikes = new(StringComparer.OrdinalIgnoreCase);
+
     private int? _lastHealth;
     private DateTimeOffset? _healthCapturedAt;
     private int? _lastPopulation;
@@ -46,7 +58,8 @@ public sealed class GrailRunStateHolder
     /// <summary>
     /// 跨局复位（审计#6：同一刷取会话可能连续多局共用本持有器，事件态/缓存若不复位，
     /// 第 2 局会继承第 1 局的祈愿计数/聘用书/旗标 → G1③ 提前判死或假成功）。
-    /// 每轮开局前由 <see cref="GrailRunLoop"/> 调用。
+    /// 调用点=对局边界：生产 GrailRunLoop 每轮 new 持有器天然清零；指令测试台路径由
+    /// M8（GrailMacroCommands.RunOpeningAsync）显式调用（1.2.32 起）。
     /// </summary>
     public void Reset()
     {
@@ -64,6 +77,10 @@ public sealed class GrailRunStateHolder
             _xpSurcharge = false;
             _openingFormationApplied = false;
             _purchasedNames.Clear();
+            _badgeCarrierNames.Clear();
+            _badgePositionsPending.Clear();
+            _badgeAbsenceStrikes.Clear();
+            _lastFormationSlotCount = -1;
             _lastHealth = null;
             _healthCapturedAt = null;
             _lastPopulation = null;
@@ -285,6 +302,102 @@ public sealed class GrailRunStateHolder
         lock (_gate)
         {
             return new HashSet<string>(_purchasedNames, StringComparer.OrdinalIgnoreCase);
+        }
+    }
+
+    // ---------- 星徽携带者账本（识别漏读兜底，2026-09-03 用户拍板） ----------
+
+    /// <summary>A4 装配成功即调用（位置语义：如 "F2"/"B3"，1 基槽位号拼进键）。
+    /// 此时角色名未知，先挂起；组装器在该槽位首次识别到角色时提升为按名记账。</summary>
+    public void RecordBadgeEquippedAtSlot(string slotKey)
+    {
+        if (string.IsNullOrWhiteSpace(slotKey))
+        {
+            return;
+        }
+
+        lock (_gate)
+        {
+            _badgePositionsPending[slotKey] = null;
+        }
+    }
+
+    /// <summary>已知角色名的装配路径直接按名记账（预留 API：当前生产路径 A4 只知槽位，
+    /// 经组装器提升；名字直记供未来"装配时已知角色名"的流程使用）。</summary>
+    public void RecordBadgeCarrierName(string characterName)
+    {
+        if (string.IsNullOrWhiteSpace(characterName))
+        {
+            return;
+        }
+
+        lock (_gate)
+        {
+            _badgeCarrierNames.Add(characterName);
+        }
+    }
+
+    /// <summary>
+    /// 挂起槽位纠账（审查 P2 修复+坑38 批次加固）：阵容 Known 的帧里不在
+    /// <paramref name="occupiedSlotKeys"/> 内的挂起槽位累计缺席一次，**连续缺席 ≥2 帧**
+    /// 才认定真空槽并消化（动画期单帧可能整体丢槽，单帧缺席绝不消化——防把 A4 刚记的账吃掉）。
+    /// 槽位重新出现即清零计数。已提升为名字键的携带者不受影响（徽绑定角色）。
+    /// </summary>
+    public void ConsumeBadgePendingSlotsExcept(IReadOnlySet<string> occupiedSlotKeys)
+    {
+        lock (_gate)
+        {
+            foreach (var key in _badgePositionsPending.Keys.ToList())
+            {
+                if (occupiedSlotKeys.Contains(key))
+                {
+                    _badgeAbsenceStrikes.Remove(key);
+                    continue;
+                }
+
+                var strikes = _badgeAbsenceStrikes.GetValueOrDefault(key) + 1;
+                if (strikes >= 2)
+                {
+                    _badgePositionsPending.Remove(key);
+                    _badgeAbsenceStrikes.Remove(key);
+                }
+                else
+                {
+                    _badgeAbsenceStrikes[key] = strikes;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 组装器在挂起槽位识别到角色时调用：槽位记账提升为名字记账（并清除挂起项，
+    /// 防同一枚徽在角色换槽后被旧槽位重复计数）。槽位上没有角色则不动。
+    /// </summary>
+    public void PromoteBadgeCarrier(string slotKey, string characterName)
+    {
+        if (string.IsNullOrWhiteSpace(slotKey) || string.IsNullOrWhiteSpace(characterName))
+        {
+            return;
+        }
+
+        lock (_gate)
+        {
+            if (_badgePositionsPending.ContainsKey(slotKey))
+            {
+                _badgePositionsPending.Remove(slotKey);
+                _badgeCarrierNames.Add(characterName);
+            }
+        }
+    }
+
+    /// <summary>当前星徽账本快照：已按名记账的携带者 + 尚未解析角色的挂起槽位。</summary>
+    public (IReadOnlySet<string> CarrierNames, IReadOnlyDictionary<string, string?> PendingSlots) PeekBadgeLedger()
+    {
+        lock (_gate)
+        {
+            return (
+                new HashSet<string>(_badgeCarrierNames, StringComparer.OrdinalIgnoreCase),
+                new Dictionary<string, string?>(_badgePositionsPending, StringComparer.OrdinalIgnoreCase));
         }
     }
 

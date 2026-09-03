@@ -51,6 +51,15 @@ public sealed partial class GrailOperationExecutor(
     public IReadOnlySet<string> GrailBondMemberNames =>
         new HashSet<string>(GetBondMemberNames("命运圣杯"), StringComparer.OrdinalIgnoreCase);
 
+    /// <summary>A4 装配成功记账（星徽账本：装上即本局恒绑定该槽位角色，识别漏读由账本兜底
+    /// ——2026-09-03 用户拍板，组装器把账本与识别取并集）。</summary>
+    public void RecordBadgeEquippedAtSlot(string slotKey) =>
+        stateHolder.RecordBadgeEquippedAtSlot(slotKey);
+
+    /// <summary>当前星徽账本按名携带者（S1A 卖人过滤用：账本明知是携带者的角色绝不入卖人候选）。</summary>
+    public IReadOnlySet<string> PeekBadgeCarrierNames() =>
+        stateHolder.PeekBadgeLedger().CarrierNames;
+
     /// <summary>单次 ExecuteShopPassAsync 的购买目标上限（命杯 1 + 双银河学者场景兜底）。</summary>
     private const int MaxShopBuyTargetsPerPass = 3;
 
@@ -271,6 +280,10 @@ public sealed partial class GrailOperationExecutor(
 
             boughtAny = true;
             owned.Add(pass.BoughtCharacterName);
+            // 坑38 批次补（实测 2026-09-03）：默认路径此前不写持久账本，识别漏名时
+            // 圣杯循环的已购并集会缺失该角色 → 同名成员被重买。两本账与圣杯循环路径同口径。
+            _grailPurchaseLedger.Add(pass.BoughtCharacterName);
+            stateHolder.RecordPurchased(pass.BoughtCharacterName);
 
             // 上场：读到该角色后拖到前台（部署计数由本执行器维护，避免拖上已占槽）
             var bench = await preparationBoard.ReadStableBenchCharactersAsync(
@@ -591,10 +604,14 @@ public sealed partial class GrailOperationExecutor(
     {
         var bench = await preparationBoard.ReadStableBenchCharactersAsync(
             windowHandle, expectedPreparationPageId, cancellationToken) ?? [];
+        // P1 审查修复：账本按名携带者绝不入卖人候选——备战席识别不含装备明细，
+        // 只按非成员/非5费过滤会漏掉"换下场的星徽携带者"（坑34 同款风险）。
+        var badgeCarriers = PeekBadgeCarrierNames();
         var sellable = bench
             .Where(item => !item.Character.BondNames.Any(
                 bond => bond is not null && bond.Contains("命运圣杯", StringComparison.Ordinal))
-                && !IsPureFiveCost(item.Character))
+                && !IsPureFiveCost(item.Character)
+                && !badgeCarriers.Contains(item.Character.Name))
             .Take(snapshot.SellableBeyondKeepLineCount)
             .ToArray();
         // 交接包 S1A/S1B 语义（GrailSellAllAsync）：备战席候选+场上可卖候选都卖，

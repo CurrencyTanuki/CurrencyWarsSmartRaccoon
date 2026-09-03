@@ -57,7 +57,7 @@ public sealed class GrailCollectionSessionTests
         var fake = new FakeCollectionService();
         var loop = new GrailRunLoop(
             MatchedOpeningLoop,
-            new GrailOperationExecutor(null!, null!, null!, null!, new GrailRunStateHolder()),
+            new GrailOperationExecutor(null!, null!, null!, null!, new GrailRunStateHolder(), EmptyGameData()),
             new GrailRunStateHolder(),
             new GrailRecognitionListener(fake),
             EmptyGameData(),

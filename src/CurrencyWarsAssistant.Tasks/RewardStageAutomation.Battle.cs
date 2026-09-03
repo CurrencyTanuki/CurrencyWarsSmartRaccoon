@@ -9,7 +9,7 @@ namespace CurrencyWarsAssistant.Tasks;
 
 public sealed partial class RewardStageAutomationController
 {
-    private async Task<bool> AdvanceBattleToPageAsync(
+    internal async Task<bool> AdvanceBattleToPageAsync(
         nint windowHandle,
         string preparationPageId,
         string expectedPostBattlePageId,
@@ -984,8 +984,49 @@ public sealed partial class RewardStageAutomationController
             cancellationToken);
     }
 
-    private async Task<RewardStageAutomationResult>
+    internal async Task<RewardStageAutomationResult>
         SelectInvestmentStrategyAsync(
+            nint windowHandle,
+            IReadOnlySet<string> preferredStrategyIds,
+            CancellationToken cancellationToken)
+    {
+        // 新机制（2026-09-02 用户拍板）：部分投资策略会给新一轮策略选择——选完界面不退出
+        // 且该界面无法按 Esc 回退。因此循环选择：每轮选完复查界面，仍在策略选择页=继续按
+        // 同一优先级再选（N11 软门槛同轮生效），以最新一次为本局策略；上限 6 轮绝不卡死。
+        const int maximumSelectionRounds = 6;
+        var round = 0;
+        while (true)
+        {
+            round++;
+            var result = await SelectInvestmentStrategyOnceAsync(
+                windowHandle,
+                preferredStrategyIds,
+                cancellationToken);
+            if (result.Status != RewardStageAutomationStatus.InvestmentStrategySelected
+                || round >= maximumSelectionRounds)
+            {
+                return result;
+            }
+
+            await Task.Delay(TimeSpan.FromMilliseconds(1200), cancellationToken);
+            var entry = await ReadStablePageAsync(windowHandle, cancellationToken);
+            if (!string.Equals(
+                    entry?.PageId,
+                    "investment_strategy",
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                return result; // 界面已离开：最后一次选择即本局策略
+            }
+
+            Publish(
+                "InvestmentStrategyReselected",
+                $"所选策略赋予新一轮策略选择（第 {round} 轮选完界面未退出，且该界面无法 Esc）；按同一优先级继续再选，以最新为准。",
+                TaskEventLevel.Warning);
+        }
+    }
+
+    private async Task<RewardStageAutomationResult>
+        SelectInvestmentStrategyOnceAsync(
             nint windowHandle,
             IReadOnlySet<string> preferredStrategyIds,
             CancellationToken cancellationToken)

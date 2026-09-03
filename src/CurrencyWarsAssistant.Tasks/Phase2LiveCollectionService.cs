@@ -64,6 +64,24 @@ public sealed class Phase2LiveCollectionService(
         TimeSpan.FromSeconds(10);
     internal static readonly TimeSpan MaximumFailureRecoveryDuration =
         TimeSpan.FromMinutes(2);
+    /// <summary>
+    /// 识别流看门狗阈值：连续这么久收不到任何管线帧（心跳间隔 2s、
+    /// 失败帧即时产出，正常情况下几十毫秒~2 秒必有一帧）即判定管线冻结。
+    /// 2026-09-02 实测：管线挂起会让帧流静默冻结且零错误上报。
+    /// </summary>
+    internal static readonly TimeSpan FrameFlowWatchdogTimeout =
+        TimeSpan.FromSeconds(60);
+    /// <summary>
+    /// 新鲜度看门狗阈值：心跳（2s 间隔）仍在续传但完整识别分析
+    /// （非心跳帧）超过这么久没有新产出，判定识别 worker 的
+    /// AnalyzeAsync 挂起——心跳携带的是冻结前的旧分析对象，
+    /// 绝不能让下游当成现状。2026-09-02 实机两度复现（1.2.4/1.2.6）。
+    /// </summary>
+    internal static readonly TimeSpan FreshAnalysisWatchdogTimeout =
+        TimeSpan.FromSeconds(60);
+    /// <summary>看门狗触发后等待管线随取消令牌自行收断的宽限；超时即放弃 Dispose。</summary>
+    internal static readonly TimeSpan WatchdogShutdownGrace =
+        TimeSpan.FromSeconds(10);
     private const int FailureCheckpointThreshold = 5;
     // 对局结束页需要连续帧确认才 finalize（用户要求：只有可靠识别到
     // "挑战结束/挑战失败"两个灰色页面才判定对局结束，防误判提前截断对局）。
@@ -236,14 +254,121 @@ public sealed class Phase2LiveCollectionService(
             }
         }
 
+        // 识别流看门狗（2026-09-02 实测事故修复）：管线任一环（抓屏/OCR）无超时
+        // 挂起会让帧流静默冻结——主循环无限等下一帧、checkpoint 保持 active、
+        // 连 2 秒心跳都消失且零错误上报（test-session-20260902-075910：
+        // 08:04:23 后 5 分钟无帧）。冻结即响亮失败，绝不静默僵死。
+        // 释放纪律（子代理审查 P1）：迭代器的 MoveNextAsync 仍挂起时 DisposeAsync
+        // 必抛 NotSupportedException——看门狗触发后必须先取消管线令牌、限时排干
+        // 挂起的 MoveNext（流结束/随令牌退出皆算收尾成功），之后才允许 Dispose；
+        // 排干失败（宽限内仍未结束）刻意放弃 Dispose，由取消令牌让管线自断。
+        var pipelineCts =
+            CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        var pipelineEnumerator = pipeline
+            .RunAsync(gameWindowHandle, selection, () => runId, pipelineCts.Token)
+            .GetAsyncEnumerator(cancellationToken);
+        var enumeratorDisposalSafe = true;
+        // 两条看门狗（帧流冻结/新鲜度冻结）共用的响亮失败收尾：
+        // 发布错误 → 取消管线令牌 → 限时排干挂起的 MoveNext
+        // （流结束/随令牌退出皆算收尾成功；宽限内仍未结束则放弃
+        // Dispose，由取消令牌让管线自断——见上方释放纪律注释）。
+        async Task<bool> ShutdownFrozenPipelineAsync(
+            string message,
+            Task? pendingMoveNext)
+        {
+            Publish(
+                runId,
+                savedCount,
+                null,
+                message,
+                isError: true);
+            pipelineCts.Cancel();
+            pendingMoveNext ??= pipelineEnumerator.MoveNextAsync().AsTask();
+            try
+            {
+                await pendingMoveNext.WaitAsync(WatchdogShutdownGrace)
+                    .ConfigureAwait(false);
+            }
+            catch (OperationCanceledException)
+            {
+                // 预期：管线随看门狗取消退出，迭代器已终结，可安全释放。
+            }
+            catch (Exception)
+            {
+                // 宽限内仍未结束：放弃等待与 Dispose（刻意泄漏，由取消令牌收断）。
+                enumeratorDisposalSafe = false;
+            }
+
+            return true;
+        }
+
+        // 新鲜度看门狗（2026-09-02 第二种冻结形态，1.2.4/1.2.6 两度实测）：
+        // 心跳每 2s 照常续传旧分析对象，帧流看门狗永不触发，而识别 worker
+        // 的 AnalyzeAsync 已挂起——下游（I1 等）会把冻结前的旧帧当现状。
+        // 因此另设：非心跳的完整分析超时未产出，同样响亮失败。
+        var lastFreshAnalysisAt = DateTimeOffset.UtcNow;
         try
         {
-            await foreach (var pipelineUpdate in pipeline.RunAsync(
-                               gameWindowHandle,
-                               selection,
-                               () => runId,
-                               cancellationToken).ConfigureAwait(false))
+            try
             {
+            while (true)
+            {
+                Phase2RealtimePipelineUpdate pipelineUpdate;
+                var moveNext = pipelineEnumerator.MoveNextAsync().AsTask();
+                if (await Task.WhenAny(
+                            moveNext,
+                            Task.Delay(FrameFlowWatchdogTimeout, cancellationToken))
+                        .ConfigureAwait(false) != moveNext)
+                {
+                    // STOP 竞态（等待期间会话被取消）：不发布看门狗错误，直接走正常取消收尾。
+                    cancellationToken.ThrowIfCancellationRequested();
+                    if (await ShutdownFrozenPipelineAsync(
+                            $"识别流看门狗：{FrameFlowWatchdogTimeout.TotalSeconds:F0} 秒未收到任何帧" +
+                            "（含心跳与失败帧），判定识别管线冻结；记录器已暂停，" +
+                            "请停止并重新启动识别会话。此前界面上的读数为冻结前的旧帧。",
+                            moveNext)
+                            .ConfigureAwait(false))
+                    {
+                        break;
+                    }
+                }
+
+                if (moveNext.IsCanceled)
+                {
+                    // 竞态窗口加固（复核 P2）：canceled 任务读 .Result 会抛
+                    // AggregateException 穿透 catch(OCE)，先转成标准 OCE 路径。
+                    cancellationToken.ThrowIfCancellationRequested();
+                    throw new OperationCanceledException(cancellationToken);
+                }
+
+                if (!moveNext.Result)
+                {
+                    break; // 帧流正常结束
+                }
+
+                pipelineUpdate = pipelineEnumerator.Current;
+
+                if (pipelineUpdate.IsHeartbeat)
+                {
+                    var analysisStaleness =
+                        DateTimeOffset.UtcNow - lastFreshAnalysisAt;
+                    if (analysisStaleness >= FreshAnalysisWatchdogTimeout &&
+                        await ShutdownFrozenPipelineAsync(
+                            $"新鲜度看门狗：心跳仍在续传，但已 " +
+                            $"{analysisStaleness.TotalSeconds:F0} 秒没有新的完整识别分析，" +
+                            "判定识别分析环节挂起；心跳携带的是冻结前的旧状态，" +
+                            "绝不可当现状。请停止并重新启动识别会话。",
+                            null)
+                            .ConfigureAwait(false))
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    lastFreshAnalysisAt = DateTimeOffset.UtcNow;
+                }
+
                 try
                 {
                     if (pipelineUpdate.Error is not null)
@@ -1195,11 +1320,10 @@ public sealed class Phase2LiveCollectionService(
                         cancellationToken)
                     .ConfigureAwait(false);
             }
+            }
 
-        }
-
-        _saveQueue.Writer.TryComplete();
-        await savePump.ConfigureAwait(false);
+            _saveQueue.Writer.TryComplete();
+            await savePump.ConfigureAwait(false);
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
@@ -1209,6 +1333,23 @@ public sealed class Phase2LiveCollectionService(
         {
             evidenceFrameCache.Clear();
         }
+        }
+        finally
+            {
+                if (enumeratorDisposalSafe)
+                {
+                    try
+                    {
+                        await pipelineEnumerator.DisposeAsync().ConfigureAwait(false);
+                    }
+                    catch (NotSupportedException)
+                    {
+                        // MoveNextAsync 仍挂起时释放必抛；此时管线已随令牌取消自行收断。
+                    }
+                }
+
+                pipelineCts.Dispose();
+            }
 
         checkpoint = checkpoint with
         {

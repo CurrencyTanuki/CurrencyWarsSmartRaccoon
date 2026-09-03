@@ -432,6 +432,53 @@ public sealed class OpeningRerollLoopCoordinatorTests
     }
 
     [Fact]
+    public async Task StopAtPreparationEntryReturnsMatchedWithoutDeploying()
+    {
+        var navigator = new FakeNavigator(
+            CompleteNavigation(),
+            ReachedPreparation("environment_2"));
+        var preparation = new FakePreparationBoardController(
+            new PreparationBoardResult(
+                PreparationBoardStatus.Deployed,
+                [],
+                [],
+                "布阵完成，停在 1-1。"));
+        var coordinator = CreateCoordinator(
+            navigator,
+            new NotConfiguredRejectedOpeningRecovery(),
+            preparation);
+        var milestones = new List<OpeningRerollMilestone>();
+        coordinator.ProgressChanged += (_, progress) =>
+            milestones.Add(progress.Milestone);
+
+        var result = await coordinator.RunAsync(
+            1,
+            new OpeningFilterSet(),
+            new OpeningRerollLoopOptions
+            {
+                DeployMatchedOpening = true,
+                StopAtPreparationEntry = true
+            },
+            CancellationToken.None);
+
+        Assert.Equal(OpeningRerollLoopState.Matched, result.FinalState);
+        Assert.Contains("备战席", result.Message);
+        Assert.Contains("立刻停", result.Message);
+        Assert.Equal(2, navigator.Options.Count);
+        Assert.True(navigator.Options[1].StopAtPreparation);
+        Assert.Equal(0, preparation.Calls);
+        Assert.Contains(
+            OpeningRerollMilestone.AcceptedOpeningReadyForRecording,
+            milestones);
+        Assert.DoesNotContain(
+            OpeningRerollMilestone.AcceptedOpeningRejected,
+            milestones);
+        Assert.Equal(
+            "environment_2",
+            result.Navigation!.SelectedInvestmentEnvironmentId);
+    }
+
+    [Fact]
     public async Task UnusableInitialBenchTurnsMatchedOpeningIntoReroll()
     {
         var navigator = new FakeNavigator(

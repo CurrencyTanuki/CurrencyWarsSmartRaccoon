@@ -67,6 +67,12 @@ public sealed class OpeningRerollLoopOptions
     public bool DeployMatchedOpening { get; init; }
     public bool CompleteRewardStages { get; init; }
     /// <summary>
+    /// 命中并选中投资环境、导航到达 1-1 备战席后立刻返回 Matched，
+    /// 不布阵、不进奖励关（2026-09-02 用户拍板：停靠点=备战席入口，
+    /// 布阵及之后全部由指令驱动接手）。仅在 DeployMatchedOpening=true 时有意义。
+    /// </summary>
+    public bool StopAtPreparationEntry { get; init; }
+    /// <summary>
     /// Optional reward-stage deployment allow-list. It must not be populated
     /// from the user's retain-or-buy lists. Null or empty uses the built-in
     /// reward formation roster.
@@ -366,6 +372,30 @@ public sealed class OpeningRerollLoopCoordinator(
                     break;
                 }
 
+                // 入口状态修复（2026-09-02 实测）：从「已停在投资环境页」启动时（如 M8 仅环境
+                // 停在此处后接续），敌人概览页未经过→敌情读数为 null，但环境识别是完整的。
+                // 命运圣杯过滤只含环境条件，敌情为空完全合法——放行门只要求环境数据。
+                if (navigation.FinalState is
+                        CurrencyWarsNavigationState.OpeningRecognized or
+                        CurrencyWarsNavigationState
+                            .InvestmentEnvironmentFallbackSelected &&
+                    navigation.InvestmentEnvironments is not null)
+                {
+                    break;
+                }
+
+                // 二级防线：非常规成功态但环境识别完整（如导航器中间态失败）也放行，
+                // 首次成功立即跳出重试环——不在该页面反复试探（该页 Esc 无效）。
+                if (navigation.InvestmentEnvironments is not null)
+                {
+                    Publish(
+                        OpeningRerollLoopState.Navigating,
+                        round,
+                        $"导航未到常规成功态（{navigation.FinalState}），" +
+                        "但投资环境识别完整（敌情未经过页为空属正常），按已识别放行评估。");
+                    break;
+                }
+
                 if (!IsRetriableNavigationFailure(navigation.FinalState))
                 {
                     return Result(
@@ -511,6 +541,21 @@ public sealed class OpeningRerollLoopCoordinator(
                         null,
                         $"第 {round} 轮开局已满足条件，但进入 1-1 失败：" +
                         navigation.Message);
+                }
+
+                // 备战席入口即停（2026-09-02 用户拍板停靠点）：选中环境进入 1-1 后
+                // 立刻返回，布阵与之后的流程全部由决策层逐条指令接手。
+                if (options.StopAtPreparationEntry)
+                {
+                    return Result(
+                        OpeningRerollLoopState.Matched,
+                        round,
+                        snapshot,
+                        evaluation,
+                        navigation,
+                        null,
+                        $"第 {round} 轮命中并已选中投资环境，已进入 1-1 备战席，" +
+                        "按指令立刻停（不布阵、不进奖励关）。");
                 }
 
                 if (preparationBoardController is null)
@@ -775,12 +820,13 @@ public sealed class OpeningRerollLoopCoordinator(
             navigation.InvestmentEnvironments!.InvestmentEnvironments
                 .Select(item => item.Id)
                 .ToArray(),
-            navigation.EnemyOverview!.RecognizedCompetitors
+            // 入口状态修复：从投资环境页直接进入时敌情页未经过，敌情为空属正常（过滤器只含环境条件）。
+            navigation.EnemyOverview?.RecognizedCompetitors
                 .Select(item => item.Id)
-                .ToArray(),
-            navigation.EnemyOverview.RecognizedEnemyModifiers
+                .ToArray() ?? [],
+            navigation.EnemyOverview?.RecognizedEnemyModifiers
                 .Select(item => item.Id)
-                .ToArray());
+                .ToArray() ?? []);
 
     private OpeningFilterProfile? SelectMatchedProfile(
         OpeningFilterSet filters,

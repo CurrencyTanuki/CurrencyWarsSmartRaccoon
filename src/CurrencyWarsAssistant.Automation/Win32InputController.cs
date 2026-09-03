@@ -216,6 +216,13 @@ public sealed class Win32InputController : IInputController
         var stepDelay = TimeSpan.FromTicks(Math.Max(1, duration.Ticks / steps));
         try
         {
+            // 物品类拖拽需要按下后停留一拍，游戏才把物品吸附到光标上
+            //（角色卡即时抓取不受影响：默认 MouseButtonHoldDelay=Zero）。
+            if (policy.MouseButtonHoldDelay > TimeSpan.Zero)
+            {
+                await Task.Delay(policy.MouseButtonHoldDelay, cancellationToken);
+            }
+
             for (var index = 1; index <= steps; index++)
             {
                 cancellationToken.ThrowIfCancellationRequested();

@@ -1,3 +1,5 @@
+using CurrencyWarsAssistant.Advisor;
+
 namespace CurrencyWarsAssistant.Tasks;
 
 /// <summary>用户目标模式（定稿决策树 L3/L9）。</summary>
@@ -15,7 +17,8 @@ public sealed record GrailDeployedCharacter(
     string Name,
     bool IsBondMember,
     bool IsFiveCost,
-    CurrencyWarsAssistant.Advisor.RelativeRegion CardRegion);
+    CurrencyWarsAssistant.Advisor.RelativeRegion CardRegion,
+    int SaleValue = 0);
 
 /// <summary>祈愿弹框的某一侧（F2 识别的左右两个试炼）。</summary>
 public enum GrailTrialSide
@@ -78,9 +81,23 @@ public sealed record GrailRunSnapshot
 
     /// <summary>
     /// 第 5 个羁绊成员是否已经出现（商店刷出未拥有的命杯成员 / 第二枚命运圣杯星徽到手）——执行层回填。
-    /// N16 的买经验门槛以此为前置，避免“理论上可获取但并未出现”时白烧 8 金币买经验。
-    /// </summary>
+    /// N16 的买经验门槛以此为前置，避免“理论上可获取但并未出现”时白烧 8 金币买经验。</summary>
     public bool NewBondMemberAvailable { get; init; }
+
+    /// <summary>
+    /// 当前已选投资策略 ID 集（识别层从备战页策略图标回填，单调保留——N12 判断
+    /// 「采购专员」刷牌机制的锚点；含采购专员·金 051 / 采购专员·彩 238）。
+    /// </summary>
+    public IReadOnlySet<string> ActiveInvestmentStrategyIds { get; init; } =
+        new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// 物品栏中未携带星徽的物品区域（相对窗口客户区 0..1；N2 星徽装配的拖拽源点，
+    /// 与 <see cref="UncarriedStarBadges"/> 同源——识别层 InventorySlots 中
+    /// ItemId==<see cref="GrailSnapshotAssembler.StarBadgeEquipmentId"/> 的槽）。
+    /// </summary>
+    public IReadOnlyList<RelativeRegion> InventoryStarBadgeRegions { get; init; } =
+        Array.Empty<RelativeRegion>();
 
     /// <summary>已上场且携带命运圣杯星徽、但本身不是命杯成员的角色数（每名 +1 羁绊计数；由装备槽识别回填）。</summary>
     public int BadgeCarrierNonMembers { get; init; }
@@ -98,7 +115,7 @@ public sealed record GrailRunSnapshot
     /// <summary>已拥有的角色名全集（同名去重购买依据：开局附赠/开金矿开到/已购买都算已拥有）。</summary>
     public IReadOnlySet<string> OwnedCharacterNames { get; init; } = new HashSet<string>();
 
-    /// <summary>场上（前台/后台/备战席）是否存在 5 费角色（L4/F14a 口径，067 放备战席的也算）。</summary>
+    /// <summary>场上（前台/后台/备战席）是否存在 5 费角色（L4 口径；067 放备战席的也算）。</summary>
     public bool HasFiveCostBody { get; init; }
 
     /// <summary>场上（含备战席）是否存在名为昔涟的 5 费角色（L10）。</summary>
@@ -125,13 +142,44 @@ public sealed record GrailRunSnapshot
     /// <summary>是否已触发 N17b（5 档激活机会永久放弃）——闩锁，防止后续重复进入买经验分支。</summary>
     public bool FiveBondGivenUp { get; init; }
 
-    /// <summary>可出售角色数（执行层按“非命杯成员、非星徽携带者、非任何已拥有 5 费”过滤，并已扣除保留线=星徽数）。</summary>
     /// <summary>
-    /// 场上（前台/后台）的非命杯角色（含卡牌归一化区域）：1-3 后可按用户确认的卖法
-    /// 直接拖到出售区（出售区坐标沿用既有 SellTargetPoints）。组装器回填；5 费不在其中。
+    /// 场上（前台+后台）已部署角色总数（含命杯成员/星徽携带者/非命杯；5 费一般在备战席）。
+    /// 组装器按 Formation 的 Front/Back 槽位回填；执行器 N14 部署新成员时用它算下一个空位
+    /// （替代旧的自维护计数器——旧计数器不反映 1-1/1-2/N13 已上场成员，会把新成员拖到已占槽=互换）。
+    /// </summary>
+    public int DeployedCount { get; init; }
+
+    /// <summary>上场角色明细（"F1:希儿[星徽]"格式：区划+槽位+角色名+星徽标记）——
+    /// I10 直接回报阵容事实，决策层不再需要游戏外截图（2026-09-02 用户令）。</summary>
+    public IReadOnlyList<string> DeployedCharacterDetails { get; init; } =
+        Array.Empty<string>();
+
+    /// <summary>备战席角色明细（"槽位:角色名"）。备战席不识别装备（既有识别边界）。</summary>
+    public IReadOnlyList<string> BenchCharacterDetails { get; init; } =
+        Array.Empty<string>();
+
+    /// <summary>
+    /// 前台（Front）已占用槽位索引集合（0..3）。组装器按 Formation 的 Front 槽位回填，
+    /// 含 Uncertain 占位槽（CharacterId 非空即算已占，宁可保守不选该槽）。N14 部署用
+    /// 它找实际空槽，替代纯计数派生——纯计数在"开局 PrefersBack 占 Back 槽"等场景会把
+    /// 新成员映射到已占槽=互换（终审窄边界）。
+    /// </summary>
+    public IReadOnlySet<int> OccupiedFrontSlots { get; init; } = new HashSet<int>();
+
+    /// <summary>后台（Back）已占用槽位索引集合（0..5）。语义同 <see cref="OccupiedFrontSlots"/>。</summary>
+    public IReadOnlySet<int> OccupiedBackSlots { get; init; } = new HashSet<int>();
+
+    /// <summary>
+    /// 场上（前台/后台）的**可卖**非命杯角色（含卡牌归一化区域）：1-3 后按用户确认的卖法
+    /// 直接拖到出售区（出售区坐标沿用既有 SellTargetPoints）。组装器回填；
+    /// 已排除：命杯成员、5 费、星徽携带者（三者绝不卖——用户拍板）。
     /// </summary>
     public IReadOnlyList<GrailDeployedCharacter> DeployedNonGrailCharacters { get; init; } =
         Array.Empty<GrailDeployedCharacter>();
+
+    /// <summary>可出售角色数（场上+备战席可卖池扣除保留线=物品栏未装配星徽数后的数量；S1A/S1B 用 &gt;0 判断是否仍有可卖）。</summary>
+    /// <summary>识别异常注记（1.2.31）：同名多处等身份事故标记，供决策层拒采。</summary>
+    public string AnomalyNotes { get; init; } = string.Empty;
 
     public int SellableBeyondKeepLineCount { get; init; }
 

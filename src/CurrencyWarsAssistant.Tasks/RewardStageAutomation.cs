@@ -175,6 +175,13 @@ public sealed partial class RewardStageAutomationController(
 
     private bool _softInvestmentStrategyRequirement;
 
+    /// <summary>决策层（M7 指令路径）开关：定稿树 N11——策略全未命中→按正常流程选最左一张推进，
+    /// 不允许因挑策略弃局。RunAsync 会按 options 重置，指令路径须在调用前显式打开。</summary>
+    public bool SoftInvestmentStrategyRequirementEnabled
+    {
+        set => _softInvestmentStrategyRequirement = value;
+    }
+
     public async Task<RewardStageAutomationResult> RunAsync(
         nint windowHandle,
         RewardStageAutomationOptions options,

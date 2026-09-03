@@ -1,0 +1,778 @@
+using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
+using CurrencyWarsAssistant.Advisor;
+using CurrencyWarsAssistant.Game;
+using CurrencyWarsAssistant.Tasks;
+using CurrencyWarsAssistant.Vision;
+
+namespace CurrencyWarsAssistant.App;
+
+/// <summary>
+/// 指令测试台（--command-test 启动，特殊测试包专用）：只含「接收指令→执行→回显」一个功能，
+/// 不含任何自动决策——决策层由远程 AI 代管，经文件通道下发指令。
+/// <para>
+/// 文件通道（均在 exe 同目录）：
+/// - 指令测试-command.txt：AI 写入，一行一条指令；本窗口轮询读到后立即删除再执行（防重复）。
+/// - 指令测试-result.txt：同步等待协议回执——每条指令<strong>接收时</strong>先写
+///   「{指令} ⇢ 已接收，执行中…」，<strong>执行完毕</strong>再写终态行「{指令} ⇒ OK/失败：摘要」。
+///   远程 AI 轮询结果文件、等到该指令的「⇒」终态行即视为执行完毕，期间短间隔轮询、
+///   不设固定长休眠（2026-09-02 用户裁定）。
+/// </para>
+/// <para>
+/// 指令语法（首 token 为指令号，其余按指令给语义参数）：
+///   I1~I10                     识别（不带参数）
+///   A1 角色名 前台|后台          部署上场
+///   A4 前台|后台 槽位号          星徽装配（位置语义，拖物品栏星徽到该槽位角色）
+///   A3 角色名                   出售备战席角色
+///   A6 / A9                    买经验 / 弃局回主页
+///   A10 id1,id2,...            按策略 ID 优先集选投资策略
+///   M1 备战页ID 落地页ID        打完一场战斗推进到落地页
+///   M3 / M4 / M5               祈愿应答 / 开聘用书 / 商店 Pass（M5 圣杯=1-3 N14 循环语义）
+///   M7 [id1,id2,...]           选投资策略（缺省=写死优先级）
+///   M8                         刷到命中→选中进局→1-1 备战席立刻停
+///   STATUS                     查看状态（游戏窗口/识别会话/最新帧/目标模式）
+///   START / STOP               启动 / 停止识别会话（实时采集）
+///   GOAL 单人|全员              设置目标模式（影响 M3/M4 的决策语义）
+/// 尚无底层实现的指令（A2/A4/A5/A7/A11/A12/A13/A14、M2/M6）返回失败事实并注明缺口。
+/// </para>
+/// </summary>
+public sealed class CommandTestWindow : Window
+{
+    private static readonly string CommandFilePath =
+        Path.Combine(AppContext.BaseDirectory, "指令测试-command.txt");
+    private static readonly string ResultFilePath =
+        Path.Combine(AppContext.BaseDirectory, "指令测试-result.txt");
+    private static readonly string AbortFilePath =
+        Path.Combine(AppContext.BaseDirectory, "指令测试-abort.txt");
+
+    private readonly GrailRunStateHolder _stateHolder = new();
+    private readonly GrailRecognitionListener _listener;
+    private readonly GrailOperationExecutor _executor;
+    private readonly GrailCommandDispatcher _dispatcher;
+    private readonly IPhase2LiveCollectionService _collectionService;
+    private readonly IGameWindowService _gameWindowService;
+    private readonly GameDataCatalog _gameData;
+    private readonly DispatcherTimer _timer = null!;
+    private readonly TextBox _logBox = new()
+    {
+        IsReadOnly = true,
+        VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+        FontFamily = new System.Windows.Media.FontFamily("Consolas"),
+        TextWrapping = TextWrapping.Wrap,
+    };
+    private readonly TextBlock _statusText = new()
+    {
+        TextWrapping = TextWrapping.Wrap,
+        Margin = new Thickness(8),
+    };
+
+    private CancellationTokenSource? _collectionCts;
+    private Task? _collectionTask;
+    private GrailUserGoal _goal = GrailUserGoal.Single;
+    private bool _busy;
+    private CancellationTokenSource? _activeCommandCts;
+    /// <summary>结果文件写锁：急停监听线程与 UI 线程可能并发回写，防止交错/冲突丢行。</summary>
+    private readonly object _resultFileLock = new();
+    private bool _collectionMessageSubscribed;
+
+    public CommandTestWindow(
+        GameDataCatalog gameData,
+        PreparationBoardController preparationBoard,
+        RewardStageAutomationController rewardStage,
+        WishTrialSelectionAutomation trialSelection,
+        TrialRecruitSelectionAutomation trialRecruit,
+        IRunAbandoner runAbandoner,
+        IPhase2LiveCollectionService collectionService,
+        IGameWindowService gameWindowService,
+        OpeningRerollLoopCoordinator openingCoordinator)
+    {
+        _collectionService = collectionService;
+        _gameWindowService = gameWindowService;
+        _gameData = gameData;
+        _listener = new GrailRecognitionListener(collectionService);
+        _executor = new GrailOperationExecutor(
+            rewardStage, preparationBoard, trialSelection, trialRecruit, _stateHolder, gameData);
+        var recognition = new GrailRecognitionCommands(
+            _listener, _stateHolder, gameData, preparationBoard, rewardStage, trialSelection);
+        var operation = new GrailOperationCommands(
+            _executor, rewardStage, preparationBoard, runAbandoner);
+        var macro = new GrailMacroCommands(
+            _executor, rewardStage, _stateHolder, _listener, openingCoordinator.RunAsync);
+        _dispatcher = new GrailCommandDispatcher(recognition, operation, macro);
+
+        Title = "指令测试台（决策层由 AI 代管）";
+        Width = 720;
+        Height = 520;
+
+        var buttonPanel = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(8, 4, 8, 4) };
+        buttonPanel.Children.Add(MakeButton("启动识别会话", () => _ = ExecuteLineAsync("START")));
+        buttonPanel.Children.Add(MakeButton("停止识别会话", () => _ = ExecuteLineAsync("STOP")));
+        buttonPanel.Children.Add(MakeButton("状态", () => _ = ExecuteLineAsync("STATUS")));
+
+        var root = new DockPanel();
+        DockPanel.SetDock(buttonPanel, Dock.Top);
+        root.Children.Add(buttonPanel);
+        DockPanel.SetDock(_statusText, Dock.Top);
+        root.Children.Add(_statusText);
+        root.Children.Add(_logBox);
+        Content = root;
+
+        Loaded += (_, _) =>
+        {
+            QuarantineLeftoverCommandFile();
+            AppendLog(
+                $"指令文件：{CommandFilePath}{Environment.NewLine}结果文件：{ResultFilePath}{Environment.NewLine}" +
+                "把指令写进指令文件即可（一行一条）。先「启动识别会话」再发识别类指令。");
+        };
+        Closed += (_, _) =>
+        {
+            _timer.Stop();
+            // 关窗必须同时中断执行中的指令（如 M8 的整局循环）与识别会话——
+            // 2026-09-02 事故：只停识别会话时，协调器任务在关窗后仍持续
+            // 自愈弃局/重开导航一个多小时（事件日志 01:20~02:05 可证）。
+            _activeCommandCts?.Cancel();
+            _collectionCts?.Cancel();
+            _listener.Unsubscribe();
+            if (_collectionMessageSubscribed)
+            {
+                _collectionService.Updated -= OnCollectionMessage;
+                _collectionMessageSubscribed = false;
+            }
+        };
+
+        QuarantineLeftoverCommandFile();
+        _timer = new DispatcherTimer(DispatcherPriority.Background)
+        {
+            Interval = TimeSpan.FromMilliseconds(700),
+        };
+        _timer.Tick += async (_, _) => await PollCommandFileAsync();
+        _timer.Start();
+        _ = Task.Run(AbortWatcherLoopAsync);
+    }
+
+    /// <summary>
+    /// 启动残留指令隔离（2026-09-02 事故修复）：轮询器开窗 700ms 后就会读取并执行
+    /// 指令文件——上次会话残留的指令（如 M8）会让软件在无人下令的情况下立即操作
+    /// 游戏。因此窗口加载时若发现指令文件已存在，一律改名为 .残留.bak 隔离，
+    /// 绝不执行；需要执行请重新写入新指令。
+    /// </summary>
+    private void QuarantineLeftoverCommandFile()
+    {
+        try
+        {
+            if (!File.Exists(CommandFilePath))
+            {
+                return;
+            }
+
+            var quarantinePath = $"{CommandFilePath}.{DateTimeOffset.Now:yyyyMMdd-HHmmss}.残留.bak";
+            File.Move(CommandFilePath, quarantinePath);
+            AppendLog(
+                $"⚠ 检测到启动前残留的指令文件，已隔离为 {Path.GetFileName(quarantinePath)}，不会执行其中任何指令。");
+            AppendResult("启动隔离", ok: true, summary: $"残留指令文件已改名为 {Path.GetFileName(quarantinePath)}，未执行");
+        }
+        catch (Exception)
+        {
+            // 改名失败（占用/权限等）时保守起见删除，宁可丢弃残留指令也绝不执行；
+            // 隔离本身绝不能把异常抛回构造函数导致窗口无法打开。
+            try
+            {
+                File.Delete(CommandFilePath);
+                AppendLog("⚠ 检测到启动前残留的指令文件且无法隔离，已直接删除，不会执行其中任何指令。");
+                AppendResult("启动隔离", ok: true, summary: "残留指令文件无法改名，已删除，未执行");
+            }
+            catch (Exception)
+            {
+                // 删除也失败：轮询器仍会读到，只能记录并警示（极端占用场景）。
+                AppendLog("⚠ 检测到启动前残留的指令文件，且隔离/删除均失败——请人工检查指令文件。");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 急停通道（独立于 _busy 轮询，任何时刻可用）：写入 指令测试-abort.txt 即中断
+    /// 当前执行中的指令（M8 卡住时的软件内解法，无需关闭窗口）。
+    /// </summary>
+    private async Task AbortWatcherLoopAsync()
+    {
+        while (true)
+        {
+            await Task.Delay(500);
+            try
+            {
+                if (!File.Exists(AbortFilePath))
+                {
+                    continue;
+                }
+
+                File.Delete(AbortFilePath);
+                var cts = _activeCommandCts;
+                if (cts is null)
+                {
+                    AppendResult("ABORT", ok: true, summary: "当前没有执行中的指令");
+                    continue;
+                }
+
+                AppendLog("收到急停：正在中断当前指令…");
+                AppendResult("ABORT", ok: true, summary: "已请求中断当前指令");
+                cts.Cancel();
+            }
+            catch (IOException)
+            {
+                // 文件被写入方占用时下轮再取
+            }
+        }
+    }
+
+    private Button MakeButton(string text, Action onClick)
+    {
+        var button = new Button { Content = text, Margin = new Thickness(0, 0, 8, 0), Padding = new Thickness(10, 4, 10, 4) };
+        button.Click += (_, _) => onClick();
+        return button;
+    }
+
+    // ---- 指令轮询与执行 ----
+
+    private async Task PollCommandFileAsync()
+    {
+        if (_busy)
+        {
+            return;
+        }
+
+        // 遥控自退通道（2026-09-02 用户授权最大自主权）：写入 指令测试-exit.txt 即干净关窗。
+        // 用途=版本更替：AI 关旧窗→覆盖文件→经计划任务免 UAC 拉起新版，全程无需用户点 ×。
+        // 仅空闲时消费（忙时先 abort 再 exit），避免打断执行中的任务。
+        try
+        {
+            var exitPath = Path.Combine(AppContext.BaseDirectory, "指令测试-exit.txt");
+            if (File.Exists(exitPath))
+            {
+                File.Delete(exitPath);
+                AppendLog("收到遥控退出指令，窗口即将关闭（供 AI 覆盖新版本后经计划任务重新拉起）。");
+                _timer?.Stop();
+                Application.Current.Shutdown();
+                return;
+            }
+        }
+        catch
+        {
+            // 自退检测失败不影响正常轮询
+        }
+
+        string[] lines;
+        try
+        {
+            if (!File.Exists(CommandFilePath))
+            {
+                RefreshStatus();
+                return;
+            }
+
+            lines = File.ReadAllLines(CommandFilePath);
+            File.Delete(CommandFilePath);
+        }
+        catch (IOException)
+        {
+            return; // 写入方尚未写完，下个 tick 再取
+        }
+
+        _busy = true;
+        try
+        {
+            foreach (var line in lines)
+            {
+                await ExecuteLineAsync(line);
+            }
+        }
+        finally
+        {
+            _busy = false;
+            RefreshStatus();
+        }
+    }
+
+    private async Task ExecuteLineAsync(string rawLine)
+    {
+        var line = rawLine.Trim();
+        if (line.Length == 0 || line.StartsWith('#'))
+        {
+            return;
+        }
+
+        var tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        AppendLog($"▶ {line}");
+        try
+        {
+            switch (tokens[0].ToUpperInvariant())
+            {
+                case "STATUS":
+                    AppendLog(BuildStatusText());
+                    AppendResult("STATUS", ok: true, summary: BuildStatusText());
+                    return;
+                case "START":
+                    StartCollectionAsync();
+                    return;
+                case "STOP":
+                    await StopCollectionAsync();
+                    return;
+                case "GOAL":
+                    SetGoal(tokens);
+                    return;
+            }
+
+            if (TryParseCommand(tokens, out var command, out var parseError) is false)
+            {
+                AppendLog($"✗ 解析失败：{parseError}");
+                AppendResult(line, ok: false, summary: parseError ?? "解析失败");
+                return;
+            }
+
+            var window = FindGameWindow();
+            if (window is null)
+            {
+                AppendLog("✗ 未找到可自动化的游戏窗口。");
+                AppendResult(line, ok: false, summary: "未找到可自动化的游戏窗口");
+                return;
+            }
+
+            var context = new GrailCommandContext(window.Handle, "preparation_generic", _goal);
+
+            // 同步等待协议（2026-09-02 用户裁定）：接收即回执，远程 AI 轮询结果文件
+            // 等到该指令的「⇒」终态行才算执行完——禁止 AI 固定长休眠呆等。
+            AppendReceipt(line);
+
+            // 每条指令挂独立急停令牌：写入 指令测试-abort.txt 即可中断长指令（如 M8）。
+            using var commandCts = new CancellationTokenSource();
+            _activeCommandCts = commandCts;
+            GrailCommandResult result;
+            try
+            {
+                result = await _dispatcher.DispatchAsync(command!, context, commandCts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                AppendResult(line, ok: false, summary: "已急停中断；游戏当前状态用 I1 查看，用下一条指令接续");
+                return;
+            }
+            finally
+            {
+                _activeCommandCts = null;
+            }
+
+            RefreshLatestSnapshot();
+            var summary = result.Error is null ? FormatPayload(result.Payload) : result.Error;
+            AppendResult(line, ok: result.Error is null, summary);
+            AppendLog(result.Error is null ? $"✔ OK {summary}" : $"✗ 失败 {result.Error}");
+        }
+        catch (Exception exception)
+        {
+            AppendLog($"✗ 异常 {exception.GetType().Name}: {exception.Message}");
+            AppendResult(line, ok: false, summary: $"异常 {exception.GetType().Name}: {exception.Message}");
+        }
+    }
+
+    // ---- 指令解析 ----
+
+    private static bool TryParseCommand(string[] tokens, out GrailCommand? command, out string? error)
+    {
+        command = null;
+        error = null;
+        if (!Enum.TryParse(tokens[0], ignoreCase: true, out GrailCommandKind kind)
+            || !Enum.IsDefined(kind))
+        {
+            error = $"未知指令 {tokens[0]}。";
+            return false;
+        }
+
+        switch (kind)
+        {
+            case GrailCommandKind.A1:
+                if (tokens.Length < 2)
+                {
+                    error = "用法：A1 角色名 前台|后台 [槽位号1基]（槽位可省=按占用序；显式槽位可精确落位/有意互换）。";
+                    return false;
+                }
+
+                command = new GrailCommand(kind, ParseDeployArgs(tokens, out error));
+                return true;
+            case GrailCommandKind.A4:
+                if (tokens.Length < 3
+                    || !int.TryParse(tokens[2], out var a4Slot)
+                    || a4Slot < 1
+                    || a4Slot > (tokens[1].StartsWith("前", StringComparison.Ordinal) ? 4 : 6))
+                {
+                    error = "用法：A4 前台|后台 槽位号(前台1-4/后台1-6)——位置语义（角色名形式已废除，2026-09-03 定稿）。";
+                    return false;
+                }
+
+                command = new GrailCommand(kind, new GrailPositionArgs(
+                    tokens[1].StartsWith("前", StringComparison.Ordinal)
+                        ? PreparationLane.Front
+                        : PreparationLane.Back,
+                    a4Slot - 1));
+                return true;
+            case GrailCommandKind.A2:
+                if (tokens.Length < 3
+                    || !int.TryParse(tokens[2], out var a2Slot)
+                    || a2Slot < 1
+                    || a2Slot > (tokens[1].StartsWith("前", StringComparison.Ordinal) ? 4 : 6))
+                {
+                    error = "用法：A2 前台|后台 槽位号(前台1-4/后台1-6)。";
+                    return false;
+                }
+
+                command = new GrailCommand(kind, new GrailPositionArgs(
+                    tokens[1].StartsWith("前", StringComparison.Ordinal)
+                        ? PreparationLane.Front
+                        : PreparationLane.Back,
+                    a2Slot - 1));
+                return true;
+            case GrailCommandKind.A3:
+                if (tokens.Length >= 2 && int.TryParse(tokens[1], out var a3Slot) && a3Slot is >= 1 and <= 9)
+                {
+                    command = new GrailCommand(kind, new GrailBenchSlotArgs(a3Slot - 1));
+                    return true;
+                }
+
+                if (tokens.Length >= 2)
+                {
+                    command = new GrailCommand(kind, new GrailCharacterArgs(tokens[1]));
+                    return true;
+                }
+
+                error = "用法：A3 槽位号(1-9) 或 A3 角色名。";
+                return false;
+            case GrailCommandKind.A5:
+                if (tokens.Length < 2)
+                {
+                    command = new GrailCommand(kind, new GrailCharacterArgs(string.Empty));
+                    return true;
+                }
+
+                command = new GrailCommand(kind, new GrailCharacterArgs(tokens[1]));
+                return true;
+            case GrailCommandKind.A10 or GrailCommandKind.M7 when tokens.Length >= 2:
+                var ids = tokens[1].Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                command = new GrailCommand(kind, new GrailStrategyArgs(
+                    new HashSet<string>(ids, StringComparer.OrdinalIgnoreCase)));
+                return true;
+            case GrailCommandKind.M5 when tokens.Length >= 2:
+                if (!tokens[1].StartsWith("圣", StringComparison.Ordinal))
+                {
+                    error = "用法：M5 [圣杯]。带'圣杯'=1-3 N14 循环语义（无目标刷新、买到才关店、真实空槽上场）；不带=1-1/1-2 单轮语义。";
+                    return false;
+                }
+
+                command = new GrailCommand(kind, new GrailShopPassArgs(GrailLoopMode: true));
+                return true;
+            case GrailCommandKind.M1:
+                if (tokens.Length < 3)
+                {
+                    error = "用法：M1 备战页ID 落地页ID（如 M1 preparation_generic reward_shop）";
+                    return false;
+                }
+
+                command = new GrailCommand(kind, new GrailBattleArgs(tokens[1], tokens[2]));
+                return true;
+            case GrailCommandKind.M8:
+                // M8 语义（2026-09-02 用户拍板停靠点）：刷到命中→选中进局→1-1 备战席立刻停。
+                command = new GrailCommand(kind);
+                return true;
+            default:
+                command = new GrailCommand(kind);
+                return true;
+        }
+    }
+
+    /// <summary>A1 参数解析：角色名 前台|后台 [槽位号（1 基，前台 1-4/后台 1-6）]。槽位可省=按占用序。</summary>
+    private static GrailDeployArgs ParseDeployArgs(string[] tokens, out string? error)
+    {
+        error = null;
+        var lane = tokens.Length >= 3
+            && (tokens[2].StartsWith("前", StringComparison.Ordinal)
+                || tokens[2].StartsWith("front", StringComparison.OrdinalIgnoreCase))
+            ? PreparationLane.Front
+            : PreparationLane.Back;
+        int? targetSlot = null;
+        if (tokens.Length >= 4)
+        {
+            if (!int.TryParse(tokens[3], out var slotNumber) || slotNumber < 1
+                || slotNumber > (lane == PreparationLane.Front ? 4 : 6))
+            {
+                error = $"槽位号 {tokens[3]} 无效（{(lane == PreparationLane.Front ? "前台 1-4" : "后台 1-6")}）。";
+                return new GrailDeployArgs(tokens[1], lane);
+            }
+
+            targetSlot = slotNumber - 1;
+        }
+
+        return new GrailDeployArgs(tokens[1], lane, targetSlot);
+    }
+
+    private void SetGoal(string[] tokens)
+    {
+        if (tokens.Length >= 2 && tokens[1].StartsWith("全", StringComparison.Ordinal))
+        {
+            _goal = GrailUserGoal.All;
+        }
+        else
+        {
+            _goal = GrailUserGoal.Single;
+        }
+
+        _executor.Goal = _goal;
+        var goalSummary = $"目标模式={(_goal == GrailUserGoal.All ? "全员" : "单人")}（影响 M3/M4 决策语义）";
+        AppendLog(goalSummary + "。");
+        AppendResult("GOAL", ok: true, summary: goalSummary);
+    }
+
+    // ---- 识别会话 ----
+
+    private void StartCollectionAsync()
+    {
+        if (_collectionTask is not null && !_collectionTask.IsCompleted)
+        {
+            AppendLog("识别会话已在运行。");
+            AppendResult("START", ok: false, summary: "识别会话已在运行");
+            return;
+        }
+
+        var window = FindGameWindow();
+        if (window is null)
+        {
+            AppendLog("✗ 未找到可自动化的游戏窗口，无法启动识别。");
+            AppendResult("START", ok: false, summary: "未找到游戏窗口");
+            return;
+        }
+
+        _collectionCts = new CancellationTokenSource();
+        var runId = $"cmdtest-{DateTimeOffset.Now:yyyyMMdd-HHmmss}";
+        _collectionTask = _collectionService.RunAsync(
+            window.Handle,
+            new AdvisorSelection(AdvisorMode.Auto, "stable", "4.4"),
+            new LiveCollectionStartOptions(
+                runId,
+                RunEntryMode.AutomaticReroll,
+                DeleteScreenshotsOnCompletion: true),
+            _collectionCts.Token);
+        _listener.Subscribe();
+        // 识别流的失败/里程碑消息必须可见（2026-09-02 事故：监听器只消费带帧的
+        // Updated，"采集失败/看门狗暂停"等纯文本消息全部丢弃，识别流死了没人知道）。
+        // 幂等守卫：会话自行死亡后再 START 会重复走这里，重复订阅会导致消息翻倍。
+        if (!_collectionMessageSubscribed)
+        {
+            _collectionService.Updated += OnCollectionMessage;
+            _collectionMessageSubscribed = true;
+        }
+        AppendLog($"识别会话已启动（{runId}）。等首帧约数秒，可发 I1 试读。");
+        AppendResult("START", ok: true, summary: runId);
+    }
+
+    private void OnCollectionMessage(object? sender, LiveCollectionUpdate update)
+    {
+        if (string.IsNullOrEmpty(update.Message) || (!update.IsError && !update.IsMilestone))
+        {
+            return;
+        }
+
+        AppendLog($"[识别流] {update.Message}");
+        if (update.IsError)
+        {
+            AppendResult("识别流", ok: false, summary: update.Message);
+        }
+    }
+
+    private async Task StopCollectionAsync()
+    {
+        if (_collectionTask is null || _collectionTask.IsCompleted)
+        {
+            AppendLog("识别会话未在运行。");
+            AppendResult("STOP", ok: false, summary: "识别会话未在运行");
+            return;
+        }
+
+        _collectionCts!.Cancel();
+        _listener.Unsubscribe();
+        if (_collectionMessageSubscribed)
+        {
+            _collectionService.Updated -= OnCollectionMessage;
+            _collectionMessageSubscribed = false;
+        }
+        try
+        {
+            await _collectionTask;
+        }
+        catch (OperationCanceledException)
+        {
+        }
+
+        _collectionTask = null;
+        AppendLog("识别会话已停止。");
+        AppendResult("STOP", ok: true, summary: "已停止");
+    }
+
+    // ---- 状态与回显 ----
+
+    private GameWindowInfo? FindGameWindow() =>
+        _gameWindowService.FindCandidates().FirstOrDefault(window => window.IsReadyForAutomation);
+
+    /// <summary>每条指令后用 I10 组装刷新执行器快照（纯计算），让 M5 的同名去重用上最新已购名单。</summary>
+    private void RefreshLatestSnapshot()
+    {
+        if (_collectionTask is null || _collectionTask.IsCompleted)
+        {
+            return;
+        }
+
+        var analysis = _listener.LatestAnalysis;
+        if (analysis is null
+            || analysis.OperationalState is null
+            || analysis.Snapshot is not { } snapshot
+            || snapshot.PageId.Value is not { } framePageId
+            || !framePageId.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        var snapshotAssembled = GrailSnapshotAssembler.Assemble(
+            analysis.OperationalState,
+            snapshot,
+            _gameData,
+            _stateHolder,
+            _goal,
+            DateTimeOffset.Now,
+            TimeSpan.FromSeconds(15));
+        _executor.LatestSnapshot = snapshotAssembled;
+    }
+
+    private string BuildStatusText()
+    {
+        var window = FindGameWindow();
+        var analysis = _listener.LatestAnalysis;
+        var collectionRunning = _collectionTask is not null && !_collectionTask.IsCompleted;
+        var latestFrame = analysis is null
+            ? "无"
+            : $"{analysis.Snapshot.PageId.Value} @{analysis.Snapshot.AsOf.ToLocalTime():HH:mm:ss}" +
+              (DateTimeOffset.Now - analysis.Snapshot.AsOf > TimeSpan.FromSeconds(15)
+                  ? "（⚠ 陈旧）"
+                  : string.Empty);
+        return $"游戏窗口={(window is null ? "未找到" : $"{window.Title} ({window.Handle})")}；"
+            + $"识别会话={(collectionRunning ? "运行中" : "停止")}；"
+            + $"最新帧={latestFrame}；"
+            + $"祈愿弹框={(_listener.IsWishDialogOpen ? "在屏" : "无")}；"
+            + $"目标={(_goal == GrailUserGoal.All ? "全员" : "单人")}。";
+    }
+
+    private void RefreshStatus() => BeginInvokeIfAlive(() => _statusText.Text = BuildStatusText());
+
+    private void AppendLog(string text)
+    {
+        BeginInvokeIfAlive(() =>
+        {
+            _logBox.AppendText($"[{DateTimeOffset.Now:HH:mm:ss}] {text}{Environment.NewLine}");
+            _logBox.ScrollToEnd();
+        });
+    }
+
+    /// <summary>接收回执（⇢ 行）：指令已被取走并开始执行；终态另有「⇒」行。</summary>
+    private void AppendReceipt(string command)
+    {
+        var line = $"[{DateTimeOffset.Now:HH:mm:ss}] {command} ⇢ 已接收，执行中…{Environment.NewLine}";
+        try
+        {
+            lock (_resultFileLock)
+            {
+                File.AppendAllText(ResultFilePath, line);
+            }
+        }
+        catch (Exception)
+        {
+            // 结果文件被远端读取占用/权限问题时丢弃本次回写（终态行会再写）。
+        }
+
+        BeginInvokeIfAlive(() =>
+        {
+            _logBox.AppendText(line);
+            _logBox.ScrollToEnd();
+        });
+    }
+
+    private void AppendResult(string command, bool ok, string summary)
+    {
+        var line = $"[{DateTimeOffset.Now:HH:mm:ss}] {command} ⇒ {(ok ? "OK" : "失败")}：{summary}{Environment.NewLine}";
+        try
+        {
+            lock (_resultFileLock)
+            {
+                File.AppendAllText(ResultFilePath, line);
+            }
+        }
+        catch (Exception)
+        {
+            // 结果文件被远端读取占用/权限问题时丢弃本次回写（下一条指令会再写）；
+            // 这里绝不能再抛——AppendResult 也可能运行在异常兜底 catch 内。
+        }
+
+        BeginInvokeIfAlive(() =>
+        {
+            _logBox.AppendText(line);
+            _logBox.ScrollToEnd();
+        });
+    }
+
+    /// <summary>
+    /// 关窗取消执行中的指令后，收尾回显可能落在 Dispatcher 已关停之后——
+    /// 此时 BeginInvoke 会抛 TaskCanceledException 并把取消本身变成"异常"，
+    /// 必须吞掉（文件结果已在 AppendResult 里先行落盘）。
+    /// </summary>
+    private void BeginInvokeIfAlive(Action action)
+    {
+        try
+        {
+            Dispatcher.BeginInvoke(action);
+        }
+        catch (TaskCanceledException)
+        {
+        }
+    }
+
+    private static string FormatPayload(object? payload) => payload switch
+    {
+        null => string.Empty,
+        GrailPageFact page => page.CapturedAt is null
+            ? $"页面={page.PageId ?? "未知"} 祈愿弹框={(page.WishDialogOpen ? "在屏" : "无")}（⚠ 无帧时间）"
+            : page.IsStale
+                ? $"页面={page.PageId ?? "未知"}（⚠ 陈旧帧 {page.CapturedAt.Value.ToLocalTime():HH:mm:ss}，已 {(DateTimeOffset.Now - page.CapturedAt.Value).TotalSeconds:F0} 秒无新帧，识别流疑冻结，勿当现状）"
+                : $"页面={page.PageId ?? "未知"} 祈愿弹框={(page.WishDialogOpen ? "在屏" : "无")}（帧龄 {(DateTimeOffset.Now - page.CapturedAt.Value).TotalSeconds:F0} 秒）",
+        IReadOnlyList<GrailCharacterFact> characters when characters.Count > 0 =>
+            string.Join("、", characters.Select(item =>
+                $"{item.Name ?? "?"}({item.Cost?.ToString() ?? "?"}费){item.Slot}")),
+        IReadOnlyList<GrailCharacterFact> => "（空）",
+        GrailMeterFact meter => $"数值={meter.Value?.ToString() ?? "未知"}（缓存时间 {meter.CapturedAt:HH:mm:ss}）",
+        GrailBadgeFact badge => $"星徽 总计={badge.TotalObtained} 未携带={badge.Uncarried}",
+        GrailTierFact tier => $"羁绊计数={tier.BondMemberCount} 成员=[{string.Join("、", tier.DeployedBondMembers)}]",
+        WishTrialSelectionInfo wish => $"左={wish.LeftName ?? "?"}/{wish.LeftReward ?? "?"} 右={wish.RightName ?? "?"}/{wish.RightReward ?? "?"}",
+        GrailWishOutcomeFact wishOutcome => $"已应答={wishOutcome.Responded} 累计祈愿={wishOutcome.WishesResponded} 书=得{wishOutcome.LettersObtained}/开{wishOutcome.LettersOpened} 奇迹={wishOutcome.MiracleSelected} 釜={wishOutcome.CauldronSelected}",
+        GrailLettersFact letters => $"聘用书 得={letters.Obtained} 已开={letters.Opened}",
+        GrailShopPassFact shop => $"买到={(shop.BoughtCharacterNames is { Count: > 0 } ? string.Join("、", shop.BoughtCharacterNames) : "无")} 金币={shop.GoldAfter?.ToString() ?? "未知"}"
+            + (shop.ShelfCharacterNames is { Count: > 0 }
+                ? $" 货架=[{string.Join("、", shop.ShelfCharacterNames)}]"
+                : string.Empty),
+        GrailOpeningFact opening => $"成功={opening.Succeeded} 命中环境={opening.MatchedEnvironmentName ?? "—"}：{opening.Message}",
+        GrailCharacterFact character => $"{character.Name}[{character.Slot}]（{character.Cost?.ToString() ?? "?"}费）",
+        RewardStageAutomationResult stage => $"{stage.Status}：{stage.Message}",
+        RejectedOpeningRecoveryResult recovery => recovery.ToString(),
+        bool flag => flag ? "是" : "否",
+        string text => text,
+        GrailRunSnapshot snapshot =>
+            $"快照：血={snapshot.TeamHealth?.ToString() ?? "?"} 金={snapshot.Gold} 人口={snapshot.Population} "
+            + $"羁绊={snapshot.BondMemberCount} 祈愿={snapshot.WishesResponded} 已购=[{string.Join("、", snapshot.OwnedCharacterNames)}]"
+            + $" 场上=[{string.Join("、", snapshot.DeployedCharacterDetails)}]"
+            + $" 备战席=[{string.Join("、", snapshot.BenchCharacterDetails)}]"
+            + (string.IsNullOrEmpty(snapshot.AnomalyNotes) ? "" : $" ⚠{snapshot.AnomalyNotes.Trim()}"),
+        _ => payload.ToString() ?? string.Empty,
+    };
+}

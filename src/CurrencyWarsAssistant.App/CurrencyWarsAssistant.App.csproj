@@ -23,6 +23,7 @@
     <None Remove="Assets\Brand\app-icon.ico" />
     <Resource Include="Assets\Brand\app-icon.ico" />
     <None Update="Assets\Brand\*.png" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Assets\Recognition\*.png" CopyToOutputDirectory="PreserveNewest" />
     <None Include="gen_report.py" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>

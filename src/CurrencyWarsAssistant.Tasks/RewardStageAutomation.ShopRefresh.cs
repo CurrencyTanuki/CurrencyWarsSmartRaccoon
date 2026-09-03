@@ -38,8 +38,29 @@ public sealed partial class RewardStageAutomationController
     private static readonly PixelPoint ShopRefreshCenterPoint2K =
         new(2155, 677);
 
-    /// <summary>每次刷新商店的固定金币费用（用户 2026-08-23 确认）。</summary>
+    /// <summary>每次刷新商店的固定金币费用（用户 2026-08-23 确认；1-3 循环 M5 金币门控同用此值）。</summary>
     private const int ShopRefreshCost = 2;
+
+    /// <summary>刷新单价对外只读口径（1-3 N14 循环的金币门控使用）。</summary>
+    internal const int ShopRefreshGoldCost = ShopRefreshCost;
+
+    /// <summary>
+    /// 1-3 N14 刷新一次（2026-09-03 用户修正：1-3 必须刷新）。金币门控归执行器，
+    /// 本方法只负责点击并等货架动画落定。返回点击是否成功。
+    /// </summary>
+    internal async Task<bool> RefreshShopOnceAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        var clicked = await ClickShopRefreshAsync(windowHandle, cancellationToken);
+        if (clicked)
+        {
+            // 等刷新动画落定再返回：1.2.29 提速 1100→900（读货架失败已有重试兜底，1.2.22 教训仍保留双保险）。
+            await Task.Delay(TimeSpan.FromMilliseconds(900), cancellationToken);
+        }
+
+        return clicked;
+    }
 
     /// <summary>
     /// 刷新循环的最大轮次上限（安全阀，防止目标一直不出现时无限刷新烧金币/盲点）。

@@ -24,6 +24,52 @@ public static class GrailSnapshotAssembler
     /// <summary>命运圣杯星徽的装备 ID（S1A/S1B 保留线与携带者判定的锚点）。</summary>
     public const string StarBadgeEquipmentId = "currency_wars_equipment_001";
 
+    // 前台/后台槽位标准区域（1920×1080 参考系像素，与 PreparationFormation 前台/后台槽位表同源）。
+    // 识别层 formation CardRegion 带旧布局 Y 残留（实测较真实卡位下移约 187px），
+    // 卖出/拖拽类操作一律以标准槽位几何为准（2026-09-02 阿格莱雅两次卖出失败实证）。
+    private static readonly RelativeRegion[] CanonicalFrontSlotRegions =
+    [
+        new(681d / 1920, 329d / 1080, 128d / 1920, 140d / 1080),
+        new(827d / 1920, 329d / 1080, 122d / 1920, 140d / 1080),
+        new(972d / 1920, 329d / 1080, 120d / 1920, 140d / 1080),
+        new(1114d / 1920, 329d / 1080, 120d / 1920, 140d / 1080),
+    ];
+
+    private static readonly RelativeRegion[] CanonicalBackSlotRegions =
+    [
+        new(535d / 1920, 600d / 1080, 140d / 1920, 145d / 1080),
+        new(687d / 1920, 600d / 1080, 130d / 1920, 145d / 1080),
+        new(829d / 1920, 600d / 1080, 130d / 1920, 145d / 1080),
+        new(966d / 1920, 600d / 1080, 130d / 1920, 145d / 1080),
+        new(1108d / 1920, 600d / 1080, 130d / 1920, 145d / 1080),
+        new(1258d / 1920, 600d / 1080, 130d / 1920, 145d / 1080),
+    ];
+
+    /// <summary>用标准槽位几何替代识别层 CardRegion（0..1 相对客户区）；越界或未知区划返回 null 回退原值。</summary>
+    public static RelativeRegion? ResolveCanonicalSlotRegion(FormationZone zone, int slotIndex)
+    {
+        var table = zone == FormationZone.Front ? CanonicalFrontSlotRegions
+            : zone == FormationZone.Back ? CanonicalBackSlotRegions
+            : null;
+        return table is not null && (uint)slotIndex < (uint)table.Length
+            ? table[slotIndex]
+            : null;
+    }
+
+    /// <summary>装备 ID 转短名：星徽用用户语义名，其余取 ID 尾码（data/4.4 无装备名映射，诚实报 ID 不编名）。</summary>
+    private static string ShortEquipmentName(string equipmentId)
+    {
+        if (string.Equals(equipmentId, StarBadgeEquipmentId, StringComparison.OrdinalIgnoreCase))
+        {
+            return "星徽";
+        }
+
+        const string prefix = "currency_wars_equipment_";
+        return equipmentId.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
+            ? "装备" + equipmentId[prefix.Length..]
+            : equipmentId;
+    }
+
     /// <summary>昔涟的角色 ID（全员模式最终目标本体）。</summary>
     public const string XilianCharacterId = "currency_wars_character_19";
 
@@ -62,18 +108,39 @@ public static class GrailSnapshotAssembler
         var gold = FreshOrUnknown(holder.PeekGold(), now, staleAfter) ?? 0;
 
         // ---- 阵容解析（Known 或 Stale 均接受）----
+        var anomalyNotes = new System.Text.StringBuilder();
+        var nameSlots = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
         var slots = FormationSlots(state);
         var deployedBondMembers = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        var ownedNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        // 1.2.31：已购并集（holder.RecordPurchased 的持久集合）——识别漏名不再让已购名单抖动
+        var ownedNames = new HashSet<string>(holder.PurchasedNames(), StringComparer.OrdinalIgnoreCase);
         var badgeCarriersNonMembers = 0;
         var carriedBadges = 0;
         var hasFiveCost = false;
         var xilianOnField = false;
         var benchSellablePool = 0;
+        var deployedSellablePool = 0;
+        var deployedCount = 0;
+        var occupiedFrontSlots = new HashSet<int>();
+        var occupiedBackSlots = new HashSet<int>();
 
         var deployedNonGrail = new List<GrailDeployedCharacter>();
+        var deployedCharacterDetails = new List<string>();
+        var benchCharacterDetails = new List<string>();
         foreach (var slot in slots)
         {
+            // 槽位占用记录（N14 部署用实际空槽）：CharacterId 非空即算已占（含 Uncertain 占位槽，
+            // 宁可保守不选该槽，避免把识别缺位误判为空槽造成互换）。须在 ResolveCharacter 之前——
+            // unknown-formation-unit 等占位角色 ResolveCharacter 返回 null 会 continue，但槽位仍被占。
+            if (slot.Zone == FormationZone.Front)
+            {
+                occupiedFrontSlots.Add(slot.SlotIndex);
+            }
+            else if (slot.Zone == FormationZone.Back)
+            {
+                occupiedBackSlots.Add(slot.SlotIndex);
+            }
+
             var character = ResolveCharacter(gameData, slot.CharacterId);
             if (character is null)
             {
@@ -88,10 +155,58 @@ public static class GrailSnapshotAssembler
                 && (character.Costs ?? Array.Empty<int>())[0] == 5;
             var deployed = slot.Zone is FormationZone.Front or FormationZone.Back;
 
-            if (deployed && !isBondMember && !isFiveCost && slot.CardRegion is not null)
+            // 星徽携带者：仅上场角色的装备槽被识别（备战席不识别装备是既有识别边界）
+            var carriesBadge = (slot.EquipmentSlots ?? Array.Empty<CharacterEquipmentSlotState>())
+                .Any(equipment => string.Equals(equipment.EquipmentId, StarBadgeEquipmentId, StringComparison.OrdinalIgnoreCase));
+            if (carriesBadge)
             {
-                deployedNonGrail.Add(new GrailDeployedCharacter(
-                    character.Name, isBondMember, isFiveCost, slot.CardRegion));
+                carriedBadges++;
+            }
+
+            // 全部已携带装备（2026-09-02 用户令：阵容明细必须含"谁带什么装备"）
+            var carriedEquipment = (slot.EquipmentSlots ?? Array.Empty<CharacterEquipmentSlotState>())
+                .Where(equipment => !string.IsNullOrWhiteSpace(equipment.EquipmentId))
+                .Select(equipment => ShortEquipmentName(equipment.EquipmentId!))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            if (deployed)
+            {
+                deployedCount++;
+                if (!nameSlots.TryGetValue(character.Name, out var deployedPositions))
+                {
+                    deployedPositions = new List<string>();
+                    nameSlots[character.Name] = deployedPositions;
+                }
+
+                deployedPositions.Add((slot.Zone == FormationZone.Front ? "F" : "B") + (slot.SlotIndex + 1));
+                deployedCharacterDetails.Add(
+                    $"{(slot.Zone == FormationZone.Front ? "F" : "B")}{slot.SlotIndex + 1}:{character.Name}"
+                    + (carriedEquipment.Count > 0 ? $"[{string.Join("+", carriedEquipment)}]" : ""));
+                // 可卖场上候选：非命杯、非 5 费、非星徽携带者（星徽携带者=羁绊计数，绝不卖——用户拍板）
+                if (!isBondMember && !isFiveCost && !carriesBadge)
+                {
+                    deployedSellablePool++;
+                    var cardRegion = ResolveCanonicalSlotRegion(slot.Zone, slot.SlotIndex)
+                                     ?? slot.CardRegion;
+                    if (cardRegion is not null)
+                    {
+                        deployedNonGrail.Add(new GrailDeployedCharacter(
+                            character.Name, isBondMember, isFiveCost, cardRegion,
+                            SaleValue: (character.Costs ?? Array.Empty<int>()).DefaultIfEmpty(0).Min()));
+                    }
+                }
+            }
+            else if (slot.Zone == FormationZone.Bench)
+            {
+                if (!nameSlots.TryGetValue(character.Name, out var benchPositions))
+                {
+                    benchPositions = new List<string>();
+                    nameSlots[character.Name] = benchPositions;
+                }
+
+                benchPositions.Add($"B{slot.SlotIndex + 1}");
+                benchCharacterDetails.Add($"{slot.SlotIndex}:{character.Name}");
             }
 
             if (isFiveCost)
@@ -107,14 +222,6 @@ public static class GrailSnapshotAssembler
             if (isBondMember)
             {
                 ownedNames.Add(character.Name);
-            }
-
-            // 星徽携带者：仅上场角色的装备槽被识别（备战席不识别装备是既有识别边界）
-            var carriesBadge = (slot.EquipmentSlots ?? Array.Empty<CharacterEquipmentSlotState>())
-                .Any(equipment => string.Equals(equipment.EquipmentId, StarBadgeEquipmentId, StringComparison.OrdinalIgnoreCase));
-            if (carriesBadge)
-            {
-                carriedBadges++;
             }
 
             if (deployed)
@@ -135,11 +242,18 @@ public static class GrailSnapshotAssembler
             }
         }
 
-        // ---- 物品栏：未携带星徽 ----
-        var uncarriedBadges = (state.InventorySlots.Status is ObservationStatus.Known or ObservationStatus.Stale
+        // ---- 物品栏：未携带星徽（含区域，N2 星徽装配的拖拽源点）----
+        var uncarriedBadgeSlots = (state.InventorySlots.Status is ObservationStatus.Known or ObservationStatus.Stale
                 ? state.InventorySlots.Value ?? []
                 : [])
-            .Count(item => string.Equals(item.ItemId, StarBadgeEquipmentId, StringComparison.OrdinalIgnoreCase));
+            .Where(item => string.Equals(item.ItemId, StarBadgeEquipmentId, StringComparison.OrdinalIgnoreCase))
+            .ToArray();
+        var uncarriedBadges = uncarriedBadgeSlots.Length;
+
+        // ---- 投资策略：识别层单调保留的当前已选策略（N12 采购专员刷牌机制锚点）----
+        var activeStrategies = state.InvestmentStrategyIds.Status is ObservationStatus.Known
+            ? state.InvestmentStrategyIds.Value ?? []
+            : [];
 
         // ---- 商店 sighting：未拥有的命杯成员出现在商店 ⇒ 第 5 成员出现信号之一 ----
         var shopIds = economySnapshot?.ShopCharacterIds;
@@ -165,8 +279,21 @@ public static class GrailSnapshotAssembler
 
         var eventState = holder.PeekEventState();
         var totalBadges = uncarriedBadges + carriedBadges;
-        // 保留线：留 N 个非命杯非5费备战席角色作星徽携带者候选（N=星徽总数），其余可卖
-        var sellableBeyondKeepLine = Math.Max(0, benchSellablePool - Math.Min(totalBadges, benchSellablePool));
+        // 可卖池 = 场上(非命杯、非5费、非星徽携带者) + 备战席(非命杯、非5费)。
+        // 保留线 = 物品栏未装配星徽数：用户机制“星徽获得即装配到角色并上场”，
+        // 已装配的携带者已在场上被排除出可卖池（天然受保护），只有未装配的星徽
+        // 才需要留对应数量的非命杯角色作装配候选（决策树 S1A/S1B 保留线精神的等价形式）。
+        var sellablePool = deployedSellablePool + benchSellablePool;
+        var sellableBeyondKeepLine = Math.Max(0, sellablePool - Math.Min(uncarriedBadges, sellablePool));
+
+        // 1.2.31：同名多处=识别身份事故标记（坑 34/审计症状 D），供决策层拒采
+        foreach (var kv in nameSlots)
+        {
+            if (kv.Value.Count > 1)
+            {
+                anomalyNotes.Append($"⚠同名多处:{kv.Key}@{string.Join("/", kv.Value)} ");
+            }
+        }
 
         return new GrailRunSnapshot
         {
@@ -176,10 +303,19 @@ public static class GrailSnapshotAssembler
             Gold = gold,
             DeployedBondMembers = deployedBondMembers,
             DeployedNonGrailCharacters = deployedNonGrail,
+            DeployedCount = deployedCount,
+            DeployedCharacterDetails = deployedCharacterDetails,
+            BenchCharacterDetails = benchCharacterDetails,
+            OccupiedFrontSlots = occupiedFrontSlots,
+            OccupiedBackSlots = occupiedBackSlots,
             BadgeCarrierNonMembers = badgeCarriersNonMembers,
             UncarriedStarBadges = uncarriedBadges,
+            InventoryStarBadgeRegions = uncarriedBadgeSlots
+                .Select(item => item.Region)
+                .ToArray(),
             TotalStarBadgesObtained = totalBadges,
             OwnedCharacterNames = ownedNames,
+            ActiveInvestmentStrategyIds = activeStrategies.ToHashSet(StringComparer.OrdinalIgnoreCase),
             // 无限之釜选中即保证 5 费本体在场（全三星圣杯角色），不依赖识别是否捕捉到
             HasFiveCostBody = hasFiveCost || eventState.CauldronSelected,
             XilianOnField = xilianOnField,
@@ -194,6 +330,7 @@ public static class GrailSnapshotAssembler
             RefreshGoldCost = GrailRunSnapshot.MinRefreshGold + (holder.PeekRefreshSurcharge() ? 1 : 0),
             XpPurchaseTotalCost = GrailRunSnapshot.XpPurchaseGoldCost + (holder.PeekXpSurcharge() ? 2 : 0),
             SellableBeyondKeepLineCount = sellableBeyondKeepLine,
+            AnomalyNotes = anomalyNotes.ToString(),
             CapturedAt = now,
         };
     }

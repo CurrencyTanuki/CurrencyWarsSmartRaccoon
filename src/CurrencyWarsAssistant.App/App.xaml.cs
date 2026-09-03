@@ -39,6 +39,11 @@ public partial class App : Application
         var datasetCaptureCommand = Phase2DatasetCaptureCommand.Parse(e.Args);
         var headlessCommand = batchCommand is not null ||
                               datasetCaptureCommand is not null;
+        // 指令测试台模式（测试包专用）：--command-test 启动，只显示三按钮测试窗口，
+        // 一切动作仅由指令文件驱动，启动后不自动做任何事。
+        var commandTestMode = Array.Exists(
+            e.Args,
+            argument => string.Equals(argument, "--command-test", StringComparison.OrdinalIgnoreCase));
         if (batchCommand is not null)
         {
             WriteBatchStartupProgress(batchCommand, "command-parsed");
@@ -351,6 +356,7 @@ public partial class App : Application
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<SituationAnalysisViewModel>();
         services.AddSingleton<MainWindow>();
+        services.AddSingleton<CommandTestWindow>();
         _services = services.BuildServiceProvider();
 
         if (batchCommand is not null)
@@ -393,6 +399,20 @@ public partial class App : Application
 
         var serviceRegistrationElapsed =
             startupStopwatch.Elapsed - shellElapsed - configurationElapsed;
+        if (commandTestMode)
+        {
+            var testWindow = _services.GetRequiredService<CommandTestWindow>();
+            MainWindow = testWindow;
+            testWindow.Show();
+            StartSingleInstanceActivationListener();
+            await Dispatcher.Yield(DispatcherPriority.Loaded);
+            startupWindow!.Close();
+            _ = ObserveRecognitionWarmUpAsync(
+                _services.GetRequiredService<Phase2RecognitionWarmUpService>(),
+                _services.GetRequiredService<UiTaskEventSink>());
+            return;
+        }
+
         var mainWindow = _services.GetRequiredService<MainWindow>();
         MainWindow = mainWindow;
         mainWindow.Show();

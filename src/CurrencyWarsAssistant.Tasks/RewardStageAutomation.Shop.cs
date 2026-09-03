@@ -506,12 +506,13 @@ public sealed partial class RewardStageAutomationController
             accepted ? TaskEventLevel.Information : TaskEventLevel.Warning);
     }
 
-    private async Task<IReadOnlyList<RewardShopSlot>?> ReadStableShopAsync(
+    internal async Task<IReadOnlyList<RewardShopSlot>?> ReadStableShopAsync(
         nint windowHandle,
         IReadOnlySet<int>? consumedSlots,
         CancellationToken cancellationToken)
     {
-        await Task.Delay(TimeSpan.FromMilliseconds(650), cancellationToken);
+        // 1.2.29 提速：650→500（页面门禁仍在，误读由双帧稳定判据兜底）
+        await Task.Delay(TimeSpan.FromMilliseconds(500), cancellationToken);
         var accumulator = new RewardShopRecognitionAccumulator(
             ignoredSlots: consumedSlots);
         for (var attempt = 1;
@@ -549,8 +550,9 @@ public sealed partial class RewardStageAutomationController
                         $"槽位{item.Slot + 1}=未识别({item.RawText})")));
             if (attempt < RewardShopBatchSnapshotPolicy.MaximumObservations)
             {
+                // 1.2.29 提速：350→250
                 await Task.Delay(
-                    TimeSpan.FromMilliseconds(350),
+                    TimeSpan.FromMilliseconds(250),
                     cancellationToken);
             }
         }
@@ -591,10 +593,11 @@ public sealed partial class RewardStageAutomationController
         return stable;
     }
 
-    private async Task OpenMineBallsAsync(
+    private async Task<int> OpenMineBallsAsync(
         nint windowHandle,
         CancellationToken cancellationToken)
     {
+        var openedCount = 0;
         for (var pass = 1; pass <= 3; pass++)
         {
             var (window, frame) = await CaptureForegroundAsync(
@@ -603,7 +606,7 @@ public sealed partial class RewardStageAutomationController
             var mines = visualDetector.FindMineBalls(frame);
             if (mines.Count == 0)
             {
-                return;
+                return openedCount;
             }
 
             Publish(
@@ -631,12 +634,29 @@ public sealed partial class RewardStageAutomationController
                         click.Message,
                         TaskEventLevel.Warning);
                 }
+                else
+                {
+                    openedCount++;
+                }
             }
 
             await Task.Delay(
                 TimeSpan.FromMilliseconds(500),
                 cancellationToken);
         }
+
+        return openedCount;
+    }
+
+    /// <summary>
+    /// M2 独立开晶矿（N13「先开启晶矿」）：检测并点击当前页面全部晶矿球，
+    /// 返回开启数量（0=无球可开）。不含容量守卫与出场出售（那些归决策层编排）。
+    /// </summary>
+    public async Task<int> OpenMineBallsStandaloneAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        return await OpenMineBallsAsync(windowHandle, cancellationToken);
     }
 
     private async Task<bool> OpenMineBallsWithCapacityGuardAsync(

@@ -1259,15 +1259,22 @@ public sealed partial class PreparationBoardController(
             }
         }
 
+        // 英雄登场（067）赠体=纯5费，19节点内不可上场（用户铁律，实机已验证）：
+        // 开局部署候选一律排除纯5费——1-1 备战席上本不应有其他5费，规则全局安全。
+        static bool IsPureFiveCost(CurrencyWarsCharacterData character) =>
+            (character.Costs ?? []).Count == 1 && (character.Costs ?? [])[0] == 5;
+        var deployCandidates = bench
+            .Where(item => !IsPureFiveCost(item.Character))
+            .ToArray();
         var plan = planner.Plan(
-            bench,
+            deployCandidates,
             options.EligibleCharacterNames,
             enableGalaxyScholarPair:
                 options.EnableGalaxyScholarPairFormation);
         var placements = plan.IsReady
             ? plan.Placements
-            : bench
-                .Take(Math.Min(3, bench.Length))
+            : deployCandidates
+                .Take(Math.Min(3, deployCandidates.Length))
                 .Select((item, index) => new PreparationPlacement(
                     item,
                     PreparationLane.Front,
@@ -1277,7 +1284,8 @@ public sealed partial class PreparationBoardController(
         Publish(
             TaskEventLevel.Information,
             "PreparationFastPlanReady",
-            "快速版备战：识别到 " + bench.Length + " 名角色，计划部署 " +
+            "快速版备战：识别到 " + bench.Length + " 名角色（排除纯5费 " +
+            (bench.Length - deployCandidates.Length) + " 名），计划部署 " +
             placements.Count + " 名（无验证裸拖拽）。");
 
         // 裸拖拽部署：不做拖动验证、不做页面门禁复核。
@@ -1323,6 +1331,13 @@ public sealed partial class PreparationBoardController(
                     bench,
                     placements,
                     "快速版备战：部署" + placement.Source.Character.Name + "拖拽失败。");
+            }
+
+            // 连续拖放硬间隔（用户实机反馈：上一名角色游戏尚未注册，第二名拖拽必失败）——
+            // 50ms 是不够的，逐名等待游戏入场动画注册完毕再拖下一名（最后一名不等待）。
+            if (placement != placements[^1])
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(300), cancellationToken);
             }
         }
 

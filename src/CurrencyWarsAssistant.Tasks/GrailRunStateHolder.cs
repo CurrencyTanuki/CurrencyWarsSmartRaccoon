@@ -31,6 +31,10 @@ public sealed class GrailRunStateHolder
     private bool _newBondMemberAvailable;
     private bool _refreshSurcharge; // 行为限制/行为禁锢：刷新价格+1
     private bool _xpSurcharge;      // 回路过载/回路超频：购买经验价格+1
+    private bool _openingFormationApplied; // N13/N12/N2 开局动作闩锁（每局一次）
+
+    /// <summary>本局已在商店买到的角色名（同名只买一次；买完立即记录，跨帧持久，供去重）。</summary>
+    private readonly HashSet<string> _purchasedNames = new(StringComparer.OrdinalIgnoreCase);
 
     private int? _lastHealth;
     private DateTimeOffset? _healthCapturedAt;
@@ -38,6 +42,36 @@ public sealed class GrailRunStateHolder
     private DateTimeOffset? _populationCapturedAt;
     private int? _lastGold;
     private DateTimeOffset? _goldCapturedAt;
+
+    /// <summary>
+    /// 跨局复位（审计#6：同一刷取会话可能连续多局共用本持有器，事件态/缓存若不复位，
+    /// 第 2 局会继承第 1 局的祈愿计数/聘用书/旗标 → G1③ 提前判死或假成功）。
+    /// 每轮开局前由 <see cref="GrailRunLoop"/> 调用。
+    /// </summary>
+    public void Reset()
+    {
+        lock (_gate)
+        {
+            _wishesResponded = 0;
+            _lettersObtained = 0;
+            _lettersOpened = 0;
+            _miracleCompensationSelected = false;
+            _miracleCompensationSelectedAtHealth = null;
+            _infiniteCauldronSelected = false;
+            _fiveBondGivenUp = false;
+            _newBondMemberAvailable = false;
+            _refreshSurcharge = false;
+            _xpSurcharge = false;
+            _openingFormationApplied = false;
+            _purchasedNames.Clear();
+            _lastHealth = null;
+            _healthCapturedAt = null;
+            _lastPopulation = null;
+            _populationCapturedAt = null;
+            _lastGold = null;
+            _goldCapturedAt = null;
+        }
+    }
 
     // ---------- 识别值捕获（仅 Known 值落缓存；null 表示本帧 Unknown，不清缓存） ----------
 
@@ -177,6 +211,24 @@ public sealed class GrailRunStateHolder
         }
     }
 
+    /// <summary>N13/N12/N2 开局动作是否已执行（闩锁，每局一次；Reset 清空）。</summary>
+    public bool PeekOpeningFormationApplied()
+    {
+        lock (_gate)
+        {
+            return _openingFormationApplied;
+        }
+    }
+
+    /// <summary>标记 N13/N12/N2 开局动作已执行（闩锁置位，防止本局重复拖拽）。</summary>
+    public void MarkOpeningFormationApplied()
+    {
+        lock (_gate)
+        {
+            _openingFormationApplied = true;
+        }
+    }
+
     /// <summary>令咒决议诅咒是否已使商店刷新价格 +1（行为限制系选中后为真，保守全程生效）。</summary>
     public bool PeekRefreshSurcharge()
     {
@@ -192,6 +244,47 @@ public sealed class GrailRunStateHolder
         lock (_gate)
         {
             return _xpSurcharge;
+        }
+    }
+
+    /// <summary>记录一名已在商店买到的角色（同名只买一次的核心：买完立即持久化，跨帧去重）。</summary>
+    public void RecordPurchased(string name)
+    {
+        lock (_gate)
+        {
+            _purchasedNames.Add(name);
+        }
+    }
+
+    private int _lastFormationSlotCount = -1;
+    private DateTimeOffset _lastFormationSlotCountAt;
+
+    /// <summary>阵容识别格数突变守卫（1.2.31）：6 秒内总格数变化 &gt;2 = 疑似过渡/坏帧，
+    /// 读数不可信（合法操作每 4 秒最多 ±1~2；晶矿连开爆发允许一次重试）。记录即更新基线。</summary>
+    public bool IsFormationCountPlausible(int count, DateTimeOffset now, out string note)
+    {
+        lock (_gate)
+        {
+            var last = _lastFormationSlotCount;
+            var lastAt = _lastFormationSlotCountAt;
+            _lastFormationSlotCount = count;
+            _lastFormationSlotCountAt = now;
+            note = $"阵容格数 {count}（前值 {last}，间隔 {(now - lastAt).TotalSeconds:F0}s）";
+            if (last < 0)
+            {
+                return true;
+            }
+
+            return Math.Abs(count - last) <= 2 || (now - lastAt).TotalSeconds >= 6;
+        }
+    }
+
+    /// <summary>本局商店已买到的角色名集合（与识别快照 OwnedCharacterNames 并集做去重）。</summary>
+    public IReadOnlySet<string> PurchasedNames()
+    {
+        lock (_gate)
+        {
+            return new HashSet<string>(_purchasedNames, StringComparer.OrdinalIgnoreCase);
         }
     }
 

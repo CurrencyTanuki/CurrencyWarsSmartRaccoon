@@ -81,12 +81,15 @@ public sealed class CommandTestWindow : Window
     /// <summary>果断弃局看门狗（用户拍板 2026-09-03：操作不动就果断退出）——
     /// 同一指令连续失败计数；≥2 且页面不在健康备战态 → 自动弃局，绝不挂死。</summary>
     private string? _lastFailureKey;
+    private DateTimeOffset _lastFailureAt = DateTimeOffset.MinValue;
     private int _sameFailureStreak;
     private string? _currentCommandKind;
     /// <summary>识别流自动复活（2026-09-04 用户提速令）：会话死亡/帧冻结 ≥45 秒时
     /// 自动 STOP/START 重连——识别流反复死亡是实测最大的隐性耗时源。节流 300 秒防会话重叠。</summary>
     private DateTimeOffset _lastStreamReviveAt = DateTimeOffset.MinValue;
     private bool _streamReviveInProgress;
+    /// <summary>用户显式 STOP 标志（审查 90a8a0f4 P1）：置位后自动复活绝不拉起，START 时清除。</summary>
+    private bool _streamStopRequested;
     /// <summary>决策层引擎（2026-09-04 用户令：决策层软件化）——DECIDE 启动/停止。</summary>
     private GrailDecisionEngine? _decisionEngine;
     private CancellationTokenSource? _decisionCts;
@@ -253,20 +256,24 @@ public sealed class CommandTestWindow : Window
     // ---- 指令轮询与执行 ----
 
     /// <summary>
-    /// 识别流自动复活：会话死亡→直接重启；会话在跑但 ≥45 秒无新帧→STOP/START 重连。
-    /// 与指令执行互不阻塞（识别流与操作层捕获是两套独立采集）。节流 90 秒防抖。
+    /// 识别流自动复活（审查 90a8a0f4 修复版）：会话死亡→直接重启；会话在跑但 ≥45 秒
+    /// 无新帧→STOP/START 重连。节流 300 秒。约束：
+    /// ①显式 STOP 后绝不复活（W1：_streamStopRequested）；
+    /// ②决策层运行期间照常复活（引擎 I10 依赖识别流）但节流内不重叠；
+    /// ③capture 为单例共享会话，revive 是重启同一会话而非制造第二会话。
     /// </summary>
     private void CheckStreamHealth()
     {
-        if (_streamReviveInProgress
+        if (_streamStopRequested
+            || _streamReviveInProgress
             || (DateTimeOffset.Now - _lastStreamReviveAt).TotalSeconds < 300)
         {
             return;
         }
 
-        // M8 执行期间不复活：M8 导航有自己的捕获，泵在开局面也不需要识别流；
-        // 反复复活会在导航中制造重叠会话（实测 03:38-03:42 每九十秒一个）。
-        if (_busy && _lastFailureKey is null && _currentCommandKind is "M8")
+        // M8/M1 执行期间不复活（审查 90a8a0f4 P1：豁免不得被遗留失败键废掉）：
+        // 长指令导航有自己的捕获，重启识别会话只会制造帧抖动。
+        if (_busy && _currentCommandKind is "M8" or "M1")
         {
             return;
         }
@@ -282,7 +289,6 @@ public sealed class CommandTestWindow : Window
         }
 
         _streamReviveInProgress = true;
-        _lastStreamReviveAt = DateTimeOffset.Now;
         var reason = dead ? "识别流已死亡" : "识别流冻结（45 秒无新帧）";
         AppendLog($"⚠ {reason}，自动重启识别会话。");
         _ = Task.Run(async () =>
@@ -301,12 +307,23 @@ public sealed class CommandTestWindow : Window
                     var running = _collectionTask;
                     if (running is not null)
                     {
-                        try { await running; }
+                        try { await running.WaitAsync(TimeSpan.FromSeconds(30)); }
                         catch (OperationCanceledException) { }
+                        catch (TimeoutException) { }
                     }
 
-                    _collectionTask = null;
+                    // W2 修复：只清自己看到的旧引用——期间若手动 START 已挂新任务，绝不清掉。
+                    if (ReferenceEquals(_collectionTask, running))
+                    {
+                        _collectionTask = null;
+                    }
+
                     await Task.Delay(1500);
+                }
+
+                if (_streamStopRequested)
+                {
+                    return; // 复活过程中用户显式 STOP：尊重，不再拉起
                 }
 
                 if (_collectionTask is null || _collectionTask.IsCompleted)
@@ -423,6 +440,7 @@ public sealed class CommandTestWindow : Window
                 _flightRecorder.Record(line, ok: false, parseError ?? "解析失败", 0, "parse_error");
                 _sameFailureStreak = 0;
                 _lastFailureKey = null;
+                _lastFailureAt = DateTimeOffset.MinValue;
                 return;
             }
 
@@ -434,6 +452,16 @@ public sealed class CommandTestWindow : Window
                 _flightRecorder.Record(line, ok: false, "未找到可自动化的游戏窗口", 0, "no_window");
                 _sameFailureStreak = 0;
                 _lastFailureKey = null;
+                _lastFailureAt = DateTimeOffset.MinValue;
+                return;
+            }
+
+            // 审查 90a8a0f4 P1：决策层运行期间拒绝游戏操作类指令（防并发互抢窗口/计数器）。
+            if (_decisionTask is { IsCompleted: false }
+                && tokens[0].ToUpperInvariant() is not ("STATUS" or "DECIDE" or "START" or "STOP" or "GOAL"))
+            {
+                AppendResult(line, ok: false, summary: "决策层运行中，拒绝并发指令（先 DECIDE 停止）");
+                _flightRecorder.Record(line, ok: false, "决策层运行中拒绝并发指令", 0, "rejected");
                 return;
             }
 
@@ -458,6 +486,7 @@ public sealed class CommandTestWindow : Window
                     line, ok: false, "已急停中断", flightStopwatch.ElapsedMilliseconds, "aborted");
                 _sameFailureStreak = 0;
                 _lastFailureKey = null;
+                _lastFailureAt = DateTimeOffset.MinValue;
                 return;
             }
             finally
@@ -478,12 +507,23 @@ public sealed class CommandTestWindow : Window
             // 阻塞模态或异常状态挂死。页面健康时绝不触发（复位计数）。
             if (result.Error is not null)
             {
-                var failureKey = tokens[0].ToUpperInvariant();
-                _sameFailureStreak = _lastFailureKey == failureKey ? _sameFailureStreak + 1 : 1;
+                var failureKey = line;
+                var sameAsLast = _lastFailureKey == failureKey
+                    && DateTimeOffset.Now - _lastFailureAt < TimeSpan.FromSeconds(120);
+                _sameFailureStreak = sameAsLast ? _sameFailureStreak + 1 : 1;
                 _lastFailureKey = failureKey;
+                _lastFailureAt = DateTimeOffset.Now;
+                var decisionRunning = _decisionTask is { IsCompleted: false };
                 if (_sameFailureStreak >= 2)
                 {
                     _sameFailureStreak = 0;
+                    // 审查 90a8a0f4 P1：决策层运行期间绝不 AUTO-A9（会弃掉引擎正在打的局）。
+                    if (decisionRunning)
+                    {
+                        AppendLog("⚠ 连续失败但决策层运行中——跳过 AUTO-A9（弃局由决策层自理）。");
+                        return;
+                    }
+
                     var analysisNow = _listener.LatestAnalysis;
                     var pageNow = analysisNow?.Snapshot.PageId.Value;
                     var pageFresh = analysisNow?.Snapshot.AsOf is { } at
@@ -510,6 +550,7 @@ public sealed class CommandTestWindow : Window
             {
                 _sameFailureStreak = 0;
                 _lastFailureKey = null;
+                _lastFailureAt = DateTimeOffset.MinValue;
             }
 
             try
@@ -787,6 +828,7 @@ public sealed class CommandTestWindow : Window
                 RunEntryMode.AutomaticReroll,
                 DeleteScreenshotsOnCompletion: true),
             _collectionCts.Token);
+        _streamStopRequested = false;
         _listener.Subscribe();
         // 识别流的失败/里程碑消息必须可见（2026-09-02 事故：监听器只消费带帧的
         // Updated，"采集失败/看门狗暂停"等纯文本消息全部丢弃，识别流死了没人知道）。
@@ -823,6 +865,7 @@ public sealed class CommandTestWindow : Window
             return;
         }
 
+        _streamStopRequested = true;
         _collectionCts!.Cancel();
         _listener.Unsubscribe();
         if (_collectionMessageSubscribed)

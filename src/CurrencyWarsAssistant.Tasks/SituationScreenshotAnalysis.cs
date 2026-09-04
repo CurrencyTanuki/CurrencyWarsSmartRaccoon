@@ -475,7 +475,18 @@ public sealed partial class CurrencyWarsSituationScreenshotAnalyzer(
             if (classifiedPageId is null &&
                 operational.PageFamily != Phase2PageFamily.Unknown)
             {
-                var inferredPage = operational.PageFamily.ToString();
+                // 页族→可解析页 ID（2026-09-04 审查 P1 修复）：回退名必须是下游门禁
+                // （preparation_ 前缀/已知页白名单）可理解的形态。"Preparation" 这类
+                // 枚举原名会让 I10 门禁、看门狗、快照刷新三处同时误判。
+                var inferredPage = operational.PageFamily switch
+                {
+                    Phase2PageFamily.Preparation => "preparation_generic",
+                    Phase2PageFamily.Battle => "battle_generic",
+                    Phase2PageFamily.BattleSettlement => "challenge_settlement",
+                    Phase2PageFamily.Main => "normal_hud",
+                    Phase2PageFamily.Transition => "plane_progress",
+                    _ => operational.PageFamily.ToString(),
+                };
                 snapshot = snapshot with
                 {
                     PageId = Observation<string>.Known(

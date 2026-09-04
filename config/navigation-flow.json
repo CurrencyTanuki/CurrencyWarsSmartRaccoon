@@ -53,6 +53,30 @@
             "x": 1492,
             "y": 878
           },
+          "expectedPageIds": []
+        },
+        {
+          "id": "press_f_after_500ms",
+          "displayName": "等待500毫秒后按F触发货币战争交互",
+          "kind": "pressKey",
+          "key": "F",
+          "delayMilliseconds": 500,
+          "expectedPageIds": []
+        },
+        {
+          "id": "press_f_repeat_2",
+          "displayName": "连按第二次F补触发",
+          "kind": "pressKey",
+          "key": "F",
+          "delayMilliseconds": 250,
+          "expectedPageIds": []
+        },
+        {
+          "id": "press_f_repeat_3",
+          "displayName": "连按第三次F并等待进入货币战争",
+          "kind": "pressKey",
+          "key": "F",
+          "delayMilliseconds": 250,
           "expectedPageIds": [
             "update_popup",
             "score_popup",

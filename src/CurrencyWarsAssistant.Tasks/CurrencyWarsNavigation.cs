@@ -35,6 +35,10 @@ public sealed class NavigationActionDefinition
     public StandardPoint? Point { get; init; }
     public StandardPoint? TargetPoint { get; init; }
     public int DurationMilliseconds { get; init; } = 500;
+    /// <summary>pressKey 动作的键名（f/escape/enter/v/alt，大小写不敏感）。</summary>
+    public string? Key { get; init; }
+    /// <summary>pressKey 动作执行前的等待（毫秒），用于两次按键之间的固定间隔。</summary>
+    public int DelayMilliseconds { get; init; }
     public List<string> ExpectedPageIds { get; init; } = [];
     public int TimeoutMilliseconds { get; init; } = 12000;
     public CurrencyWarsGameMode? RequiredGameMode { get; init; }
@@ -124,10 +128,20 @@ public sealed class CurrencyWarsNavigationConfig
                     action.Kind,
                     "altClick",
                     StringComparison.OrdinalIgnoreCase);
-                if (!isClick && !isDrag && !isEscape && !isAltClick)
+                var isPressKey = string.Equals(
+                    action.Kind,
+                    "pressKey",
+                    StringComparison.OrdinalIgnoreCase);
+                if (!isClick && !isDrag && !isEscape && !isAltClick && !isPressKey)
                 {
                     throw new InvalidDataException(
                         $"Unsupported action kind: {action.Kind}");
+                }
+
+                if (isPressKey && ParseInputKey(action.Key) is null)
+                {
+                    throw new InvalidDataException(
+                        $"PressKey action has missing or unsupported key: {action.Id}");
                 }
 
                 if ((isClick || isDrag || isAltClick) &&
@@ -160,6 +174,18 @@ public sealed class CurrencyWarsNavigationConfig
         point.Y >= 0 &&
         point.X < ReferenceWidth &&
         point.Y < ReferenceHeight;
+
+    /// <summary>pressKey 动作的键名→InputKey；空/未知返回 null（Validate 与执行双闸共用）。</summary>
+    internal static InputKey? ParseInputKey(string? key) =>
+        key?.Trim().ToLowerInvariant() switch
+        {
+            "escape" => InputKey.Escape,
+            "alt" => InputKey.LeftAlt,
+            "v" => InputKey.V,
+            "enter" => InputKey.Enter,
+            "f" => InputKey.F,
+            _ => null
+        };
 }
 
 public enum CurrencyWarsNavigationState
@@ -770,6 +796,29 @@ public sealed class CurrencyWarsNavigationTask(
                 cancellationToken);
         }
 
+        if (string.Equals(action.Kind, "pressKey", StringComparison.OrdinalIgnoreCase))
+        {
+            if (action.DelayMilliseconds > 0)
+            {
+                await Task.Delay(
+                    TimeSpan.FromMilliseconds(action.DelayMilliseconds),
+                    cancellationToken);
+            }
+
+            var pressKey = CurrencyWarsNavigationConfig.ParseInputKey(action.Key);
+            if (pressKey is null)
+            {
+                return ActionResult.Failure(
+                    $"动作“{action.DisplayName}”配置了不支持的按键：{action.Key}；未执行输入。");
+            }
+
+            return await input.PressKeyAsync(
+                window,
+                pressKey.Value,
+                policy,
+                cancellationToken);
+        }
+
         if (string.Equals(action.Kind, "altClick", StringComparison.OrdinalIgnoreCase) &&
             action.Point is not null)
         {
@@ -1260,6 +1309,8 @@ private async Task<PageClassificationResult?> FastWaitForPageAsync(
             Point = InvestmentOptionPoints[selected.Slot],
             TargetPoint = action.TargetPoint,
             DurationMilliseconds = action.DurationMilliseconds,
+            Key = action.Key,
+            DelayMilliseconds = action.DelayMilliseconds,
             ExpectedPageIds = [.. action.ExpectedPageIds],
             TimeoutMilliseconds = action.TimeoutMilliseconds,
             RequiredGameMode = action.RequiredGameMode

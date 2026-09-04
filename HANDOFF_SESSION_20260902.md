@@ -7,6 +7,16 @@
 > 上一班 AI 于 2026-09-04 09:4x 交班。本节自包含：当前状态/已完成/已知缺陷/完整计划/监督方法论/下一班详尽工作令。
 > 读完本节 + rule.md（含新坑 38/38a/39/40/41）即可无缝接手。决策树与指令集已于昨夜完成增补（v4.3.2）。
 
+### ★ 1.2.51 修复批次（2026-09-04 10:1x~10:3x，新班次落地）★
+
+- **接手验证**：软件 1.2.50 运行中（计划任务拉起）、决策层 09:41 已启动、识别会话正常；STATUS 回执 normal_hud 主界面帧新鲜。
+- **M8 磨预算根因实锤（事件日志+自动落盘截图双源）**：M8 导航"主界面→LeftAlt 点指南(1598,45)→切第三页签(602,211)→点前往参与(1492,878)"循环约 27 秒/轮——**点击"前往参与"后游戏触发回退 BUG（用户 third-hand 机制说明：一定情况下游戏进主界面又立刻退出，尤其桌子前点击时；但角色必被传送到圆桌旁，此时世界内"货币战争"提示可用 F 键固定触发）**。等待期三个预期模板全不匹配（score_popup_title 恒 19.4%=旧版"积分奖励 本期剩余时间"弹窗模板已过时——游戏改版后该位置是"指南-旷宇纷争-货币战争"活动详情页；currency_wars_home_title 亦仅 18~25%）→20 秒超时→Esc→主界面→死循环磨预算。另：指南窗口默认落地=每日实训页签（"星际和平指南 100%"实为它），第 3 页签落地=积分详情页（被误判成 guide_currency_wars 99%，因左列表"货币战争"锚点两页共有）。
+- **用户拍板修复（用户第三次明令后落地——此前从未落码，本次落地；时序经用户两次实测修正）**：点击"前往参与"后**等 500 毫秒按 F，再连按 2 次 F 补刀（间隔 250ms），由最后一次 F 动作等预期页**。首版"F→100ms→F"实机无效（按得太早，回退+传送未完成，F 被吞，10:34:58 实测截图佐证）；用户实测修正为 500ms+连按。两种情况全覆盖：正常进入时 F 无害；回退 BUG 发生时角色必被传送到桌旁，F 固定触发交互进入。**世界内 F 交互通用性否决**（用户明令：F 交互只在桌旁一小块区域有效，走远就失效——所以只在"前往参与"点击后的传送落点用，不做世界内通用寻路）。
+- **1.2.51 改动（4 文件）**：①InputModels.cs InputKey 枚举+F；②Win32InputController.cs ToVirtualKey+F=>0x46；③CurrencyWarsNavigation.cs：NavigationActionDefinition 加 Key/DelayMilliseconds 字段、Validate 支持 kind=pressKey（Key 无法解析即 InvalidDataException）、ExecuteActionAsync 加 pressKey 分支（先 Delay 再 PressKeyAsync）、ParseInputKey 静态方法放 Config 类（internal static，Validate 与执行双闸共用）、ResolveInvestmentSelectionAction 克隆补抄新字段；④navigation-flow.json：participate_currency_wars 的 expectedPageIds 清空（执行后不等待），追加 press_f_after_500ms（F，delay 500ms，无预期页）+press_f_repeat_2/3（F，各 delay 250ms，最后一个带预期页 update_popup/score_popup/currency_wars_home，超时 20s）。
+- **流水线**：子代理对抗审查 FAIL→P1（ParseInputKey 跨类访问 CS0103）修复+P3-1（participate 死超时配置）删除→复验；构建 0 警 0 错；Grail 111/111；发布 artifacts/deploy_stable_1251.ps1 成功（robocopy rc=3、exe/tasks=1.2.51.0 双验证、exit 残留 0、计划任务拉起 procs=1）；DECIDE 重启决策层（10:40:09，START 报"识别会话已在运行"=自动恢复，无需手动）。
+- **实机验证通过（2026-09-04 10:40:49~10:41:16，M8 全链 27 秒）**：主界面→指南 94.9%→第 3 页签→前往参与点击→500ms+F×3（日志"已按下按键：F"×3）→**currency_wars_home 识别成功（"启用快速点击路径：货币战争主界面→开始本局"）**→快速路径盲点连点→敌人概览（敌情跳过）→投资环境页 92.2%→刷新→三候选均未命中（蓝海/战力提升/人身意外险 vs 英雄登场/命运圣杯邀请）→按设计判开局不合格→降级选蓝海→1-1 强制按未命中重开。**修复前：score_popup 磨预算死循环 10 分钟进不去局；修复后 27 秒全链贯通。**
+- **遗留观察项**：score_popup 页面 ID 的旧模板（"积分奖励 本期剩余时间"）已过时（游戏改版后该位置=指南-旷宇纷争-货币战争活动详情页，旧积分弹窗形态不再出现）——当前 F 序列绕开了该页，模板暂不补；若未来旧形态复现再补锚点（抓帧法见上）。
+
 ### A. 当前状态快照（09:4x）
 
 - **稳定目录运行版本=1.2.50**（引擎 v3，全部审查修复已含）。计划任务 CWSmartRaccoonCmdTest 拉起。

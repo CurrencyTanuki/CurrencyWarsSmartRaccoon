@@ -59,7 +59,8 @@ public enum InputKey
     Escape,
     LeftAlt,
     V,
-    Enter
+    Enter,
+    F
 }
 
 public interface IInputController

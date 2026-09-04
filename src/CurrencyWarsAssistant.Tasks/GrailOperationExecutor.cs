@@ -1,3 +1,4 @@
+using CurrencyWarsAssistant.Core;
 using CurrencyWarsAssistant.Game;
 
 namespace CurrencyWarsAssistant.Tasks;
@@ -16,6 +17,13 @@ public sealed partial class GrailOperationExecutor(
     GameDataCatalog gameData)
 {
     private int _frontDeployCount;
+
+    /// <summary>P-16（1.2.70）：给 GrailRunLoop 等无日志通道的协作对象开放的遥测转发。</summary>
+    internal void PublishTelemetry(
+        string code,
+        string message,
+        TaskEventLevel level = TaskEventLevel.Information) =>
+        rewardStage.PublishGrailTelemetry(code, message, level);
 
     /// <summary>
     /// 新对局必须调用：上场槽计数器是进程级字段，不归零会把上一局用过的
@@ -363,7 +371,13 @@ public sealed partial class GrailOperationExecutor(
         var readFailures = 0;
         var lastShelfSignature = string.Empty; // P-07（1.2.69）刷新失效检测
         var staleShelfRounds = 0;
-        for (var iteration = 0;
+        // P-16（1.2.70）：购买决策留痕——聚合变量，循环结束发一条 GrailShopLoopSummary。
+        string? endReason = null;
+        var skippedOwnedTotal = new List<string>();
+        var skippedUnaffordableTotal = new List<string>();
+        var deployFailures = 0;
+        var iteration = 0;
+        for (;
              iteration < MaxShopBuyTargetsPerPass + MaxShopRefreshesPerCommand;
              iteration++)
         {
@@ -381,6 +395,9 @@ public sealed partial class GrailOperationExecutor(
                 LastShopPassShelfNames = pass.ShopCharacterNames;
             }
 
+            skippedOwnedTotal.AddRange(pass.SkippedOwnedNames ?? []);
+            skippedUnaffordableTotal.AddRange(pass.SkippedUnaffordableNames ?? []);
+
             if (!pass.ShopRead)
             {
                 // 刷新动画未落定时读货架会失败：商店仍开着，重试而非提前收摊
@@ -388,6 +405,7 @@ public sealed partial class GrailOperationExecutor(
                 readFailures++;
                 if (readFailures >= 2 || !shopOpen)
                 {
+                    endReason = "ShopReadFailed";
                     break;
                 }
 
@@ -406,6 +424,11 @@ public sealed partial class GrailOperationExecutor(
                     // 验证超时：实际可能已买——本地记 owned 防刷新后重买，
                     // 但不计为买到不上报，收摊交决策层 I10 复核（防同一角色重复花费）。
                     owned.Add(pass.BoughtCharacterName);
+                    endReason = "PurchaseUncertain";
+                    rewardStage.PublishGrailTelemetry(
+                        "GrailShopPurchaseUncertain",
+                        $"{pass.BoughtCharacterName} 购买验证超时（可能已买）——本地防重买，收摊交决策层复核。",
+                        TaskEventLevel.Warning);
                     break;
                 }
 
@@ -415,6 +438,9 @@ public sealed partial class GrailOperationExecutor(
                 stateHolder.RecordPurchased(pass.BoughtCharacterName); // 持久已购（跨识别帧去重，1.2.31）
                 boughtNames.Add(pass.BoughtCharacterName);
                 gold = Math.Max(0, gold - GetCharacterCost(pass.BoughtCharacterName));
+                rewardStage.PublishGrailTelemetry(
+                    "GrailShopBought",
+                    $"已购买 {pass.BoughtCharacterName}，扣费后金={gold}。");
                 var isXilian = string.Equals(
                     pass.BoughtCharacterName,
                     GrailRunSnapshot.XilianName,
@@ -438,8 +464,19 @@ public sealed partial class GrailOperationExecutor(
                 {
                     bondMembers++; // 白名单非昔涟买到并上场=命杯成员+1（星徽携带者同口径计入）
                 }
+                else
+                {
+                    // P-16（1.2.70）：钱花了没上场的留痕（无空位/验证未见卡）。
+                    deployFailures++;
+                    rewardStage.PublishGrailTelemetry(
+                        "GrailShopDeploySkipped",
+                        $"{pass.BoughtCharacterName} 已购买但未能上场（无空位或验证未见卡）——待决策层 I10 对账。",
+                        TaskEventLevel.Warning);
+                }
+
                 if (!HasMoreShopTargetsOnShelf(pass.ShopCharacterNames, purchaseNames, owned))
                 {
+                    endReason = "ShelfTargetsExhausted";
                     break;
                 }
 
@@ -448,6 +485,11 @@ public sealed partial class GrailOperationExecutor(
 
             if (pass.PurchaseCheck == RewardStageAutomationController.GrailShopPurchaseCheck.NotPurchased)
             {
+                endReason = "PurchaseNotConfirmed";
+                rewardStage.PublishGrailTelemetry(
+                    "GrailShopPurchaseNotPurchased",
+                    $"{pass.BoughtCharacterName} 点击后未确认购买成功（金币不足/点击无效）——停止本店购买。",
+                    TaskEventLevel.Warning);
                 break; // 金币不足/点击无效：停止本店购买（与 Shop.cs 批量路径语义一致）
             }
 
@@ -463,6 +505,11 @@ public sealed partial class GrailOperationExecutor(
             lastShelfSignature = shelfSignature;
             if (staleShelfRounds >= 2)
             {
+                endReason = "ShelfSignatureStale";
+                rewardStage.PublishGrailTelemetry(
+                    "GrailShopShelfStale",
+                    "连续 2 轮无购买且货架全名单未变化——判定刷新失效，停止本店循环（P-07）。",
+                    TaskEventLevel.Warning);
                 break;
             }
 
@@ -475,6 +522,7 @@ public sealed partial class GrailOperationExecutor(
                 if (gold <= XpPushGoldThreshold
                     || !await ExecuteBuyXpAsync(windowHandle, cancellationToken))
                 {
+                    endReason = gold <= XpPushGoldThreshold ? "GoldBelowXpCost" : "XpPurchaseFailed";
                     break;
                 }
 
@@ -487,11 +535,13 @@ public sealed partial class GrailOperationExecutor(
                 + (stateHolder.PeekRefreshSurcharge() ? 1 : 0);
             if (refreshes >= MaxShopRefreshesPerCommand || gold < refreshCost)
             {
+                endReason = refreshes >= MaxShopRefreshesPerCommand ? "RefreshCap" : "GoldBelowRefreshCost";
                 break; // 金币不足刷新价（或本条指令刷新上限）：收摊，最终判定归决策层
             }
 
             if (!await rewardStage.RefreshShopOnceAsync(windowHandle, cancellationToken))
             {
+                endReason = "RefreshInputFailed";
                 break;
             }
 
@@ -505,6 +555,20 @@ public sealed partial class GrailOperationExecutor(
             // 这与"关店仅在买到后"的仪式语义不冲突——禁的是无买到时反复关店重开的空转。
             await rewardStage.CloseShopAsync(windowHandle, expectedPreparationPageId, cancellationToken);
         }
+
+        // P-16（1.2.70）：单条 M5 一条终态汇总——为什么停、买到谁、跳过谁，复盘不再拼凑。
+        endReason ??= "IterationCap";
+        var ownedSkipDistinct = skippedOwnedTotal.Distinct(StringComparer.Ordinal).ToArray();
+        var unaffordableDistinct = skippedUnaffordableTotal.Distinct(StringComparer.Ordinal).ToArray();
+        rewardStage.PublishGrailTelemetry(
+            "GrailShopLoopSummary",
+            $"买=[{string.Join(",", boughtNames)}] 刷={refreshes} 轮={iteration} 终态金={gold} " +
+            $"结束原因={endReason}" +
+            (ownedSkipDistinct.Length > 0 ? $"；跳过已拥有×{ownedSkipDistinct.Length}" : string.Empty) +
+            (unaffordableDistinct.Length > 0
+                ? $"；金币不足跳过=[{string.Join(",", unaffordableDistinct)}]"
+                : string.Empty) +
+            (deployFailures > 0 ? $"；上场失败×{deployFailures}" : string.Empty) + "。");
 
         LastShopPassBoughtNames = boughtNames;
         LastShopPassGold = gold; // 实时本地账（1.2.24：持有器缓存滞后，回执须报刷新后的真实余额）

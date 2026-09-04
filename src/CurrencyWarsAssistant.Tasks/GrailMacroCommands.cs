@@ -354,7 +354,9 @@ public sealed class GrailMacroCommands(
             {
                 var currentPage = ProbeLatestPageId();
                 // 补审 P2-1（1.2.69）：族匹配——精确匹配 preparation_generic 时，识别流
-                // 产出 preparation_1_1/1_2 等族内 ID 会让放行形同虚设，好局被误判续局弃掉。
+                // 若未来产出族内其他 ID（JSON 新增节点级备战页/诊断回退）会让放行形同
+                // 虚设；当前识别流实际只产出 preparation_generic（交叉复核 F7 澄清：
+                // JSON 现无 preparation_1_1/1_2 定义），本改动是行为等价的防御收紧。
                 if (!string.IsNullOrEmpty(currentPage) &&
                     currentPage.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase))
                 {

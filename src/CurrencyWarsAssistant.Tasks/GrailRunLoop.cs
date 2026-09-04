@@ -158,6 +158,7 @@ public sealed class GrailRunLoop(
         var stuckBudget = TimeSpan.FromSeconds(180);
         var frameFreshness = TimeSpan.FromSeconds(30);
         DateTimeOffset? noSnapshotSince = null;
+        var lastNoSnapshotHeartbeat = DateTimeOffset.MinValue; // P-22（1.2.70）无快照心跳节流
 
         while (!cancellationToken.IsCancellationRequested)
         {
@@ -192,6 +193,17 @@ public sealed class GrailRunLoop(
                 if (frameAge <= frameFreshness)
                 {
                     noSnapshotSince ??= DateTimeOffset.Now;
+                    // P-22（1.2.70）：无快照等待的心跳——180 秒 stuckBudget 内不再静默
+                    //（帧停流/最小化分支不发心跳：那不是卡死，与既有 R4 判据一致）。
+                    if (DateTimeOffset.Now - lastNoSnapshotHeartbeat >= TimeSpan.FromSeconds(15))
+                    {
+                        lastNoSnapshotHeartbeat = DateTimeOffset.Now;
+                        executor.PublishTelemetry(
+                            "WaitHeartbeat",
+                            $"[心跳] 等待=1-3备战快照 已等={(DateTimeOffset.Now - noSnapshotSince.Value).TotalSeconds:F0}s" +
+                            $"/上限={stuckBudget.TotalSeconds:F0}s 帧龄={frameAge.TotalSeconds:F0}s。");
+                    }
+
                     if (DateTimeOffset.Now - noSnapshotSince.Value >= stuckBudget)
                     {
                         // 主动弃局兜底（用户拍板：绝不空转卡死，也不整体终止）。

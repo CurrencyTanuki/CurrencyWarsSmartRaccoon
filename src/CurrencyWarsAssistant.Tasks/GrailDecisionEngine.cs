@@ -56,8 +56,14 @@ public sealed class GrailDecisionEngine(
             using var orphanCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
             try
             {
-                result = await dispatcher.DispatchAsync(command, context, orphanCts.Token)
-                    .WaitAsync(timeout, ct);
+                // P-22（1.2.70）：指令在途心跳——M8=35 分钟/M1=6 分钟级长指令卡死时
+                // 日志不再静默，每 30 秒一条心跳（决策层 emit 进 UI/事件文件双写）。
+                result = await AwaitWithHeartbeatAsync(
+                    commandText,
+                    dispatcher.DispatchAsync(command, context, orphanCts.Token)
+                        .WaitAsync(timeout, ct),
+                    timeout,
+                    ct);
             }
             catch (TimeoutException)
             {
@@ -77,14 +83,55 @@ public sealed class GrailDecisionEngine(
         return result;
     }
 
+    /// <summary>
+    /// P-22（1.2.70）：在途指令心跳包装——超时仍由外层 WaitAsync 裁决，本方法只在
+    /// 每 30 秒发一条 WaitHeartbeat，让 M5/M8/M1 级长指令的"卡死"与"正常长跑"可区分。
+    /// </summary>
+    private async Task<GrailCommandResult> AwaitWithHeartbeatAsync(
+        string commandText,
+        Task<GrailCommandResult> awaited,
+        TimeSpan timeout,
+        CancellationToken ct)
+    {
+        var started = DateTimeOffset.Now;
+        while (true)
+        {
+            ct.ThrowIfCancellationRequested();
+            var remaining = timeout - (DateTimeOffset.Now - started);
+            if (remaining <= TimeSpan.Zero)
+            {
+                // D1（1.2.70 审查 FAIL 项）：超时压线拍——WaitAsync 的 TimeoutException
+                // 即将/已经裁决，直接 await awaited 抛出。负值给 Task.Delay 会同步抛
+                // ArgumentOutOfRangeException（逃过 SendAsync 的两个 catch，把可自愈
+                // 超时变成决策层死亡）。
+                return await awaited;
+            }
+
+            var beatInterval = remaining < TimeSpan.FromSeconds(30)
+                ? remaining
+                : TimeSpan.FromSeconds(30);
+            var completed = await Task.WhenAny(awaited, Task.Delay(beatInterval, ct));
+            if (completed == awaited)
+            {
+                return await awaited;
+            }
+
+            emit($"[决策层心跳] {commandText} 在途已 {(DateTimeOffset.Now - started).TotalSeconds:F0}s" +
+                 $"（上限 {timeout.TotalSeconds:F0}s）——继续等待。");
+        }
+    }
+
     private static string Describe(object? payload) => payload switch
     {
-        GrailOpeningFact o => $"命中={o.MatchedEnvironmentName ?? "—"} {o.Message}",
+        GrailOpeningFact o => $"{(o.Succeeded ? "命中" : "未成功")}环境={o.MatchedEnvironmentName ?? "—"} {o.Message}",
         GrailShopPassFact s => $"买到={string.Join(",", s.BoughtCharacterNames ?? [])} 金={s.GoldAfter}",
         GrailWishOutcomeFact w => $"应答={w.Responded} 累计={w.WishesResponded}",
         GrailRunSnapshot s => $"羁绊={s.BondMemberCount} 金={s.Gold} 血={s.TeamHealth?.ToString() ?? "?"}",
         GrailPageFact p => $"页面={p.PageId ?? "未知"}",
         GrailSellResult r => $"卖出={r.SoldCount} 金={r.EstimatedGold}",
+        // P-14/P-21（1.2.70）：M7 回执此前在此处无分支（打"OK："空尾巴）、M8 未成功
+        // 曾打"命中=—"——对齐 CommandTestWindow.FormatPayload 的诚实口径。
+        RewardStageAutomationResult s => $"策略={s.Status}：{s.Message}",
         _ => string.Empty,
     };
 
@@ -103,8 +150,9 @@ public sealed class GrailDecisionEngine(
     }
 
     /// <summary>带退避的快照读取：转场/识别冻结期单帧失败是常态（实测教训）。
-    /// 1.2.66 冗余审计：前密后疏退避（1,1,2,2,3,5,5,5 秒），总窗口与原 8×5s 相当，
-    /// 但转场通常 1-3 秒完成——原 5 秒固定起步让每次转场白等 2-4 秒。</summary>
+    /// 1.2.66 冗余审计：前密后疏退避（1,1,2,2,3,5,5,5 秒），总窗口 24s（原 8×5s=40s
+    /// 的 60%，交叉复核 F8 澄清：并非"相当"）——换取转场 1-3 秒完成时首次重试即命中，
+    /// 识别冻结期的兜底由外层 SnapshotWithRetry 调用方的重试预算承接。</summary>
     private static readonly int[] SnapshotRetryBackoffSeconds = [1, 1, 2, 2, 3, 5, 5, 5];
 
     private async Task<GrailRunSnapshot?> SnapshotWithRetryAsync(nint window, CancellationToken ct)
@@ -656,6 +704,7 @@ public sealed class GrailDecisionEngine(
                 if (m8.Error is null && fact is { Succeeded: true })
                 {
                     arrived = true;
+                    _abandonStreak = 0; // F1（1.2.70 交叉复核）：M8 到达=弃局链路健康，清零退避计数
                     hit067 = string.Equals(fact.MatchedEnvironmentName, "英雄登场", StringComparison.Ordinal);
                 }
                 else if (m8.Error is not null)
@@ -698,14 +747,11 @@ public sealed class GrailDecisionEngine(
                     await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
                     await SettleAfterAbandonAsync(window, ct);
                 }
-                else if (fact?.Message.Contains("已到达首次备战页面", StringComparison.Ordinal) == true)
-                {
-                    // 已在 1-1 备战页（环境未命中轮的停靠事实）——视作到达，交运营循环评估。
-                    arrived = true;
-                }
                 else
                 {
-                    // 1.2.68：M8 重试间隔 5→2 秒——M8 内部导航/守卫自带节奏，长间隔纯空转。
+                    // F2（1.2.70 交叉复核）：原"已到达首次备战页面"分支是死代码——1.2.67 起
+                    // 协调器只以 Succeeded=true 报到达，该消息模式不再出现。
+                    // M8 重试间隔 2s（1.2.68）：M8 内部导航/守卫自带节奏，长间隔纯空转。
                     await Task.Delay(TimeSpan.FromSeconds(2), ct);
                 }
             }

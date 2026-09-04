@@ -55,9 +55,10 @@ public sealed partial class RewardStageAutomationController
         var clicked = await ClickShopRefreshAsync(windowHandle, cancellationToken);
         if (clicked)
         {
-            // 1.2.68 提速：900→400（1.2.29 曾 1100→900）。刷新动画主体等待与
-            // ReadStableShopAsync 的 500ms 门禁前置合并——货架误读由循环内
-            // readFailures<2 重试与双帧稳定判据兜底（1.2.22 教训仍保留）。
+            // 1.2.68 提速：900→400（1.2.29 曾 1100→900）。刷新后总前置=本处 400ms+
+            // 圣杯循环热路径 ReadStableShopAsync 250ms=650ms（1.2.29 时代为 900+500=1400ms）；
+            // 货架误读由循环内 readFailures<2 重试、双帧稳定判据与外层 M5 重进兜底
+            //（1.2.22 教训仍保留，F5 注释口径修正）。
             await Task.Delay(TimeSpan.FromMilliseconds(400), cancellationToken);
         }
 

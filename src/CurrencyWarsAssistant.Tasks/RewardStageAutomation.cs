@@ -987,6 +987,16 @@ public sealed partial class RewardStageAutomationController(
             message));
 
     /// <summary>
+    /// P-16（1.2.70）：给 GrailOperationExecutor 等无自有日志通道的协作组件开放的
+    /// 遥测转发口（执行器已持有本 controller 引用，避免再造构造注入链）。
+    /// </summary>
+    internal void PublishGrailTelemetry(
+        string code,
+        string message,
+        TaskEventLevel level = TaskEventLevel.Information) =>
+        Publish(code, message, level);
+
+    /// <summary>
     /// 「1-3 三星五费」买经验升人口（用户 2026-08-26）：人口<5 且 5 圣杯齐时，
     /// 点商店等级识别框（StoreLevelValue，'购买经验 Lv.X' 按钮）内任意一点两次 = 8 金币升 1 人口。
     /// 复用 MapStandardPoint（1920×1080 基准）把归一化框映射成屏幕点。

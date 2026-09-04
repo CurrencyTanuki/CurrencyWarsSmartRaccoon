@@ -797,6 +797,8 @@ public sealed class OpeningRerollLoopCoordinator(
 
             if (recoveryResult.Status != RejectedOpeningRecoveryStatus.Recovered)
             {
+                // P-20（1.2.70）：组件层 Failed() 已发布权威 RecoveryFailed(Error) 行，
+                // 此处终态不再重复落盘（同 Code 同消息双行），仅保留 UI 进度。
                 return Result(
                     OpeningRerollLoopState.RecoveryFailed,
                     round,
@@ -804,7 +806,8 @@ public sealed class OpeningRerollLoopCoordinator(
                     evaluation,
                     navigation,
                     recoveryResult,
-                    recoveryResult.Message);
+                    recoveryResult.Message,
+                    writeEventLog: false);
             }
 
             Publish(
@@ -1034,9 +1037,16 @@ public sealed class OpeningRerollLoopCoordinator(
         OpeningFilterEvaluation? evaluation,
         CurrencyWarsNavigationResult? navigation,
         RejectedOpeningRecoveryResult? recoveryResult,
-        string message)
+        string message,
+        bool writeEventLog = true)
     {
-        Publish(state, rounds, message);
+        // P-20（1.2.70）：writeEventLog=false 时仅走 UI 进度、不重复落事件日志
+        // （用于 RecoveryFailed 终态——组件层已发权威 Error 行）。
+        if (writeEventLog)
+        {
+            Publish(state, rounds, message);
+        }
+
         return new OpeningRerollLoopResult(
             state,
             rounds,

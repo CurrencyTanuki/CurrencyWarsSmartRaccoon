@@ -19,7 +19,9 @@ public sealed partial class RewardStageAutomationController
         int BoughtSlot,
         IReadOnlyList<string> ShopCharacterNames,
         string Message,
-        GrailShopPurchaseCheck PurchaseCheck = GrailShopPurchaseCheck.Confirmed);
+        GrailShopPurchaseCheck PurchaseCheck = GrailShopPurchaseCheck.Confirmed,
+        IReadOnlyList<string>? SkippedOwnedNames = null,
+        IReadOnlyList<string>? SkippedUnaffordableNames = null);
 
     /// <summary>购买后验证结论（1.2.21）：Confirmed=槽位清空确认买到；NotPurchased=金币不足/点击无效；
     /// Uncertain=验证超时（实际可能已买，调用方须防重买并交决策层复核）。</summary>
@@ -88,6 +90,10 @@ public sealed partial class RewardStageAutomationController
             .Select(slot => slot.Character!.Name)
             .ToArray();
 
+        // P-16（1.2.70）：跳过原因收集（不打日志，由执行器汇入 GrailShopLoopSummary）。
+        var skippedOwned = new List<string>();
+        var skippedUnaffordable = new List<string>();
+
         foreach (var slot in slots)
         {
             var character = slot.Character;
@@ -99,6 +105,7 @@ public sealed partial class RewardStageAutomationController
             if (!purchaseNames.Contains(character.Name)
                 || ownedNames.Contains(character.Name))
             {
+                skippedOwned.Add(character.Name);
                 continue;
             }
 
@@ -108,6 +115,7 @@ public sealed partial class RewardStageAutomationController
                 var cost = (character.Costs ?? Array.Empty<int>()).DefaultIfEmpty(0).Min();
                 if (!canAffordPurchase(cost))
                 {
+                    skippedUnaffordable.Add($"{character.Name}(费{cost})");
                     continue;
                 }
             }
@@ -148,7 +156,9 @@ public sealed partial class RewardStageAutomationController
                     Message: check == GrailShopPurchaseCheck.NotPurchased
                         ? $"{character.Name} 点击后未确认购买成功（可能金币不足），本 Pass 停止购买。"
                         : $"{character.Name} 购买结果不确定（验证超时），收摊交决策层 I10 复核。",
-                    PurchaseCheck: check);
+                    PurchaseCheck: check,
+                    SkippedOwnedNames: skippedOwned,
+                    SkippedUnaffordableNames: skippedUnaffordable);
             }
 
             return new GrailShopPassResult(
@@ -159,7 +169,9 @@ public sealed partial class RewardStageAutomationController
                 ShopCharacterNames: shopNames,
                 Message: bought
                     ? $"已购买 {character.Name}（槽位 {slot.Slot}）。"
-                    : $"购买 {character.Name} 点击未确认成功。");
+                    : $"购买 {character.Name} 点击未确认成功。",
+                SkippedOwnedNames: skippedOwned,
+                SkippedUnaffordableNames: skippedUnaffordable);
         }
 
         return new GrailShopPassResult(
@@ -168,7 +180,9 @@ public sealed partial class RewardStageAutomationController
             BoughtCharacterName: null,
             BoughtSlot: -1,
             ShopCharacterNames: shopNames,
-            Message: "本轮商店无目标角色（或目标均已拥有）。");
+            Message: "本轮商店无目标角色（或目标均已拥有）。",
+            SkippedOwnedNames: skippedOwned,
+            SkippedUnaffordableNames: skippedUnaffordable);
     }
 
     /// <summary>

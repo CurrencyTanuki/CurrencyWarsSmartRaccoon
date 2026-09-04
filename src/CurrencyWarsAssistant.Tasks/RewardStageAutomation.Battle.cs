@@ -334,6 +334,9 @@ public sealed partial class RewardStageAutomationController
         var nextAutoBattleCheck =
             ActiveUtcNow + TimeSpan.FromMilliseconds(200);
         var deadline = ActiveUtcNow + battleBudget;
+        // P-22（1.2.70）：自动战斗确认后观察分支停发，战斗中后段可能 3 分钟无事件——
+        // 加 30 秒心跳（信息级，只进事件文件）。
+        var lastHeartbeatAt = ActiveUtcNow;
 
         for (var observationIndex = 1;
              observationIndex <= maximumBattleObservations;
@@ -343,6 +346,16 @@ public sealed partial class RewardStageAutomationController
             {
                 break;
             }
+
+            if (ActiveUtcNow - lastHeartbeatAt >= TimeSpan.FromSeconds(30))
+            {
+                lastHeartbeatAt = ActiveUtcNow;
+                Publish(
+                    "WaitHeartbeat",
+                    $"[心跳] 等待=战斗结果 已等={(deadline - battleBudget - ActiveUtcNow).Duration().TotalSeconds:F0}s" +
+                    $"/上限={battleBudget.TotalSeconds:F0}s 观察={observationIndex}。");
+            }
+
             var (window, frame) = await CaptureForegroundAsync(
                 windowHandle,
                 cancellationToken);
@@ -751,10 +764,14 @@ public sealed partial class RewardStageAutomationController
             recovery.Status == RejectedOpeningRecoveryStatus.Recovered
                 ? "RewardBattleTimeoutRecoveryCompleted"
                 : "RewardBattleTimeoutRecoveryFailed",
-            recovery.Message,
+            // P-20（1.2.70）：失败时组件层 RecoveryFailed(Error) 是权威行，此处只留
+            // 指针——避免同一失败在事件日志双行复述。
+            recovery.Status == RejectedOpeningRecoveryStatus.Recovered
+                ? recovery.Message
+                : "战斗超时后的统一放弃失败，详见同刻 RecoveryFailed 行。",
             recovery.Status == RejectedOpeningRecoveryStatus.Recovered
                 ? TaskEventLevel.Information
-                : TaskEventLevel.Error);
+                : TaskEventLevel.Warning);
         return recovery.Status == RejectedOpeningRecoveryStatus.Recovered;
     }
 
@@ -1140,7 +1157,9 @@ public sealed partial class RewardStageAutomationController
                 windowHandle,
                 accepted.Slot,
                 accepted.Strategy!.Name,
-                cancellationToken);
+                source: "PreferredHit",
+                strategyId: accepted.Strategy!.Id,
+                cancellationToken: cancellationToken);
         }
 
         // 快速三连刷：三张策略都不命中时，不逐张刷新后识别——
@@ -1184,7 +1203,9 @@ public sealed partial class RewardStageAutomationController
                 windowHandle,
                 accepted.Slot,
                 accepted.Strategy!.Name,
-                cancellationToken);
+                source: "PreferredHitAfterRefresh",
+                strategyId: accepted.Strategy!.Id,
+                cancellationToken: cancellationToken);
         }
 
         if (_softInvestmentStrategyRequirement)
@@ -1215,7 +1236,8 @@ public sealed partial class RewardStageAutomationController
                 windowHandle,
                 fallback?.Slot ?? 0,
                 fallbackName,
-                cancellationToken);
+                source: "SoftFallbackLeftmost",
+                cancellationToken: cancellationToken);
         }
 
         return new RewardStageAutomationResult(
@@ -1238,7 +1260,8 @@ public sealed partial class RewardStageAutomationController
             windowHandle,
             0,
             "识别降级的第一槽投资策略",
-            cancellationToken);
+            source: "RecognitionDegraded",
+            cancellationToken: cancellationToken);
         if (!selection.Succeeded)
         {
             return selection;
@@ -1321,7 +1344,9 @@ public sealed partial class RewardStageAutomationController
             nint windowHandle,
             int slot,
             string displayName,
-            CancellationToken cancellationToken)
+            string source,
+            string? strategyId = null,
+            CancellationToken cancellationToken = default)
     {
         const int maximumActionAttempts = 3;
         for (var actionAttempt = 1;
@@ -1399,9 +1424,16 @@ public sealed partial class RewardStageAutomationController
                         Publish(
                             "InvestmentStrategyPostPageReached",
                             $"投资策略确认后稳定进入 {page.PageId}。");
+                        // P-14（1.2.70）：终态"选择决定"事件——选中谁/从哪个来源选中，
+                        // 单条承载，复盘不再串联多条过程事件反推。
+                        Publish(
+                            "InvestmentStrategySelectionDecided",
+                            $"选中=\"{displayName}\"(ID={strategyId ?? "未知"}) 槽位={slot + 1} 来源={source}。");
                         return new RewardStageAutomationResult(
                             RewardStageAutomationStatus.InvestmentStrategySelected,
-                            $"已选择投资策略“{displayName}”并确认，前两层奖励关自动流程完成。");
+                            // P-21（1.2.70）：原文案"前两层奖励关自动流程完成"是旧生产
+                            // 流程遗留，M7/1-3 路径无奖励关段——改为上下文无关事实。
+                            $"已选择投资策略“{displayName}”并确认，页面已稳定离开 investment_strategy。");
                     }
                 }
                 else

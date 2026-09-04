@@ -310,9 +310,34 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
             cancellationToken);
         if (exitPrompt is null)
         {
-            // 2026-09-04 用户令：同上——Esc 无效=非对局页，盲点左上角退出按钮
-            // 已被实测证伪（把主界面/详情页点出更多怪界面）。改点"下一页/保存并
-            // 退出"位（结算详情链的推进按钮，链尾即保存并退出）。
+            // 2026-09-04 用户令（1.2.57 补分流）：Esc 无效=非对局页，兜底点击必须
+            // 按页面身份分流——与 AbandonCurrentRunAsync 同款规则。1.2.56 漏改本处，
+            // 导致备战页被连点 (960,899)=出战按钮三次（15:17 专家研讨会局实况）。
+            var fallbackPage = await ReadStablePageAsync(
+                windowHandle,
+                cancellationToken);
+            var fallbackPageId = fallbackPage?.PageId ?? string.Empty;
+            if (fallbackPageId.StartsWith(
+                    "preparation_",
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                Publish(
+                    "RecoverySkipPreparationClick",
+                    $"当前为备战页（{fallbackPageId}），禁止点击出战区；" +
+                    "本路径无法弃局，交由外层重试。",
+                    TaskEventLevel.Warning);
+                return Failed("备战页 Esc 无法弃局且禁止点击出战区；已停止兜底点击。");
+            }
+
+            if (fallbackPageId is "normal_hud" or "currency_wars_home")
+            {
+                Publish(
+                    "RecoveryAlreadyAtHome",
+                    $"已识别 {fallbackPageId}——弃局目标（回到主界面）已达成。");
+                return RejectedOpeningRecoveryResult.Recovered(
+                    "已回到货币战争主界面。");
+            }
+
             Publish(
                 "RecoveryFallbackStarted",
                 "Esc 未进入放弃确认页，改点结算链\"下一页/保存并退出\"位并进行有限重试。",

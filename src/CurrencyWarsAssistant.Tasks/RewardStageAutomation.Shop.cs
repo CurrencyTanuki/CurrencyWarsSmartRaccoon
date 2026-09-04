@@ -152,6 +152,12 @@ public sealed partial class RewardStageAutomationController
                     "收起商店",
                     cancellationToken))
             {
+                // 1.2.58：点击失败（前台守卫/窗口瞬态）不再静默 continue——
+                // 记录后进入下一轮，避免 3 次耗尽后没有任何失败痕迹可查。
+                Publish(
+                    "CloseRewardShopClickFailed",
+                    $"第 {attempt} 次收起商店点击未发送成功；准备重试。",
+                    TaskEventLevel.Warning);
                 continue;
             }
 
@@ -180,9 +186,31 @@ public sealed partial class RewardStageAutomationController
                     "reward_shop",
                     StringComparison.OrdinalIgnoreCase))
             {
+                // 1.2.58：收起动画期页面短暂"未知"是瞬态——等 1.5 秒重读一次，
+                // 变回备战页即视为收店成功；仍不是才放弃（此前零容忍直接失败，
+                // 曾把 4 命杯好局连带弃掉，14:4x 局实况）。
+                Publish(
+                    "CloseRewardShopTransientUnknown",
+                    $"第 {attempt} 次收起商店后页面为 {current?.PageId ?? "未知页"}；" +
+                    "等待 1.5 秒重读一次再判定。",
+                    TaskEventLevel.Warning);
+                await Task.Delay(
+                    TimeSpan.FromMilliseconds(1500),
+                    cancellationToken);
+                current = await ReadStablePageAsync(
+                    windowHandle,
+                    cancellationToken);
+                if (string.Equals(
+                        current?.PageId,
+                        expectedPreparationPage,
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+
                 Publish(
                     "CloseRewardShopRetryStopped",
-                    $"第 {attempt} 次收起商店后页面为 " +
+                    $"第 {attempt} 次收起商店重读后页面仍为 " +
                     $"{current?.PageId ?? "未知页"}；未再次点击商店开关。",
                     TaskEventLevel.Warning);
                 return false;

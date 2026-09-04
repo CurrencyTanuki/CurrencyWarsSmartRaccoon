@@ -514,13 +514,28 @@ public sealed class GrailDecisionEngine(
         // ---- S5/S7：运营循环 ----
         for (var opsRound = 0; opsRound < 30 && !ct.IsCancellationRequested; opsRound++)
         {
-            await SendAsync("M5 圣杯",
+            var shopResult = await SendAsync("M5 圣杯",
                 new GrailCommand(GrailCommandKind.M5,
                     new GrailShopPassArgs(GrailLoopMode: true)), window, ct);
             snapshot = await SnapshotWithRetryAsync(window, ct);
             if (snapshot is null)
             {
-                return PreparationOutcome.Interrupted;
+                // 1.2.58：M5 失败（收店失败等）不再直接弃局——4 命杯好局曾因此被
+                // 连带放弃（14:4x 局实况）。先重试一轮 M5 让商店状态自恢复，
+                // 快照仍失败才判 Interrupted。
+                if (shopResult.Error is not null)
+                {
+                    emit("[决策层] M5 失败（" + shopResult.Error + "）——重试一轮再判定。");
+                    shopResult = await SendAsync("M5 圣杯",
+                        new GrailCommand(GrailCommandKind.M5,
+                            new GrailShopPassArgs(GrailLoopMode: true)), window, ct);
+                }
+
+                snapshot = await SnapshotWithRetryAsync(window, ct);
+                if (snapshot is null)
+                {
+                    return PreparationOutcome.Interrupted;
+                }
             }
 
             await DeployBondMembersAsync(window, ct);

@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using CurrencyWarsAssistant.Game;
 
 namespace CurrencyWarsAssistant.Tasks;
@@ -234,6 +234,9 @@ public sealed class GrailDecisionEngine(
     /// ①官方数据 bond/纯 5 费；②明细 [星徽] 标记（识别∪账本并集产物）；
     /// ③数据查不到的名字（识别误名）绝不卖——宁少卖不误卖。
     /// 保留线封顶=快照 SellableBeyondKeepLineCount；AnomalyNotes 含同名多处=拒采整轮。
+    /// 1.2.58（防错③④/坑38/X5）：备战席与场上循环统一三重校验（备战席此前漏保护，
+    /// 命杯/5费/星徽在备战席同样会被卖）；每卖一条→I10 重读复核（该槽已空/该名消失）
+    /// →反证即停；逐卖重读快照，禁止按卖出前槽位表连发。
     /// </summary>
     private async Task<int> SellRedundantsAsync(nint window, GrailRunSnapshot snapshot, CancellationToken ct)
     {
@@ -246,75 +249,185 @@ public sealed class GrailDecisionEngine(
         var cap = snapshot.SellableBeyondKeepLineCount;
         var sold = 0;
 
-        // 备战席：I10 明细的槽号即绝对位置（实测不压缩）。
-        foreach (var detail in snapshot.BenchCharacterDetails)
+        // 1.2.58：逐卖重读循环——每轮从最新快照选一条可卖（备战席优先、场上次之），
+        // 卖出后立即 I10 复核；复核反证（目标槽未空/名字未消失/快照拿不到）立即停手。
+        while (sold < cap && !ct.IsCancellationRequested)
         {
-            if (sold >= cap)
+            var target = SelectNextSellableTarget(snapshot);
+            if (target is null)
             {
                 break;
             }
 
-            var separator = detail.IndexOf(':');
-            if (separator <= 0 || !int.TryParse(detail.AsSpan(0, separator), out var slotIndex))
+            var sell = target.Kind == SellTargetKind.Bench
+                ? await SendAsync($"A3 {target.SlotNumber + 1}",
+                    new GrailCommand(GrailCommandKind.A3,
+                        new GrailBenchSlotArgs(target.SlotNumber)), window, ct)
+                : await SendAsync($"A2 {(target.IsBack ? "后台" : "前台")} {target.SlotNumber}",
+                    new GrailCommand(GrailCommandKind.A2,
+                        new GrailPositionArgs(
+                            target.IsBack ? PreparationLane.Back : PreparationLane.Front,
+                            target.SlotNumber - 1)),
+                    window, ct);
+            if (sell.Error is not null)
             {
-                continue;
+                emit($"[决策层] 卖出「{target.Name}」回执失败：{sell.Error}——反证即停。");
+                break;
             }
 
-            var name = PureName(detail[(separator + 1)..]);
-            var character = ResolveProtectedCharacter(name);
-            if (character is null)
+            sold++;
+            await Task.Delay(TimeSpan.FromSeconds(1), ct);
+
+            // 防错④：卖出后 I10 复核=硬性收尾。复核失败=反证，立即停手交对账。
+            var verify = await SnapshotWithRetryAsync(window, ct);
+            if (verify is null)
             {
-                emit($"[决策层] 卖人跳过「{name}」：数据查不到该名（识别误名保护）。");
-                continue;
+                emit("[决策层] 卖出后 I10 复核拿不到快照——反证即停，交对账。");
+                break;
             }
 
-            var sell = await SendAsync($"A3 {slotIndex + 1}",
-                new GrailCommand(GrailCommandKind.A3, new GrailBenchSlotArgs(slotIndex)), window, ct);
-            if (sell.Error is null)
+            if (!VerifySaleApplied(verify, target))
             {
-                sold++;
-                await Task.Delay(TimeSpan.FromSeconds(1), ct);
-            }
-        }
-
-        // 场上冗余：F/B 槽固定（审查 P2：后台槽同样要卖，否则 R3 误判无可卖）。
-        foreach (var detail in snapshot.DeployedCharacterDetails)
-        {
-            var head = detail.Split(':')[0];
-            var isBack = head.StartsWith('B');
-            if ((!head.StartsWith('F') && !isBack) || !int.TryParse(head.AsSpan(1), out var slotNumber))
-            {
-                continue;
+                emit($"[决策层] 卖出「{target.Name}」复核未通过（{target.Kind} " +
+                     $"{target.SlotNumber} 号位状态与预期不符）——反证即停，交对账。");
+                break;
             }
 
-            var name = PureName(detail.Split(':')[^1]);
-            var character = ResolveProtectedCharacter(name);
-            if (character is null)
-            {
-                continue;
-            }
-
-            var isFive = GrailOperationExecutor.IsPureFiveCostCharacter(character);
-            var isBond = character.BondNames.Any(b =>
-                b is not null && b.Contains("命运圣杯", StringComparison.Ordinal));
-            var isCarrier = detail.Contains("[星徽]", StringComparison.Ordinal);
-            if (isBond || isFive || isCarrier)
-            {
-                continue;
-            }
-
-            var sell = await SendAsync($"A2 {(isBack ? "后台" : "前台")} {slotNumber}",
-                new GrailCommand(GrailCommandKind.A2,
-                    new GrailPositionArgs(isBack ? PreparationLane.Back : PreparationLane.Front, slotNumber - 1)),
-                window, ct);
-            if (sell.Error is null)
-            {
-                sold++;
-                await Task.Delay(TimeSpan.FromSeconds(1), ct);
-            }
+            snapshot = verify;
         }
 
         return sold;
+    }
+
+    /// <summary>
+    /// 1.2.58（架构审查 2-3）：M1 前置门——检查最新快照前台（F 槽）是否有已部署
+    /// 角色。需要新鲜盘面时先 I10 重读；拿不到快照或前台无人=返回 null（调用方判 Dead）。
+    /// </summary>
+    private async Task<GrailRunSnapshot?> EnsureFrontHasUnitAsync(
+        nint window, GrailRunSnapshot snapshot, CancellationToken ct)
+    {
+        var fresh = await SnapshotWithRetryAsync(window, ct) ?? snapshot;
+        var hasFront = fresh.DeployedCharacterDetails.Any(detail =>
+            detail.StartsWith('F') || detail.StartsWith("F:"));
+        if (!hasFront)
+        {
+            emit("[决策层] 前台无已部署角色——禁止出战（防『前台区域无角色』弹窗）。判 Dead 弃局重开。");
+            return null;
+        }
+
+        return fresh;
+    }
+
+
+    private sealed record SellTarget(
+        SellTargetKind Kind,
+        int SlotNumber,
+        bool IsBack,
+        string Name,
+        string Detail);
+
+    private enum SellTargetKind
+    {
+        Bench,
+        Field
+    }
+
+    /// <summary>从快照选下一条可卖目标：备战席优先（A3），场上次之（A2 前台/后台）。</summary>
+    private SellTarget? SelectNextSellableTarget(GrailRunSnapshot snapshot)
+    {
+        foreach (var detail in snapshot.BenchCharacterDetails)
+        {
+            if (TryParseSellable(detail, bench: true, out var benchTarget))
+            {
+                return benchTarget;
+            }
+        }
+
+        foreach (var detail in snapshot.DeployedCharacterDetails)
+        {
+            if (TryParseSellable(detail, bench: false, out var fieldTarget))
+            {
+                return fieldTarget;
+            }
+        }
+
+        return null;
+    }
+
+    private bool TryParseSellable(string detail, bool bench, out SellTarget? target)
+    {
+        target = null;
+        var headSeparator = detail.IndexOf(':');
+        if (headSeparator <= 0)
+        {
+            return false;
+        }
+
+        var head = detail[..headSeparator];
+        var name = PureName(detail[(headSeparator + 1)..]);
+        var character = ResolveProtectedCharacter(name);
+        if (character is null)
+        {
+            emit($"[决策层] 卖人跳过「{name}」：数据查不到该名（识别误名保护）。");
+            return false;
+        }
+
+        var isFive = GrailOperationExecutor.IsPureFiveCostCharacter(character);
+        var isBond = character.BondNames.Any(b =>
+            b is not null && b.Contains("命运圣杯", StringComparison.Ordinal));
+        var isCarrier = detail.Contains("[星徽]", StringComparison.Ordinal);
+        if (isBond || isFive || isCarrier)
+        {
+            emit($"[决策层] 卖人跳过「{name}」：命杯/纯5费/星徽携带者保护" +
+                 (bench ? "（1.2.58：备战席同样受保护）。" : "。"));
+            return false;
+        }
+
+        if (bench)
+        {
+            // I10 备战席明细 head=0 基槽号（0~5）；A3 指令同样吃 0 基。
+            if (!int.TryParse(head, out var benchSlot) || benchSlot < 0)
+            {
+                return false;
+            }
+
+            target = new SellTarget(
+                SellTargetKind.Bench, benchSlot, IsBack: false, name, detail);
+            return true;
+        }
+
+        var isBack = head.StartsWith('B');
+        if ((!head.StartsWith('F') && !isBack) ||
+            !int.TryParse(head.AsSpan(1), out var slotNumber) ||
+            slotNumber <= 0)
+        {
+            return false;
+        }
+
+        target = new SellTarget(
+            SellTargetKind.Field, slotNumber, isBack, name, detail);
+        return true;
+    }
+
+    /// <summary>卖出复核：目标槽位的最新明细里不再出现同名，且槽位头仍然合法。</summary>
+    private static bool VerifySaleApplied(GrailRunSnapshot verify, SellTarget target)
+    {
+        IEnumerable<string> details = target.Kind == SellTargetKind.Bench
+            ? verify.BenchCharacterDetails
+            : verify.DeployedCharacterDetails;
+        var slotHead = target.Kind == SellTargetKind.Bench
+            ? target.SlotNumber.ToString()
+            : (target.IsBack ? "B" : "F") + target.SlotNumber;
+        foreach (var detail in details)
+        {
+            if (detail.StartsWith(slotHead + ":", StringComparison.Ordinal) &&
+                detail.Contains(target.Name, StringComparison.Ordinal))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private CurrencyWarsCharacterData? ResolveProtectedCharacter(string name) =>
@@ -457,6 +570,13 @@ public sealed class GrailDecisionEngine(
         await DeployBondMembersAsync(window, ct);
         await AssembleBadgeIfAvailableAsync(window, ct, hit067);
         await EnsureWishAnsweredAsync(window, ct);
+        if (await EnsureFrontHasUnitAsync(window, snapshot, ct) is null)
+        {
+            // 1.2.58（架构审查 2-3）：M1 前置门——场上无人时出战必被"前台区域
+            // 无角色"弹窗拦下，自 heal 循环烧时间。空场局判 Dead 走弃局重开。
+            return PreparationOutcome.Dead;
+        }
+
         var m1 = await SendAsync("M1 preparation_generic reward_shop",
             new GrailCommand(GrailCommandKind.M1,
                 new GrailBattleArgs("preparation_generic", "reward_shop")), window, ct);
@@ -477,6 +597,11 @@ public sealed class GrailDecisionEngine(
         await DeployBondMembersAsync(window, ct);
         await AssembleBadgeIfAvailableAsync(window, ct, hit067); // 1-2 新得徽补装（审查 P3）
         await EnsureWishAnsweredAsync(window, ct);
+        if (await EnsureFrontHasUnitAsync(window, snapshot, ct) is null)
+        {
+            return PreparationOutcome.Dead;
+        }
+
         m1 = await SendAsync("M1 preparation_generic investment_strategy",
             new GrailCommand(GrailCommandKind.M1,
                 new GrailBattleArgs("preparation_generic", "investment_strategy")), window, ct);

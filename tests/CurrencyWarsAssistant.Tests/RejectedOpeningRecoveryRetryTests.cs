@@ -1,4 +1,4 @@
-using CurrencyWarsAssistant.Automation;
+﻿using CurrencyWarsAssistant.Automation;
 using CurrencyWarsAssistant.Core;
 using CurrencyWarsAssistant.Game;
 using CurrencyWarsAssistant.Tasks;
@@ -188,7 +188,10 @@ public sealed class RejectedOpeningRecoveryRetryTests
             CancellationToken.None);
 
         Assert.Equal(RejectedOpeningRecoveryStatus.Recovered, result.Status);
-        Assert.Equal(1, input.SettlementNextAttempts);
+        // 1.2.47 提速（用户令"动画一放完就点下一页"）后结算推进=400ms 连点节奏：
+        // 1400ms 延迟窗口内会真实点击约 2 次再等到主页，断言从旧节奏的 1 对齐为 2。
+        Assert.True(input.SettlementNextAttempts is >= 2 and <= 4,
+            $"settlement clicks={input.SettlementNextAttempts}, expect 2..4 (400ms cadence)");
     }
 
     private static GameWindowInfo Window() =>

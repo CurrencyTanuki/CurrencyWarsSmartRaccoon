@@ -219,6 +219,21 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                         "已回到货币战争主界面。");
                 }
 
+                // 1.2.58（架构审查 3-4 遗漏①）：页面完全无法识别（Esc 可能刚打开
+                // 系统菜单/半透明动画态）时禁止一切兜底点击——(960,899) 在未知页面
+                // 上的语义未经验证，点了就是盲点。只报警并交给外层重试。
+                if (fallbackPage is null)
+                {
+                    Publish(
+                        "RecoverySkipUnknownClick",
+                        "当前页面无法识别（Unknown）——禁止兜底点击，等待下一轮 Esc 后重判。",
+                        TaskEventLevel.Warning);
+                    await Task.Delay(
+                        TimeSpan.FromSeconds(1),
+                        cancellationToken);
+                    continue;
+                }
+
                 var isPrompt = fallbackPage is
                     { PageId: "uncompleted_battle_prompt" };
                 var clickResult = await ClickStandardPointAsync(
@@ -336,6 +351,16 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                     $"已识别 {fallbackPageId}——弃局目标（回到主界面）已达成。");
                 return RejectedOpeningRecoveryResult.Recovered(
                     "已回到货币战争主界面。");
+            }
+
+            // 1.2.58（架构审查 3-4 遗漏①）：Unknown 页禁止兜底点击（同上）。
+            if (fallbackPage is null)
+            {
+                Publish(
+                    "RecoverySkipUnknownClick",
+                    "当前页面无法识别（Unknown）——禁止兜底点击，交由外层重试。",
+                    TaskEventLevel.Warning);
+                return Failed("页面无法识别（Unknown）；已停止兜底点击。");
             }
 
             Publish(

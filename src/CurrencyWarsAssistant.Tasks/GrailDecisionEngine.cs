@@ -184,6 +184,51 @@ public sealed class GrailDecisionEngine(
 
             await EnsureWishAnsweredAsync(window, ct);
         }
+
+        // 1.2.63（用户令去冗余+独立分析 P-15 关联）：学者补位——bond 候选部署完毕后，
+        // 前台仍有空槽且备战席存在银河学者（凑 2 学者羁绊）时补位上场。
+        // 艾丝妲滞留备战席案（19:47 局：M5 买学者先上 F1/F2，命杯互换把学者顶回备战席，
+        // 引擎此前的 bond-only 部署不再看她）。
+        var scholarSnapshot = await SnapshotWithRetryAsync(window, ct);
+        if (scholarSnapshot is null || scholarSnapshot.OccupiedFrontSlots.Count >= 4)
+        {
+            return;
+        }
+
+        var scholarNames = new HashSet<string>(
+            gameData.CurrencyWarsCharacters
+                .Where(character => character.BondNames.Any(
+                    bond => bond is not null && bond.Contains("银河学者", StringComparison.Ordinal)))
+                .Select(character => character.Name),
+            StringComparer.OrdinalIgnoreCase);
+        var benchScholar = scholarSnapshot.BenchCharacterDetails
+            .Select(item => PureName(item.Split(':')[^1]))
+            .FirstOrDefault(name => scholarNames.Contains(name));
+        if (benchScholar is null)
+        {
+            return;
+        }
+
+        var benchHead = scholarSnapshot.BenchCharacterDetails
+            .First(detail => scholarNames.Contains(PureName(detail.Split(':')[^1])))
+            .Split(':')[0];
+        if (!int.TryParse(benchHead, out var scholarBenchSlot) || scholarBenchSlot < 0)
+        {
+            return;
+        }
+
+        var scholarSlot = Enumerable.Range(0, 4).FirstOrDefault(
+            i => !scholarSnapshot.OccupiedFrontSlots.Contains(i));
+        var scholarDeploy = await SendAsync(
+            $"A1 {benchScholar} 前台 {scholarSlot + 1}",
+            new GrailCommand(GrailCommandKind.A1,
+                new GrailDeployArgs(benchScholar, PreparationLane.Front, scholarSlot)),
+            window, ct);
+        if (scholarDeploy.Error is null)
+        {
+            emit($"[决策层] 学者补位：{benchScholar} 已部署到前台 {scholarSlot + 1} 号位。");
+            await EnsureWishAnsweredAsync(window, ct);
+        }
     }
 
     /// <summary>

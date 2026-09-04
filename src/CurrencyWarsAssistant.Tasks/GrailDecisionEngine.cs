@@ -357,9 +357,19 @@ public sealed class GrailDecisionEngine(
                 else if (m8.Error is not null)
                 {
                     // 守卫拦截/导航失败：先解除 Unknown 阻塞页（仅页面未知时），
-                    // 再走世界内撤退链路（货币战争交互→战视图→Esc→暂停页→撤退），
-                    // 最后 A9 兜底。已知页（备战/商店/战斗）不盲点。
+                    // 再 A9 清场重发。已知页（备战/商店/战斗）不盲点。
                     await DismissUnknownPageAsync(window, ct);
+                    // 坑41 规避③：A9 前判页——主界面（normal_hud/currency_wars_home）
+                    // 无局可弃（A9 必失败），跳过 A9 直接重试 M8。
+                    var pageBeforeA9 = await PageAsync(window, ct);
+                    var pageBeforeId = pageBeforeA9?.PageId;
+                    if (string.Equals(pageBeforeId, "normal_hud", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(pageBeforeId, "currency_wars_home", StringComparison.OrdinalIgnoreCase))
+                    {
+                        emit("[决策层] 页面=主界面（无局可弃）——跳过 A9 直接重试 M8。");
+                        continue;
+                    }
+
                     emit("[决策层] M8 未成（守卫或导航）——执行世界内撤退链路后 A9 清场。");
                     if (retreatFromBattleView is not null)
                     {

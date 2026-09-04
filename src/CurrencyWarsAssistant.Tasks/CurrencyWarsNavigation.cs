@@ -1063,7 +1063,10 @@ public sealed class CurrencyWarsNavigationTask(
 
         // 第 2 步：盲点连点"开始本局"位置 4 秒（每 50ms 一次，共 80 次）。
         // 模式选择/职级难度页面动画期间该按钮位置不变，直接覆盖。
-        if (!await BlindClickAsync(
+        // 1.2.81 行为审计（防接手旧局）：盲点 (1690,967) 落在 rank_difficulty_in_progress
+        // 对话框按钮区（0.58-0.99/0.82-0.97）内——每 2 秒单帧判定，命中"进行中对局"
+        // 对话框立即停手返回失败（交上层按旧局安全处理），绝不盲点绕过旧局保护。
+        if (!await BlindClickStartRunWithGuardAsync(
                 windowHandle,
                 FastStartRunPoint,
                 TimeSpan.FromSeconds(4),
@@ -1096,6 +1099,83 @@ public sealed class CurrencyWarsNavigationTask(
     /// 盲点连点：按固定间隔重复点击固定位置，持续指定时长。
     /// 用于页面动画期间按钮位置不变的场景（开始本局/位面进度继续）。
     /// </summary>
+    /// <summary>
+    /// 1.2.81 行为审计：快速路径盲点（开始本局）带"进行中对局"守卫——盲点落点与
+    /// rank_difficulty_in_progress 的"结束并结算/继续进度"按钮区重叠，若上局残留
+    /// 弹出该对话框，盲点会误点"继续进度"绕过 IgnoreActiveRun 保护接手旧局。
+    /// 每 2 秒单帧判定，命中对话框立即停手返回失败（交上层按旧局安全处理）。
+    /// </summary>
+    private async Task<bool> BlindClickStartRunWithGuardAsync(
+        nint windowHandle,
+        StandardPoint point,
+        TimeSpan duration,
+        TimeSpan interval,
+        CancellationToken cancellationToken)
+    {
+        var deadline = ActiveUtcNow + duration;
+        var nextGuardCheck = ActiveUtcNow + TimeSpan.FromSeconds(2);
+        while (ActiveUtcNow < deadline)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var window = await WaitForForegroundWindowAsync(
+                windowHandle,
+                cancellationToken);
+            if (window is null)
+            {
+                return false;
+            }
+
+            var clickPoint = MapStandardPoint(window, point);
+            var action = await input.ClickAsync(
+                new ClickTarget(
+                    "fast_click_" + point.X + "_" + point.Y,
+                    "快速刷开局盲点点击",
+                    window,
+                    BoundsAround(window, clickPoint)),
+                new ActionPolicy
+                {
+                    VerifyPointerArrivalBeforeClick = false,
+                    PointerSettleDelay = TimeSpan.Zero,
+                    AfterActionDelay = TimeSpan.Zero
+                },
+                cancellationToken);
+            if (!action.Succeeded)
+            {
+                return false;
+            }
+
+            if (ActiveUtcNow >= nextGuardCheck)
+            {
+                nextGuardCheck = ActiveUtcNow + TimeSpan.FromSeconds(2);
+                var guardWindow = await WaitForForegroundWindowAsync(
+                    windowHandle,
+                    cancellationToken);
+                if (guardWindow is null)
+                {
+                    return false;
+                }
+
+                var guardFrame = await capture.CaptureAsync(guardWindow, cancellationToken);
+                var guardPage = classifier.Classify(guardFrame)?.PageId;
+                if (string.Equals(
+                        guardPage,
+                        "rank_difficulty_in_progress",
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    Publish(
+                        CurrencyWarsNavigationState.WaitingForPage,
+                        guardPage,
+                        "检测到上一局残留的进行中对局对话框——停止盲点，交上层按旧局安全处理。");
+                    return false;
+                }
+            }
+
+            await Task.Delay(interval, cancellationToken);
+        }
+
+        return true;
+    }
+
     private async Task<bool> BlindClickAsync(
         nint windowHandle,
         StandardPoint point,

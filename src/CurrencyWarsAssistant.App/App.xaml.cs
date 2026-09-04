@@ -54,7 +54,9 @@ public partial class App : Application
         }
 
         base.OnStartup(e);
-        if (!headlessCommand && !TryAcquireSingleInstance())
+        // 1.2.72（运维解锁）：command-test（测试台）跳过单实例——它与主程序共存是
+        // 合法需求，且实测场景需要它绕过僵尸实例占用的互斥量（10656 教训）。
+        if (!headlessCommand && !commandTestMode && !TryAcquireSingleInstance())
         {
             Shutdown(0);
             return;

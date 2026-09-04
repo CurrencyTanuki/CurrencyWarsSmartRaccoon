@@ -90,8 +90,12 @@ internal sealed class Phase2FinalEvidenceFrameCache
             var result = ParseSourceId(_runId, sourceId, out _);
             if (result == Phase2EvidenceSourceParseResult.Invalid)
             {
-                throw new InvalidDataException(
-                    $"Active battle evidence contains an invalid or cross-run source: {sourceId}");
+                // 跨会话/非法来源（软件重启后 tracker 帧状态可能残留旧 run 的截图路径）
+                // 正是 RetainOnly 该清掉的不活跃证据：跳过即可——它进不了 validated，
+                // RemoveUnretainedFrames 会把不属于本会话的帧一并排除。
+                // 抛异常反而让周期清理永远失败、脏条目永远清不掉
+                // （2026-09-04 实测：每 5 分钟 UnhandledUiException 一次，全天 20+ 次）。
+                continue;
             }
 
             if (result == Phase2EvidenceSourceParseResult.Valid)

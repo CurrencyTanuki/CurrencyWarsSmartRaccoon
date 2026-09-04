@@ -7,6 +7,14 @@
 > 上一班 AI 于 2026-09-04 09:4x 交班。本节自包含：当前状态/已完成/已知缺陷/完整计划/监督方法论/下一班详尽工作令。
 > 读完本节 + rule.md（含新坑 38/38a/39/40/41）即可无缝接手。决策树与指令集已于昨夜完成增补（v4.3.2）。
 
+### ★ 1.2.53 修复批次（2026-09-04 11:4x~11:5x，用户令全面排查异常后修复）★
+
+- **监督违规自省（用户晨间批评）**：1.2.51 发布后监督出现 20 分钟空窗（写 handoff/提交期间未读日志），1-3 开店死循环被拖 20+ 分钟才发现——违反"每 ≤2 分钟读回执尾"铁律。整改：监督循环与文档工作分离，读日志优先。
+- **全面扫描今日全部会话日志（grep Exception/Unhandled/Fatal/Level≥3）**，抓到第二类高频异常：**UnhandledUiException 每 5 分钟规律性一次、全天 20+ 次**——`Active battle evidence contains an invalid or cross-run source`（Phase2FinalEvidenceFrameCache.RetainOnly:93 抛 InvalidDataException，调用点在 Phase2LiveCollectionService.RunAsync 的 catch 块内 ~1250 行，异常逃出无人观察的 Task→finalizer 线程重抛）。
+- **根因**：软件多次重启后，tracker 的活跃证据来源列表（8 个帧状态字段投影，Phase2OperationalStateTracker.cs:104）残留旧会话截图路径（run:cmdtest-旧会话/...）；RetainOnly 的本职="清掉不活跃来源的帧"，却对跨会话来源抛异常→周期清理永远失败、脏条目永远清不掉→每次必炸（自毁式异常）。上游混入机制未完全定位（遗留疑点，未证实），消费端防御=正确最后防线。
+- **修复（1.2.53）**：RetainOnly 对 Invalid 来源改为 **continue 跳过**（不进 validated→RemoveUnretainedFrames 照常清理）+注释写明机制；新增测试 RetainOnlySkipsCrossRunSourcesInsteadOfThrowing（混合传入跨会话 ID+本会话 ID，断言不抛且本会话帧保留）。审查 PASS（核验：跨会话 ID 数学上不可能成缓存 key；5 处调用点全部纯受益无控制流依赖；写盘路径 PersistFinalEvidenceAsync 独立重 ParseSourceId 对 Invalid 仍抛+failsClosed 测试原样通过——安全零回退）。构建 0/0+123/123（Grail 111+缓存 12）；发布 1.2.53.0 双验证；DECIDE 重启（11:51:27）。
+- **另见低频 RecoveryFailed**（弃局兜底重试上限，全天 4 次）：已有上限+外层重开兜底，属偶发页面时序，已有防线不修。
+
 ### ★ 1.2.52 修复批次（2026-09-04 11:0x~11:2x，监督中发现的第二个卡点）★
 
 - **监督发现（1.2.51 实机跑局）**：第 2 轮 M8 命中**英雄登场（067）**→1-1 买远坂凛→两场奖励关速胜→**10:58:18 进 1-3**（M7 两屏策略全未命中连刷 3 次后进 preparation_generic）→**10:58:52 起开店死循环**：S4 第一条裸 M5 的 OpenShopAsync 读页=preparation_generic（≠reward_shop）→点商店开关 3 次（**1-3 入场自动弹出的商店面板本来就开着，点开关=关店**）→等 reward_shop 5 秒永不中→失败→Esc→循环，40 秒/轮烧了 20+ 分钟。

@@ -98,6 +98,24 @@ public sealed class Phase2FinalEvidenceFrameCacheTests
     }
 
     [Fact]
+    public void RetainOnlySkipsCrossRunSourcesInsteadOfThrowing()
+    {
+        // 2026-09-04 实测：软件重启后 tracker 帧状态可能残留旧 run 的截图路径，
+        // RetainOnly 遇跨会话来源抛异常会让周期清理永远失败
+        //（每 5 分钟 UnhandledUiException 一次，全天 20+ 次）——
+        // 正确语义=跳过不活跃来源并继续完成保留清理。
+        const string runId = "run-retain";
+        var cache = new Phase2FinalEvidenceFrameCache(runId);
+        var current = cache.Register("current.png", Frame(10, 1));
+
+        const string crossRun =
+            "run:cmdtest-20260904-999999/screenshots/old.png";
+        cache.RetainOnly([crossRun, current, crossRun]);
+
+        Assert.Equal(1, cache.Count);
+    }
+
+    [Fact]
     public async Task PersistUsesOriginalRegisteredPixelsNotHeartbeatPixels()
     {
         var root = NewRoot();

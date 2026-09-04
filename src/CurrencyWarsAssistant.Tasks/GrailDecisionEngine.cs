@@ -721,16 +721,28 @@ public sealed class GrailDecisionEngine(
                     // 面板仍开着（reward_shop 不在 I10 门禁的备战族内，死锁）。
                     // 弃局前先点一次收店开关 (1620,975)@1920 解除面板，再最后重读。
                     emit("[决策层] 快照仍失败——尝试收起商店面板后做最后一次快照。");
-                    await SendAsync("I1", new GrailCommand(GrailCommandKind.I1), window, ct);
-                    if (genericClick is null)
+                    var pageBeforeRescue = await PageAsync(window, ct);
+                    if (pageBeforeRescue?.PageId is "reward_shop")
                     {
-                        emit("[决策层] 未注入通用点击能力——无法收店，放弃最后重试。");
+                        // 1.2.64（补审 P1-1）：只有证实面板还开着（reward_shop）才点
+                        // 收店开关——页面身份未验证时 (1620,975) 是盲点（铁律：新增
+                        // 兜底点击必须页面身份分流）。
+                        if (genericClick is null)
+                        {
+                            emit("[决策层] 未注入通用点击能力——无法收店，放弃最后重试。");
+                        }
+                        else if (await genericClick(window, 1620, 975, ct))
+                        {
+                            emit("[决策层] 已发送收起商店点击。");
+                        }
+
+                        snapshot = await SnapshotWithRetryAsync(window, ct);
                     }
-                    else if (await genericClick(window, 1620, 975, ct))
+
+                    if (snapshot is null)
                     {
-                        emit("[决策层] 已发送收起商店点击。");
+                        return PreparationOutcome.Interrupted;
                     }
-                    snapshot = await SnapshotWithRetryAsync(window, ct);
                     if (snapshot is null)
                     {
                         return PreparationOutcome.Interrupted;

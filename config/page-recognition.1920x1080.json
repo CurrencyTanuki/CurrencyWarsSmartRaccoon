@@ -252,7 +252,13 @@
           "id": "enemy_overview_leader_label",
           "displayName": "本场对局首领",
           "file": "templates/1920x1080/pages/enemy-overview-leader-label.png",
-          "threshold": 0.8
+          "threshold": 0.8,
+          "searchRegion": {
+            "x": 0.5,
+            "y": 0.45,
+            "width": 0.46,
+            "height": 0.35
+          }
         }
       ]
     },

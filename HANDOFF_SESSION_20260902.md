@@ -9,7 +9,7 @@
 ## 一、当前状态快照（2026-09-04 21:3x）
 
 - **稳定目录（桌面 CurrencyWarsAssistant-测试台-当前）= 1.2.63，已部署但从未实测**（用户发包禁令中：未经允许不发包不实测）。
-- **源码 = 1.2.64 代码批次已构建未发布**（学者补位部署等，见第三节；发布需用户允许）。
+- **源码 = 1.2.65 代码批次未发布**（学者补位部署 1.2.64 + 补审 P1-2 修复 1.2.65，见第二节；发布需用户允许）。
 - **游戏（StarRail）与软件进程当前均已关闭**——实机测试在游戏重新打开并经用户允许后进行。
 - 决策层引擎目标模式=单人。识别会话由软件启动时自动开启。
 - 计划任务 CWSmartRaccoonCmdTest（RL HIGHEST）= 唯一合法拉起方式；普通 shell 无法强杀该进程（最高权限），停软件只走 exit.txt 空闲消费流程。
@@ -27,7 +27,8 @@
 - **1.2.61**：M1 前置门补部署动画等待（3 秒+双读；19:17 局部署成功后立即 I10 撞动画误判「前台无人」弃好局——蓝图 X13 落地）。**已实测验证**：067 局部署远坂凛后正确放行出战。
 - **1.2.62**：部署/出售拖拽加 MouseButtonHoldDelay=250ms（同参数拖拽一成一败，诊断对比实证输入一致；星徽装配 250ms 为实测可靠参数）。
 - **1.2.63**：结算推进点击后 350ms 单帧主页复查（主页出现立即停——修复「回主界面后仍连点页面中部」实拍异常）；快照失败弃局前先点收店开关解除面板死锁（**待修：需按补审 P1-1 加页面分流**）。
-- **1.2.64（源码已提交未发布）**：学者补位部署——bond 候选部署完毕后前台有空槽且备战席有银河学者（凑 2 羁绊）→A1 补位（艾丝妲滞留备战席案 19:47）。
+- **1.2.64（源码已提交未发布）**：学者补位部署——bond 候选部署完毕后前台有空槽且备战席有银河学者（凑 2 羁绊）→A1 补位（艾丝妲滞留备战席案 19:47）。**同提交 6d6b30f 还包含补审 P1-1 修复**（收店兜底前加 pageBeforeRescue 页面分流），当时未入档——09-04 晚班接手核对发现（git blame 证实），已补档（漏记处置流程）。
+- **1.2.65（源码已提交未发布）**：①补审 P1-2 修复——"uncompleted_battle_prompt" 加入 AutomationPageIds.Ids（GamePageClassifier.cs，激活死分支：确认器此前永远不触发，P-02 修复整体不生效；已核 JSON 识别表 578 行有该页定义）；②清理 1.2.64 编辑残留（GrailDecisionEngine.cs 连续两个相同 `if (snapshot is null)` 死代码块）；③handoff 补档 P1-1 漏记。
 
 ## 三、两份独立分析结论（已交叉印证）+ 修复对照
 
@@ -54,11 +55,11 @@
 ### 发包禁令期间禁止事项
 - 禁止覆盖稳定目录/计划任务拉起/写 DECIDE 指令/启动游戏实测——全部需用户明确允许。
 
-## 五、补审遗留（1.2.64 复查子代理结论，下批代码修复）
+## 五、补审遗留（1.2.64 复查子代理结论；09-04 晚班接手逐项核对代码后更新现状）
 
-1. **P1-1**：GrailDecisionEngine.cs 收店解死锁兜底 genericClick(1620,975) 未按页面身份分流——I1 结果已取得但被丢弃，修法=I1 报 reward_shop 才点（一两行）。
-2. **P1-2（致命死分支）**：ConfirmUncompletedBattlePromptIfPresentAsync 判定用 uncompleted_battle_prompt，但控制器 pageClassifier 是 IAutomationPageClassifier 子集（AutomationPageIds.Ids，GamePageClassifier.cs:38-56）**不含该 ID**→确认器永远不触发，P-02 修复整体不生效。修法=ID 加入 Ids（一行）。
-3. **P2-1**：M8 竞态放行精确匹配 preparation_generic，识别流可能产出 preparation_1_1 族→放行形同虚设。修法=StartsWith("preparation_") 族匹配。
+1. **P1-1 ✅ 已随 1.2.64 修复**（GrailDecisionEngine.cs 快照失败兜底：pageBeforeRescue 报 reward_shop 才点收店开关 1620,975）——提交 6d6b30f 时未入档，接手核对发现后补档。
+2. **P1-2（致命死分支）✅ 已随 1.2.65 修复**：ConfirmUncompletedBattlePromptIfPresentAsync 判定用 uncompleted_battle_prompt，但控制器 pageClassifier 是 IAutomationPageClassifier 子集（AutomationPageIds.Ids，GamePageClassifier.cs:38-57）不含该 ID→确认器永远不触发，P-02 修复整体不生效。修法=ID 加入 Ids（已核：JSON 识别表 578 行有该页定义，加 ID 即生效）。**待实机验证**。
+3. **P2-1（核实仍未修，下批）**：M8 竞态放行精确匹配 preparation_generic（GrailMacroCommands.cs:356-359 string.Equals），识别流可能产出 preparation_1_1 族→放行形同虚设。修法=StartsWith("preparation_") 族匹配。
 4. **P3 备案**：RecoverAsync fallback 缺 isPrompt 特判；双确认器串行空转 ~11s；确认钮坐标三处硬编码待收敛；wish_trial 点位 (1499,641) 78% 分位需实机核验；expected 列表 preparation_1_x 永假死条目待清理。
 
 ## 六、监督与纪律（用户令，最高优先）

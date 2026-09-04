@@ -46,6 +46,7 @@ public static class AutomationPageIds
         "reward_battle_pause",
         "battle_generic",
         "incomplete_lineup_prompt",
+        "uncompleted_battle_prompt",
         "challenge_success",
         "challenge_failed",
         "challenge_health_depleted",

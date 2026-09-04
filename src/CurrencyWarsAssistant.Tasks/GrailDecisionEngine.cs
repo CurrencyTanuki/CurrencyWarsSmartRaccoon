@@ -743,10 +743,6 @@ public sealed class GrailDecisionEngine(
                     {
                         return PreparationOutcome.Interrupted;
                     }
-                    if (snapshot is null)
-                    {
-                        return PreparationOutcome.Interrupted;
-                    }
                 }
             }
 

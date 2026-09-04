@@ -487,6 +487,20 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                     AfterActionDelay = TimeSpan.Zero
                 },
                 cancellationToken);
+            // 1.2.63（用户实拍质证）：点击后立即复查主页——已回到货币战争主界面
+            // 却继续盲点页面中部是实拍确认的异常行为。单帧识别到主页即停。
+            var afterClickHome = await WaitForKnownSettlementPageAsync(
+                windowHandle,
+                TimeSpan.FromMilliseconds(350),
+                cancellationToken);
+            if (afterClickHome is { PageId: "currency_wars_home" })
+            {
+                Publish(
+                    "RecoveryCompletedEarlyHome",
+                    $"第 {attempt} 次推进后已确认回到货币战争主界面——停止连点。");
+                returnedHome = true;
+                break;
+            }
             if (!next.Succeeded)
             {
                 Publish(

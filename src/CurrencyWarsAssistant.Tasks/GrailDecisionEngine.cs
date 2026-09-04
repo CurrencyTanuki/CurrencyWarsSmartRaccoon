@@ -306,16 +306,29 @@ public sealed class GrailDecisionEngine(
     private async Task<GrailRunSnapshot?> EnsureFrontHasUnitAsync(
         nint window, GrailRunSnapshot snapshot, CancellationToken ct)
     {
-        var fresh = await SnapshotWithRetryAsync(window, ct) ?? snapshot;
-        var hasFront = fresh.DeployedCharacterDetails.Any(detail =>
-            detail.StartsWith('F') || detail.StartsWith("F:"));
-        if (!hasFront)
+        // 1.2.61（实机 19:17 局复盘）：部署成功后立即 I10 会撞上部署动画+识别滞后
+        // （蓝图 X13：部署回执后等 3-5 秒再核对）——首查前等 3 秒，未找到再等 3 秒
+        // 重读一次；两次都空才判 Dead。此前零等待曾把部署成功的好局误杀（19:17 局）。
+        await Task.Delay(TimeSpan.FromSeconds(3), ct);
+        for (var readAttempt = 1; readAttempt <= 2; readAttempt++)
         {
-            emit("[决策层] 前台无已部署角色——禁止出战（防『前台区域无角色』弹窗）。判 Dead 弃局重开。");
-            return null;
+            var fresh = await SnapshotWithRetryAsync(window, ct) ?? snapshot;
+            var hasFront = fresh.DeployedCharacterDetails.Any(detail =>
+                detail.StartsWith('F') || detail.StartsWith("F:"));
+            if (hasFront)
+            {
+                return fresh;
+            }
+
+            if (readAttempt == 1)
+            {
+                emit("[决策层] 前台未读到角色——可能为部署动画/识别滞后，3 秒后重读。");
+                await Task.Delay(TimeSpan.FromSeconds(3), ct);
+            }
         }
 
-        return fresh;
+        emit("[决策层] 两次重读前台均无角色——禁止出战（防『前台区域无角色』弹窗）。判 Dead 弃局重开。");
+        return null;
     }
 
 
@@ -659,7 +672,24 @@ public sealed class GrailDecisionEngine(
                 snapshot = await SnapshotWithRetryAsync(window, ct);
                 if (snapshot is null)
                 {
-                    return PreparationOutcome.Interrupted;
+                    // 1.2.63（实机 19:49 局）：快照失败的最常见原因=M5 收店失败后
+                    // 面板仍开着（reward_shop 不在 I10 门禁的备战族内，死锁）。
+                    // 弃局前先点一次收店开关 (1620,975)@1920 解除面板，再最后重读。
+                    emit("[决策层] 快照仍失败——尝试收起商店面板后做最后一次快照。");
+                    await SendAsync("I1", new GrailCommand(GrailCommandKind.I1), window, ct);
+                    if (genericClick is null)
+                    {
+                        emit("[决策层] 未注入通用点击能力——无法收店，放弃最后重试。");
+                    }
+                    else if (await genericClick(window, 1620, 975, ct))
+                    {
+                        emit("[决策层] 已发送收起商店点击。");
+                    }
+                    snapshot = await SnapshotWithRetryAsync(window, ct);
+                    if (snapshot is null)
+                    {
+                        return PreparationOutcome.Interrupted;
+                    }
                 }
             }
 

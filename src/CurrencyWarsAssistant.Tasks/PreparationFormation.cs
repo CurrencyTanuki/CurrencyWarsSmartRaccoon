@@ -1137,7 +1137,10 @@ public sealed partial class PreparationBoardController(
                 {
                     VerifyPointerArrivalBeforeClick = false,
                     PointerSettleDelay = TimeSpan.Zero,
-                    AfterActionDelay = TimeSpan.FromMilliseconds(50)
+                    // 1.2.61（X4 立案）：同参数拖拽一成一败（19:23/19:31 实况，诊断
+                    // 输入完全一致）——瞬时拖拽在游戏侧生效不稳定。按住 250ms
+                    //（星徽装配 1.2.27 实测可靠参数）提高游戏拖拽判定成功率。
+                    MouseButtonHoldDelay = TimeSpan.FromMilliseconds(250)
                 },
                 cancellationToken);
             if (!drag.Succeeded)
@@ -1321,7 +1324,10 @@ public sealed partial class PreparationBoardController(
                 {
                     VerifyPointerArrivalBeforeClick = false,
                     PointerSettleDelay = TimeSpan.Zero,
-                    AfterActionDelay = TimeSpan.FromMilliseconds(50)
+                    // 1.2.61（X4 立案）：同参数拖拽一成一败（19:23/19:31 实况，诊断
+                    // 输入完全一致）——瞬时拖拽在游戏侧生效不稳定。按住 250ms
+                    //（星徽装配 1.2.27 实测可靠参数）提高游戏拖拽判定成功率。
+                    MouseButtonHoldDelay = TimeSpan.FromMilliseconds(250)
                 },
                 cancellationToken);
             if (!drag.Succeeded)
@@ -1589,7 +1595,10 @@ public sealed partial class PreparationBoardController(
                 {
                     VerifyPointerArrivalBeforeClick = false,
                     PointerSettleDelay = TimeSpan.Zero,
-                    AfterActionDelay = TimeSpan.FromMilliseconds(50)
+                    // 1.2.61（X4 立案）：同参数拖拽一成一败（19:23/19:31 实况，诊断
+                    // 输入完全一致）——瞬时拖拽在游戏侧生效不稳定。按住 250ms
+                    //（星徽装配 1.2.27 实测可靠参数）提高游戏拖拽判定成功率。
+                    MouseButtonHoldDelay = TimeSpan.FromMilliseconds(250)
                 },
                 cancellationToken);
             if (!drag.Succeeded)

@@ -403,31 +403,28 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                 continue;
             }
 
+            // 提速（2026-09-04 用户令）：结算连页之间不再逐页等待 2.5 秒识别——
+            // 动画一放完就点下一页（连点节奏 400ms），全部点完再统一验证是否回到主页。
             Publish(
                 "RecoveryNextClicked",
-                $"已点击结算下一步：尝试 {attempt}，正在验证是否返回主界面。");
-            var current = await WaitForKnownSettlementPageAsync(
-                    windowHandle,
-                    TimeSpan.FromMilliseconds(2500),
-                    cancellationToken);
-            if (current is { PageId: "currency_wars_home" })
-            {
-                returnedHome = true;
-                break;
-            }
+                $"已点击结算下一步：尝试 {attempt}，连点推进中。");
+            await Task.Delay(TimeSpan.FromMilliseconds(400), cancellationToken);
+        }
 
-            if (current is not { PageId: "challenge_failed" })
-            {
-                Publish(
-                    "RecoverySettlementPageUnconfirmed",
-                    "快速结算点击后处于动画或暂未稳定识别；当前已由挑战失败页授权，" +
-                    "继续点击同一结算位置并监测主页。",
-                    TaskEventLevel.Warning);
-            }
-
+        // 统一验证：连点结束后等主页出现（最多 3 秒）。
+        var finalPage = await WaitForKnownSettlementPageAsync(
+            windowHandle,
+            TimeSpan.FromMilliseconds(3000),
+            cancellationToken);
+        if (finalPage is { PageId: "currency_wars_home" })
+        {
+            returnedHome = true;
+        }
+        else
+        {
             Publish(
                 "RecoverySettlementPending",
-                $"第 {attempt} 次结算推进后仍是结算动画或中间页，将继续有限推进。",
+                "结算连点推进后仍未确认主页；继续有限推进或交由被动恢复。",
                 TaskEventLevel.Information);
         }
 

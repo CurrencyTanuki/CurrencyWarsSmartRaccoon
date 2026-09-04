@@ -173,7 +173,9 @@ public sealed class GrailDecisionEngine(
             return; // 未注入通用点击能力时跳过（交 A9/重开处理）
         }
 
-        (int X, int Y)[] attempts = [(1860, 64), (960, 540), (1860, 64)];
+        // 坑39：绝不点右上 ✕——那是指南页关闭钮，会把货币战争模式整个关回游戏主界面
+        // （normal_hud 的恢复 M8 导航本来就会做，无需也不应代劳）。只点空白推进位面图。
+        (int X, int Y)[] attempts = [(960, 540)];
         foreach (var (x, y) in attempts)
         {
             await genericClick(window, x, y, ct);

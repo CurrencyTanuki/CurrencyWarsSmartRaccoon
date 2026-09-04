@@ -417,6 +417,7 @@ public sealed class Phase2FastPageClassifier : IPhase2FastPageClassifier
             "reward_battle_pause",
             "battle_generic",
             "incomplete_lineup_prompt",
+            "disconnect_prompt",
             "challenge_success",
             "challenge_failed",
             "challenge_health_depleted",

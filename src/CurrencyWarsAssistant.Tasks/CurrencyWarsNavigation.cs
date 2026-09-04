@@ -132,7 +132,12 @@ public sealed class CurrencyWarsNavigationConfig
                     action.Kind,
                     "pressKey",
                     StringComparison.OrdinalIgnoreCase);
-                if (!isClick && !isDrag && !isEscape && !isAltClick && !isPressKey)
+                var isClickLoop = string.Equals(
+                    action.Kind,
+                    "clickLoop",
+                    StringComparison.OrdinalIgnoreCase);
+                if (!isClick && !isDrag && !isEscape && !isAltClick &&
+                    !isPressKey && !isClickLoop)
                 {
                     throw new InvalidDataException(
                         $"Unsupported action kind: {action.Kind}");
@@ -142,6 +147,12 @@ public sealed class CurrencyWarsNavigationConfig
                 {
                     throw new InvalidDataException(
                         $"PressKey action has missing or unsupported key: {action.Id}");
+                }
+
+                if (isClickLoop && action.DurationMilliseconds <= 0)
+                {
+                    throw new InvalidDataException(
+                        $"ClickLoop action needs a positive durationMilliseconds: {action.Id}");
                 }
 
                 if ((isClick || isDrag || isAltClick) &&
@@ -832,6 +843,24 @@ public sealed class CurrencyWarsNavigationTask(
                 InputKey.LeftAlt,
                 policy,
                 cancellationToken);
+        }
+
+        if (string.Equals(action.Kind, "clickLoop", StringComparison.OrdinalIgnoreCase) &&
+            action.Point is not null)
+        {
+            // 结算页推进（2026-09-04 用户令）：在"下一页"位置原地连点直到回主界面，
+            // 不要每页等稳定识别——复用快速刷开局的盲点连点（400ms 节奏实测可靠）。
+            var looped = await BlindClickAsync(
+                window.Handle,
+                action.Point,
+                TimeSpan.FromMilliseconds(action.DurationMilliseconds),
+                TimeSpan.FromMilliseconds(400),
+                cancellationToken);
+            return looped
+                ? ActionResult.Success(
+                    $"已原地连点 {action.DurationMilliseconds}ms：{action.DisplayName}")
+                : ActionResult.Failure(
+                    $"连点“{action.DisplayName}”前游戏窗口已失效。");
         }
 
         if (!string.Equals(action.Kind, "click", StringComparison.OrdinalIgnoreCase) ||

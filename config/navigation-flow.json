@@ -271,6 +271,74 @@
           ]
         }
       ]
+    },
+    {
+      "pageId": "challenge_failed",
+      "actions": [
+        {
+          "id": "settlement_advance_failed",
+          "displayName": "挑战失败结算页点击继续推进",
+          "kind": "clickLoop",
+          "point": {
+            "x": 960,
+            "y": 899
+          },
+          "expectedPageIds": [
+            "challenge_failed",
+            "challenge_success",
+            "currency_wars_home",
+            "normal_hud"
+          ],
+          "timeoutMilliseconds": 10000,
+          "durationMilliseconds": 6000
+        }
+      ]
+    },
+    {
+      "pageId": "challenge_success",
+      "actions": [
+        {
+          "id": "settlement_advance_success",
+          "displayName": "挑战成功结算页点击继续推进",
+          "kind": "clickLoop",
+          "point": {
+            "x": 960,
+            "y": 899
+          },
+          "expectedPageIds": [
+            "challenge_failed",
+            "challenge_success",
+            "currency_wars_home",
+            "normal_hud"
+          ],
+          "timeoutMilliseconds": 10000,
+          "durationMilliseconds": 6000
+        }
+      ]
+    },
+    {
+      "pageId": "uncompleted_battle_prompt",
+      "actions": [
+        {
+          "id": "confirm_uncompleted_battle_prompt",
+          "displayName": "确认关闭无法出战提示",
+          "kind": "click",
+          "point": {
+            "x": 960,
+            "y": 699
+          },
+          "expectedPageIds": [
+            "preparation_generic",
+            "preparation_1_1",
+            "preparation_1_2",
+            "preparation_1_3",
+            "normal_hud",
+            "currency_wars_home",
+            "uncompleted_battle_prompt"
+          ],
+          "timeoutMilliseconds": 8000
+        }
+      ]
     }
   ]
 }

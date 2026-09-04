@@ -573,6 +573,26 @@
           "threshold": 0.72
         }
       ]
+    },
+    {
+      "id": "uncompleted_battle_prompt",
+      "displayName": "前台区域无角色无法出战提示",
+      "priority": 88,
+      "minimumAnchorMatches": 1,
+      "anchors": [
+        {
+          "id": "uncompleted_battle_prompt_text",
+          "displayName": "无法出战提示文字",
+          "file": "templates/1920x1080/pages/uncompleted-battle-prompt-text.png",
+          "searchRegion": {
+            "x": 0.3,
+            "y": 0.4,
+            "width": 0.42,
+            "height": 0.16
+          },
+          "threshold": 0.8
+        }
+      ]
     }
   ]
 }

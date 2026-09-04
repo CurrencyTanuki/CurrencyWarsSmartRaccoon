@@ -150,9 +150,10 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
 {
     private const int ReferenceWidth = 1920;
     private const int ReferenceHeight = 1080;
-    private static readonly StandardPoint ExitRunPoint = new(55, 65);
     private static readonly StandardPoint AbandonAndSettlePoint = new(750, 744);
     private static readonly StandardPoint NextPoint = new(960, 899);
+    // "前台区域无角色，无法出战"提示弹窗的确认按钮（12:08 实拍帧裁测，1920 参考系）。
+    private static readonly StandardPoint UncompletedPromptConfirmPoint = new(960, 699);
     private static readonly TimeSpan PollInterval = TimeSpan.FromMilliseconds(150);
     private TimeSpan _pauseBaseline;
 
@@ -162,7 +163,9 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
 
     /// <summary>
     /// 弃局兜底入口（不依赖开局快照，卡在任意页面均可）：Esc 进入放弃确认弹窗 →
-    /// 完成结算推进回主页；Esc 无效时用左上角退出按钮兜底。最多 3 轮。
+    /// 完成结算推进回主页；Esc 无效（非对局页）时按页面身份分流——结算详情页点
+    /// "下一页/保存并退出"位推进，备战页绝不点击（防误触出战），主界面即成功
+    /// （2026-09-04 用户令）。最多 3 轮。
     /// </summary>
     public async Task<RejectedOpeningRecoveryResult> AbandonCurrentRunAsync(
         nint windowHandle,
@@ -182,12 +185,47 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
 
             if (exitPrompt is null)
             {
-                // 左上角退出按钮兜底（与 RecoverAsync 同款逻辑）
+                // 2026-09-04 用户令：兜底点击必须按页面身份分流——
+                // ①备战页（preparation_）绝不点击：(960,899) 在备战页上是出战按钮，
+                //   误触会真实开战（备战期灾难）；Esc 无法弃局就如实报失败。
+                // ②主界面（normal_hud/currency_wars_home）：弃局目标已达成，直接成功。
+                // ③无法出战提示弹窗：点"确认"关闭。
+                // ④其余（结算详情页等）：点"下一页/保存并退出"位推进，链走完回主界面。
+                var fallbackPage = await ReadStablePageAsync(
+                    windowHandle,
+                    cancellationToken);
+                var fallbackPageId = fallbackPage?.PageId ?? string.Empty;
+                if (fallbackPageId.StartsWith(
+                        "preparation_",
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    Publish(
+                        "RecoverySkipPreparationClick",
+                        $"当前为备战页（{fallbackPageId}），Esc 无法弃局且禁止点击出战区；" +
+                        "等待外层重试或人工结算。",
+                        TaskEventLevel.Warning);
+                    await Task.Delay(
+                        TimeSpan.FromSeconds(1),
+                        cancellationToken);
+                    continue;
+                }
+
+                if (fallbackPageId is "normal_hud" or "currency_wars_home")
+                {
+                    Publish(
+                        "RecoveryAlreadyAtHome",
+                        $"已识别 {fallbackPageId}——弃局目标（回到主界面）已达成。");
+                    return RejectedOpeningRecoveryResult.Recovered(
+                        "已回到货币战争主界面。");
+                }
+
+                var isPrompt = fallbackPage is
+                    { PageId: "uncompleted_battle_prompt" };
                 var clickResult = await ClickStandardPointAsync(
                     windowHandle,
                     $"grail_abandon_exit_{attempt}",
-                    "退出当前对局",
-                    ExitRunPoint,
+                    isPrompt ? "确认关闭无法出战提示" : "保存并退出/结算推进位",
+                    isPrompt ? UncompletedPromptConfirmPoint : NextPoint,
                     new ActionPolicy(),
                     cancellationToken);
                 if (clickResult.Succeeded)
@@ -272,15 +310,18 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
             cancellationToken);
         if (exitPrompt is null)
         {
+            // 2026-09-04 用户令：同上——Esc 无效=非对局页，盲点左上角退出按钮
+            // 已被实测证伪（把主界面/详情页点出更多怪界面）。改点"下一页/保存并
+            // 退出"位（结算详情链的推进按钮，链尾即保存并退出）。
             Publish(
                 "RecoveryFallbackStarted",
-                "Esc 未进入放弃确认页，改用左上角退出按钮并进行有限重试。",
+                "Esc 未进入放弃确认页，改点结算链\"下一页/保存并退出\"位并进行有限重试。",
                 TaskEventLevel.Information);
             exitPrompt = await ClickUntilPageAsync(
                 windowHandle,
                 "exit_rejected_run",
-                "退出当前对局",
-                ExitRunPoint,
+                "保存并退出/结算推进位",
+                NextPoint,
                 new ActionPolicy
                 {
                     AfterActionDelay = TimeSpan.FromMilliseconds(200)
@@ -708,6 +749,47 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
     {
         Publish("RecoveryFailed", message, TaskEventLevel.Error);
         return RejectedOpeningRecoveryResult.Failed(message);
+    }
+
+    /// <summary>通用稳定页读取：连续 2 帧同一已知页面才算数（兜底分流依据）。</summary>
+    private async Task<PageClassificationResult?> ReadStablePageAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        string? stablePageId = null;
+        var stableCount = 0;
+        var deadline = ActiveUtcNow + TimeSpan.FromSeconds(3);
+        while (ActiveUtcNow < deadline)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var window = await foregroundGuard.WaitUntilForegroundAsync(
+                windowHandle,
+                cancellationToken);
+            var frame = await capture.CaptureAsync(window, cancellationToken);
+            var detected = classifier.Classify(frame);
+            if (detected is not null &&
+                string.Equals(
+                    stablePageId,
+                    detected.PageId,
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                stableCount++;
+            }
+            else
+            {
+                stablePageId = detected?.PageId;
+                stableCount = detected is null ? 0 : 1;
+            }
+
+            if (detected is not null && stableCount >= 2)
+            {
+                return detected;
+            }
+
+            await Task.Delay(PollInterval, cancellationToken);
+        }
+
+        return null;
     }
 
     private void Publish(

@@ -561,8 +561,10 @@ public sealed class GrailDecisionEngine(
             // "有结果"当"在局内"判据，而 I10 有备战页门禁，主界面/弃局落点上 8 次退避
             // 全败=每局边界白等 ~19 秒。preparation_ 前缀才需要弃局（语义更准）；
             // 其余页面直接进 M8（M8 自带续局守卫兜底，GrailMacroCommands 入口守卫）。
+            // IsStale 检查（增量复查项3）：识别流冻结时 I1 仍报旧页（实测冻结 6 分钟），
+            // 陈旧读数=无现状，绝不据此发 A9——放行进 M8（其守卫自带 10s 新鲜窗）。
             var entryPage = await PageAsync(window, ct);
-            if (entryPage?.PageId is not null &&
+            if (entryPage is { IsStale: false, PageId: not null } &&
                 entryPage.PageId.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase))
             {
                 emit("[决策层] 检测到备战页已有对局（节点歧义）——先弃局重开，绝不在未知节点操作。");

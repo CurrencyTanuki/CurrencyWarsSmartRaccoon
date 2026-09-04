@@ -310,7 +310,7 @@
             "width": 0.2,
             "height": 0.34
           },
-          "threshold": 0.86
+          "threshold": 0.72
         },
         {
           "id": "reward_shop_refresh_disabled_panel",
@@ -322,7 +322,7 @@
             "width": 0.2,
             "height": 0.34
           },
-          "threshold": 0.86
+          "threshold": 0.72
         }
       ]
     },

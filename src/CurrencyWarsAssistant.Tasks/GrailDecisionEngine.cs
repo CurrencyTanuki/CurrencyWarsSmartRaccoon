@@ -26,6 +26,9 @@ public sealed class GrailDecisionEngine(
 
     private GrailUserGoal _goal = GrailUserGoal.Single;
 
+    /// <summary>P-10（1.2.69）：A9 弃局连续失败计数——退避与清场模式判据。</summary>
+    private int _abandonStreak;
+
     /// <summary>决策层内部统计（汇报用）。</summary>
     public int RunsCompleted { get; private set; }
     public int RunsAbandoned { get; private set; }
@@ -605,9 +608,42 @@ public sealed class GrailDecisionEngine(
             if (entryPage is { IsStale: false, PageId: not null } &&
                 entryPage.PageId.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase))
             {
-                emit("[决策层] 检测到备战页已有对局（节点歧义）——先弃局重开，绝不在未知节点操作。");
-                await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
-                await SettleAfterAbandonAsync(window, ct);
+                emit("[决策层] 检测到备战页已有对局（节点歧义）——先对账局面留痕，再弃局重开。");
+                // P-09（1.2.69）：继承局对账留痕——弃局决策不变（用户拍板：未知节点
+                // 绝不操作），但局面先落日志供复盘（1-3 胜局曾被当继承局连弃 2 个）。
+                var inheritedSnapshot = await SnapshotWithRetryAsync(window, ct);
+                if (inheritedSnapshot is not null)
+                {
+                    emit("[决策层] 继承局对账：羁绊=" + inheritedSnapshot.BondMemberCount +
+                         " 金=" + inheritedSnapshot.Gold +
+                         " 血=" + (inheritedSnapshot.TeamHealth?.ToString() ?? "?") +
+                         " 上场=" + inheritedSnapshot.DeployedCharacterDetails.Count +
+                         " 备战=" + inheritedSnapshot.BenchCharacterDetails.Count + "。");
+                }
+
+                // P-10（1.2.69）：弃局受阻退避（清场模式）——A9 连续失败时疑似弃局
+                // 机制受损，拉长退避且绝不进入 M8 导航段，直到弃局成功或用户叫停。
+                _abandonStreak++;
+                if (_abandonStreak > 1)
+                {
+                    var backoff = TimeSpan.FromSeconds(Math.Min(10 * _abandonStreak, 30));
+                    emit($"[决策层] 弃局后仍滞留备战页（连续 {_abandonStreak} 次）——疑似弃局受阻，退避 {backoff.TotalSeconds:F0} 秒后重试；期间不发任何导航/操作指令。");
+                    await Task.Delay(backoff, ct);
+                }
+
+                var abandon = await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
+                if (abandon.Error is null)
+                {
+                    _abandonStreak = 0;
+                    await SettleAfterAbandonAsync(window, ct);
+                }
+                else
+                {
+                    emit("[决策层] A9 弃局失败——清场模式：重试弃局成功前不发 M8。");
+                }
+
+                // 弃局成功与否由下一轮入口判页决定——离开备战页才放行 M8。
+                continue;
             }
 
             GrailCommandResult? m8 = null;

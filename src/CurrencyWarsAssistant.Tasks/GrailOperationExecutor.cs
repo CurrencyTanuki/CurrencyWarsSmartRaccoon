@@ -361,6 +361,8 @@ public sealed partial class GrailOperationExecutor(
         var shopOpen = false;
         var refreshes = 0;
         var readFailures = 0;
+        var lastShelfSignature = string.Empty; // P-07（1.2.69）刷新失效检测
+        var staleShelfRounds = 0;
         for (var iteration = 0;
              iteration < MaxShopBuyTargetsPerPass + MaxShopRefreshesPerCommand;
              iteration++)
@@ -447,6 +449,21 @@ public sealed partial class GrailOperationExecutor(
             if (pass.PurchaseCheck == RewardStageAutomationController.GrailShopPurchaseCheck.NotPurchased)
             {
                 break; // 金币不足/点击无效：停止本店购买（与 Shop.cs 批量路径语义一致）
+            }
+
+            // P-07（1.2.69）：刷新失效防护——点了刷新但货架全名单没变（刷新被游戏
+            // 拒绝/异常吞掉），继续盲目刷新只会白烧金币。到达此处=本轮无购买：
+            // 连续 2 轮货架签名（排序后全名单）与上轮相同 → 停止本店循环，
+            // 剩余判定交决策层。刷新生效时 5 槽随机角色全同的概率≈0，无误伤。
+            var shelfSignature = string.Concat(
+                (pass.ShopCharacterNames ?? []).Order(StringComparer.Ordinal));
+            staleShelfRounds = shelfSignature == lastShelfSignature
+                ? staleShelfRounds + 1
+                : 0;
+            lastShelfSignature = shelfSignature;
+            if (staleShelfRounds >= 2)
+            {
+                break;
             }
 
             // 金币利用最大化（2026-09-03 用户最终拍板，商店控件内置逻辑，非决策层）：

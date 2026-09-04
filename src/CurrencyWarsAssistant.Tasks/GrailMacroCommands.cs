@@ -353,10 +353,10 @@ public sealed class GrailMacroCommands(
             if (result.Succeeded && !runEntryPagesSeen)
             {
                 var currentPage = ProbeLatestPageId();
-                if (string.Equals(
-                        currentPage,
-                        "preparation_generic",
-                        StringComparison.OrdinalIgnoreCase))
+                // 补审 P2-1（1.2.69）：族匹配——精确匹配 preparation_generic 时，识别流
+                // 产出 preparation_1_1/1_2 等族内 ID 会让放行形同虚设，好局被误判续局弃掉。
+                if (!string.IsNullOrEmpty(currentPage) &&
+                    currentPage.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase))
                 {
                     // 竞态放行：无 eventSink 可落日志，放行事实由 M8 成功回执
                     // （命中环境名正常返回）与决策层日志共同佐证。

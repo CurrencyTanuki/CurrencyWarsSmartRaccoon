@@ -39,8 +39,9 @@ public static class AutomationPageIds
     {
         "currency_wars_home",
         "preparation_generic",
-        "preparation_1_1",
-        "preparation_1_2",
+        // 补审 P3 清理（1.2.69）：preparation_1_1/1_2 曾列于此，但 JSON 识别表
+        // （page-recognition.1920x1080.json）从无这两个页面定义——Create() 筛选
+        // 永远为空选（永假条目）。未来若识别表新增节点级备战页定义，需同步加回。
         "reward_shop",
         "reward_battle",
         "reward_battle_pause",

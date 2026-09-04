@@ -21,6 +21,7 @@ public sealed partial class RewardStageAutomationController
         string Message,
         GrailShopPurchaseCheck PurchaseCheck = GrailShopPurchaseCheck.Confirmed,
         IReadOnlyList<string>? SkippedOwnedNames = null,
+        IReadOnlyList<string>? SkippedNotTargetNames = null,
         IReadOnlyList<string>? SkippedUnaffordableNames = null);
 
     /// <summary>购买后验证结论（1.2.21）：Confirmed=槽位清空确认买到；NotPurchased=金币不足/点击无效；
@@ -91,7 +92,9 @@ public sealed partial class RewardStageAutomationController
             .ToArray();
 
         // P-16（1.2.70）：跳过原因收集（不打日志，由执行器汇入 GrailShopLoopSummary）。
+        // P3-1 拆口径（1.2.80）：非目标与已拥有分开统计。
         var skippedOwned = new List<string>();
+        var skippedNotTarget = new List<string>();
         var skippedUnaffordable = new List<string>();
 
         foreach (var slot in slots)
@@ -105,7 +108,17 @@ public sealed partial class RewardStageAutomationController
             if (!purchaseNames.Contains(character.Name)
                 || ownedNames.Contains(character.Name))
             {
-                skippedOwned.Add(character.Name);
+                // P3-1 拆口径（1.2.80）：非目标与已拥有分开统计——1-3 货架非白名单
+                // 角色占大多数，混装会让"跳过已拥有×N"远大于真实重复数，复盘误读。
+                if (ownedNames.Contains(character.Name))
+                {
+                    skippedOwned.Add(character.Name);
+                }
+                else
+                {
+                    skippedNotTarget.Add(character.Name);
+                }
+
                 continue;
             }
 
@@ -158,6 +171,7 @@ public sealed partial class RewardStageAutomationController
                         : $"{character.Name} 购买结果不确定（验证超时），收摊交决策层 I10 复核。",
                     PurchaseCheck: check,
                     SkippedOwnedNames: skippedOwned,
+                    SkippedNotTargetNames: skippedNotTarget,
                     SkippedUnaffordableNames: skippedUnaffordable);
             }
 
@@ -171,6 +185,7 @@ public sealed partial class RewardStageAutomationController
                     ? $"已购买 {character.Name}（槽位 {slot.Slot}）。"
                     : $"购买 {character.Name} 点击未确认成功。",
                 SkippedOwnedNames: skippedOwned,
+                SkippedNotTargetNames: skippedNotTarget,
                 SkippedUnaffordableNames: skippedUnaffordable);
         }
 
@@ -182,6 +197,7 @@ public sealed partial class RewardStageAutomationController
             ShopCharacterNames: shopNames,
             Message: "本轮商店无目标角色（或目标均已拥有）。",
             SkippedOwnedNames: skippedOwned,
+            SkippedNotTargetNames: skippedNotTarget,
             SkippedUnaffordableNames: skippedUnaffordable);
     }
 

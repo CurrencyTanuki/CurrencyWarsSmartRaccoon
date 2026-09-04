@@ -374,6 +374,7 @@ public sealed partial class GrailOperationExecutor(
         // P-16（1.2.70）：购买决策留痕——聚合变量，循环结束发一条 GrailShopLoopSummary。
         string? endReason = null;
         var skippedOwnedTotal = new List<string>();
+        var skippedNotTargetTotal = new List<string>();
         var skippedUnaffordableTotal = new List<string>();
         var deployFailures = 0;
         var iteration = 0;
@@ -396,6 +397,7 @@ public sealed partial class GrailOperationExecutor(
             }
 
             skippedOwnedTotal.AddRange(pass.SkippedOwnedNames ?? []);
+            skippedNotTargetTotal.AddRange(pass.SkippedNotTargetNames ?? []);
             skippedUnaffordableTotal.AddRange(pass.SkippedUnaffordableNames ?? []);
 
             if (!pass.ShopRead)
@@ -559,12 +561,14 @@ public sealed partial class GrailOperationExecutor(
         // P-16（1.2.70）：单条 M5 一条终态汇总——为什么停、买到谁、跳过谁，复盘不再拼凑。
         endReason ??= "IterationCap";
         var ownedSkipDistinct = skippedOwnedTotal.Distinct(StringComparer.Ordinal).ToArray();
+        var notTargetDistinct = skippedNotTargetTotal.Distinct(StringComparer.Ordinal).ToArray();
         var unaffordableDistinct = skippedUnaffordableTotal.Distinct(StringComparer.Ordinal).ToArray();
         rewardStage.PublishGrailTelemetry(
             "GrailShopLoopSummary",
             $"买=[{string.Join(",", boughtNames)}] 刷={refreshes} 轮={iteration} 终态金={gold} " +
             $"结束原因={endReason}" +
             (ownedSkipDistinct.Length > 0 ? $"；跳过已拥有×{ownedSkipDistinct.Length}" : string.Empty) +
+            (notTargetDistinct.Length > 0 ? $"；非目标×{notTargetDistinct.Length}" : string.Empty) +
             (unaffordableDistinct.Length > 0
                 ? $"；金币不足跳过=[{string.Join(",", unaffordableDistinct)}]"
                 : string.Empty) +

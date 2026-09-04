@@ -1490,13 +1490,15 @@ private async Task<PageClassificationResult?> FastWaitForPageAsync(
         InvestmentEnvironmentReadResult? Result,
         bool Succeeded)> ReadStableInvestmentEnvironmentsAsync(
             nint windowHandle,
-            CancellationToken cancellationToken,
-            IReadOnlySet<string>? excludedOptionIds = null)
+            CancellationToken cancellationToken)
     {
+        // 1.2.81 代码减量（交叉复核 F6）：删除免费刷新专用的 excludedOptionIds/
+        // optionsChanged 死机制（1.2.67 删除免费刷新后永不可达）与两个
+        // refresh_static_failure 死分支。保留：完整读数三票稳定返回、
+        // 不完整读数连续 6 帧提前止损（30s deadline 兜底不变）。
         var deadline = ActiveUtcNow + TimeSpan.FromSeconds(30);
         InvestmentEnvironmentReadResult? latest = null;
         var votes = new OpeningRecognitionAccumulator(3);
-        var optionsChanged = excludedOptionIds is null;
         var attempt = 0;
         var repeatedIncompleteSignatureCount = 0;
         string? previousIncompleteSignature = null;
@@ -1535,85 +1537,26 @@ private async Task<PageClassificationResult?> FastWaitForPageAsync(
                 repeatedIncompleteSignatureCount =
                     latest.IsComplete ? 0 : 1;
             }
-            if (!optionsChanged)
+
+            if (latest.IsComplete)
             {
-                if (!latest.IsComplete)
+                votes.Observe(latest.Options);
+                if (votes.TryBuild(out var stableOptions))
                 {
-                    votes.Observe(latest.Options);
+                    return (
+                        new InvestmentEnvironmentReadResult(stableOptions),
+                        true);
                 }
-
-                var currentIds = latest.InvestmentEnvironments
-                    .Select(item => item.Id)
-                    .ToHashSet(StringComparer.OrdinalIgnoreCase);
-                if (!latest.IsComplete ||
-                    excludedOptionIds!.SetEquals(currentIds))
-                {
-                    if (attempt >= 12)
-                    {
-                        // 刷新后候选长期不变（免费刷新已耗尽/动画异常）：停止无效轮询，走降级重开
-                        Publish(
-                            CurrencyWarsNavigationState.WaitingForPage,
-                            "investment_environment_refresh_static_failure",
-                            $"刷新后候选连续 {attempt} 次未变化；停止无效轮询，进入任选一项后强制重开的降级路径。",
-                            TaskEventLevel.Warning);
-                        return (
-                            new InvestmentEnvironmentReadResult(
-                                votes.BuildBestEffort(latest.Options)),
-                            false);
-                    }
-
-                    Publish(
-                        CurrencyWarsNavigationState.WaitingForPage,
-                        "investment_environment",
-                        $"投资环境第 {attempt} 次识别仍是刷新前候选或动画未结束，继续等待。");
-                    if (!latest.IsComplete &&
-                        repeatedIncompleteSignatureCount >= 6)
-                    {
-                        Publish(
-                            CurrencyWarsNavigationState.WaitingForPage,
-                            "investment_environment_refresh_static_failure",
-                            "刷新后连续 6 帧保持相同的不完整结果；" +
-                            "停止无效 OCR 重复并进入任选一项后强制重开的降级路径。",
-                            TaskEventLevel.Warning);
-                        return (
-                            new InvestmentEnvironmentReadResult(
-                                votes.BuildBestEffort(latest.Options)),
-                            false);
-                    }
-
-                    await Task.Delay(TimeSpan.FromMilliseconds(250), cancellationToken);
-                    continue;
-                }
-
-                optionsChanged = true;
+            }
+            else if (repeatedIncompleteSignatureCount >= 6)
+            {
+                // 不完整识别连续 6 帧（页面异常/识别退化）：停止无效轮询，
+                // 交由调用方按未命中/降级路径处理。
                 Publish(
                     CurrencyWarsNavigationState.WaitingForPage,
-                    "investment_environment",
-                    "已确认刷新后的候选发生变化，开始累计稳定识别结果。");
-            }
-
-            votes.Observe(latest.Options);
-            if (votes.TryBuild(out var stableOptions))
-            {
-                return (
-                    new InvestmentEnvironmentReadResult(stableOptions),
-                    true);
-            }
-
-            Publish(
-                CurrencyWarsNavigationState.WaitingForPage,
-                "investment_environment",
-                $"投资环境第 {attempt} 次识别：已稳定 " +
-                $"{votes.ConfirmedSlotCount}/3；本帧 " +
-                FormatItems(latest.Options));
-            if (!latest.IsComplete &&
-                repeatedIncompleteSignatureCount >= 6)
-            {
-                Publish(
-                    CurrencyWarsNavigationState.WaitingForPage,
-                    "investment_environment_static_failure",
-                    "连续 6 帧得到完全相同的不完整结果；标题、扩大区域和说明反查均已尝试，" +
-                    "停止无效 OCR 重复并进入任选一项后强制重开的降级路径。");
+                    "InvestmentEnvironmentRecognitionStalled",
+                    $"投资环境连续 {attempt} 次识别不完整——停止无效轮询，交上层按未命中处理。",
+                    TaskEventLevel.Warning);
                 return (
                     new InvestmentEnvironmentReadResult(
                         votes.BuildBestEffort(latest.Options)),
@@ -1623,12 +1566,7 @@ private async Task<PageClassificationResult?> FastWaitForPageAsync(
             await Task.Delay(TimeSpan.FromMilliseconds(250), cancellationToken);
         }
 
-        return latest is null
-            ? (null, false)
-            : (
-                new InvestmentEnvironmentReadResult(
-                    votes.BuildBestEffort(latest.Options)),
-                false);
+        return (latest, false);
     }
 
     private static string FormatItems(IEnumerable<RecognizedOpeningItem> items) =>

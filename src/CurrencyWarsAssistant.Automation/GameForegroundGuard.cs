@@ -60,6 +60,7 @@ public sealed class GameForegroundGuard(
             }
 
             var paused = Stopwatch.StartNew();
+            var lastHeartbeat = DateTimeOffset.Now;
             Publish(
                 TaskEventLevel.Warning,
                 "GameFocusPaused",
@@ -69,6 +70,17 @@ public sealed class GameForegroundGuard(
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 await Task.Delay(PollInterval, cancellationToken);
+                // P3 遗留（1.2.80 行为审计#1）：前台暂停是所有等待上限的公共放大器
+                //（墙钟被剔除=有界等待变无限）——暂停期每 60 秒一条心跳，让"整晚
+                // 失焦静默"可见可查。
+                if (DateTimeOffset.Now - lastHeartbeat >= TimeSpan.FromSeconds(60))
+                {
+                    lastHeartbeat = DateTimeOffset.Now;
+                    Publish(
+                        TaskEventLevel.Information,
+                        "GameFocusPausedHeartbeat",
+                        $"[心跳] 前台焦点仍不在游戏（已暂停 {paused.Elapsed.TotalSeconds:F0} 秒）——自动化保持暂停，等待切回。");
+                }
                 current = windowService.Refresh(windowHandle);
                 ThrowIfBindingInvalid(current);
                 if (current is null || !windowService.IsForeground(current))

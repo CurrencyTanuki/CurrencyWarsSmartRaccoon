@@ -52,7 +52,9 @@
 - **P1-2（死分支，致命）**：ConfirmUncompletedBattlePromptIfPresentAsync 判定用 uncompleted_battle_prompt，但控制器 pageClassifier 是 IAutomationPageClassifier 子集（AutomationPageIds.Ids，GamePageClassifier.cs:38-56）**不含该页 ID**→永远识别不到→P-02 修复整体不生效+每次 StartingBattle 未知观察空转膨胀 ~11s。修法=ID 加进 AutomationPageIds.Ids。
 - **P2-1**：M8 竞态放行精确匹配 preparation_generic——识别流可能产出 preparation_1_1 族→放行形同虚设。修法=改 StartsWith("preparation_") 族匹配。
 - **P3 备案**：P3-4 RecoverAsync fallback 缺 isPrompt 特判（uncompleted_battle_prompt 在屏会点 NextPoint，语义未验证）——补；P3-5 fallback 每轮只推 1 次结算（链>3 页会 Failed，备案）；P3-6 双确认器串行空转 ~11s；P3-7 确认钮坐标三处硬编码待收敛；P3-8 注释言过其实；P3-9 wish_trial 点位 (1499,641) 在 78% 分位需实机核验；P3-10 expected 列表 preparation_1_x 为永假死条目待清理。
-- **横切结论**：无死循环/无限空转；取消安全；正常路径零拦截。**P1-1/P1-2/P2-1/P3-4 立即修复（下一步），修完构建+测试+入档后再实机。**
+- **横切结论**：无死循环/无限空转；取消安全；正常路径零拦截。
+- **⚠ 漏记处置流程强化（2026-09-04 20:5x 用户令，写明执行口径）**：发现任何改动未及时记录（handoff/rule 漏记）——**①立刻停止手中一切工作（含正在进行的修复/审查/发布）；②先补档；③补档完成后停下来，等待用户下一步指示**。严禁补档后自作主张继续接着工作。此条与 rule.md 铁律 2 同为最高优先执行口径。
+- **P1-1/P1-2/P2-1/P3-4 的修复在用户指示后进行。**
 
 ### ★ 1.2.64 代码批次（2026-09-04 20:1x~20:3x，用户两指令：双学者即买+速度/冗余审计；**仅构建未发布未实测——遵守发包禁令**）★
 - **1-1 同帧双学者 bug 确认与修复**：19:47 局实况——首次开店货架有艾丝妲+黑塔（同帧两个不同学者）却空手关店（SameFrameScholarTargets 判定在 GrailShopPassAsync 之后才跑，首轮白名单不含学者→判定无目标→关店→第 2 轮重开才买=一次无谓开关店+5 秒浪费）。**实现核验：SameFrameScholarTargets 修复（09-02 用户裁定）已在代码中且首轮会生效**（iteration 循环内先于"没买到退出"判定）——19:47 首次开店发生在该修复**之前编译的 1.2.60 上**……不对，1.2.60 含修复。**待深挖**：首轮 SameFrame 判定为何未锁定目标（候选：识别名"艾丝妲"与学者名单匹配失败/时序）——已列为子代理复查项。

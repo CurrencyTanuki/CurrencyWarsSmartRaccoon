@@ -322,9 +322,30 @@ public sealed class GrailDecisionEngine(
         for (var pass = 0; pass < 3 && snapshot is not null; pass++)
         {
             var bondNames = executor.GrailBondMemberNames;
-            var pendingBench = snapshot.BenchCharacterDetails
-                .Select(item => PureName(item.Split(':')[^1]))
-                .FirstOrDefault(name => bondNames.Contains(name));
+            // R67（1.2.86 取证修复）：部署候选排除纯 5 费——067「英雄登场」赠体
+            // （2星5费，19 节点内锁定不可上场，游戏拒绝拿起=拖拽源变化恒 0.0）恰好是
+            // 命运圣杯成员，会被当可部署候选反复拖拽（1.2.63 实测 5 连败跨 3 周期）。
+            // 命杯成员中仅 Archer 为纯 5 费，排除不影响凛/闪/Saber。
+            string? pendingBench = null;
+            foreach (var candidateName in snapshot.BenchCharacterDetails
+                         .Select(item => PureName(item.Split(':')[^1])))
+            {
+                if (!bondNames.Contains(candidateName))
+                {
+                    continue;
+                }
+
+                var candidate = ResolveProtectedCharacter(candidateName);
+                if (candidate is not null && GrailOperationExecutor.IsPureFiveCostCharacter(candidate))
+                {
+                    emit($"[决策层] 部署候选「{candidateName}」为纯5费（067 赠体锁定不可上场）——排除出部署候选。");
+                    continue;
+                }
+
+                pendingBench = candidateName;
+                break;
+            }
+
             if (pendingBench is null || snapshot.OccupiedFrontSlots.Count >= 4)
             {
                 break; // 无可部署或前台满（后台部署归 N17a 之后流程）——仍继续学者补位

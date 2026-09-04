@@ -49,6 +49,7 @@ public sealed class CommandTestWindow : Window
 
     private readonly GrailRunStateHolder _stateHolder = new();
     private readonly PreparationBoardController _preparationBoard;
+    private readonly RewardStageAutomationController _rewardStage;
     private readonly GrailRecognitionListener _listener;
     private readonly GrailOperationExecutor _executor;
     private readonly GrailCommandDispatcher _dispatcher;
@@ -107,6 +108,7 @@ public sealed class CommandTestWindow : Window
         OpeningRerollLoopCoordinator openingCoordinator)
     {
         _preparationBoard = preparationBoard;
+        _rewardStage = rewardStage;
         _collectionService = collectionService;
         _gameWindowService = gameWindowService;
         _gameData = gameData;
@@ -289,6 +291,7 @@ public sealed class CommandTestWindow : Window
         }
 
         _streamReviveInProgress = true;
+        _lastStreamReviveAt = DateTimeOffset.Now; // 节流戳在触发点置位（09:1x 实测：漏置位=复活热循环）
         var reason = dead ? "识别流已死亡" : "识别流冻结（45 秒无新帧）";
         AppendLog($"⚠ {reason}，自动重启识别会话。");
         _ = Task.Run(async () =>
@@ -777,7 +780,9 @@ public sealed class CommandTestWindow : Window
             genericClick: (handle, x, y, token) =>
                 board.GrailClickReferencePointAsync(handle, x, y, token),
             pressInteractKey: (handle, token) =>
-                board.GrailPressInteractKeyAsync(handle, token));
+                board.GrailPressInteractKeyAsync(handle, token),
+            retreatFromBattleView: (handle, token) =>
+                _rewardStage.RetreatFromBattleViewAsync(handle, token));
         var cts = _decisionCts;
         _decisionTask = Task.Run(async () =>
         {

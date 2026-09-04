@@ -19,7 +19,8 @@ public sealed class GrailDecisionEngine(
     GameDataCatalog gameData,
     Action<string> emit,
     Func<nint, int, int, CancellationToken, Task<bool>>? genericClick = null,
-    Func<nint, CancellationToken, Task<bool>>? pressInteractKey = null)
+    Func<nint, CancellationToken, Task<bool>>? pressInteractKey = null,
+    Func<nint, CancellationToken, Task<bool>>? retreatFromBattleView = null)
 {
     private readonly Stopwatch _runClock = Stopwatch.StartNew();
 
@@ -355,10 +356,31 @@ public sealed class GrailDecisionEngine(
                 }
                 else if (m8.Error is not null)
                 {
-                    // 守卫拦截/导航失败：先尝试解除 Unknown 阻塞页（仅页面未知时），
-                    // 再 A9 清场重发。已知页（备战/商店/战斗）不盲点。
+                    // 守卫拦截/导航失败：先解除 Unknown 阻塞页（仅页面未知时），
+                    // 再走世界内撤退链路（货币战争交互→战视图→Esc→暂停页→撤退），
+                    // 最后 A9 兜底。已知页（备战/商店/战斗）不盲点。
                     await DismissUnknownPageAsync(window, ct);
-                    emit("[决策层] M8 未成（守卫或导航），A9 清场后重试。");
+                    emit("[决策层] M8 未成（守卫或导航）——执行世界内撤退链路后 A9 清场。");
+                    if (retreatFromBattleView is not null)
+                    {
+                        try
+                        {
+                            await retreatFromBattleView(window, ct).WaitAsync(
+                                TimeSpan.FromMinutes(3), ct);
+                        }
+                        catch (TimeoutException)
+                        {
+                            emit("[决策层] 撤退链路超时（3 分钟）——继续 A9 兜底。");
+                        }
+                        catch (OperationCanceledException) when (ct.IsCancellationRequested)
+                        {
+                            throw;
+                        }
+                        catch (Exception retreatError)
+                        {
+                            emit($"[决策层] 撤退链路异常（不致命）：{retreatError.Message}");
+                        }
+                    }
                     await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
                     await Task.Delay(TimeSpan.FromSeconds(5), ct);
                 }

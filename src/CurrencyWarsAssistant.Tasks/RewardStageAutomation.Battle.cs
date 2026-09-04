@@ -655,6 +655,18 @@ public sealed partial class RewardStageAutomationController
         return false;
     }
 
+    /// <summary>
+    /// 战视图撤退公共入口（2026-09-04 决策层夜间批次）：Esc→暂停页→撤退→统一放弃结算→主页。
+    /// 供决策层引擎在"世界内卡死"时调用（该状态下 A9 的 Esc 路径进不了放弃确认页，
+    /// 而暂停页撤退链路已实战验证可用）。
+    /// </summary>
+    public async Task<bool> RetreatFromBattleViewAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        return await RecoverTimedOutRewardBattleAsync(windowHandle, cancellationToken);
+    }
+
     private async Task<bool> RecoverTimedOutRewardBattleAsync(
         nint windowHandle,
         CancellationToken cancellationToken)

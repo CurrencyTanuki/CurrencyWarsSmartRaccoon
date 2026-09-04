@@ -166,6 +166,31 @@ public sealed class GrailDecisionEngine(
         fact.BoughtCharacterNames?.Any(name => !string.Equals(
             name, GrailRunSnapshot.XilianName, StringComparison.Ordinal)) == true;
 
+    /// <summary>弃局（A9）后的收尾等待（1.2.68 由固定 4-5 秒改为有界轮询）：
+    /// A9 回执本身已含"回主页确认"，此处轮询 I1 等结算收尾动画——命中主页
+    /// 即早退（常在首次查询即命中，省 3-4 秒）；从未命中也只等有界余量。
+    /// 页面状态最终由 M8 入口守卫兜底。</summary>
+    private async Task SettleAfterAbandonAsync(nint window, CancellationToken ct)
+    {
+        for (var attempt = 0; attempt < 5; attempt++)
+        {
+            if (attempt > 0)
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(700), ct);
+            }
+
+            var page = await PageAsync(window, ct);
+            if (page is { IsStale: false } &&
+                (string.Equals(page.PageId, "currency_wars_home", StringComparison.OrdinalIgnoreCase)
+                 || string.Equals(page.PageId, "normal_hud", StringComparison.OrdinalIgnoreCase)))
+            {
+                return;
+            }
+        }
+
+        await Task.Delay(TimeSpan.FromSeconds(2), ct);
+    }
+
     /// <summary>剥掉明细名上的 [星徽]/[装备] 后缀，还原纯角色名。</summary>
     private static string PureName(string detailName)
     {
@@ -175,13 +200,14 @@ public sealed class GrailDecisionEngine(
 
     /// <summary>
     /// 把识别到的、未上场的命杯成员部署到空位（A1 显式前台槽，逐个 I10 复核），
-    /// 随后执行学者补位（1.2.64）。返回是否部署过任何角色（供 M1 前置门的
-    /// 部署动画等待判定）。
+    /// 随后执行学者补位（1.2.64）。返回（是否部署过任何角色, 可用最新快照）——
+    /// 1.2.68：LatestSnapshot 供 S7 终局判定/卖人直接使用（部署后盘面已变，
+    /// 旧快照会让收工判定晚一轮、多跑一整轮 M5）；不可用时为 null（调用方沿用原快照）。
     /// 1.2.66 冗余审计：①existingSnapshot 非空且调用方快照后无任何操作时首轮复用，
     /// 消除背靠背双 I10；②候选穷尽/前台满改 break 而非 return——修复学者补位段
     /// 不可达（原逻辑只有连续部署满 3 名 bond 成员才会走到，补位功能形同虚设）。
     /// </summary>
-    private async Task<bool> DeployBondMembersAsync(
+    private async Task<(bool DeployedAny, GrailRunSnapshot? LatestSnapshot)> DeployBondMembersAsync(
         nint window, GrailRunSnapshot? existingSnapshot, CancellationToken ct)
     {
         var deployedAny = false;
@@ -229,7 +255,7 @@ public sealed class GrailDecisionEngine(
 
         if (snapshot is null || snapshot.OccupiedFrontSlots.Count >= 4)
         {
-            return deployedAny;
+            return (deployedAny, snapshotFresh ? snapshot : null);
         }
 
         var scholarNames = new HashSet<string>(
@@ -243,7 +269,7 @@ public sealed class GrailDecisionEngine(
             .FirstOrDefault(name => scholarNames.Contains(name));
         if (benchScholar is null)
         {
-            return deployedAny;
+            return (deployedAny, snapshotFresh ? snapshot : null);
         }
 
         var benchHead = snapshot.BenchCharacterDetails
@@ -251,7 +277,7 @@ public sealed class GrailDecisionEngine(
             .Split(':')[0];
         if (!int.TryParse(benchHead, out var scholarBenchSlot) || scholarBenchSlot < 0)
         {
-            return deployedAny;
+            return (deployedAny, snapshotFresh ? snapshot : null);
         }
 
         var scholarSlot = Enumerable.Range(0, 4).FirstOrDefault(
@@ -267,9 +293,21 @@ public sealed class GrailDecisionEngine(
             deployedAny = true;
             // 学者非圣杯成员，上场不触发圣杯升档弹框——单查即可。
             await EnsureWishAnsweredAsync(window, ct);
+            // 1.2.68：学者上场改变盘面占位——重读一次供快照带出（低频，每局 0-2 次）。
+            // 重读失败=无法证明快照新鲜（学者已上场，旧快照占位失真）——按契约置
+            // snapshotFresh=false 返回 null，调用方沿用自身快照兜底。
+            var scholarReread = await SnapshotWithRetryAsync(window, ct);
+            if (scholarReread is not null)
+            {
+                snapshot = scholarReread;
+            }
+            else
+            {
+                snapshotFresh = false;
+            }
         }
 
-        return deployedAny;
+        return (deployedAny, snapshotFresh ? snapshot : null);
     }
 
     /// <summary>
@@ -569,7 +607,7 @@ public sealed class GrailDecisionEngine(
             {
                 emit("[决策层] 检测到备战页已有对局（节点歧义）——先弃局重开，绝不在未知节点操作。");
                 await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
-                await Task.Delay(TimeSpan.FromSeconds(5), ct);
+                await SettleAfterAbandonAsync(window, ct);
             }
 
             GrailCommandResult? m8 = null;
@@ -622,7 +660,7 @@ public sealed class GrailDecisionEngine(
                         }
                     }
                     await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
-                    await Task.Delay(TimeSpan.FromSeconds(5), ct);
+                    await SettleAfterAbandonAsync(window, ct);
                 }
                 else if (fact?.Message.Contains("已到达首次备战页面", StringComparison.Ordinal) == true)
                 {
@@ -631,7 +669,8 @@ public sealed class GrailDecisionEngine(
                 }
                 else
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(5), ct);
+                    // 1.2.68：M8 重试间隔 5→2 秒——M8 内部导航/守卫自带节奏，长间隔纯空转。
+                    await Task.Delay(TimeSpan.FromSeconds(2), ct);
                 }
             }
 
@@ -639,7 +678,7 @@ public sealed class GrailDecisionEngine(
             {
                 emit("[决策层] M8 三次尝试未到达备战席——A9 后重开外层循环。");
                 await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
-                await Task.Delay(TimeSpan.FromSeconds(5), ct);
+                await SettleAfterAbandonAsync(window, ct);
                 continue;
             }
 
@@ -656,7 +695,7 @@ public sealed class GrailDecisionEngine(
             {
                 emit("[决策层] 本局判定结束（R3/失败）——弃局重开下一局。");
                 await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
-                await Task.Delay(TimeSpan.FromSeconds(4), ct);
+                await SettleAfterAbandonAsync(window, ct);
             }
         }
     }
@@ -685,7 +724,7 @@ public sealed class GrailDecisionEngine(
 
         var m5Result = await SendAsync("M5", new GrailCommand(GrailCommandKind.M5), window, ct);
         // 1.2.66：M5 可能买了角色（盘面已变）→ 部署段须现读快照（传 null）。
-        var deployed = await DeployBondMembersAsync(window, null, ct);
+        var (deployed, _) = await DeployBondMembersAsync(window, null, ct);
         var assembled = await AssembleBadgeIfAvailableAsync(window, ct, hit067);
         // 买到的成员由执行器内部上场且部署段未再部署时，无任何轮询覆盖延迟弹出
         // 的升档框——此时外层补轮询；其余轮次单查。
@@ -716,7 +755,7 @@ public sealed class GrailDecisionEngine(
         }
 
         // 1.2.66：此快照后无任何操作 → 复用给部署段（省一次背靠背 I10）。
-        deployed = await DeployBondMembersAsync(window, snapshot, ct);
+        (deployed, _) = await DeployBondMembersAsync(window, snapshot, ct);
         assembled = await AssembleBadgeIfAvailableAsync(window, ct, hit067); // 1-2 新得徽补装（审查 P3）
         await EnsureWishAnsweredAsync(window, ct,
             maxProbes: BoughtNonXilianMember(m5Result) && !deployed ? 4 : 1);
@@ -816,7 +855,10 @@ public sealed class GrailDecisionEngine(
             // 1.2.66：复用上方快照（收店救援分支若发生点击，快照已在救援内重读更新）；
             // 买到非昔涟成员且部署段未部署时外层补轮询（4×3s）捕获延迟弹出的升档框，
             // 其余轮次单查——原无差别 6×3s 轮询是每轮 ~20 秒纯等待的主源。
-            var deployedInLoop = await DeployBondMembersAsync(window, snapshot, ct);
+            // 1.2.68：部署段带回的最新快照直接覆盖 snapshot——S7 终局判定/卖人立即
+            // 反映部署结果，不再晚一轮（命中收工时曾多跑一整轮 M5）。
+            var (deployedInLoop, latestFromDeploy) = await DeployBondMembersAsync(window, snapshot, ct);
+            snapshot = latestFromDeploy ?? snapshot;
             await EnsureWishAnsweredAsync(window, ct,
                 maxProbes: BoughtNonXilianMember(shopResult) && !deployedInLoop ? 4 : 1);
 

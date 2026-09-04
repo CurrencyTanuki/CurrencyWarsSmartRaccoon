@@ -64,7 +64,14 @@ public sealed partial class RewardStageAutomationController
                 Message: "商店未能打开。");
         }
 
-        var slots = await ReadStableShopAsync(windowHandle, consumedSlots: null, cancellationToken);
+        // 1.2.68：已开店（刷新循环热路径）入口前置减半——页面门禁与双帧稳定判据仍在。
+        var slots = await ReadStableShopAsync(
+            windowHandle,
+            consumedSlots: null,
+            cancellationToken,
+            initialSettleDelay: shopAlreadyOpen
+                ? TimeSpan.FromMilliseconds(250)
+                : null);
         if (slots is null)
         {
             return new GrailShopPassResult(

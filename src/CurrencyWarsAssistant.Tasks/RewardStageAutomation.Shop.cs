@@ -537,10 +537,14 @@ public sealed partial class RewardStageAutomationController
     internal async Task<IReadOnlyList<RewardShopSlot>?> ReadStableShopAsync(
         nint windowHandle,
         IReadOnlySet<int>? consumedSlots,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        TimeSpan? initialSettleDelay = null)
     {
-        // 1.2.29 提速：650→500（页面门禁仍在，误读由双帧稳定判据兜底）
-        await Task.Delay(TimeSpan.FromMilliseconds(500), cancellationToken);
+        // 1.2.29 提速：650→500（页面门禁仍在，误读由双帧稳定判据兜底）。
+        // 1.2.68：已开店热路径（商店页本就稳定/刷新动画等待刚过）由调用方传入更短前置。
+        await Task.Delay(
+            initialSettleDelay ?? TimeSpan.FromMilliseconds(500),
+            cancellationToken);
         var accumulator = new RewardShopRecognitionAccumulator(
             ignoredSlots: consumedSlots);
         for (var attempt = 1;

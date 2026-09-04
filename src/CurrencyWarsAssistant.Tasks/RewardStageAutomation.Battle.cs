@@ -1262,7 +1262,9 @@ public sealed partial class RewardStageAutomationController
             nint windowHandle,
             CancellationToken cancellationToken)
     {
-        await Task.Delay(TimeSpan.FromMilliseconds(850), cancellationToken);
+        // 1.2.68 提速：850→500（与商店读 1.2.29 同款口径）——识别不完整由
+        // 下方 5 次重试+签名稳定判据兜底，前置等待取实测下限。
+        await Task.Delay(TimeSpan.FromMilliseconds(500), cancellationToken);
         string? previousSignature = null;
         for (var attempt = 1; attempt <= 5; attempt++)
         {

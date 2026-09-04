@@ -2302,7 +2302,9 @@ public sealed partial class PreparationBoardController(
         var targetReference = placement.Lane == PreparationLane.Front
             ? FrontSlots[placement.TargetSlot]
             : BackSlots[placement.TargetSlot];
-        for (var attempt = 1; attempt <= 5; attempt++)
+        // 1.2.59（独立分析 P-05 / rule 16）：同坐标 5 连发无鉴别力（Archer@1 号位
+        // 15 连败、银狼@5 号位 6 连败）——收敛到 2 次，失败即停交识别/换路线。
+        for (var attempt = 1; attempt <= 2; attempt++)
         {
             var captured = await CaptureVerifiedPreparationAsync(
                 windowHandle,
@@ -2326,7 +2328,7 @@ public sealed partial class PreparationBoardController(
                 TaskEventLevel.Information,
                 "PreparationDeployAttempt",
                 $"部署“{placement.Source.Character.Name}”：" +
-                $"第 {attempt}/5 次从备战席{placement.Source.BenchSlot + 1}号位拖到" +
+                $"第 {attempt}/2 次从备战席{placement.Source.BenchSlot + 1}号位拖到" +
                 $"{(placement.Lane == PreparationLane.Front ? "前台" : "后台")}" +
                 $"{placement.TargetSlot + 1}号位。");
             var drag = await input.DragAsync(

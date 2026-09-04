@@ -43,17 +43,23 @@ public sealed class GrailDecisionEngine(
             // 分级超时（04:4x 实测：45 秒一刀切会谋杀 M8 的合法长重刷）：
             // M8=35 分钟（其内部上限+余量）；M1=6 分钟（战斗预算+落地余量）；
             // M3/M5=5 分钟；M2=3 分钟；A9=3 分钟（弃局序列最长合法 ≈125 秒+余量）；I/A=60 秒。
+            // M7=8 分钟（1.2.71 行为审计：策略六轮环合法耗时 ≈6 分钟，原 60s 配额会
+            // 静默腰斩策略选择→页面未知→弃好局）。
             var timeout = command.Kind switch
             {
                 GrailCommandKind.M8 => TimeSpan.FromMinutes(35),
                 GrailCommandKind.M1 => TimeSpan.FromMinutes(6),
+                GrailCommandKind.M7 => TimeSpan.FromMinutes(8),
                 GrailCommandKind.M5 => TimeSpan.FromMinutes(5),
                 GrailCommandKind.M3 => TimeSpan.FromMinutes(5),
                 GrailCommandKind.M2 => TimeSpan.FromMinutes(3),
                 GrailCommandKind.A9 => TimeSpan.FromMinutes(3),
                 _ => TimeSpan.FromSeconds(60),
             };
-            using var orphanCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+            // P2-2（1.2.71 运行时审计）：显式 try/finally 先 Cancel 再 Dispose——
+            // 原 using 在解栈时先拆注册，DECIDE 停止/关窗后在途指令（M8 最长 30 分钟）
+            // 收不到取消，变成"僵尸指令"继续操作游戏。
+            var orphanCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
             try
             {
                 // P-22（1.2.70）：指令在途心跳——M8=35 分钟/M1=6 分钟级长指令卡死时
@@ -70,6 +76,23 @@ public sealed class GrailDecisionEngine(
                 orphanCts.Cancel();
                 emit($"[决策层/{_runClock.Elapsed:mm\\:ss}] {commandText} ⇒ 失败：指令执行超过 {timeout.TotalSeconds:F0} 秒未返回（疑似卡死），已取消并跳过。");
                 return GrailCommandResult.Fail(command.Kind, $"指令执行超时（{timeout.TotalSeconds:F0} 秒）未返回。");
+            }
+            catch (OperationCanceledException) when (ct.IsCancellationRequested)
+            {
+                throw; // 用户叫停：保持取消语义，由外层正常收尾。
+            }
+            catch (Exception dispatchError)
+            {
+                // P1-2（1.2.71 运行时审计）：兜底包装——引擎"一次异常即死"已被定性为
+                // 不可用形态（决策层异常一行后永久退出且无自愈）。非取消异常一律降级
+                // 为失败事实：引擎存活，问题凭异常类型+消息在日志可见。
+                emit($"[决策层/{_runClock.Elapsed:mm\\:ss}] {commandText} ⇒ 失败：指令执行异常（{dispatchError.GetType().Name}）：{dispatchError.Message}");
+                return GrailCommandResult.Fail(command.Kind, $"指令执行异常（{dispatchError.GetType().Name}）：{dispatchError.Message}");
+            }
+            finally
+            {
+                orphanCts.Cancel();
+                orphanCts.Dispose();
             }
         }
         catch (InvalidOperationException)
@@ -363,21 +386,19 @@ public sealed class GrailDecisionEngine(
 
     /// <summary>
     /// Unknown 页处置（审查修正版）：仅当页面真正 Unknown（识别表外阻塞态，如位面图/
-    /// 积分弹窗变体）时尝试 plane_progress 续进热点 (960,720) 与世界内交互键；
-    /// 已知页绝不盲点（坑39/审查 P1：(960,540) 会误选投资环境卡、(1290,615) 落在备战页角色卡）。
+    /// 积分弹窗变体）时尝试世界内交互键；已知页绝不盲点（坑39/审查 P1：(960,540) 会误选
+    /// 投资环境卡、(1290,615) 落在备战页角色卡）。
+    /// 1.2.71 行为审计：删除 (960,720) 中心盲点——战斗过场帧被降级 Unknown 时它就是
+    /// 战场中心点击（"异常举动"最短路径）；陈旧帧的 Unknown 不是现状，同样跳过。
     /// </summary>
     private async Task DismissUnknownPageAsync(nint window, CancellationToken ct)
     {
         var page = await PageAsync(window, ct);
-        if (page is null || !string.IsNullOrWhiteSpace(page.PageId))
+        if (page is null ||
+            !string.IsNullOrWhiteSpace(page.PageId) ||
+            page.IsStale)
         {
-            return; // 有页面 ID=非未知态，交由对应流程处理
-        }
-
-        if (genericClick is not null)
-        {
-            await genericClick(window, 960, 720, ct);
-            await Task.Delay(TimeSpan.FromSeconds(2), ct);
+            return; // 有页面 ID=非未知态交对应流程；陈旧帧的"Unknown"=无现状绝不操作
         }
 
         if (pressInteractKey is not null)
@@ -633,6 +654,29 @@ public sealed class GrailDecisionEngine(
         gameData.CurrencyWarsCharacters.FirstOrDefault(item =>
             string.Equals(item.Name, name, StringComparison.OrdinalIgnoreCase));
 
+    /// <summary>P-10 补全（1.2.71 行为审计）：对任意 A9 弃局尝试记账——失败累计
+    /// _abandonStreak（与入口清场模式共享计数），达到 5 次高声停机等人工介入；
+    /// 成功清零。返回 true=已达停机终态，调用方应立即 return。</summary>
+    private async Task<bool> RecordAbandonOutcomeAndCheckShutdownAsync(
+        GrailCommandResult abandon, nint window, CancellationToken ct)
+    {
+        if (abandon.Error is null)
+        {
+            _abandonStreak = 0;
+            return false;
+        }
+
+        _abandonStreak++;
+        if (_abandonStreak < 5)
+        {
+            return false;
+        }
+
+        emit($"[决策层] !! 连续 {_abandonStreak} 次弃局未成功——疑似存在无法自动解除的阻塞（未识别弹窗/识别失效）。引擎停机等待人工介入：请查看游戏画面手动恢复后重新下发 DECIDE。");
+        await SnapshotWithRetryAsync(window, ct);
+        return true;
+    }
+
     /// <summary>
     /// 主循环：M8 重开 → 备战运营 → 终局判定 → R3 重开。
     /// 节点歧义防御：入口处若已有对局在备战页（引擎重启后无法确知节点）→ 先弃局再刷。
@@ -669,9 +713,31 @@ public sealed class GrailDecisionEngine(
                          " 备战=" + inheritedSnapshot.BenchCharacterDetails.Count + "。");
                 }
 
+                // P1-1（1.2.71 运行时审计）：A9 在备战页会被屏上模态（典型=祈愿升档框）
+                // 确定性挡死（恢复例程禁止对备战页兜底点击）——弃局前先应答在屏弹框，
+                // 否则清场模式会变成"退避→A9→再退避"的永久驻留。
+                if (entryPage.WishDialogOpen)
+                {
+                    emit("[决策层] 祈愿弹框在屏——先应答再弃局。");
+                    await EnsureWishAnsweredAsync(window, ct, maxProbes: 2);
+                }
+                else
+                {
+                    await EnsureWishAnsweredAsync(window, ct);
+                }
+
                 // P-10（1.2.69）：弃局受阻退避（清场模式）——A9 连续失败时疑似弃局
                 // 机制受损，拉长退避且绝不进入 M8 导航段，直到弃局成功或用户叫停。
+                // P1-1（1.2.71）：连续 5 次仍失败=存在无法自动解除的阻塞——高声停机
+                // 等人工介入，绝不无限空转。
                 _abandonStreak++;
+                if (_abandonStreak >= 5)
+                {
+                    emit($"[决策层] !! 连续 {_abandonStreak} 次弃局未成功（页面={entryPage.PageId}）——疑似存在无法自动解除的阻塞（未识别弹窗/识别失效）。引擎停机等待人工介入：请查看游戏画面手动恢复后重新下发 DECIDE。");
+                    await SnapshotWithRetryAsync(window, ct); // 留一份最终对账快照（I10 落日志）
+                    return;
+                }
+
                 if (_abandonStreak > 1)
                 {
                     var backoff = TimeSpan.FromSeconds(Math.Min(10 * _abandonStreak, 30));
@@ -682,8 +748,19 @@ public sealed class GrailDecisionEngine(
                 var abandon = await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
                 if (abandon.Error is null)
                 {
-                    _abandonStreak = 0;
                     await SettleAfterAbandonAsync(window, ct);
+                    // P1-1（1.2.71）：名义成功≠页面离开——复核后仍备战页则保留 streak
+                    //（下一轮退避升级），防"A9 回执 OK 但实际没弃掉"的每分钟空转。
+                    var afterAbandon = await PageAsync(window, ct);
+                    if (afterAbandon is { IsStale: false, PageId: not null } &&
+                        afterAbandon.PageId.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase))
+                    {
+                        emit("[决策层] A9 回执成功但页面仍在备战页——按失败计，下轮退避重试。");
+                    }
+                    else
+                    {
+                        _abandonStreak = 0;
+                    }
                 }
                 else
                 {
@@ -744,8 +821,14 @@ public sealed class GrailDecisionEngine(
                             emit($"[决策层] 撤退链路异常（不致命）：{retreatError.Message}");
                         }
                     }
-                    await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
+                    var abandon = await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
                     await SettleAfterAbandonAsync(window, ct);
+                    // P-10 补全（1.2.71）：M8 失败分支的 A9 同样纳入清场计数——原实现
+                    // 只封了入口路径，弃局受损+Unknown 页时此处会无限空转。
+                    if (await RecordAbandonOutcomeAndCheckShutdownAsync(abandon, window, ct))
+                    {
+                        return;
+                    }
                 }
                 else
                 {
@@ -759,8 +842,13 @@ public sealed class GrailDecisionEngine(
             if (!arrived)
             {
                 emit("[决策层] M8 三次尝试未到达备战席——A9 后重开外层循环。");
-                await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
+                var abandon = await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
                 await SettleAfterAbandonAsync(window, ct);
+                if (await RecordAbandonOutcomeAndCheckShutdownAsync(abandon, window, ct))
+                {
+                    return;
+                }
+
                 continue;
             }
 
@@ -812,7 +900,11 @@ public sealed class GrailDecisionEngine(
         // 的升档框——此时外层补轮询；其余轮次单查。
         await EnsureWishAnsweredAsync(window, ct,
             maxProbes: BoughtNonXilianMember(m5Result) && !deployed ? 4 : 1);
-        if (await EnsureFrontHasUnitAsync(window, snapshot, deployed || assembled, ct) is null)
+        // P2-1（1.2.71 运行时审计）：justActed 纳入"执行器内部上场"——M5 买到成员的
+        // 上场动画同样会让立即 I10 读到空前台（19:17 误弃好局同款），前置门按动画期处理。
+        if (await EnsureFrontHasUnitAsync(
+                window, snapshot,
+                deployed || assembled || BoughtNonXilianMember(m5Result), ct) is null)
         {
             // 1.2.58（架构审查 2-3）：M1 前置门——场上无人时出战必被"前台区域
             // 无角色"弹窗拦下，自 heal 循环烧时间。空场局判 Dead 走弃局重开。
@@ -841,7 +933,11 @@ public sealed class GrailDecisionEngine(
         assembled = await AssembleBadgeIfAvailableAsync(window, ct, hit067); // 1-2 新得徽补装（审查 P3）
         await EnsureWishAnsweredAsync(window, ct,
             maxProbes: BoughtNonXilianMember(m5Result) && !deployed ? 4 : 1);
-        if (await EnsureFrontHasUnitAsync(window, snapshot, deployed || assembled, ct) is null)
+        // P2-1（1.2.71 运行时审计）：justActed 纳入"执行器内部上场"——M5 买到成员的
+        // 上场动画同样会让立即 I10 读到空前台（19:17 误弃好局同款），前置门按动画期处理。
+        if (await EnsureFrontHasUnitAsync(
+                window, snapshot,
+                deployed || assembled || BoughtNonXilianMember(m5Result), ct) is null)
         {
             return PreparationOutcome.Dead;
         }

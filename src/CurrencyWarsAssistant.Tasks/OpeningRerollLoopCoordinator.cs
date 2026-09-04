@@ -798,7 +798,9 @@ public sealed class OpeningRerollLoopCoordinator(
             if (recoveryResult.Status != RejectedOpeningRecoveryStatus.Recovered)
             {
                 // P-20（1.2.70）：组件层 Failed() 已发布权威 RecoveryFailed(Error) 行，
-                // 此处终态不再重复落盘（同 Code 同消息双行），仅保留 UI 进度。
+                // 此处终态不再重复落盘（同 Code 同消息双行）。注意 writeEventLog=false
+                // 会同时跳过 ProgressChanged UI 进度（P3-1 注释口径修正：非"仅保留"），
+                // 终态事实由 A9 回执与决策层日志承载。
                 return Result(
                     OpeningRerollLoopState.RecoveryFailed,
                     round,
@@ -1040,8 +1042,9 @@ public sealed class OpeningRerollLoopCoordinator(
         string message,
         bool writeEventLog = true)
     {
-        // P-20（1.2.70）：writeEventLog=false 时仅走 UI 进度、不重复落事件日志
-        // （用于 RecoveryFailed 终态——组件层已发权威 Error 行）。
+        // P-20（1.2.70）：writeEventLog=false 时 eventSink 落盘与 ProgressChanged UI
+        // 进度都跳过（用于 RecoveryFailed 终态——组件层已发权威 Error 行，终态事实
+        // 由 A9 回执与决策层日志承载）。
         if (writeEventLog)
         {
             Publish(state, rounds, message);

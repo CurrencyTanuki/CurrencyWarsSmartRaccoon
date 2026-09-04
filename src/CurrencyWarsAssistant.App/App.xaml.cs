@@ -20,6 +20,10 @@ public partial class App : Application
     private const string SingleInstanceActivationName =
         @"Local\CurrencyWarsSmartRaccoon.Activate.0C912196";
     private ServiceProvider? _services;
+
+    // R1（1.2.71）：启动期（闪屏未关）致命错误必须可见化——历史上被吞成"僵尸闪屏"，
+    // 单实例互斥量还阻断后续启动，用户看到"怎么点都没反应"（2026-08-08 实锤）。
+    private bool _startupPhaseCompleted;
     private Mutex? _singleInstanceMutex;
     private EventWaitHandle? _singleInstanceActivation;
     private CancellationTokenSource? _singleInstanceListenerCancellation;
@@ -406,6 +410,7 @@ public partial class App : Application
             testWindow.Show();
             StartSingleInstanceActivationListener();
             await Dispatcher.Yield(DispatcherPriority.Loaded);
+            _startupPhaseCompleted = true;
             startupWindow!.Close();
             _ = ObserveRecognitionWarmUpAsync(
                 _services.GetRequiredService<Phase2RecognitionWarmUpService>(),
@@ -418,6 +423,7 @@ public partial class App : Application
         mainWindow.Show();
         StartSingleInstanceActivationListener();
         await Dispatcher.Yield(DispatcherPriority.Loaded);
+        _startupPhaseCompleted = true;
         startupWindow!.Close();
         _ = ObserveRecognitionWarmUpAsync(
             _services.GetRequiredService<Phase2RecognitionWarmUpService>(),
@@ -729,6 +735,31 @@ public partial class App : Application
         DispatcherUnhandledExceptionEventArgs e)
     {
         TryReportRecoverableException(e.Exception);
+        if (!_startupPhaseCompleted)
+        {
+            // R1（1.2.71）：启动期异常不再无声吞掉——可见报错后退出进程并释放
+            // 单实例互斥量，绝不留"僵尸闪屏"阻断后续启动。
+            e.Handled = true;
+            try
+            {
+                MessageBox.Show(
+                    "启动失败：" + e.Exception.Message + Environment.NewLine +
+                    Environment.NewLine +
+                    "详细日志：%LOCALAPPDATA%/CurrencyWarsSmartRaccoon/logs/unhandled-errors.log" +
+                    Environment.NewLine + "点击确定退出程序。",
+                    "货币战争智能狸 启动错误",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+            catch
+            {
+                // 连弹窗都失败（极罕见）——直接退出保底。
+            }
+
+            Environment.Exit(1);
+            return;
+        }
+
         e.Handled = true;
     }
 

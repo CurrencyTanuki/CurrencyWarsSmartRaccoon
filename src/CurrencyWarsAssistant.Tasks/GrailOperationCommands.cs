@@ -395,14 +395,42 @@ public sealed class GrailOperationCommands(
             return GrailCommandResult.Fail(GrailCommandKind.A9, "未注入 IRunAbandoner，无法弃局。");
         }
 
-        var result = await runAbandoner.AbandonCurrentRunAsync(context.WindowHandle, cancellationToken);
-        // 审查 P2：弃局序列失败时必须如实报失败（防"局没弃掉回执却成功"掩盖看门狗目标）。
-        if (result.Status == RejectedOpeningRecoveryStatus.Recovered)
+        Task<RejectedOpeningRecoveryResult> abandonTask;
+        try
         {
-            return GrailCommandResult.Ok(GrailCommandKind.A9, result);
+            abandonTask = runAbandoner.AbandonCurrentRunAsync(context.WindowHandle, cancellationToken);
+        }
+        catch (Exception abandonStartError) when (abandonStartError is not OperationCanceledException)
+        {
+            // P1-2（1.2.71 运行时审计）：弃局链组件异常（GPU TDR/COM 失效类）照 M1
+            // 先例包装成失败事实——裸抛会让决策层整循环死亡（一次异常即死且无自愈）。
+            return GrailCommandResult.Fail(
+                GrailCommandKind.A9,
+                $"弃局序列启动异常（{abandonStartError.GetType().Name}）：{abandonStartError.Message}（常见诱因=游戏窗口失效/GPU 崩溃，可先 I1 核实画面）。");
         }
 
-        return GrailCommandResult.Fail(GrailCommandKind.A9, $"弃局未完成（{result.Status}）：{result.Message}");
+        GrailCommandResult abandonResult;
+        try
+        {
+            var result = await abandonTask;
+            // 审查 P2：弃局序列失败时必须如实报失败（防"局没弃掉回执却成功"掩盖看门狗目标）。
+            abandonResult = result.Status == RejectedOpeningRecoveryStatus.Recovered
+                ? GrailCommandResult.Ok(GrailCommandKind.A9, result)
+                : GrailCommandResult.Fail(GrailCommandKind.A9, $"弃局未完成（{result.Status}）：{result.Message}");
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception abandonRunError)
+        {
+            // P1-2（1.2.71）：在途异常同样包装（同上）。
+            abandonResult = GrailCommandResult.Fail(
+                GrailCommandKind.A9,
+                $"弃局序列执行异常（{abandonRunError.GetType().Name}）：{abandonRunError.Message}（常见诱因=游戏窗口失效/GPU 崩溃，可先 I1 核实画面）。");
+        }
+
+        return abandonResult;
     }
 
     private async Task<GrailCommandResult> SelectStrategyAsync(

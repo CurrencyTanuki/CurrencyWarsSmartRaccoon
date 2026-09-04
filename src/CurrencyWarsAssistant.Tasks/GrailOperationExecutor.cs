@@ -594,7 +594,22 @@ public sealed partial class GrailOperationExecutor(
             string.Equals(item.Character.Name, boughtName, StringComparison.OrdinalIgnoreCase));
         if (bought is null)
         {
-            return false; // 验证过仍未见卡：交决策层 I10 复核，绝不拖旧坐标
+            // P1-4（1.2.75 实测根因修复）：买后卡飞向备战席的动画期首读常见"未见卡"——
+            // 03:37 命中局远坂凛买而未上、前置门判 Dead 弃掉好局实锤。等待 2.5 秒
+            // 重读一次（X13 精神），仍未见卡才如实 false。
+            await Task.Delay(TimeSpan.FromMilliseconds(2500), cancellationToken);
+            bench = await preparationBoard.ReadStableBenchCharactersAsync(
+                windowHandle, expectedPreparationPageId, cancellationToken);
+            bought = bench?.FirstOrDefault(item =>
+                string.Equals(item.Character.Name, boughtName, StringComparison.OrdinalIgnoreCase));
+            if (bought is null)
+            {
+                PublishTelemetry(
+                    "GrailShopDeploySkipped",
+                    $"{boughtName} 已购买但备战席两读均未见卡（动画期/识别滞后）——交决策层 I10 对账。",
+                    TaskEventLevel.Warning);
+                return false; // 验证过仍未见卡：交决策层 I10 复核，绝不拖旧坐标
+            }
         }
 
         var lane = PreparationLane.Front;

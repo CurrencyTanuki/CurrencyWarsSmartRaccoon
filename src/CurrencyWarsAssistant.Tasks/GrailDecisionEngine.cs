@@ -309,6 +309,14 @@ public sealed class GrailDecisionEngine(
     {
         var deployedAny = false;
         var snapshot = existingSnapshot ?? await SnapshotWithRetryAsync(window, ct);
+        if (snapshot is null && existingSnapshot is null)
+        {
+            // P1-4（1.2.75 实测根因修复）：S2 现读场景下识别流滞后（实测 19s+ 无新帧）
+            // 会让部署段放弃→前置门判 Dead→买到的成员坐备战席被整局弃掉（03:37 命中局
+            // 远坂凛实锤）。追帧后重试：管线恢复即完成部署。
+            emit("[决策层] 部署段快照全败——识别流滞后，进入 60s 追帧后重试部署。");
+            snapshot = await SnapshotWithRetrySlowTailAsync(window, ct);
+        }
         // 快照是否仍代表当前盘面：部署后重读=true；部署指令失败后=false（盘面可能已变）。
         var snapshotFresh = snapshot is not null;
         for (var pass = 0; pass < 3 && snapshot is not null; pass++)

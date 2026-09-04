@@ -198,6 +198,29 @@ public sealed class GrailDecisionEngine(
         return null;
     }
 
+    /// <summary>
+    /// P1-3（1.2.73 实测根因修复）：识别流追帧长尾——SnapshotWithRetryAsync（8 次退避
+    /// ≈24s）全败后，若 M8/导航流刚用实时分类确认过页面（调用方自行判定），识别流的
+    /// LatestAnalysis 可能仍在追赶游戏状态（实测进 1-1 后 19s+ 无新分析帧）。本方法以
+    /// 5 秒间隔再追 60 秒；管线恢复即自愈，仍失败如实返回 null（调用方走弃局）。
+    /// </summary>
+    private async Task<GrailRunSnapshot?> SnapshotWithRetrySlowTailAsync(
+        nint window, CancellationToken ct)
+    {
+        for (var attempt = 0; attempt < 12; attempt++)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(5), ct);
+            var snapshot = await SnapshotAsync(window, ct);
+            if (snapshot is not null)
+            {
+                emit($"[决策层] 识别流追帧成功（第 {attempt + 1} 次长尾重试）——快照恢复可用。");
+                return snapshot;
+            }
+        }
+
+        return null;
+    }
+
     private async Task<GrailPageFact?> PageAsync(nint window, CancellationToken ct)
     {
         var result = await SendAsync("I1", new GrailCommand(GrailCommandKind.I1), window, ct);
@@ -886,7 +909,16 @@ public sealed class GrailDecisionEngine(
     {
         // ---- S2：1-1（人口 3；067 局禁 A4）----
         await SendAsync("M2", new GrailCommand(GrailCommandKind.M2), window, ct);
+        // P1-3（1.2.73 实测根因修复）：M8 刚用导航器实时分类确认到达备战页，但识别流
+        // LatestAnalysis 滞后（实测进 1-1 后 19s+ 无新分析帧）→ I10 门禁连续全败 →
+        // 好局被判 Interrupted 弃掉（02:18 命中局实锤）。加追帧长尾：识别管线恢复即自愈。
         var snapshot = await SnapshotWithRetryAsync(window, ct);
+        if (snapshot is null)
+        {
+            emit("[决策层] 快照 24s 窗口全败——M8 刚确认到达备战页，判定为识别流滞后，进入 60s 追帧长尾。");
+            snapshot = await SnapshotWithRetrySlowTailAsync(window, ct);
+        }
+
         if (snapshot is null)
         {
             return PreparationOutcome.Interrupted;

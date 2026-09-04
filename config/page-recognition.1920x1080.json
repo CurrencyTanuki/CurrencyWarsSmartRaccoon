@@ -599,6 +599,25 @@
           "threshold": 0.8
         }
       ]
+    },
+    {
+      "id": "disconnect_prompt",
+      "displayName": "与服务器断开连接提示",
+      "priority": 90,
+      "anchors": [
+        {
+          "id": "disconnect_prompt_text",
+          "displayName": "断线重登提示文字",
+          "file": "templates/1920x1080/pages/disconnect-prompt-text.png",
+          "threshold": 0.8,
+          "searchRegion": {
+            "x": 0.3,
+            "y": 0.4,
+            "width": 0.4,
+            "height": 0.18
+          }
+        }
+      ]
     }
   ]
 }

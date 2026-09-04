@@ -740,6 +740,22 @@ public sealed class GrailDecisionEngine(
             // IsStale 检查（增量复查项3）：识别流冻结时 I1 仍报旧页（实测冻结 6 分钟），
             // 陈旧读数=无现状，绝不据此发 A9——放行进 M8（其守卫自带 10s 新鲜窗）。
             var entryPage = await PageAsync(window, ct);
+            // 1.2.83 断线自愈：游戏与服务器断开时弹"请重新登录"模态（1.2.83 入识别表）
+            // ——点确认关闭弹窗后高声停机，等人工重新登录（断线态任何操作都无意义）。
+            if (entryPage is { IsStale: false, PageId: "disconnect_prompt" })
+            {
+                emit("[决策层] !! 检测到游戏与服务器断开连接（请重新登录弹窗）——关闭弹窗后停机。请重新登录游戏并回到货币战争主界面，再重新下发 DECIDE。");
+                if (genericClick is not null)
+                {
+                    // 确认按钮与"前台区域无角色"确认点同位（模态按钮标准位 960,699@1920）。
+                    await genericClick(window, 960, 699, ct);
+                }
+
+                await Task.Delay(TimeSpan.FromSeconds(3), ct);
+                await SnapshotWithRetryAsync(window, ct); // 留最终对账快照
+                return;
+            }
+
             if (entryPage is { IsStale: false, PageId: not null } &&
                 entryPage.PageId.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase))
             {

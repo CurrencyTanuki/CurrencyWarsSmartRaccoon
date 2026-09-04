@@ -957,6 +957,15 @@ public sealed class GrailDecisionEngine(
         snapshot = await SnapshotWithRetryAsync(window, ct);
         if (snapshot is null)
         {
+            // P1-3 补全（1.2.74 实测）：02:40 命中局在 1-2 进场后 I10 连续 8 次全败
+            //（M5 买到黑塔+商店/备战切换的识别流滞后）→ 好局又被 Interrupted 弃掉。
+            // 与 S2 同款追帧长尾。
+            emit("[决策层] S3 快照 24s 窗口全败——判定为识别流滞后，进入 60s 追帧长尾。");
+            snapshot = await SnapshotWithRetrySlowTailAsync(window, ct);
+        }
+
+        if (snapshot is null)
+        {
             return PreparationOutcome.Interrupted;
         }
 
@@ -1001,7 +1010,13 @@ public sealed class GrailDecisionEngine(
             snapshot = await SnapshotWithRetryAsync(window, ct);
             if (snapshot is null)
             {
-                return PreparationOutcome.Interrupted;
+                // P1-3 补全（1.2.74 实测）：S4 与 S2/S3 同款识别流滞后风险——追帧长尾。
+                emit("[决策层] S4 快照两次窗口全败——判定为识别流滞后，进入 60s 追帧长尾。");
+                snapshot = await SnapshotWithRetrySlowTailAsync(window, ct);
+                if (snapshot is null)
+                {
+                    return PreparationOutcome.Interrupted;
+                }
             }
         }
 

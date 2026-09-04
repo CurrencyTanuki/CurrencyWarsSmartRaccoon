@@ -174,13 +174,16 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
         _pauseBaseline = foregroundGuard.TotalPausedDuration;
         for (var attempt = 1; attempt <= 3; attempt++)
         {
+            // 1.2.58（独立分析 P-12）：进 1-1 后 1ms 即发 Esc 的失败率 22%——
+            // 先给入场动画 2.5 秒；Esc 重试 1→2 次（多数失败几秒后重按即成功）。
+            await Task.Delay(TimeSpan.FromSeconds(2.5), cancellationToken);
             var exitPrompt = await PressKeyUntilPageAsync(
                 windowHandle,
                 InputKey.Escape,
                 "使用 Esc 退出当前对局",
                 "abandon_settlement_prompt",
                 TimeSpan.FromSeconds(4),
-                1,
+                2,
                 cancellationToken);
 
             if (exitPrompt is null)
@@ -315,13 +318,15 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                 $"无法进入 1-1 备战页：{preparation?.Message ?? "未产生导航结果"}");
         }
 
+        // 1.2.58（独立分析 P-12）：同上——先等入场动画，Esc 重试 1→2 次。
+        await Task.Delay(TimeSpan.FromSeconds(2.5), cancellationToken);
         var exitPrompt = await PressKeyUntilPageAsync(
             windowHandle,
             InputKey.Escape,
             "使用 Esc 退出当前对局",
             "abandon_settlement_prompt",
             TimeSpan.FromSeconds(4),
-            1,
+            2,
             cancellationToken);
         if (exitPrompt is null)
         {

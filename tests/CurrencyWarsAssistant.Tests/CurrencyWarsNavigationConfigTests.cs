@@ -13,7 +13,7 @@ public sealed class CurrencyWarsNavigationConfigTests
 
         Assert.Equal(1920, config.ReferenceWidth);
         Assert.Equal(1080, config.ReferenceHeight);
-        Assert.Equal(16, config.Steps.Count);
+        Assert.Equal(17, config.Steps.Count);
         Assert.Contains(config.Steps, step => step.PageId == "normal_hud");
         var preparation = Assert.Single(
             config.Steps,

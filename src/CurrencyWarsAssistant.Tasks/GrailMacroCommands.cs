@@ -1,4 +1,4 @@
-using CurrencyWarsAssistant.Game;
+﻿using CurrencyWarsAssistant.Game;
 
 namespace CurrencyWarsAssistant.Tasks;
 
@@ -347,10 +347,25 @@ public sealed class GrailMacroCommands(
 
             // 守卫兜底判定：循环自然结束（成功停靠）但全程未见开局页——续局签名（竞态兜底）。
             // 三态判定（审查 P1）：识别流全程无新鲜帧时守卫不可判定，绝不伪造"续局"事实。
+            // 1.2.58（独立分析 P-04）：快速刷开局盲点连点下页面停留极短，识别流可能
+            // 整程没"见过"开局页（竞态误伤刚命中的合格局）——成功停靠时先 I1 复核
+            // 当前页，已停靠 preparation_ 备战页本身就是"非续局"的反证，按成功放行。
             if (result.Succeeded && !runEntryPagesSeen)
             {
-                return GrailCommandResult.Fail(GrailCommandKind.M8,
-                    sawFreshFrame ? UnsettledRunInterruptedMessage : RecognitionUnavailableAfterOpeningMessage);
+                var currentPage = ProbeLatestPageId();
+                if (string.Equals(
+                        currentPage,
+                        "preparation_generic",
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    // 竞态放行：无 eventSink 可落日志，放行事实由 M8 成功回执
+                    // （命中环境名正常返回）与决策层日志共同佐证。
+                }
+                else
+                {
+                    return GrailCommandResult.Fail(GrailCommandKind.M8,
+                        sawFreshFrame ? UnsettledRunInterruptedMessage : RecognitionUnavailableAfterOpeningMessage);
+                }
             }
 
             // 回报具体命中的环境（用户要求：返回是两个投资环境中的哪一个）。
@@ -408,5 +423,22 @@ public sealed class GrailMacroCommands(
 
             await Task.Delay(800, cancellationToken);
         }
+    }
+
+    /// <summary>
+    /// 1.2.58（独立分析 P-04）：守卫竞态复核——取识别流最新页面 ID（10 秒内新鲜才算，
+    /// 否则 null=不可判定）。
+    /// </summary>
+    private string? ProbeLatestPageId()
+    {
+        var analysis = listener.LatestAnalysis;
+        if (analysis?.Snapshot?.PageId is { } pageId &&
+            analysis.Snapshot.AsOf is { } at &&
+            DateTimeOffset.Now - at <= TimeSpan.FromSeconds(10))
+        {
+            return pageId.Value;
+        }
+
+        return null;
     }
 }

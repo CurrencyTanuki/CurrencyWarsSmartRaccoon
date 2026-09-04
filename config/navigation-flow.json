@@ -339,6 +339,31 @@
           "timeoutMilliseconds": 8000
         }
       ]
+    },
+    {
+      "pageId": "wish_trial_selection",
+      "actions": [
+        {
+          "id": "answer_wish_trial",
+          "displayName": "应答遗留祈愿试炼弹框（默认左侧）",
+          "kind": "click",
+          "point": {
+            "x": 1499,
+            "y": 641
+          },
+          "expectedPageIds": [
+            "preparation_generic",
+            "preparation_1_1",
+            "preparation_1_2",
+            "preparation_1_3",
+            "normal_hud",
+            "currency_wars_home",
+            "wish_trial_selection",
+            "reward_shop"
+          ],
+          "timeoutMilliseconds": 10000
+        }
+      ]
     }
   ]
 }

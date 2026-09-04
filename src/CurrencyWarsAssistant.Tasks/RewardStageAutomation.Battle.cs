@@ -176,6 +176,28 @@ public sealed partial class RewardStageAutomationController
                         return false;
                     }
 
+                    // 1.2.58（独立分析 P-02）："前台区域无角色无法出战"提示会阻塞迁移
+                    // 识别（页面 Unknown）——首个未知观察即尝试确认关闭；确认后回
+                    // Preparation 由调用方重试部署，而不是干等 3 次超时弃局。
+                    if (await ConfirmUncompletedBattlePromptIfPresentAsync(
+                            windowHandle,
+                            cancellationToken))
+                    {
+                        unknownObservations = 0;
+                        continue;
+                    }
+
+                    // 1.2.58（独立分析 P-13）：迁移白名单与"人数不足确认"处理器对齐——
+                    // StartingBattle 未知观察同样先尝试确认人数不足提示（同族防御）。
+                    if (allowIncompleteLineupConfirmation &&
+                        await ConfirmIncompleteLineupPromptIfPresentAsync(
+                            windowHandle,
+                            cancellationToken))
+                    {
+                        unknownObservations = 0;
+                        continue;
+                    }
+
                     await WaitForRelevantBattlePageAsync(
                         windowHandle,
                         stateMachine,
@@ -903,6 +925,61 @@ public sealed partial class RewardStageAutomationController
                     clicked
                         ? TaskEventLevel.Information
                         : TaskEventLevel.Warning);
+                return clicked;
+            }
+
+            await Task.Delay(
+                TimeSpan.FromMilliseconds(250),
+                cancellationToken);
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// 1.2.58（独立分析 P-02）："前台区域无角色，无法出战"提示会阻塞出战迁移识别
+    /// （页面被降级为 Unknown）——确认关闭后由调用方回退部署阶段重试，而非超时弃局。
+    /// </summary>
+    private async Task<bool> ConfirmUncompletedBattlePromptIfPresentAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        const string promptPageId = "uncompleted_battle_prompt";
+        var deadline = ActiveUtcNow + TimeSpan.FromSeconds(4);
+        var stableFrames = 0;
+        while (ActiveUtcNow < deadline)
+        {
+            var (_, frame) = await CaptureForegroundAsync(
+                windowHandle,
+                cancellationToken);
+            var pageId = pageClassifier.Classify(frame)?.PageId;
+            if (string.Equals(
+                    pageId,
+                    promptPageId,
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                stableFrames++;
+            }
+            else
+            {
+                stableFrames = 0;
+                if (pageId is not null)
+                {
+                    return false;
+                }
+            }
+
+            if (stableFrames >= 2)
+            {
+                Publish(
+                    "UncompletedBattlePromptConfirmed",
+                    "已连续两帧确认前台区域无角色无法出战提示；点击确认后回退部署阶段。",
+                    TaskEventLevel.Warning);
+                var clicked = await ClickStandardPointAsync(
+                    windowHandle,
+                    UncompletedPromptConfirmPoint,
+                    "确认关闭无法出战提示",
+                    cancellationToken);
                 return clicked;
             }
 

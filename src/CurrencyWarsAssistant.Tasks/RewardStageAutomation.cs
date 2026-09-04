@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using CurrencyWarsAssistant.Automation;
 using CurrencyWarsAssistant.Core;
 using CurrencyWarsAssistant.Game;
@@ -127,6 +127,9 @@ public sealed partial class RewardStageAutomationController(
         new(1785, 750);
     private static readonly StandardPoint IncompleteLineupConfirmPoint =
         new(1170, 675);
+    // "前台区域无角色，无法出战"提示弹窗的确认按钮（12:08 实拍帧裁测，1920 参考系）。
+    private static readonly StandardPoint UncompletedPromptConfirmPoint =
+        new(960, 699);
     private static readonly StandardPoint ContinueChallengePoint =
         new(960, 895);
     private static readonly StandardPoint RetreatBattlePoint =

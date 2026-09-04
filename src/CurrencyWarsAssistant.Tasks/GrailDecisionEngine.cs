@@ -567,22 +567,14 @@ public sealed class GrailDecisionEngine(
 
         if (justActed)
         {
-            // P1-5（1.2.76 实测）：A1 部署回执 OK（含像素差验证）vs I10 前台空的矛盾
-            // =识别流滞后（04:08 命中局：黑塔 A1 OK 但两次 I10 前台空→误判 Dead 弃好局）。
-            // 判 Dead 前追帧终判：管线恢复后前台出现即放行出战；仍空才如实判 Dead。
-            emit("[决策层] 两次重读前台均无角色但刚部署过——进入 60s 追帧终判（识别流滞后防护）。");
+            // P1-5（1.2.76→1.2.79 两轮实机迭代）：A1 部署回执 OK（含像素差验证——
+            // 拖拽引起目标槽画面大幅变化才回 OK）vs I10 前台空的矛盾=识别流滞后。
+            // 实测两连：04:08/04:56 两个命中局黑塔 A1 OK 后前置门 4 次 I10 跨 18s
+            // 前台空。追帧终判后仍空时**放行出战**：误放行后果=出战弹窗→M1 失败→
+            // A9 自愈（约 1 分钟，可逆）；误弃局后果=好局不可逆损失。不对称风险取放行。
+            emit("[决策层] 两次重读前台均无角色但刚部署过（A1 像素验证 OK）——追帧后放行出战，如出战受阻由 M1 失败+A9 自愈。");
             var tail = await SnapshotWithRetrySlowTailAsync(window, ct);
-            var final = tail ?? await SnapshotWithRetryAsync(window, ct) ?? snapshot;
-            var tailHasFront = final.DeployedCharacterDetails.Any(detail =>
-                detail.StartsWith('F') || detail.StartsWith("F:"));
-            if (tailHasFront)
-            {
-                emit("[决策层] 追帧终判：前台角色已可见——识别流滞后确认，放行出战。");
-                return final;
-            }
-
-            emit("[决策层] 追帧终判：前台仍无角色——如实判 Dead 弃局重开。");
-            return null;
+            return tail ?? await SnapshotWithRetryAsync(window, ct) ?? snapshot;
         }
 
         emit("[决策层] 两次重读前台均无角色——禁止出战（防『前台区域无角色』弹窗）。判 Dead 弃局重开。");

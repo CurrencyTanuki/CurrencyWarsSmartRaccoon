@@ -1492,7 +1492,7 @@ private async Task<PageClassificationResult?> FastWaitForPageAsync(
             nint windowHandle,
             CancellationToken cancellationToken)
     {
-        // 1.2.81 代码减量（交叉复核 F6）：删除免费刷新专用的 excludedOptionIds/
+        // 1.2.80 代码减量（交叉复核 F6）：删除免费刷新专用的 excludedOptionIds/
         // optionsChanged 死机制（1.2.67 删除免费刷新后永不可达）与两个
         // refresh_static_failure 死分支。保留：完整读数三票稳定返回、
         // 不完整读数连续 6 帧提前止损（30s deadline 兜底不变）。

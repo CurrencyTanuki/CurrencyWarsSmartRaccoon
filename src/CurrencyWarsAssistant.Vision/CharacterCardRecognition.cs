@@ -1303,15 +1303,15 @@ public sealed class OpenCvCharacterCardRecognizer :
 
     private static Mat Normalize(CaptureFrame frame)
     {
-        using var bgra = new Mat(
+        // 1.2.82（CPU 审计中收益项 3）：FromPixelData 零拷贝包裹（与
+        // TemplateMatching.cs:145 同款），替代 Marshal.Copy 的整帧复制——
+        // 每次全帧识别省一次 8-14MB 拷贝。
+        using var bgra = Mat.FromPixelData(
             frame.Height,
             frame.Width,
-            MatType.CV_8UC4);
-        Marshal.Copy(
+            MatType.CV_8UC4,
             frame.BgraPixels,
-            0,
-            bgra.Data,
-            frame.BgraPixels.Length);
+            frame.Stride);
         var bgr = new Mat();
         Cv2.CvtColor(bgra, bgr, ColorConversionCodes.BGRA2BGR);
         if (frame.Width == OpenCvTemplateMatcher.ReferenceWidth &&

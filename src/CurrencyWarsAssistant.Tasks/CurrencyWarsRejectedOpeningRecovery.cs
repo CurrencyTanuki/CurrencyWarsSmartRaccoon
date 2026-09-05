@@ -433,25 +433,80 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
              challengeFailed is null && recoveryCycle <= 2;
              recoveryCycle++)
         {
-            challengeFailed = await ClickUntilPageAsync(
+            // 提速（2026-09-05 用户令重申）：点"放弃并结算"后**立即连点**——第一次点击
+            // 后直接进入 AbandonAndSettlePoint 同位置连点循环（300ms 节奏、上限 ~8 秒），
+            // 循环内每击用单帧快速探测（challenge_failed/主页强证据/abandon 弹窗消失）
+            // 判断推进；不再"点一下→等 6 秒页面识别→再点"。危险输入预检仍在此前完成。
+            var settleClick = await ClickStandardPointAsync(
                 windowHandle,
                 "abandon_and_settle",
                 "放弃并结算",
                 AbandonAndSettlePoint,
                 new ActionPolicy
                 {
-                    AfterActionDelay = TimeSpan.FromMilliseconds(200)
+                    AfterActionDelay = TimeSpan.Zero
                 },
-                "challenge_failed",
-                TimeSpan.FromSeconds(6),
-                5,
-                cancellationToken,
-                requiredPageId: "abandon_settlement_prompt");
+                cancellationToken);
+            if (!settleClick.Succeeded)
+            {
+                Publish(
+                    "RecoveryStrategyCycle",
+                    $"放弃结算点击输入失败（第 {recoveryCycle} 轮）；重新识别并继续下一轮。",
+                    TaskEventLevel.Warning);
+                continue;
+            }
+
+            var rapidDeadline = ActiveUtcNow + TimeSpan.FromSeconds(8);
+            while (ActiveUtcNow < rapidDeadline && challengeFailed is null)
+            {
+                // 同位置连点（游戏对重复点击有节流吞没，多击保证至少一击落在按钮可点窗口）。
+                await ClickStandardPointAsync(
+                    windowHandle,
+                    "abandon_and_settle_rapid",
+                    "放弃并结算连点",
+                    AbandonAndSettlePoint,
+                    new ActionPolicy
+                    {
+                        AfterActionDelay = TimeSpan.Zero
+                    },
+                    cancellationToken);
+                await Task.Delay(
+                    TimeSpan.FromMilliseconds(300),
+                    cancellationToken);
+
+                // 单帧快速探测（不要求稳定双帧）：到 challenge_failed 即收；回主页（强证据）
+                // 说明结算已越过失败页直接完成——把主页结果当作完成态带出循环。
+                var probeWindow = await foregroundGuard.WaitUntilForegroundAsync(
+                    windowHandle,
+                    cancellationToken);
+                var probeFrame = await capture.CaptureAsync(probeWindow, cancellationToken);
+                var page = classifier.Classify(probeFrame);
+                if (page is not null &&
+                    string.Equals(page.PageId, "challenge_failed", StringComparison.OrdinalIgnoreCase))
+                {
+                    challengeFailed = page;
+                    Publish(
+                        "RecoveryPromptConfirmed",
+                        $"连点推进已进入挑战失败页（{page.Confidence:P1}）。");
+                }
+                else if (page is null && CurrencyWarsHomeEvidence.IsMatch(probeFrame))
+                {
+                    challengeFailed = new PageClassificationResult(
+                        "challenge_failed",
+                        "challenge_failed_via_home",
+                        0.95,
+                        []);
+                    Publish(
+                        "RecoveryCompletedEarlyHome",
+                        "连点期间已回到货币战争主界面（结算直接完成）——停止连点。");
+                }
+            }
+
             if (challengeFailed is null)
             {
                 Publish(
                     "RecoveryStrategyCycle",
-                    $"放弃结算第 {recoveryCycle} 轮未成功；重新识别并继续下一轮。",
+                    $"放弃结算连点 {recoveryCycle} 轮未探测到挑战失败页；重新识别并继续下一轮。",
                     TaskEventLevel.Warning);
             }
         }

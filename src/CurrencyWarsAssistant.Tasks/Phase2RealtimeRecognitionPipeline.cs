@@ -421,6 +421,7 @@ public sealed class Phase2FastPageClassifier : IPhase2FastPageClassifier
             "challenge_success",
             "challenge_failed",
             "challenge_health_depleted",
+            "abandon_incomplete_summary",
             "investment_environment",
             "investment_strategy",
             "companion_selection",

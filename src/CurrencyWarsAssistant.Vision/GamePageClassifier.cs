@@ -51,6 +51,7 @@ public static class AutomationPageIds
         "challenge_success",
         "challenge_failed",
         "challenge_health_depleted",
+        "abandon_incomplete_summary",
         "investment_environment",
         "investment_strategy",
         "wish_trial_selection",

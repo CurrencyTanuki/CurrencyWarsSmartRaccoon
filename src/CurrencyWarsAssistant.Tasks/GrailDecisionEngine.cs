@@ -44,6 +44,19 @@ public sealed class GrailDecisionEngine(
     /// 1-3 必下必卖）。</summary>
     private string _currentNode = "1-1";
 
+    /// <summary>
+    /// 1.2.90 上场台账（用户令状态机，X11 星徽同款"识别∪账本并集"模式）：
+    /// 名字→前台槽位（0 基；-1=已上场但槽位未知，如 M5 执行器内部自动上场）。
+    /// 写入点：A1 像素验证成功（=权威）、M5 买到非昔涟成员（执行器内部自动上场）。
+    /// 删除点：M8 新局清空、A2/A3 卖出成功。
+    /// 消费点：槽位选择取"账本∪识别占用"并集（识别漏读已上场单位时账本兜底，
+    /// 20:41 实锤：A1 像素验证 OK 后 I10 连续读前台空，三连同一槽位互换两人）；
+    /// 前置门 hasFront 判定含账本（防识别漏读误判 Dead）；bond/学者/填段的
+    /// 候选若已在账本=已上场，跳过不再部署。
+    /// 识别永不推翻账本（用户口径：上场了就是有人，不能因为识别没读到就当没人）。
+    /// </summary>
+    private readonly Dictionary<string, int> _frontLedger = new(StringComparer.Ordinal);
+
     private async Task<GrailCommandResult> SendAsync(
         string commandText, GrailCommand command, nint window, CancellationToken ct)
     {
@@ -459,6 +472,12 @@ public sealed class GrailDecisionEngine(
                     continue;
                 }
 
+                // 1.2.90 台账：已在账本=已上场（M5 内部自动上场/此前 A1），跳过不再部署。
+                if (_frontLedger.ContainsKey(candidateName))
+                {
+                    continue;
+                }
+
                 var candidate = ResolveProtectedCharacter(candidateName);
                 if (candidate is not null && GrailOperationExecutor.IsPureFiveCostCharacter(candidate))
                 {
@@ -475,11 +494,17 @@ public sealed class GrailDecisionEngine(
                 break; // 无可部署或前台满（后台部署归 N17a 之后流程）——仍继续学者补位
             }
 
-            var slot = Enumerable.Range(0, 4).FirstOrDefault(i => !snapshot.OccupiedFrontSlots.Contains(i));
+            // 1.2.90：槽位空闲=识别∪台账并集判定（识别漏读已上场单位时账本兜底）。
+            var slot = FirstFreeFrontSlot(snapshot);
+            if (slot is null)
+            {
+                break;
+            }
+
             var deploy = await SendAsync(
-                $"A1 {pendingBench} 前台 {slot + 1}",
+                $"A1 {pendingBench} 前台 {slot.Value + 1}",
                 new GrailCommand(GrailCommandKind.A1,
-                    new GrailDeployArgs(pendingBench, PreparationLane.Front, slot)),
+                    new GrailDeployArgs(pendingBench, PreparationLane.Front, slot.Value)),
                 window, ct);
             if (deploy.Error is not null)
             {
@@ -487,6 +512,7 @@ public sealed class GrailDecisionEngine(
                 break; // 识别不到该名（识别缺陷）→ 交外层对账，绝不盲拖
             }
 
+            _frontLedger[pendingBench] = slot.Value;
             deployedAny = true;
             await EnsureWishAnsweredAsync(window, ct, maxProbes: 4);
             snapshot = await SnapshotWithRetryAsync(window, ct); // 部署后重读找下一个候选
@@ -539,6 +565,8 @@ public sealed class GrailDecisionEngine(
                     break;
                 }
 
+                // 1.2.90 台账：学者已卖出，移出场上台账。
+                _frontLedger.Remove(PureName(detail.Split(':')[^1]));
                 deployedAny = true;
                 await Task.Delay(TimeSpan.FromSeconds(1), ct);
                 snapshot = await SnapshotWithRetryAsync(window, ct);
@@ -563,6 +591,7 @@ public sealed class GrailDecisionEngine(
         var benchScholarPairs = snapshot.BenchCharacterDetails
             .Select(item => (SlotHead: item.Split(':')[0], Name: PureName(item.Split(':')[^1])))
             .Where(pair => scholarNames.Contains(pair.Name))
+            .Where(pair => !_frontLedger.ContainsKey(pair.Name)) // 1.2.90：已在场的不重复部署
             .GroupBy(pair => pair.Name)
             .Select(group => group.First())
             .ToList();
@@ -584,12 +613,16 @@ public sealed class GrailDecisionEngine(
                 continue;
             }
 
-            var scholarSlot = Enumerable.Range(0, 4).FirstOrDefault(
-                i => !snapshot.OccupiedFrontSlots.Contains(i));
+            var scholarSlot = FirstFreeFrontSlot(snapshot);
+            if (scholarSlot is null)
+            {
+                break;
+            }
+
             var scholarDeploy = await SendAsync(
-                $"A1 {pair.Name} 前台 {scholarSlot + 1}",
+                $"A1 {pair.Name} 前台 {scholarSlot.Value + 1}",
                 new GrailCommand(GrailCommandKind.A1,
-                    new GrailDeployArgs(pair.Name, PreparationLane.Front, scholarSlot)),
+                    new GrailDeployArgs(pair.Name, PreparationLane.Front, scholarSlot.Value)),
                 window, ct);
             if (scholarDeploy.Error is not null)
             {
@@ -597,7 +630,8 @@ public sealed class GrailDecisionEngine(
                 break;
             }
 
-            emit($"[决策层] 学者补位：{pair.Name} 已部署到前台 {scholarSlot + 1} 号位。");
+            _frontLedger[pair.Name] = scholarSlot.Value;
+            emit($"[决策层] 学者补位：{pair.Name} 已部署到前台 {scholarSlot.Value + 1} 号位。");
             deployedAny = true;
             // 学者非圣杯成员，上场不触发圣杯升档弹框——单查即可。
             await EnsureWishAnsweredAsync(window, ct);
@@ -629,6 +663,7 @@ public sealed class GrailDecisionEngine(
                     .Select(item => (SlotHead: item.Split(':')[0], Name: PureName(item.Split(':')[^1])))
                     .Where(pair => !scholarNames.Contains(pair.Name))
                     .Where(pair => !executor.GrailBondMemberNames.Contains(pair.Name))
+                    .Where(pair => !_frontLedger.ContainsKey(pair.Name)) // 1.2.90：已在场不重复
                     .Select(pair => (Pair: pair, Candidate: ResolveProtectedCharacter(pair.Name)))
                     .Where(pair => pair.Candidate is null
                                    || !GrailOperationExecutor.IsPureFiveCostCharacter(pair.Candidate))
@@ -644,18 +679,23 @@ public sealed class GrailDecisionEngine(
                     continue; // 1.2.89 审查 P3：单个明细解析失败跳过该条，继续尝试其他单位
                 }
 
-                var fillSlot = Enumerable.Range(0, 3).FirstOrDefault(
-                    i => !snapshot.OccupiedFrontSlots.Contains(i));
+                var fillSlot = FirstFreeFrontSlot(snapshot);
+                if (fillSlot is null || fillSlot.Value >= 3)
+                {
+                    break; // 1-1/1-2 人口 3：只填前 3 槽
+                }
+
                 var fillDeploy = await SendAsync(
-                    $"A1 {fill.Name} 前台 {fillSlot + 1}",
+                    $"A1 {fill.Name} 前台 {fillSlot.Value + 1}",
                     new GrailCommand(GrailCommandKind.A1,
-                        new GrailDeployArgs(fill.Name, PreparationLane.Front, fillSlot)),
+                        new GrailDeployArgs(fill.Name, PreparationLane.Front, fillSlot.Value)),
                     window, ct);
                 if (fillDeploy.Error is not null)
                 {
                     break; // 识别不到/拖拽失败——交对账，不硬塞
                 }
 
+                _frontLedger[fill.Name] = fillSlot.Value;
                 deployedAny = true;
                 await Task.Delay(TimeSpan.FromSeconds(1), ct);
                 var fillReread = await SnapshotWithRetryAsync(window, ct);
@@ -673,10 +713,41 @@ public sealed class GrailDecisionEngine(
         return (deployedAny, snapshotFresh ? snapshot : null);
     }
 
+    /// <summary>1.2.90：槽位空闲判定=识别占用∪台账占用都不含该槽（识别∪账本并集）。</summary>
+    private bool FrontSlotFree(GrailRunSnapshot snapshot, int slot)
+    {
+        if (snapshot.OccupiedFrontSlots.Contains(slot))
+        {
+            return false;
+        }
+
+        foreach (var occupiedSlot in _frontLedger.Values)
+        {
+            if (occupiedSlot == slot)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>1.2.90：第一个"识别∪台账"均空闲的前台槽位；无则 null。</summary>
+    private int? FirstFreeFrontSlot(GrailRunSnapshot snapshot)
+    {
+        for (var slot = 0; slot < 4; slot++)
+        {
+            if (FrontSlotFree(snapshot, slot))
+            {
+                return slot;
+            }
+        }
+
+        return null;
+    }
+
     /// <summary>
     /// Unknown 页处置（审查修正版）：仅当页面真正 Unknown（识别表外阻塞态，如位面图/
-    /// 积分弹窗变体）时尝试世界内交互键；已知页绝不盲点（坑39/审查 P1：(960,540) 会误选
-    /// 投资环境卡、(1290,615) 落在备战页角色卡）。
     /// 1.2.71 行为审计：删除 (960,720) 中心盲点——战斗过场帧被降级 Unknown 时它就是
     /// 战场中心点击（"异常举动"最短路径）；陈旧帧的 Unknown 不是现状，同样跳过。
     /// </summary>
@@ -777,6 +848,8 @@ public sealed class GrailDecisionEngine(
             }
 
             sold++;
+            // 1.2.90 台账：卖出的单位移出上场台账（若在册）。
+            _frontLedger.Remove(target.Name);
             await Task.Delay(TimeSpan.FromSeconds(1), ct);
 
             // 防错④：卖出后 I10 复核=硬性收尾。复核失败=反证，立即停手交对账。
@@ -820,8 +893,11 @@ public sealed class GrailDecisionEngine(
         for (var readAttempt = 1; readAttempt <= 2; readAttempt++)
         {
             var fresh = await SnapshotWithRetryAsync(window, ct) ?? snapshot;
-            var hasFront = fresh.DeployedCharacterDetails.Any(detail =>
-                detail.StartsWith('F') || detail.StartsWith("F:"));
+            // 1.2.90 台账：识别∪账本并集判定前台有人——识别漏读已上场单位时账本兜底
+            // （20:41 实锤：A1 像素验证 OK 后 I10 连续读前台空）。
+            var hasFront = _frontLedger.Count > 0
+                || fresh.DeployedCharacterDetails.Any(detail =>
+                    detail.StartsWith('F') || detail.StartsWith("F:"));
             if (hasFront)
             {
                 return fresh;
@@ -1113,6 +1189,7 @@ public sealed class GrailDecisionEngine(
                     hit067 = string.Equals(fact.MatchedEnvironmentName, "英雄登场", StringComparison.Ordinal);
                     // 1.2.89 节点锚点+新局边界：M8 到达=1-1 开始。
                     _currentNode = "1-1";
+                    _frontLedger.Clear();
                     _lastBoardMutationAt = DateTimeOffset.MinValue;
                 }
                 else if (m8.Error is not null)

@@ -363,6 +363,18 @@ public sealed class CommandTestWindow : Window
     }
 
     /// <summary>
+    /// 引擎侧帧龄探测（1.2.89，M8 在途看门狗用）：与 CheckStreamHealth 同源口径
+    /// （LatestAnalysis.AsOf），阈值 30s——超过即视为流冻结，引擎会据此请求救援重启。
+    /// 可从引擎后台线程调用：只读字段快照，无 UI 依赖。
+    /// </summary>
+    private bool IsEngineStreamStale()
+    {
+        var analysis = _listener.LatestAnalysis;
+        return analysis is null
+            || DateTimeOffset.Now - analysis.Snapshot.AsOf > TimeSpan.FromSeconds(30);
+    }
+
+    /// <summary>
     /// 识别流复活核心（1.2.88 自 CheckStreamHealth 提取）：停旧采集任务→重启同一会话。
     /// 启发式路径（CheckStreamHealth）与决策层救援路径（ForceStreamRevive）共用；
     /// 调用方负责置位 _streamReviveInProgress，本方法 finally 释放。
@@ -1060,7 +1072,8 @@ public sealed class CommandTestWindow : Window
             retreatFromBattleView: (handle, token) =>
                 _rewardStage.RetreatFromBattleViewAsync(handle, token),
             requestStreamRevive: reason =>
-                ForceStreamRevive(reason));
+                ForceStreamRevive(reason),
+            isStreamStale: IsEngineStreamStale);
         var cts = _decisionCts;
         _decisionTask = Task.Run(async () =>
         {

@@ -21,7 +21,8 @@ public sealed class GrailDecisionEngine(
     Func<nint, int, int, CancellationToken, Task<bool>>? genericClick = null,
     Func<nint, CancellationToken, Task<bool>>? pressInteractKey = null,
     Func<nint, CancellationToken, Task<bool>>? retreatFromBattleView = null,
-    Action<string>? requestStreamRevive = null)
+    Action<string>? requestStreamRevive = null,
+    Func<bool>? isStreamStale = null)
 {
     private readonly Stopwatch _runClock = Stopwatch.StartNew();
 
@@ -253,6 +254,60 @@ public sealed class GrailDecisionEngine(
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// M8 在途识别流看门狗（1.2.89，16:31 命中局实锤）：M8 导航靠自己的单帧捕获，
+    /// 但"上一局未结算守卫"需要识别流页面序列——流在 M8 途中冻结会让到达守卫不可
+    /// 判定，M8 诚实报失败，引擎再基于冻结流的陈旧 I1 误判处置（白弃命中局）。
+    /// 本包装在 M8 在途期间每 5 秒查一次帧龄（isStreamStale 委托，阈值测试台侧 30s），
+    /// 冻结即请测试台重启识别会话（1.2.88 救援通道，绕启发式 300s 节流；15s 冷却防
+    /// 单飞排队刷屏）。守卫有帧可看后，命中局不再因流冻结被烧。
+    /// </summary>
+    private async Task<GrailCommandResult> SendM8WithStreamWatchdogAsync(
+        nint window, CancellationToken ct)
+    {
+        var m8Task = SendAsync("M8", new GrailCommand(GrailCommandKind.M8), window, ct);
+        var lastReviveRequestAt = DateTimeOffset.MinValue;
+        while (!m8Task.IsCompleted)
+        {
+            var completed = await Task.WhenAny(m8Task, Task.Delay(TimeSpan.FromSeconds(5), ct));
+            if (completed == m8Task)
+            {
+                break;
+            }
+
+            if (isStreamStale is null || requestStreamRevive is null)
+            {
+                continue;
+            }
+
+            var stale = false;
+            try
+            {
+                stale = isStreamStale();
+            }
+            catch
+            {
+                // 帧龄探测失败按"流健康"处理，不影响 M8 本体。
+            }
+
+            if (stale && DateTimeOffset.Now - lastReviveRequestAt >= TimeSpan.FromSeconds(15))
+            {
+                lastReviveRequestAt = DateTimeOffset.Now;
+                emit("[决策层] M8 在途检测到识别流冻结——请求重启识别会话（守卫需要帧序列）。");
+                try
+                {
+                    requestStreamRevive("M8 在途看门狗");
+                }
+                catch
+                {
+                    // 救援委托异常不阻断 M8 本体。
+                }
+            }
+        }
+
+        return await m8Task;
     }
 
     private async Task<GrailPageFact?> PageAsync(nint window, CancellationToken ct)
@@ -890,7 +945,7 @@ public sealed class GrailDecisionEngine(
             var hit067 = false;
             for (var attempt = 0; attempt < 3 && !arrived && !ct.IsCancellationRequested; attempt++)
             {
-                m8 = await SendAsync("M8", new GrailCommand(GrailCommandKind.M8), window, ct);
+                m8 = await SendM8WithStreamWatchdogAsync(window, ct);
                 var fact = m8.Payload as GrailOpeningFact;
                 if (m8.Error is null && fact is { Succeeded: true })
                 {
@@ -900,6 +955,33 @@ public sealed class GrailDecisionEngine(
                 }
                 else if (m8.Error is not null)
                 {
+                    // 1.2.89（16:31 命中局实锤）：识别流不可用签名→先救援识别会话并等帧
+                    // 新鲜后再判页。此前流冻结时 PageAsync 读到陈旧帧把 1-1 误判成"主界面"，
+                    // 引擎据此跳过 A9 重发 M8 三连败，把刚到手的命中局弃掉。
+                    if ((m8.Error ?? string.Empty).Contains("无新鲜帧", StringComparison.Ordinal))
+                    {
+                        emit("[决策层] M8 失败签名=识别流不可用——救援识别会话并等帧新鲜后重判。");
+                        try
+                        {
+                            requestStreamRevive?.Invoke("M8 守卫不可判定");
+                        }
+                        catch
+                        {
+                            // 救援失败不阻断（启发式复活仍在兜底）。
+                        }
+
+                        var freshAfterRescue = false;
+                        for (var wait = 0; wait < 12 && !freshAfterRescue && !ct.IsCancellationRequested; wait++)
+                        {
+                            await Task.Delay(TimeSpan.FromSeconds(5), ct);
+                            freshAfterRescue = await SnapshotAsync(window, ct) is not null;
+                        }
+
+                        emit(freshAfterRescue
+                            ? "[决策层] 识别流已恢复——以新鲜读数重判页面。"
+                            : "[决策层] 识别流 60s 未恢复——按原失败路径处理。");
+                    }
+
                     // 守卫拦截/导航失败：先解除 Unknown 阻塞页（仅页面未知时），
                     // 再 A9 清场重发。已知页（备战/商店/战斗）不盲点。
                     await DismissUnknownPageAsync(window, ct);

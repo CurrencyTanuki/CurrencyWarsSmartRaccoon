@@ -381,7 +381,7 @@ public sealed class GrailDecisionEngine(
 
     /// <summary>等待祈愿弹框并应答。1.2.66 冗余审计：例行检查（未部署成员的轮次）
     /// 无弹框概率极高，单查一次立即返回；仅部署命杯成员后升档弹框会延迟弹出
-    /// （实测），传 maxProbes=4 轮询（间隔 3 秒，窗口 12 秒）。</summary>
+    /// （实测），传 maxProbes=8 轮询（间隔 1.5 秒，窗口 ≈12 秒）。</summary>
     private async Task<bool> AnswerWishIfUpAsync(
         nint window, CancellationToken ct, int maxProbes, double probeIntervalSeconds = 1.5)
     {
@@ -547,7 +547,7 @@ public sealed class GrailDecisionEngine(
 
             _frontLedger[pendingBench] = slot.Value;
             deployedAny = true;
-            await EnsureWishAnsweredAsync(window, ct, maxProbes: 4);
+            await EnsureWishAnsweredAsync(window, ct, maxProbes: 8);
             snapshot = await SnapshotWithRetryAsync(window, ct); // 部署后重读找下一个候选
             snapshotFresh = snapshot is not null;
         }

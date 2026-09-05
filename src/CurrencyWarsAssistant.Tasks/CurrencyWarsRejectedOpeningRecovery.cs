@@ -496,7 +496,7 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
 
         PageClassificationResult? challengeFailed = null;
         // 1.2.91（用户令点法 2026-09-05 晚）："放弃并结算"（750,744 中偏下）连点
-        // **3 秒、0.5 秒间隔、单轮**——不再 8s×2 轮。连点内单帧快探：
+        // **6 秒窗口、0.5 秒探测间隔、单轮**（strike≥1 只探不击）。连点内单帧快探：
         // challenge_failed（连续 2 帧）/主页（分类或强证据）→提前收；
         // 备战页→立即停手（弃局未生效）。
         {
@@ -600,7 +600,7 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                 {
                     Publish(
                         "RecoveryStrategyCycle",
-                        "放弃结算连点 3 秒未探测到挑战失败页。",
+                        "放弃结算连点 6 秒未探测到挑战失败页。",
                         TaskEventLevel.Warning);
                 }
             }

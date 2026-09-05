@@ -766,7 +766,8 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                 // ②已在主界面时再按=退出货币战争模式（16:32 实锤弹到游戏本体），立即停手；
                 // ③Unknown（弹框疑似开着）不补按，继续等待；
                 // ④祈愿试炼弹框不按 Esc（模态，需 M3 应答），继续等待；
-                // 仅当稳定读到"仍在对局页"（preparation_ 族）才允许补按。
+                // ⑤其余已分类页（reward_shop/enemy_overview/challenge_failed 等）允许补按
+                //   （Esc 关店等是合法用途）——注释口径以此为准（审查 P3-3 修正）。
                 var currentPageBeforeRetry = await ReadStablePageAsync(
                     windowHandle,
                     cancellationToken);

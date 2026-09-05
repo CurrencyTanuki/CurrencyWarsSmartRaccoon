@@ -414,12 +414,14 @@ public sealed class GrailDecisionEngine(
         nint window, GrailRunSnapshot? existingSnapshot, CancellationToken ct)
     {
         var deployedAny = false;
-        // 1.2.89（用户令第 1 问题）：快照早于盘面变异（M5 买到/A1 部署）即不可用于选槽
-        // ——陈旧占用表会让新部署拖到已占槽=把刚上场的命杯成员换下（16:57 阮•梅顶掉
-        // 远坂凛实锤）。强制作新鲜读；变异刚发生时先等部署动画（X13：3 秒+）。
+        // 1.2.89（用户令第 1 问题；审查 P2 加固）：快照早于盘面变异（M5 买到/A1 部署）
+        // 即不可用于选槽——陈旧占用表会让新部署拖到已占槽=把刚上场的命杯成员换下
+        // （16:57 阮•梅顶掉远坂凛实锤）。CapturedAt 是组装墙钟不是帧时刻，故叠加
+        // "变异 10s 内一律忽略传入快照强制现读"的活门；变异刚发生时先等部署动画（X13）。
         if (existingSnapshot is not null
-            && existingSnapshot.CapturedAt is { } capturedAt
-            && capturedAt < _lastBoardMutationAt)
+            && ((existingSnapshot.CapturedAt is { } capturedAt
+                    && capturedAt < _lastBoardMutationAt)
+                || DateTimeOffset.Now - _lastBoardMutationAt < TimeSpan.FromSeconds(10)))
         {
             existingSnapshot = null;
         }
@@ -639,7 +641,7 @@ public sealed class GrailDecisionEngine(
 
                 if (!int.TryParse(fill.SlotHead, out var fillBenchSlot) || fillBenchSlot < 0)
                 {
-                    break;
+                    continue; // 1.2.89 审查 P3：单个明细解析失败跳过该条，继续尝试其他单位
                 }
 
                 var fillSlot = Enumerable.Range(0, 3).FirstOrDefault(

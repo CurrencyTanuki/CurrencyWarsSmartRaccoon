@@ -39,6 +39,12 @@ public interface IPhase2LiveCollectionService
         LiveCollectionStartOptions options,
         CancellationToken cancellationToken) =>
         RunAsync(gameWindowHandle, selection, cancellationToken);
+
+    /// <summary>1.2.96 诊断（纯观测）：当前会话截图循环统计；会话从未启动=null。</summary>
+    CaptureLoopStatsSnapshot? ActivePipelineLoopStatistics => null;
+
+    /// <summary>1.2.96 诊断（纯观测）：捕获层流统计（WGC 计数）；实现不支持=null。</summary>
+    CurrencyWarsAssistant.Vision.CaptureStreamStats? ActiveCaptureStreamStats => null;
 }
 
 public sealed class Phase2LiveCollectionService(
@@ -111,6 +117,20 @@ public sealed class Phase2LiveCollectionService(
     private bool _pendingRatingPageConfirmation;
 
     public event EventHandler<LiveCollectionUpdate>? Updated;
+
+    // 1.2.96 识别流冻结诊断：当前（或最近一次）识别会话的管线引用（会话内创建）。
+    private Phase2RealtimeRecognitionPipeline? activePipeline;
+
+    /// <summary>
+    /// 1.2.96 诊断（纯观测）：当前（或最近一次）识别会话的截图循环统计；
+    /// 会话从未启动=null。与捕获层 IGameCapture.StreamStats 对照区分冻结病理。
+    /// </summary>
+    public CaptureLoopStatsSnapshot? ActivePipelineLoopStatistics =>
+        Volatile.Read(ref activePipeline)?.CaptureLoopStatistics;
+
+    /// <summary>1.2.96 诊断（纯观测）：捕获层流统计（接口默认实现分发到 WGC 计数）。</summary>
+    public CurrencyWarsAssistant.Vision.CaptureStreamStats? ActiveCaptureStreamStats =>
+        capture.StreamStats;
 
     public Task RunAsync(
         nint gameWindowHandle,
@@ -201,6 +221,8 @@ public sealed class Phase2LiveCollectionService(
             capture,
             analyzer,
             pageClassifier);
+        // 1.2.96 诊断：暴露当前会话的截图循环统计（会话停止/未启动=保留最近一次读数）。
+        Volatile.Write(ref activePipeline, pipeline);
         // 持久化通道：普通帧写盘泵（独立于收集主循环的串行消费者）。
         var savePump = Task.Run(
             () => PumpObservationSavesAsync(CancellationToken.None),

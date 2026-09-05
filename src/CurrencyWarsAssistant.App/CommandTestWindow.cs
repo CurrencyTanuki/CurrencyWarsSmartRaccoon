@@ -358,7 +358,7 @@ public sealed class CommandTestWindow : Window
         _streamReviveInProgress = true;
         _lastStreamReviveAt = DateTimeOffset.Now; // 节流戳在触发点置位（09:1x 实测：漏置位=复活热循环）
         var reason = dead ? "识别流已死亡" : "识别流冻结（45 秒无新帧）";
-        AppendLog($"⚠ {reason}，自动重启识别会话。");
+        AppendLog($"⚠ {reason}，自动重启识别会话。诊断: {FormatStreamDiagnostics()}");
         _ = Task.Run(RunStreamReviveCoreAsync);
     }
 
@@ -453,7 +453,7 @@ public sealed class CommandTestWindow : Window
 
             _streamReviveInProgress = true;
             _lastStreamReviveAt = DateTimeOffset.Now;
-            AppendLog($"⚠ 决策层请求重启识别会话（{reason} 救援，绕过 300s 节流）。");
+            AppendLog($"⚠ 决策层请求重启识别会话（{reason} 救援，绕过 300s 节流）。诊断: {FormatStreamDiagnostics()}");
             _ = Task.Run(RunStreamReviveCoreAsync);
         });
     }
@@ -1216,6 +1216,44 @@ public sealed class CommandTestWindow : Window
         _executor.LatestSnapshot = snapshotAssembled;
     }
 
+    /// <summary>
+    /// 1.2.96 诊断（纯观测）：两侧流统计摘要，供冻结病理判读——
+    /// 截图循环间隔逐次抬升=渐慢；连续失败突增=断崖；会话重建计数=重启后即死甄别；
+    /// WGC 帧计数停滞而循环仍在请求=捕获/游戏侧不产帧。
+    /// </summary>
+    private string FormatStreamDiagnostics()
+    {
+        var loop = _collectionService.ActivePipelineLoopStatistics;
+        var stream = _collectionService.ActiveCaptureStreamStats;
+        if (loop is null && stream is null)
+        {
+            return "无（识别会话未启动）";
+        }
+
+        var parts = new List<string>();
+        if (loop is not null)
+        {
+            parts.Add(
+                $"截图循环 成功{loop.Successes}/失败{loop.Failures}/连续失败{loop.ConsecutiveFailures}"
+                + $" 间隔 Last/Min/Avg/Max={loop.LastIntervalMs:F0}/{loop.MinIntervalMs:F0}/{loop.AverageIntervalMs:F0}/{loop.MaxIntervalMs:F0}ms"
+                + (loop.LastSuccessAt is { } at
+                    ? $" 最后成功={at.ToLocalTime():HH:mm:ss}"
+                    : string.Empty));
+        }
+
+        if (stream is not null)
+        {
+            parts.Add(
+                $"捕获层 帧{stream.FrameArrivals}/成功{stream.CaptureSuccesses}/超时{stream.CaptureTimeouts}"
+                + $" 会话{stream.SessionCreations}(重建{stream.SessionRebuilds})"
+                + (stream.LastFrameArrivedAt is { } fa
+                    ? $" 最后WGC帧={fa.ToLocalTime():HH:mm:ss}"
+                    : string.Empty));
+        }
+
+        return string.Join("；", parts);
+    }
+
     private string BuildStatusText()
     {
         var window = FindGameWindow();
@@ -1231,7 +1269,8 @@ public sealed class CommandTestWindow : Window
             + $"识别会话={(collectionRunning ? "运行中" : "停止")}；"
             + $"最新帧={latestFrame}；"
             + $"祈愿弹框={(_listener.IsWishDialogOpen ? "在屏" : "无")}；"
-            + $"目标={(_goal == GrailUserGoal.All ? "全员" : "单人")}。";
+            + $"目标={(_goal == GrailUserGoal.All ? "全员" : "单人")}；"
+            + $"流诊断={FormatStreamDiagnostics()}。";
     }
 
     private void RefreshStatus() => BeginInvokeIfAlive(() => _statusText.Text = BuildStatusText());

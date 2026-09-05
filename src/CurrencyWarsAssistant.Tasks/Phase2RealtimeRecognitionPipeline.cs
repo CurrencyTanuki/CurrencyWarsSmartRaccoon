@@ -941,6 +941,11 @@ internal sealed class Phase2RealtimeRecognitionPipeline(
     private readonly List<Action<Phase2RealtimePipelineUpdate>> subscribers = [];
     private readonly object frameSubscriberGate = new();
     private readonly List<Action<CaptureFrame>> frameSubscribers = [];
+    // 1.2.96 识别流冻结根因诊断（纯观测）：截图循环统计，实例随管线新建=按会话归零。
+    private readonly CaptureLoopStats captureLoopStats = new();
+
+    /// <summary>截图循环诊断快照：供测试台 STATUS/看门狗/救援日志读取。</summary>
+    public CaptureLoopStatsSnapshot CaptureLoopStatistics => captureLoopStats.Snapshot();
 
     /// <summary>
     /// 订阅统一识别流：pipeline 的每个输出（含 heartbeat/关键帧/错误）都会
@@ -1143,6 +1148,7 @@ internal sealed class Phase2RealtimeRecognitionPipeline(
                         "游戏窗口已关闭、最小化或不可捕获。");
                 var frame = await capture.CaptureAsync(window, cancellationToken)
                     .ConfigureAwait(false);
+                captureLoopStats.RecordSuccess(frame.CapturedAt);
                 BroadcastFrame(frame);
                 var wasReliable = Volatile.Read(ref shared.LastPageReliable) == 1;
                 var now = frame.CapturedAt;
@@ -1216,6 +1222,7 @@ internal sealed class Phase2RealtimeRecognitionPipeline(
             }
             catch (Exception exception)
             {
+                captureLoopStats.RecordFailure();
                 await output.WriteAsync(
                     new Phase2RealtimePipelineUpdate(
                         null,

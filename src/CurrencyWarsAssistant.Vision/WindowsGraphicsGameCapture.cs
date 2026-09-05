@@ -39,6 +39,29 @@ public sealed class WindowsGraphicsGameCapture : IGameCapture, IDisposable
     private GraphicsCaptureSession? _session;
     private TaskCompletionSource<Direct3D11CaptureFrame>? _pendingFrame;
     private bool _disposed;
+    // 1.2.96 识别流冻结根因诊断（纯观测）：捕获层计数——与管线层截图循环统计对照，
+    // 区分"WGC/游戏不产帧""等帧超时""会话反复重建"三种病理。
+    private long _frameArrivals;
+    private long _captureSuccesses;
+    private long _captureTimeouts;
+    private long _sessionCreations;
+    private long _sessionRebuilds;
+    private long _lastFrameArrivedTicks;
+    private long _lastCaptureSuccessTicks;
+    private long _rebuildMarker;
+
+    public CaptureStreamStats? StreamStats => new(
+        Interlocked.Read(ref _frameArrivals),
+        Interlocked.Read(ref _captureSuccesses),
+        Interlocked.Read(ref _captureTimeouts),
+        Interlocked.Read(ref _sessionCreations),
+        Interlocked.Read(ref _sessionRebuilds),
+        TicksToTime(Volatile.Read(ref _lastFrameArrivedTicks)),
+        TicksToTime(Volatile.Read(ref _lastCaptureSuccessTicks)));
+
+    private static DateTimeOffset? TicksToTime(long ticks) => ticks == 0
+        ? null
+        : new DateTimeOffset(DateTimeOffset.UtcNow.Ticks - (Environment.TickCount64 - ticks) * TimeSpan.TicksPerMillisecond, TimeSpan.Zero);
 
     public async ValueTask<CaptureFrame> CaptureAsync(
         GameWindowInfo window,
@@ -77,7 +100,10 @@ public sealed class WindowsGraphicsGameCapture : IGameCapture, IDisposable
             {
                 try
                 {
-                    return await CaptureWindowAsync(window, cancellationToken);
+                    var frame = await CaptureWindowAsync(window, cancellationToken);
+                    Interlocked.Increment(ref _captureSuccesses);
+                    Volatile.Write(ref _lastCaptureSuccessTicks, Environment.TickCount64);
+                    return frame;
                 }
                 catch (Exception) when (
                     attempt < 2 &&
@@ -123,6 +149,7 @@ public sealed class WindowsGraphicsGameCapture : IGameCapture, IDisposable
         }
         catch (TimeoutException exception)
         {
+            Interlocked.Increment(ref _captureTimeouts);
             throw new InvalidOperationException(
                 "等待游戏窗口渲染帧超时，请确认游戏窗口没有最小化。",
                 exception);
@@ -182,12 +209,20 @@ public sealed class WindowsGraphicsGameCapture : IGameCapture, IDisposable
         _framePool = framePool;
         _session = session;
         _activeWindow = windowHandle;
+        Interlocked.Increment(ref _sessionCreations);
+        if (Volatile.Read(ref _rebuildMarker) == 1)
+        {
+            Interlocked.Increment(ref _sessionRebuilds);
+            Volatile.Write(ref _rebuildMarker, 0);
+        }
     }
 
     private void OnFrameArrived(
         Direct3D11CaptureFramePool sender,
         object arguments)
     {
+        Interlocked.Increment(ref _frameArrivals);
+        Volatile.Write(ref _lastFrameArrivedTicks, Environment.TickCount64);
         var frame = sender.TryGetNextFrame();
         TaskCompletionSource<Direct3D11CaptureFrame>? completion;
         lock (_frameSync)
@@ -220,6 +255,12 @@ public sealed class WindowsGraphicsGameCapture : IGameCapture, IDisposable
         if (_framePool is not null)
         {
             _framePool.FrameArrived -= OnFrameArrived;
+        }
+
+        // 释放了活会话=下一次 EnsureSession 的创建是"重建"（1.2.96 诊断计数）。
+        if (_session is not null)
+        {
+            Volatile.Write(ref _rebuildMarker, 1);
         }
 
         _session?.Dispose();

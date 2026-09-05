@@ -270,11 +270,93 @@ public sealed class RejectedOpeningRecoveryRetryTests
                 DateTimeOffset.Now));
     }
 
+    [Fact]
+    public async Task AbandonFallbackBlindAdvanceReturnsHomeAfterEscChainExhausted()
+    {
+        var input = new StagedInputController { BlindAdvanceScenario = true };
+        var sink = new RecordingEventSink();
+        var window = Window();
+        var recovery = new CurrencyWarsRejectedOpeningRecovery(
+            new PreparationNavigator(),
+            new StaticCapture(),
+            new StagedClassifier(input),
+            input,
+            new ImmediateForegroundGuard(window),
+            sink);
+
+        var result = await recovery.AbandonCurrentRunAsync(
+            window.Handle,
+            CancellationToken.None);
+
+        // 1.2.97 热修（实弹 05:0x：1-2 战败"对局未完成"统计页 Unknown 卡死）：
+        // Esc 链耗尽后按 rule 四.22 汇入盲点直通——识别不了的结算中间页族不识别、
+        // 盲点推进位点到回主界面为止。早停设计：首击后确认主页即停。
+        Assert.Equal(RejectedOpeningRecoveryStatus.Recovered, result.Status);
+        Assert.Equal(1, input.BlindAdvanceClicks);
+        Assert.Contains("RecoveryFallbackBlindAdvance", sink.EventNames);
+    }
+
+    [Fact]
+    public async Task AbandonFallbackBlindAdvanceAbortsOnPreparationPage()
+    {
+        var input = new StagedInputController { PreparationStuck = true };
+        var sink = new RecordingEventSink();
+        var window = Window();
+        var recovery = new CurrencyWarsRejectedOpeningRecovery(
+            new PreparationNavigator(),
+            new StaticCapture(),
+            new StagedClassifier(input),
+            input,
+            new ImmediateForegroundGuard(window),
+            sink);
+
+        var result = await recovery.AbandonCurrentRunAsync(
+            window.Handle,
+            CancellationToken.None);
+
+        // 1.2.97 审查 P2：盲点推进位 (960,899) 在备战页=出战按钮——击前探测到
+        // 备战页必须急停（零点击、诚实失败），防误触真实开战。
+        Assert.Equal(RejectedOpeningRecoveryStatus.Failed, result.Status);
+        Assert.Equal(0, input.BlindAdvanceClicks);
+        Assert.Contains("RecoveryBlindAdvanceAbortPreparation", sink.EventNames);
+    }
+
+    private sealed class RecordingEventSink : ITaskEventSink
+    {
+        public List<string> EventNames { get; } = [];
+
+        public void Publish(TaskEvent taskEvent) => EventNames.Add(taskEvent.Code);
+    }
+
     private sealed class StagedClassifier(StagedInputController input)
         : IGamePageClassifier
     {
         public PageClassificationResult? Classify(CaptureFrame frame)
         {
+            // 1.2.97 审查 P2 用例夹具：备战页粘滞——A9 兜底每轮走"备战页 continue"，
+            // 耗尽后盲点直通击前探测命中急停（零点击、Failed）。
+            if (input.PreparationStuck)
+            {
+                return new PageClassificationResult(
+                    "preparation_1_1",
+                    "preparation_1_1",
+                    0.99,
+                    []);
+            }
+
+            // 1.2.97 审查 P2 用例夹具：恒 Unknown 驱动 A9 兜底耗尽；盲点首击后
+            // 分类器确认主页——击前探测刹停（点击数有界，不烧满 15s 窗口）。
+            if (input.BlindAdvanceScenario)
+            {
+                return input.BlindAdvanceClicks >= 1
+                    ? new PageClassificationResult(
+                        "currency_wars_home",
+                        "currency_wars_home",
+                        0.99,
+                        [])
+                    : null;
+            }
+
             var pageId = input.Stage switch
             {
                 InputStage.Exit when
@@ -344,6 +426,10 @@ public sealed class RejectedOpeningRecoveryRetryTests
         public int SettlementNextAttempts { get; private set; }
         // 1.2.95：记录推进段每次点击的中心 X——双点位交替契约的观测面。
         public List<int> SettlementNextClickCenterXs { get; } = [];
+        // 1.2.97 审查 P2：盲点直通热修的观测面。
+        public bool BlindAdvanceScenario { get; init; }
+        public bool PreparationStuck { get; init; }
+        public int BlindAdvanceClicks { get; private set; }
         public bool NeverReturnHome { get; init; }
         public bool SettlementPageUnknown { get; init; }
         public int ReturnHomeAfterSettlementAttempts { get; init; } = 1;
@@ -380,6 +466,13 @@ public sealed class RejectedOpeningRecoveryRetryTests
                 SettlementNextAttempts++;
                 SettlementNextClickCenterXs.Add(target.ClientBounds.X + target.ClientBounds.Width / 2);
                 _settlementStartedAt ??= DateTimeOffset.UtcNow;
+            }
+
+            else if (target.Id.StartsWith(
+                         "blind_advance_next",
+                         StringComparison.OrdinalIgnoreCase))
+            {
+                BlindAdvanceClicks++;
             }
 
             return Task.FromResult(ActionResult.Success(target.DisplayName));

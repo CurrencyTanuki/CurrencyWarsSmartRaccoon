@@ -266,7 +266,22 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
             await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
         }
 
-        return Failed("弃局兜底：Esc 与退出按钮均未能进入放弃结算确认页；已达到安全重试上限。");
+        // 1.2.97（rule 四.22 全覆盖）：Esc/退出按钮链耗尽仍未进入放弃结算确认页——
+        // 实弹 05:0x：1-2 战败后游戏弹"对局未完成"统计页（识别表外=Unknown、Esc 无效），
+        // 循环内保守语义（Unknown 禁点击）两轮耗尽后若直接 Failed，引擎将对统计页
+        // 空转无限循环。按用户弃局原则：结算转场页族不识别、盲点推进位点到回主界面
+        // （统计页的"返回货币战争"按钮恰在推进位附近）。盲点直通自带主页/备战页急停。
+        Publish(
+            "RecoveryFallbackBlindAdvance",
+            "Esc 与退出按钮链耗尽仍未进入放弃结算确认页——按弃局原则盲点直通主界面（不识别中间页）。",
+            TaskEventLevel.Warning);
+        if (await BlindAdvanceToHomeAsync(windowHandle, cancellationToken))
+        {
+            return RejectedOpeningRecoveryResult.Recovered(
+                "Esc 链走不通后盲点推进已回到货币战争主界面。");
+        }
+
+        return Failed("弃局兜底：Esc 与退出按钮均未能进入放弃结算确认页；盲点直通也未确认回主界面。");
     }
 
     public async Task<RejectedOpeningRecoveryResult> RecoverAsync(
@@ -426,11 +441,22 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
             cancellationToken.ThrowIfCancellationRequested();
             // 1.2.95 审查 P3-3 加固（与结算推进段同款）：击前主页检查——已回主界面
             // 绝不再点（1.2.63 红线）；早停含 normal_hud 与强证据兜底（与基线强度对齐）。
+            // 1.2.97 补备战页急停：本函数使用面扩大到 Esc 链耗尽后的统计页场景，
+            // 盲点推进位在备战页上是出战按钮——探测到立即停手交外层。
             var probeWindow = await foregroundGuard.WaitUntilForegroundAsync(
                 windowHandle,
                 cancellationToken);
             var probeFrame = await capture.CaptureAsync(probeWindow, cancellationToken);
             var probePage = classifier.Classify(probeFrame);
+            if (probePage?.PageId.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                Publish(
+                    "RecoveryBlindAdvanceAbortPreparation",
+                    $"盲点推进探测到备战页（{probePage.PageId}）——立即停止（备战页绝不点击推进位）。",
+                    TaskEventLevel.Warning);
+                return false;
+            }
+
             if (probePage?.PageId is "currency_wars_home" or "normal_hud"
                 || (probePage is null && CurrencyWarsHomeEvidence.IsMatch(probeFrame)))
             {

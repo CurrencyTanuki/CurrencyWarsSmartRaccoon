@@ -618,25 +618,6 @@
           }
         }
       ]
-    },
-    {
-      "id": "abandon_incomplete_summary",
-      "displayName": "对局未完成结算总结",
-      "priority": 55,
-      "anchors": [
-        {
-          "id": "abandon_incomplete_title",
-          "displayName": "对局未完成标题",
-          "file": "templates/1920x1080/pages/abandon-incomplete-title.png",
-          "threshold": 0.85,
-          "searchRegion": {
-            "x": 0.15,
-            "y": 0.12,
-            "width": 0.3,
-            "height": 0.18
-          }
-        }
-      ]
     }
   ]
 }

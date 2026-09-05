@@ -439,14 +439,18 @@ public sealed class CommandTestWindow : Window
 
     /// <summary>
     /// KEY/CLICK 的共享执行通道（1.2.87，用户令「AI 要能自主操作游戏」）：经已提权
-    /// 实例的输入栈直发原始按键/点击——自带急停闸（InputKillSwitch）与前台守卫
-    /// （PrepareWindow/PrepareTarget 先把游戏切到前台）。用途=语义指令覆盖不到的
-    /// 场景：弹窗取证、救急、页面身份验证。决策层运行期间拒绝并发（与语义指令同一闸门）。
-    /// 原始输入不过果断弃局看门狗（诊断指令失败不该触发 AUTO-A9）。
+    /// 实例的输入栈直发原始按键/点击。审查 P1（1.2.87）修复：①先显式强制切前台——
+    /// 前台守卫（PrepareWindow/PrepareTarget 内 WaitUntilForegroundAsync）语义是
+    /// "无限等前台"而非"切前台"，远程指令必须先 BringToForeground（提权实例的
+    /// ForceForegroundWindow 有效），失败即诚实回执绝不挂死；②挂独立 CTS 并接入
+    /// _activeCommandCts——abort.txt 急停通道对原始输入可用（前台守卫的等待可被中断），
+    /// 令牌同步传入输入层。用途=语义指令覆盖不到的场景：弹窗取证、救急、页面身份验证。
+    /// 决策层运行期间拒绝并发（与语义指令同一闸门）；不过果断弃局看门狗（诊断指令
+    /// 失败不该触发 AUTO-A9）。
     /// </summary>
     private async Task ExecuteRawInputAsync(
         string line,
-        Func<GameWindowInfo, Task<ActionResult>> act)
+        Func<GameWindowInfo, CancellationToken, Task<ActionResult>> act)
     {
         if (_decisionTask is { IsCompleted: false })
         {
@@ -463,9 +467,34 @@ public sealed class CommandTestWindow : Window
             return;
         }
 
+        using var commandCts = new CancellationTokenSource();
+        _activeCommandCts = commandCts;
         var flightStopwatch = System.Diagnostics.Stopwatch.StartNew();
         AppendReceipt(line);
-        var result = await act(window);
+        ActionResult result;
+        try
+        {
+            if (!_gameWindowService.BringToForeground(window))
+            {
+                result = ActionResult.Failure("无法将游戏窗口切换到前台；未发送任何输入。");
+            }
+            else
+            {
+                result = await act(window, commandCts.Token);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            AppendResult(line, ok: false, summary: "已急停中断；游戏当前状态用 SCREENSHOT 查看，用下一条指令接续");
+            _flightRecorder.Record(
+                line, ok: false, "已急停中断", flightStopwatch.ElapsedMilliseconds, "aborted");
+            return;
+        }
+        finally
+        {
+            _activeCommandCts = null;
+        }
+
         flightStopwatch.Stop();
         AppendResult(line, ok: result.Succeeded, summary: result.Message);
         AppendLog(result.Succeeded ? $"✔ OK {result.Message}" : $"✗ 失败 {result.Message}");
@@ -474,6 +503,14 @@ public sealed class CommandTestWindow : Window
 
     private static bool TryParseInputKey(string text, out InputKey key)
     {
+        // P3-4（审查 1.2.87）：Enum.TryParse 会把已定义枚举的数字字符串当别名放行
+        // （"KEY 3"→Enter），显式拒绝纯数字输入。
+        if (text.All(char.IsDigit))
+        {
+            key = default;
+            return false;
+        }
+
         return Enum.TryParse(text, ignoreCase: true, out key)
             && Enum.IsDefined(typeof(InputKey), key);
     }
@@ -570,7 +607,7 @@ public sealed class CommandTestWindow : Window
                     {
                         await ExecuteRawInputAsync(
                             line,
-                            window => _input.PressKeyAsync(window, rawKey, new ActionPolicy(), CancellationToken.None));
+                            (window, token) => _input.PressKeyAsync(window, rawKey, new ActionPolicy(), token));
                     }
                     else
                     {
@@ -585,10 +622,10 @@ public sealed class CommandTestWindow : Window
                     {
                         await ExecuteRawInputAsync(
                             line,
-                            window => _input.ClickAsync(
+                            (window, token) => _input.ClickAsync(
                                 new ClickTarget("ai-raw-click", "AI诊断点击", window, new PixelRect(clickX, clickY, 1, 1)),
                                 new ActionPolicy(),
-                                CancellationToken.None));
+                                token));
                     }
                     else
                     {

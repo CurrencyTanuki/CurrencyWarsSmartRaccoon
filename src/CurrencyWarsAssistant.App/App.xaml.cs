@@ -513,9 +513,11 @@ public partial class App : Application
         {
             File.WriteAllText(exitPath, "stop");
         }
-        catch (IOException)
+        catch (Exception)
         {
             // 写不出请退信号也要继续重试拿锁：旧实例可能本就在退出中。
+            // P3-1（审查 1.2.87）：IOException/UnauthorizedAccess 等一律吞掉走重试，
+            // 窄捕获会让异常穿透 OnStartup 同步段触发 R1 启动失败弹窗。
         }
 
         for (var attempt = 0; attempt < 12; attempt++)
@@ -531,9 +533,9 @@ public partial class App : Application
         {
             File.Delete(exitPath);
         }
-        catch (IOException)
+        catch (Exception)
         {
-            // 残留由下一次成功启动的实例做启动卫生清理。
+            // P3-1：同上，删除失败不阻断退出路径；残留由下一次成功启动的实例做启动卫生清理。
         }
 
         return false;

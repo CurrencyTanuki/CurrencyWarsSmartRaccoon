@@ -389,12 +389,78 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
 
         if (exitPrompt is null)
         {
-            return Failed("Esc 与退出按钮均未能进入放弃结算确认页；已达到安全重试上限。");
+            // 1.2.93（用户令，弃局原则第 4 次重申）：识别分流的链路走不通时，
+            // **盲点中间直通主界面**——不管当前页面是什么（对局未完成总结页/任意
+            // 结算中间页），连点推进位直到回到货币战争主界面。识别不是这里的前置
+            // 条件（此前"识别不到→诚实失败→卡 Unknown 死循环"10 分钟即此病）。
+            // 内联红线：回主界面即停（分类+强证据双形态）。
+            Publish(
+                "RecoveryBlindAdvanceStarted",
+                "弃局识别链未走通——切换盲点中间直通模式：连点推进位直到回主界面。",
+                TaskEventLevel.Warning);
+            var blind = await BlindAdvanceToHomeAsync(windowHandle, cancellationToken);
+            return blind
+                ? RejectedOpeningRecoveryResult.Recovered("盲点推进已回到货币战争主界面。")
+                : Failed("盲点推进 15 秒未确认回主界面；已停止输入交外层重试。");
         }
 
         return await CompleteFromAbandonSettlementPromptCoreAsync(
             windowHandle,
             cancellationToken);
+    }
+
+    /// <summary>
+    /// 1.2.93 盲点直通主界面（用户令"弃局结算页直接盲点中间，点到回主界面为止，
+    /// 不要识别这些中间页面"）：连点推进位（结算链按钮/下一页同位置），单帧探测
+    /// **只判主界面**（分类器与强证据两形态），主界面即停=成功。上限 15 秒。
+    /// 刻意不识别其他中间页——弃局场景的中间页族无需辨认（用户弃局原则）。
+    /// </summary>
+    private async Task<bool> BlindAdvanceToHomeAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        var deadline = ActiveUtcNow + TimeSpan.FromSeconds(15);
+        while (ActiveUtcNow < deadline)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            await ClickStandardPointAsync(
+                windowHandle,
+                "blind_advance_next",
+                "盲点推进（中下部）",
+                NextPoint,
+                new ActionPolicy
+                {
+                    AfterActionDelay = TimeSpan.Zero
+                },
+                cancellationToken);
+            await Task.Delay(
+                TimeSpan.FromMilliseconds(500),
+                cancellationToken);
+
+            var window = await foregroundGuard.WaitUntilForegroundAsync(
+                windowHandle,
+                cancellationToken);
+            var frame = await capture.CaptureAsync(window, cancellationToken);
+            var page = classifier.Classify(frame);
+            if (page is not null &&
+                string.Equals(page.PageId, "currency_wars_home", StringComparison.OrdinalIgnoreCase))
+            {
+                Publish(
+                    "RecoveryBlindAdvanceHomeConfirmed",
+                    $"盲点推进确认回到货币战争主界面（{page.Confidence:P1}）。");
+                return true;
+            }
+
+            if (page is null && CurrencyWarsHomeEvidence.IsMatch(frame))
+            {
+                Publish(
+                    "RecoveryBlindAdvanceHomeConfirmed",
+                    "盲点推进确认回到货币战争主界面（强证据兜底）。");
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public async Task<RejectedOpeningRecoveryResult>

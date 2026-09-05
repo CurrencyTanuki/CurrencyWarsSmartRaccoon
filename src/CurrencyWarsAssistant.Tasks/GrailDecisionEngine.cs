@@ -20,7 +20,8 @@ public sealed class GrailDecisionEngine(
     Action<string> emit,
     Func<nint, int, int, CancellationToken, Task<bool>>? genericClick = null,
     Func<nint, CancellationToken, Task<bool>>? pressInteractKey = null,
-    Func<nint, CancellationToken, Task<bool>>? retreatFromBattleView = null)
+    Func<nint, CancellationToken, Task<bool>>? retreatFromBattleView = null,
+    Action<string>? requestStreamRevive = null)
 {
     private readonly Stopwatch _runClock = Stopwatch.StartNew();
 
@@ -155,6 +156,9 @@ public sealed class GrailDecisionEngine(
         // P-14/P-21（1.2.70）：M7 回执此前在此处无分支（打"OK："空尾巴）、M8 未成功
         // 曾打"命中=—"——对齐 CommandTestWindow.FormatPayload 的诚实口径。
         RewardStageAutomationResult s => $"策略={s.Status}：{s.Message}",
+        // 1.2.88：M2 的开启数量与 M1 的落地页都是字符串载荷，此前落进 _ 兜底打成
+        // "OK："空尾巴（开没开晶矿从回执不可辨）。
+        string s => s,
         _ => string.Empty,
     };
 
@@ -207,6 +211,22 @@ public sealed class GrailDecisionEngine(
     private async Task<GrailRunSnapshot?> SnapshotWithRetrySlowTailAsync(
         nint window, CancellationToken ct)
     {
+        // 1.2.88（命中局实锤：长尾 60s < 启发式复活节流 300s → 好局在长尾耗尽时
+        // 被判 R3 弃掉，识别流随后才复活）。X3 药方本来就是"冻结→STOP/START 重连"：
+        // 进入长尾立即请测试台重启识别会话，不等 300s 节流。重启只影响帧流不影响
+        // 本重试循环；委托失败不阻断（最坏=维持旧行为，启发式复活仍兜底）。
+        if (requestStreamRevive is not null)
+        {
+            try
+            {
+                requestStreamRevive("追帧长尾");
+            }
+            catch
+            {
+                // 救援委托异常不阻断长尾重试。
+            }
+        }
+
         for (var attempt = 0; attempt < 12; attempt++)
         {
             await Task.Delay(TimeSpan.FromSeconds(5), ct);

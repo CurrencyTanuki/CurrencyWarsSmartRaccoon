@@ -359,50 +359,84 @@ public sealed class CommandTestWindow : Window
         _lastStreamReviveAt = DateTimeOffset.Now; // 节流戳在触发点置位（09:1x 实测：漏置位=复活热循环）
         var reason = dead ? "识别流已死亡" : "识别流冻结（45 秒无新帧）";
         AppendLog($"⚠ {reason}，自动重启识别会话。");
-        _ = Task.Run(async () =>
+        _ = Task.Run(RunStreamReviveCoreAsync);
+    }
+
+    /// <summary>
+    /// 识别流复活核心（1.2.88 自 CheckStreamHealth 提取）：停旧采集任务→重启同一会话。
+    /// 启发式路径（CheckStreamHealth）与决策层救援路径（ForceStreamRevive）共用；
+    /// 调用方负责置位 _streamReviveInProgress，本方法 finally 释放。
+    /// </summary>
+    private async Task RunStreamReviveCoreAsync()
+    {
+        try
         {
-            try
+            var running = _collectionTask;
+            if (running is not null)
             {
-                if (!dead)
+                _collectionCts?.Cancel();
+                _listener.Unsubscribe();
+                if (_collectionMessageSubscribed)
                 {
-                    _collectionCts?.Cancel();
-                    _listener.Unsubscribe();
-                    if (_collectionMessageSubscribed)
-                    {
-                        _collectionService.Updated -= OnCollectionMessage;
-                        _collectionMessageSubscribed = false;
-                    }
-                    var running = _collectionTask;
-                    if (running is not null)
-                    {
-                        try { await running.WaitAsync(TimeSpan.FromSeconds(30)); }
-                        catch (OperationCanceledException) { }
-                        catch (TimeoutException) { }
-                    }
-
-                    // W2 修复：只清自己看到的旧引用——期间若手动 START 已挂新任务，绝不清掉。
-                    if (ReferenceEquals(_collectionTask, running))
-                    {
-                        _collectionTask = null;
-                    }
-
-                    await Task.Delay(1500);
+                    _collectionService.Updated -= OnCollectionMessage;
+                    _collectionMessageSubscribed = false;
                 }
 
-                if (_streamStopRequested)
+                try { await running.WaitAsync(TimeSpan.FromSeconds(30)); }
+                catch (OperationCanceledException) { }
+                catch (TimeoutException) { }
+
+                // W2 修复：只清自己看到的旧引用——期间若手动 START 已挂新任务，绝不清掉。
+                if (ReferenceEquals(_collectionTask, running))
                 {
-                    return; // 复活过程中用户显式 STOP：尊重，不再拉起
+                    _collectionTask = null;
                 }
 
-                if (_collectionTask is null || _collectionTask.IsCompleted)
-                {
-                    BeginInvokeIfAlive(() => StartCollectionAsync());
-                }
+                await Task.Delay(1500);
             }
-            finally
+
+            if (_streamStopRequested)
             {
-                _streamReviveInProgress = false;
+                return; // 复活过程中用户显式 STOP：尊重，不再拉起
             }
+
+            if (_collectionTask is null || _collectionTask.IsCompleted)
+            {
+                BeginInvokeIfAlive(() => StartCollectionAsync());
+            }
+        }
+        finally
+        {
+            _streamReviveInProgress = false;
+        }
+    }
+
+    /// <summary>
+    /// 决策层发起的识别流救援重启（1.2.88，命中局实锤：长尾 60s &lt; 启发式节流 300s，
+    /// 好局在等待自愈时被弃）。引擎在追帧长尾入口经委托调用本方法，立即 STOP/START
+    /// 识别会话（蓝图 X3 药方），绕过 300s 启发式节流但共享单飞标志与显式 STOP 尊重。
+    /// 可从引擎后台线程调用：标志位经 Dispatcher 摊回 UI 线程，核心在 Task.Run 执行。
+    /// </summary>
+    private void ForceStreamRevive(string reason)
+    {
+        if (_streamReviveInProgress || _streamStopRequested)
+        {
+            return;
+        }
+
+        _ = Dispatcher.BeginInvoke(() =>
+        {
+            if (_streamReviveInProgress
+                || _streamStopRequested
+                || _collectionCts is null)
+            {
+                return;
+            }
+
+            _streamReviveInProgress = true;
+            _lastStreamReviveAt = DateTimeOffset.Now;
+            AppendLog($"⚠ 决策层请求重启识别会话（{reason} 救援，绕过 300s 节流）。");
+            _ = Task.Run(RunStreamReviveCoreAsync);
         });
     }
 
@@ -1018,7 +1052,9 @@ public sealed class CommandTestWindow : Window
             pressInteractKey: (handle, token) =>
                 board.GrailPressInteractKeyAsync(handle, token),
             retreatFromBattleView: (handle, token) =>
-                _rewardStage.RetreatFromBattleViewAsync(handle, token));
+                _rewardStage.RetreatFromBattleViewAsync(handle, token),
+            requestStreamRevive: reason =>
+                ForceStreamRevive(reason));
         var cts = _decisionCts;
         _decisionTask = Task.Run(async () =>
         {

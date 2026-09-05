@@ -161,7 +161,7 @@ public sealed partial class RewardStageAutomationController(
         PointerArrivalTolerance = 2,
         VerifyPointerArrivalBeforeClick = true,
         VerifyForegroundBeforeClick = true,
-        AfterActionDelay = TimeSpan.FromMilliseconds(450)
+        AfterActionDelay = TimeSpan.FromMilliseconds(200)
     };
     private static readonly IReadOnlyList<StandardPoint> StrategyCardPoints =
     [
@@ -623,7 +623,7 @@ public sealed partial class RewardStageAutomationController(
                 BoundsAround(window, point)),
             new ActionPolicy
             {
-                AfterActionDelay = TimeSpan.FromMilliseconds(450)
+                AfterActionDelay = TimeSpan.FromMilliseconds(200)
             },
             cancellationToken);
         if (!action.Succeeded)

@@ -242,6 +242,20 @@ public sealed class GrailDecisionEngine(
                     TimeSpan.FromSeconds(SnapshotRetryBackoffSeconds[attempt - 1]), ct);
             }
 
+            // 1.2.94 提速（提速方案 #2）：首败即救援识别流——不等 24s 退避窗口走完
+            // 才在长尾入口救援。委托异常吞掉；15s 冷却与单飞由测试台侧把守。
+            if (attempt == 1 && requestStreamRevive is not null)
+            {
+                try
+                {
+                    requestStreamRevive("快照首败");
+                }
+                catch
+                {
+                    // 救援失败不阻断退避重试。
+                }
+            }
+
             var snapshot = await SnapshotAsync(window, ct);
             if (snapshot is not null)
             {
@@ -369,7 +383,7 @@ public sealed class GrailDecisionEngine(
     /// 无弹框概率极高，单查一次立即返回；仅部署命杯成员后升档弹框会延迟弹出
     /// （实测），传 maxProbes=4 轮询（间隔 3 秒，窗口 12 秒）。</summary>
     private async Task<bool> AnswerWishIfUpAsync(
-        nint window, CancellationToken ct, int maxProbes, int probeIntervalSeconds = 3)
+        nint window, CancellationToken ct, int maxProbes, double probeIntervalSeconds = 1.5)
     {
         for (var attempt = 0; attempt < maxProbes; attempt++)
         {

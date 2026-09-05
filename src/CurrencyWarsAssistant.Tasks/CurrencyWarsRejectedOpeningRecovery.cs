@@ -176,7 +176,7 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
         {
             // 1.2.58（独立分析 P-12）：进 1-1 后 1ms 即发 Esc 的失败率 22%——
             // 先给入场动画 2.5 秒；Esc 重试 1→2 次（多数失败几秒后重按即成功）。
-            await Task.Delay(TimeSpan.FromSeconds(2.5), cancellationToken);
+            await Task.Delay(TimeSpan.FromSeconds(1.5), cancellationToken);
             var exitPrompt = await PressKeyUntilPageAsync(
                 windowHandle,
                 InputKey.Escape,
@@ -319,7 +319,7 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
         }
 
         // 1.2.58（独立分析 P-12）：同上——先等入场动画，Esc 重试 1→2 次。
-        await Task.Delay(TimeSpan.FromSeconds(2.5), cancellationToken);
+        await Task.Delay(TimeSpan.FromSeconds(1.5), cancellationToken);
         var exitPrompt = await PressKeyUntilPageAsync(
             windowHandle,
             InputKey.Escape,
@@ -519,8 +519,9 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
             }
             else
             {
-                var rapidDeadline = ActiveUtcNow + TimeSpan.FromSeconds(3);
+                var rapidDeadline = ActiveUtcNow + TimeSpan.FromSeconds(6);
                 var challengeStrikes = 0;
+                var toggle = false;
                 while (ActiveUtcNow < rapidDeadline && challengeFailed is null)
                 {
                     // 1.2.91 复审 P2：strike=1 后停止点击——(750,744) 在这些页面就是
@@ -528,11 +529,16 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                     // 诚实失败）。strike≥1 后只探测直至双帧确认或窗口耗尽。
                     if (challengeStrikes == 0)
                     {
+                        // 1.2.94 提速：双点位交替——(750,744) 推进弹框/确认链，
+                        // (960,899) 推进"下一页/对局未完成总结"页（纯过路弃局的必经页，
+                        // 用户令：盲点中间直接点到回主界面，不识别中间页）。
+                        var point = toggle ? NextPoint : AbandonAndSettlePoint;
+                        toggle = !toggle;
                         await ClickStandardPointAsync(
                             windowHandle,
                             "abandon_and_settle_rapid",
-                            "放弃并结算连点",
-                            AbandonAndSettlePoint,
+                            "放弃结算交替连点",
+                            point,
                             new ActionPolicy
                             {
                                 AfterActionDelay = TimeSpan.Zero
@@ -635,13 +641,18 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                 saveExit.Succeeded ? TaskEventLevel.Information : TaskEventLevel.Warning);
 
             var advanceDeadline = ActiveUtcNow + TimeSpan.FromSeconds(3);
+            var advanceToggle = false;
             while (ActiveUtcNow < advanceDeadline && !cancellationToken.IsCancellationRequested)
             {
+                // 1.2.94：与 settle 段同款双点位交替（960,899 推进"下一页/对局未完成"总结页，
+                // 750,744 推进其余确认链）——结算链任意形态都能被点穿。
+                var advancePoint = advanceToggle ? AbandonAndSettlePoint : NextPoint;
+                advanceToggle = !advanceToggle;
                 await ClickStandardPointAsync(
                     windowHandle,
                     "settlement_advance_rapid",
-                    "结算推进连点（中下部）",
-                    AbandonAndSettlePoint,
+                    "结算推进连点（双点位交替）",
+                    advancePoint,
                     new ActionPolicy
                     {
                         AfterActionDelay = TimeSpan.Zero
@@ -886,7 +897,7 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                 key,
                 new ActionPolicy
                 {
-                    AfterActionDelay = TimeSpan.FromMilliseconds(200)
+                    AfterActionDelay = TimeSpan.Zero // 1.2.94：后接 4s 页面轮询才是真闸门
                 },
                 cancellationToken);
             if (action.Succeeded)

@@ -46,9 +46,10 @@ public sealed class GrailDecisionEngine(
 
     /// <summary>
     /// 1.2.90 上场台账（用户令状态机，X11 星徽同款"识别∪账本并集"模式）：
-    /// 名字→前台槽位（0 基；-1=已上场但槽位未知，如 M5 执行器内部自动上场）。
-    /// 写入点：A1 像素验证成功（=权威）、M5 买到非昔涟成员（执行器内部自动上场）。
-    /// 删除点：M8 新局清空、A2/A3 卖出成功。
+    /// 名字→前台槽位（0 基真实槽位，无 -1 哨兵值）。
+    /// 写入点：A1 像素验证成功（=权威）；M5 买到且执行器自动上场成功（经回执
+    /// DeployedFrontSlots 回带真实前台落槽；上场失败/后台兜底上场/昔涟不写）。
+    /// 删除点：M8 新局清空、A2/A3 卖出复核通过后。
     /// 消费点：槽位选择取"账本∪识别占用"并集（识别漏读已上场单位时账本兜底，
     /// 20:41 实锤：A1 像素验证 OK 后 I10 连续读前台空，三连同一槽位互换两人）；
     /// 前置门 hasFront 判定含账本（防识别漏读误判 Dead）；bond/学者/填段的
@@ -583,20 +584,25 @@ public sealed class GrailDecisionEngine(
                     break;
                 }
 
-                // 1.2.90 台账（审查 P2）：卖出后重读确认真离开前台，才移出台账——
-                // A2 的 OK 只代表输入成功（rule 四.10）。
+                // 1.2.90 台账（复审 P3-1 修正）：卖出后等 1s 沉淀再重读，且按**被卖学者
+                // 名字**确认离场（不按"任意学者消失"——场上双学者时卖第 1 只不该误判反证）。
+                await Task.Delay(TimeSpan.FromSeconds(1), ct);
                 var scholarRereadAfterSell = await SnapshotWithRetryAsync(window, ct);
+                var soldScholarName = PureName(detail.Split(':')[^1]);
                 if (scholarRereadAfterSell is null
                     || scholarRereadAfterSell.DeployedCharacterDetails.Any(detail =>
-                        scholarNames.Contains(PureName(detail.Split(':')[^1]))))
+                        string.Equals(
+                            PureName(detail.Split(':')[^1]),
+                            soldScholarName,
+                            StringComparison.Ordinal)))
                 {
-                    emit("[决策层] 学者出售后重读仍见场上学者——反证即停，交外层对账。");
+                    emit("[决策层] 学者出售后重读仍见该学者——反证即停，交外层对账。");
                     snapshot = scholarRereadAfterSell ?? snapshot;
                     snapshotFresh = scholarRereadAfterSell is not null;
                     break;
                 }
 
-                _frontLedger.Remove(PureName(detail.Split(':')[^1]));
+                _frontLedger.Remove(soldScholarName);
                 deployedAny = true;
                 await Task.Delay(TimeSpan.FromSeconds(1), ct);
                 snapshot = await SnapshotWithRetryAsync(window, ct);

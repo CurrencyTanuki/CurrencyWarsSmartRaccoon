@@ -30,7 +30,12 @@ public sealed class RewardBattleTimeoutRecoveryIntegrationTests
         Assert.Contains("撤退", fixture.Input.Actions);
         Assert.Contains("放弃并结算", fixture.Input.Actions);
         Assert.Equal("结算下一步", fixture.Input.Actions[^1]);
-        Assert.True(fixture.Input.AbandonAttempts >= 1, $"abandon={fixture.Input.AbandonAttempts}");
+        // 1.2.96 审查 A P3-3 收紧：strikes 门控下放弃并结算快速击确定 2 次；
+        // Esc（暂停菜单）先于撤退是生产暂停页门禁保证的顺序契约。
+        Assert.Equal(2, fixture.Input.AbandonAttempts);
+        Assert.True(
+            fixture.Input.Actions.IndexOf("Esc") < fixture.Input.Actions.IndexOf("撤退"),
+            $"order={string.Join(",", fixture.Input.Actions)}");
         Assert.Equal(1, fixture.Input.RetreatAttempts);
         // 1.2.95 审查 P2-1 红线守卫：保存并退出单击后夹具立即返回主页——击前探针必在
         // 推进循环首次迭代刹停，计数恰为 1；若回归击后探测（旧结构）会先在主页多落一击=2。

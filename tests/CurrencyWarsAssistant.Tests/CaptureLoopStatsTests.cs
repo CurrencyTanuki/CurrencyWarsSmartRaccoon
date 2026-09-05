@@ -73,7 +73,8 @@ public sealed class CaptureLoopStatsTests
     {
         var stats = new CaptureLoopStats();
         stats.RecordSuccess(Base);
-        // 40 次成功=39 个间隔，前 7 个（100ms 档）应被 32 窗口挤出。
+        // 40 次成功=40 个间隔，窗口只留最后 32 个：被挤出 8 个（7×100ms 档+i=8 的
+        // 3300ms 长间隙），窗口内恰为 32 个 500ms——min 与 Last 均应为 500。
         foreach (var i in Enumerable.Range(1, 40))
         {
             stats.RecordSuccess(Base.AddMilliseconds(i * (i <= 7 ? 100 : 500)));

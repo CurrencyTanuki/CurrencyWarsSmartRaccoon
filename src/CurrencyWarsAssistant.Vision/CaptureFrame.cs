@@ -74,6 +74,9 @@ public sealed record CaptureFrame(
 /// 捕获流诊断快照（1.2.96 识别流周期冻结根因诊断，纯观测、零行为变更）：
 /// 区分"WGC 层不产帧"（FrameArrivals 停滞）与"捕获请求等待失败"（CaptureTimeouts 增长）、
 /// "会话反复重建"（SessionCreations/SessionRebuilds）与"会话稳定但帧停滞"。
+/// 判读口径（1.2.96 审查 B P3-1）：WGC 实例为进程级单例，计数跨识别会话累计，
+/// 滚动录制器/导航捕获等共享消费者会推高 FrameArrivals/CaptureSuccesses——
+/// 判断"帧停滞"以 SessionRebuilds 增量与管线层 CaptureLoopStats 为主信号。
 /// </summary>
 public sealed record CaptureStreamStats(
     long FrameArrivals,

@@ -456,7 +456,26 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                 continue;
             }
 
+            // 1.2.90 审查 P2：第 2 轮起页面状态未知——首击前必须确认放弃弹窗仍在屏，
+            // 否则盲击 (750,744) 有着弹框下方页面副作用的风险（第 1 轮的预检由调用方承接）。
+            if (recoveryCycle > 1)
+            {
+                var promptStillUp = await WaitForPageAsync(
+                    windowHandle,
+                    "abandon_settlement_prompt",
+                    TimeSpan.FromSeconds(2),
+                    cancellationToken);
+                if (promptStillUp is null)
+                {
+                    Publish(
+                        "RecoveryStrategyCycle",
+                        $"第 {recoveryCycle} 轮放弃弹窗未确认在屏——不盲击，重新识别。");
+                    continue;
+                }
+            }
+
             var rapidDeadline = ActiveUtcNow + TimeSpan.FromSeconds(8);
+            var challengeStrikes = 0;
             while (ActiveUtcNow < rapidDeadline && challengeFailed is null)
             {
                 // 同位置连点（游戏对重复点击有节流吞没，多击保证至少一击落在按钮可点窗口）。
@@ -481,15 +500,39 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                     cancellationToken);
                 var probeFrame = await capture.CaptureAsync(probeWindow, cancellationToken);
                 var page = classifier.Classify(probeFrame);
+
+                // 1.2.90 审查 P2：备战页探测到即停——弃局未生效，弹框下方是备战页，
+                // 此处继续点击=踩 (750,744) 附近区域（备战页绝不点击铁律内联化）。
+                if (page?.PageId.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    Publish(
+                        "RecoveryRapidClickAbortPreparation",
+                        "连点探测到备战页——弃局未生效，立即停止推进（备战页绝不点击）。",
+                        TaskEventLevel.Warning);
+                    return Failed("弃局连点期间回到备战页；已停止推进交外层处理。");
+                }
+
                 if (page is not null &&
                     string.Equals(page.PageId, "challenge_failed", StringComparison.OrdinalIgnoreCase))
                 {
-                    challengeFailed = page;
-                    Publish(
-                        "RecoveryPromptConfirmed",
-                        $"连点推进已进入挑战失败页（{page.Confidence:P1}）。");
+                    challengeStrikes++;
+                    if (challengeStrikes >= 2)
+                    {
+                        challengeFailed = page;
+                        Publish(
+                            "RecoveryPromptConfirmed",
+                            $"连点推进已进入挑战失败页（{page.Confidence:P1}，连续 {challengeStrikes} 帧）。");
+                    }
                 }
-                else if (page is null && CurrencyWarsHomeEvidence.IsMatch(probeFrame))
+                else
+                {
+                    challengeStrikes = 0;
+                }
+
+                // 1.2.90 审查 P2：主页完成态两个形态都收——分类器认出（浮层不在时）
+                // 与强证据兜底（标题被遮挡时）。
+                if (page?.PageId is "currency_wars_home" or "normal_hud"
+                    || (page is null && CurrencyWarsHomeEvidence.IsMatch(probeFrame)))
                 {
                     challengeFailed = new PageClassificationResult(
                         "challenge_failed",

@@ -104,12 +104,14 @@ public sealed record GrailWishOutcomeFact(
     bool MiracleSelected,
     bool CauldronSelected);
 
-/// <summary>M5 商店 Pass 事实（含货架全名单，供决策层核对购买判定）。</summary>
+/// <summary>M5 商店 Pass 事实（含货架全名单，供决策层核对购买判定）。
+/// 1.2.90：DeployedFrontSlots=执行器自动上场的单位→前台槽位（0 基），供上场台账登记。</summary>
 public sealed record GrailShopPassFact(
     bool BoughtCharacter,
     int? GoldAfter,
     IReadOnlyList<string>? ShelfCharacterNames = null,
-    IReadOnlyList<string>? BoughtCharacterNames = null);
+    IReadOnlyList<string>? BoughtCharacterNames = null,
+    IReadOnlyDictionary<string, int>? DeployedFrontSlots = null);
 
 /// <summary>M8 开局重刷事实（停靠点=1-1 备战席入口，2026-09-02 用户拍板）。</summary>
 public sealed record GrailOpeningFact(

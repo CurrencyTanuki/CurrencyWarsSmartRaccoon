@@ -90,6 +90,12 @@ public sealed partial class GrailOperationExecutor(
     /// <summary>最近一次商店 pass 实际买到并上场的角色名单（M5 结果行口径修复，2026-09-02）。</summary>
     public IReadOnlyList<string> LastShopPassBoughtNames { get; private set; } = Array.Empty<string>();
 
+    /// <summary>1.2.90：最近一次商店 Pass 中执行器自动上场的单位→前台槽位（0 基）。
+    /// 决策层上场台账据此登记（M5 腿）——只记前台（后台兜底上场仅在 5 人口场景，台账
+    /// 为前台模型不记）；上场失败/昔涟不在此列。</summary>
+    public IReadOnlyDictionary<string, int> LastShopPassDeployedFrontSlots { get; private set; } =
+        new Dictionary<string, int>();
+
     /// <summary>最近一次商店 pass 结束时的本地记账金币（1.2.24 修上报口径：持有器缓存滞后于刷新扣款）。</summary>
     public int LastShopPassGold { get; private set; } = -1;
 
@@ -235,6 +241,8 @@ public sealed partial class GrailOperationExecutor(
         var extraTargets = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var boughtNames = new List<string>();
         var boughtAny = false;
+        // 1.2.90 台账回带：本 Pass 执行器自动上场的单位→前台槽位（决策层台账登记用）。
+        var passDeployedFrontSlots = new Dictionary<string, int>(StringComparer.Ordinal);
         var shopOpen = shopAlreadyOpen;
         for (var iteration = 0; iteration < MaxShopBuyTargetsPerPass; iteration++)
         {
@@ -314,6 +322,10 @@ public sealed partial class GrailOperationExecutor(
                     if (deployed)
                     {
                         _frontDeployCount++;
+                        if (lane == PreparationLane.Front)
+                        {
+                            passDeployedFrontSlots[pass.BoughtCharacterName] = slot; // 1.2.90 台账回带
+                        }
                     }
                 }
                 else
@@ -330,6 +342,7 @@ public sealed partial class GrailOperationExecutor(
         }
 
         LastShopPassBoughtNames = boughtNames;
+        LastShopPassDeployedFrontSlots = passDeployedFrontSlots;
         return boughtAny;
     }
 
@@ -358,6 +371,8 @@ public sealed partial class GrailOperationExecutor(
         purchaseNames.Add(GrailRunSnapshot.XilianName);
         var occupiedFront = new HashSet<int>(snapshot.OccupiedFrontSlots);
         var occupiedBack = new HashSet<int>(snapshot.OccupiedBackSlots);
+        // 1.2.90 台账回带：本循环执行器自动上场的单位→前台槽位（决策层台账登记用）。
+        var passDeployedFrontSlotsN14 = new Dictionary<string, int>(StringComparer.Ordinal);
         // 金币本地账（2026-09-03 用户拍板：刷到金币不足刷新为止，无保留线）：
         // 入口守卫已保证金币读数非空；买成/刷新/买经验各扣实价。
         var gold = stateHolder.PeekGold().Value ?? 0;
@@ -456,15 +471,20 @@ public sealed partial class GrailOperationExecutor(
                 // 命杯成员：买→关店→上场→重开（N14 修正语义：关店仅在买到后发生）
                 await rewardStage.CloseShopAsync(windowHandle, expectedPreparationPageId, cancellationToken);
                 shopOpen = false;
-                if (await DeployBoughtToRealEmptySlotAsync(
+                var deployOutcome = await DeployBoughtToRealEmptySlotAsync(
                     windowHandle,
                     pass.BoughtCharacterName,
                     expectedPreparationPageId,
                     occupiedFront,
                     occupiedBack,
-                    cancellationToken))
+                    cancellationToken);
+                if (deployOutcome.Deployed)
                 {
                     bondMembers++; // 白名单非昔涟买到并上场=命杯成员+1（星徽携带者同口径计入）
+                    if (deployOutcome.FrontSlot is { } deployedFrontSlot)
+                    {
+                        passDeployedFrontSlotsN14[pass.BoughtCharacterName] = deployedFrontSlot; // 1.2.90 台账回带
+                    }
                 }
                 else
                 {
@@ -575,6 +595,7 @@ public sealed partial class GrailOperationExecutor(
             (deployFailures > 0 ? $"；上场失败×{deployFailures}" : string.Empty) + "。");
 
         LastShopPassBoughtNames = boughtNames;
+        LastShopPassDeployedFrontSlots = passDeployedFrontSlotsN14;
         LastShopPassGold = gold; // 实时本地账（1.2.24：持有器缓存滞后，回执须报刷新后的真实余额）
         return boughtAny;
     }
@@ -584,7 +605,9 @@ public sealed partial class GrailOperationExecutor(
     /// 占用集合=指令前置 I10 快照（识别保守口径，Uncertain 占位槽也算占用）+本轮已部署。
     /// 无空位=诚实返回不拖拽（拖到有人=互换；第 5 人须先买经验升人口——N17 归决策层）。
     /// </summary>
-    private async Task<bool> DeployBoughtToRealEmptySlotAsync(
+    /// <summary>返回（是否上场成功, 前台槽位——仅前台上场时有值；后台兜底上场返回 null，
+    /// 台账为前台模型不记后台）。</summary>
+    private async Task<(bool Deployed, int? FrontSlot)> DeployBoughtToRealEmptySlotAsync(
         nint windowHandle,
         string boughtName,
         string expectedPreparationPageId,
@@ -612,7 +635,7 @@ public sealed partial class GrailOperationExecutor(
                     "GrailShopDeploySkipped",
                     $"{boughtName} 已购买但备战席两读均未见卡（动画期/识别滞后）——交决策层 I10 对账。",
                     TaskEventLevel.Warning);
-                return false; // 验证过仍未见卡：交决策层 I10 复核，绝不拖旧坐标
+                return (false, null); // 验证过仍未见卡：交决策层 I10 复核，绝不拖旧坐标
             }
         }
 
@@ -646,17 +669,17 @@ public sealed partial class GrailOperationExecutor(
 
         if (slot is null)
         {
-            return false; // 无空位：不拖不互换，决策层按 N17 处理人口
+            return (false, null); // 无空位：不拖不互换，决策层按 N17 处理人口
         }
 
         if (await preparationBoard.GrailDeployBenchCharacterAsync(
                 windowHandle, bought, lane, slot.Value, expectedPreparationPageId, cancellationToken))
         {
             occupied.Add(slot.Value);
-            return true;
+            return (true, lane == PreparationLane.Front ? slot.Value : null);
         }
 
-        return false;
+        return (false, null);
     }
 
     /// <summary>官方数据角色费用（费用集最小值；银狼等多费用角色按最小计，与卖价口径一致）。</summary>

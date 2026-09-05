@@ -163,7 +163,7 @@ public sealed class GrailMacroCommands(
         var shelf = executor.LastShopPassShelfNames;
         return GrailCommandResult.Ok(
             GrailCommandKind.M5,
-            new GrailShopPassFact(bought, gold, shelf, executor.LastShopPassBoughtNames));
+            new GrailShopPassFact(bought, gold, shelf, executor.LastShopPassBoughtNames, executor.LastShopPassDeployedFrontSlots));
     }
 
     private async Task<GrailCommandResult> SelectStrategyAsync(

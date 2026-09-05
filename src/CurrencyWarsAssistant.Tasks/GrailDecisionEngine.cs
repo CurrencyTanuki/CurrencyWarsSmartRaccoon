@@ -127,12 +127,30 @@ public sealed class GrailDecisionEngine(
         }
 
         emit($"[决策层/{_runClock.Elapsed:mm\\:ss}] {commandText} ⇒ {(result.Error is null ? "OK" : "失败")}：{result.Error ?? Describe(result.Payload)}");
-        // 1.2.89 盘面变异时刻：M5 购买（执行器内部自动上场）与 A1 部署成功都会改变
-        // 盘面占位——部署段选槽前据此判定快照是否早于盘面（陈旧占用表=把刚上场的
-        // 命杯成员换下，16:57 阮•梅顶掉远坂凛实锤）。
-        if (result.Error is null && command.Kind is GrailCommandKind.M5 or GrailCommandKind.A1)
+        // 1.2.90 台账（审查 P1 修复）：M5 买到且执行器自动上场成功→按真实落槽登记台账；
+        // 1.2.89 变异戳收窄（审查 P3）：仅盘面真的变化（买到/A1 成功）才打戳，零购买
+        // 的 M5 不再触发部署段的强制重读+3s 动画等待。
+        if (result.Error is null && command.Kind is GrailCommandKind.A1 or GrailCommandKind.M5)
         {
-            _lastBoardMutationAt = DateTimeOffset.Now;
+            var boardMutated = false;
+            if (command.Kind == GrailCommandKind.A1)
+            {
+                boardMutated = true;
+            }
+            else if (result.Payload is GrailShopPassFact shopPass)
+            {
+                boardMutated = shopPass.BoughtCharacter;
+                foreach (var (deployedName, deployedSlot) in shopPass.DeployedFrontSlots
+                             ?? new Dictionary<string, int>())
+                {
+                    _frontLedger[deployedName] = deployedSlot;
+                }
+            }
+
+            if (boardMutated)
+            {
+                _lastBoardMutationAt = DateTimeOffset.Now;
+            }
         }
 
         return result;
@@ -565,7 +583,19 @@ public sealed class GrailDecisionEngine(
                     break;
                 }
 
-                // 1.2.90 台账：学者已卖出，移出场上台账。
+                // 1.2.90 台账（审查 P2）：卖出后重读确认真离开前台，才移出台账——
+                // A2 的 OK 只代表输入成功（rule 四.10）。
+                var scholarRereadAfterSell = await SnapshotWithRetryAsync(window, ct);
+                if (scholarRereadAfterSell is null
+                    || scholarRereadAfterSell.DeployedCharacterDetails.Any(detail =>
+                        scholarNames.Contains(PureName(detail.Split(':')[^1]))))
+                {
+                    emit("[决策层] 学者出售后重读仍见场上学者——反证即停，交外层对账。");
+                    snapshot = scholarRereadAfterSell ?? snapshot;
+                    snapshotFresh = scholarRereadAfterSell is not null;
+                    break;
+                }
+
                 _frontLedger.Remove(PureName(detail.Split(':')[^1]));
                 deployedAny = true;
                 await Task.Delay(TimeSpan.FromSeconds(1), ct);
@@ -588,20 +618,29 @@ public sealed class GrailDecisionEngine(
             return (deployedAny, snapshotFresh ? snapshot : null);
         }
 
+        // 1.2.90 审查 P2 修正：凑 2 计数=场上学者总数（台账∪识别，星徽携带者不算——
+        // 携带者已经是命杯成员另有口径），而非只数备战席。场景"学者 A 已在场+备战席
+        // 学者 B"→可上数=2-1=1→部署 B 凑成双学者羁绊（此前永不成对=买第二学者的钱白花）。
+        var onFieldScholarCount = Math.Max(
+            _frontLedger.Keys.Count(name => scholarNames.Contains(name)),
+            snapshot.DeployedCharacterDetails.Count(detail =>
+                !detail.Contains("[星徽]", StringComparison.Ordinal)
+                && scholarNames.Contains(PureName(detail.Split(':')[^1]))));
         var benchScholarPairs = snapshot.BenchCharacterDetails
             .Select(item => (SlotHead: item.Split(':')[0], Name: PureName(item.Split(':')[^1])))
             .Where(pair => scholarNames.Contains(pair.Name))
-            .Where(pair => !_frontLedger.ContainsKey(pair.Name)) // 1.2.90：已在场的不重复部署
+            .Where(pair => !_frontLedger.ContainsKey(pair.Name)) // 已在场的不重复部署
             .GroupBy(pair => pair.Name)
             .Select(group => group.First())
             .ToList();
-        if (benchScholarPairs.Count < 2)
+        var deployableScholars = Math.Min(Math.Max(0, 2 - onFieldScholarCount), benchScholarPairs.Count);
+        if (deployableScholars <= 0)
         {
-            // 单学者不上（凑 2 羁绊才有意义，用户令）；无学者静默返回。
+            // 场上学者已满 2 或备战席无可上学者——静默返回。
             return (deployedAny, snapshotFresh ? snapshot : null);
         }
 
-        foreach (var pair in benchScholarPairs.Take(2))
+        foreach (var pair in benchScholarPairs.Take(deployableScholars))
         {
             if (snapshot.OccupiedFrontSlots.Count >= 4)
             {
@@ -848,8 +887,6 @@ public sealed class GrailDecisionEngine(
             }
 
             sold++;
-            // 1.2.90 台账：卖出的单位移出上场台账（若在册）。
-            _frontLedger.Remove(target.Name);
             await Task.Delay(TimeSpan.FromSeconds(1), ct);
 
             // 防错④：卖出后 I10 复核=硬性收尾。复核失败=反证，立即停手交对账。
@@ -867,6 +904,9 @@ public sealed class GrailDecisionEngine(
                 break;
             }
 
+            // 1.2.90 审查 P2：台账清除必须在卖出生效复核**之后**——A2/A3 的 OK 只代表
+            // 输入成功（rule 三.10/四.10），复核反证时单位仍在场，台账提前删=互换窗口。
+            _frontLedger.Remove(target.Name);
             snapshot = verify;
         }
 

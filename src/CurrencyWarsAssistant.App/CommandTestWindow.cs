@@ -1,6 +1,8 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using CurrencyWarsAssistant.Advisor;
 using CurrencyWarsAssistant.Automation;
@@ -36,6 +38,8 @@ namespace CurrencyWarsAssistant.App;
 ///   M8                         刷到命中→选中进局→1-1 备战席立刻停
 ///   KEY Escape|Enter|F|V|LeftAlt  原始按键（1.2.87：经提权输入栈直发，诊断/救急用）
 ///   CLICK x y                  原始点击（1.2.87：游戏窗口客户区像素坐标，诊断/救急用）
+///   SCREENSHOT                 抓游戏窗口当前画面存 PNG（1.2.87：GDI PrintWindow 后台截屏，
+///                              不抢前台；回执给文件路径，AI 辅助通道）
 ///   STATUS                     查看状态（游戏窗口/识别会话/最新帧/目标模式）
 ///   START / STOP               启动 / 停止识别会话（实时采集）
 ///   GOAL 单人|全员              设置目标模式（影响 M3/M4 的决策语义）
@@ -474,6 +478,62 @@ public sealed class CommandTestWindow : Window
             && Enum.IsDefined(typeof(InputKey), key);
     }
 
+    /// <summary>
+    /// SCREENSHOT（1.2.87，AI 辅助通道）：GDI 抓游戏窗口当前画面存 PNG 到 exe 同目录
+    /// 「指令测试-screen.png」（覆盖写），回执给路径。设计要点：
+    /// ①纯只读——决策层运行期间也允许（远程 AI 监督 DECIDE 时看画面的刚需）；
+    /// ②GdiGameCapture 走屏幕 DC/PrintWindow，不切前台、不抢用户焦点，也与 WGC 识别
+    /// 会话的捕获单例零共享（每次 new，无状态冲突）；③局限：BitBlt 路径要求窗口未被
+    /// 完全遮挡（被盖住会截到别的窗口），回执摘要里如实携带尺寸供 AI 判断坏帧。
+    /// </summary>
+    private async Task ExecuteScreenshotAsync(string line)
+    {
+        var window = FindGameWindow();
+        if (window is null)
+        {
+            AppendResult(line, ok: false, summary: "未找到可自动化的游戏窗口");
+            _flightRecorder.Record(line, ok: false, "未找到可自动化的游戏窗口", 0, "screenshot");
+            return;
+        }
+
+        var flightStopwatch = System.Diagnostics.Stopwatch.StartNew();
+        AppendReceipt(line);
+        try
+        {
+            var capture = new GdiGameCapture();
+            var frame = await capture.CaptureAsync(window, CancellationToken.None);
+            var outputPath = Path.Combine(AppContext.BaseDirectory, "指令测试-screen.png");
+            var bitmapSource = BitmapSource.Create(
+                frame.Width,
+                frame.Height,
+                96,
+                96,
+                PixelFormats.Bgra32,
+                null,
+                frame.BgraPixels,
+                frame.Stride);
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+            using (var stream = File.Create(outputPath))
+            {
+                encoder.Save(stream);
+            }
+
+            flightStopwatch.Stop();
+            var summary = $"已存 {outputPath}（{frame.Width}x{frame.Height}）";
+            AppendResult(line, ok: true, summary: summary);
+            AppendLog($"✔ OK {summary}");
+            _flightRecorder.Record(line, true, summary, flightStopwatch.ElapsedMilliseconds, "screenshot");
+        }
+        catch (Exception exception)
+        {
+            flightStopwatch.Stop();
+            AppendResult(line, ok: false, summary: $"截屏失败：{exception.Message}");
+            AppendLog($"✗ 失败 截屏失败：{exception.Message}");
+            _flightRecorder.Record(line, false, $"截屏失败：{exception.Message}", flightStopwatch.ElapsedMilliseconds, "screenshot");
+        }
+    }
+
     private async Task ExecuteLineAsync(string rawLine)
     {
         var line = rawLine.Trim();
@@ -535,6 +595,9 @@ public sealed class CommandTestWindow : Window
                         AppendLog("✗ 用法：CLICK <x> <y>（游戏窗口客户区像素坐标）");
                         AppendResult(line, ok: false, summary: "解析失败：CLICK <x> <y>（客户区像素坐标）");
                     }
+                    return;
+                case "SCREENSHOT":
+                    await ExecuteScreenshotAsync(line);
                     return;
             }
 

@@ -415,7 +415,9 @@ public sealed class CommandTestWindow : Window
     /// 决策层发起的识别流救援重启（1.2.88，命中局实锤：长尾 60s &lt; 启发式节流 300s，
     /// 好局在等待自愈时被弃）。引擎在追帧长尾入口经委托调用本方法，立即 STOP/START
     /// 识别会话（蓝图 X3 药方），绕过 300s 启发式节流但共享单飞标志与显式 STOP 尊重。
-    /// 可从引擎后台线程调用：标志位经 Dispatcher 摊回 UI 线程，核心在 Task.Run 执行。
+    /// 帧陈旧前置（审查 P3）：仅当帧龄 &gt;20s（真冻结）才重启——健康流遇到持续页面门禁
+    /// 拒绝（帧新鲜但页面不对）不重启，对齐启发式"不必要重启只制造帧抖动"原则。
+    /// 可从引擎后台线程调用：经 BeginInvokeIfAlive 摊回 UI 线程，核心在 Task.Run 执行。
     /// </summary>
     private void ForceStreamRevive(string reason)
     {
@@ -424,9 +426,13 @@ public sealed class CommandTestWindow : Window
             return;
         }
 
-        _ = Dispatcher.BeginInvoke(() =>
+        BeginInvokeIfAlive(() =>
         {
-            if (_streamReviveInProgress
+            var analysis = _listener.LatestAnalysis;
+            var stale = analysis is null
+                || DateTimeOffset.Now - analysis.Snapshot.AsOf > TimeSpan.FromSeconds(20);
+            if (!stale
+                || _streamReviveInProgress
                 || _streamStopRequested
                 || _collectionCts is null)
             {

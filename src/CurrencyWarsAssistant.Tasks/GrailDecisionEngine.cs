@@ -229,6 +229,20 @@ public sealed class GrailDecisionEngine(
 
         for (var attempt = 0; attempt < 12; attempt++)
         {
+            // 1.2.88 审查 P3 加固：实机病理为流在重启后可能 ~5 分钟内再死——长尾中段
+            // （第 6 次，t≈25-30s，单飞标志已释放）再请求一次；帧陈旧前置由测试台侧把守。
+            if (attempt == 5 && requestStreamRevive is not null)
+            {
+                try
+                {
+                    requestStreamRevive("追帧长尾中段");
+                }
+                catch
+                {
+                    // 救援委托异常不阻断长尾重试。
+                }
+            }
+
             await Task.Delay(TimeSpan.FromSeconds(5), ct);
             var snapshot = await SnapshotAsync(window, ct);
             if (snapshot is not null)

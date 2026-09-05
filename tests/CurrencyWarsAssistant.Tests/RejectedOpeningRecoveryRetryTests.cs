@@ -160,8 +160,50 @@ public sealed class RejectedOpeningRecoveryRetryTests
             new OpeningFilterEvaluation(false, ["reject"], [], []),
             CancellationToken.None);
 
+        // 1.2.91 点法（用户令 2026-09-05 晚）：结算推进上限由 12 次计数改为 3 秒时框
+        // （0.5 秒节奏）——永不回主页时按时框停，输入有界仍是契约本体。
+        // 1.2.95 审查 P3-2 收紧：3 秒窗+硬性 500ms 延迟下确定性约 6 次，4..8 仍拦住
+        // 节奏加快（<375ms）与循环跑飞两类回归。
         Assert.Equal(RejectedOpeningRecoveryStatus.Failed, result.Status);
-        Assert.Equal(12, input.SettlementNextAttempts);
+        Assert.InRange(input.SettlementNextAttempts, 4, 8);
+    }
+
+    [Fact]
+    public async Task SettlementAdvanceAlternatesBetweenTwoPointPositions()
+    {
+        var input = new StagedInputController
+        {
+            SettlementPageUnknown = true,
+            NeverReturnHome = true
+        };
+        var window = Window();
+        var recovery = new CurrencyWarsRejectedOpeningRecovery(
+            new PreparationNavigator(),
+            new StaticCapture(),
+            new StagedClassifier(input),
+            input,
+            new ImmediateForegroundGuard(window),
+            new NullTaskEventSink());
+
+        var result = await recovery.RecoverAsync(
+            window.Handle,
+            new OpeningSnapshot([], [], []),
+            new OpeningFilterEvaluation(false, ["reject"], [], []),
+            CancellationToken.None);
+
+        Assert.Equal(RejectedOpeningRecoveryStatus.Failed, result.Status);
+        // 1.2.94 双点位交替契约（handoff 四.B.7"rapid 连点零用例"销账）：保存并退出
+        // 单击与推进首击同为 960,899（"下一页/对局未完成"总结页推进位），推进段自
+        // 第二击起与 750,744（确认链推进位）严格交替——结算链任意形态都能被点穿。
+        var xs = input.SettlementNextClickCenterXs;
+        Assert.True(xs.Count >= 3, $"clicks={xs.Count}");
+        Assert.Equal(960, xs[0]);
+        Assert.Equal(960, xs[1]);
+        Assert.All(xs, x => Assert.True(x is 750 or 960, $"x={x}"));
+        for (var i = 2; i < xs.Count; i++)
+        {
+            Assert.NotEqual(xs[i - 1], xs[i]);
+        }
     }
 
     [Fact]
@@ -188,10 +230,10 @@ public sealed class RejectedOpeningRecoveryRetryTests
             CancellationToken.None);
 
         Assert.Equal(RejectedOpeningRecoveryStatus.Recovered, result.Status);
-        // 1.2.47 提速（用户令"动画一放完就点下一页"）后结算推进=400ms 连点节奏：
-        // 1400ms 延迟窗口内会真实点击约 2 次再等到主页，断言从旧节奏的 1 对齐为 2。
+        // 1.2.91 点法后结算推进=500ms 节奏（0.5 秒间隔，击前探测）：1400ms 延迟窗口内
+        // 会真实点击约 3 次再等到主页，2..4 覆盖节奏与探测耗时的合理抖动。
         Assert.True(input.SettlementNextAttempts is >= 2 and <= 4,
-            $"settlement clicks={input.SettlementNextAttempts}, expect 2..4 (400ms cadence)");
+            $"settlement clicks={input.SettlementNextAttempts}, expect 2..4 (500ms cadence)");
     }
 
     private static GameWindowInfo Window() =>
@@ -300,6 +342,8 @@ public sealed class RejectedOpeningRecoveryRetryTests
         public int EscapeAttempts { get; private set; }
         public int ClickAttempts { get; private set; }
         public int SettlementNextAttempts { get; private set; }
+        // 1.2.95：记录推进段每次点击的中心 X——双点位交替契约的观测面。
+        public List<int> SettlementNextClickCenterXs { get; } = [];
         public bool NeverReturnHome { get; init; }
         public bool SettlementPageUnknown { get; init; }
         public int ReturnHomeAfterSettlementAttempts { get; init; } = 1;
@@ -334,6 +378,7 @@ public sealed class RejectedOpeningRecoveryRetryTests
             {
                 Stage = InputStage.Settlement;
                 SettlementNextAttempts++;
+                SettlementNextClickCenterXs.Add(target.ClientBounds.X + target.ClientBounds.Width / 2);
                 _settlementStartedAt ??= DateTimeOffset.UtcNow;
             }
 

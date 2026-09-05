@@ -23,12 +23,23 @@ public sealed class RewardBattleTimeoutRecoveryIntegrationTests
         Assert.Equal(
             RewardBattleTimeoutHandlingResult.RecoveredToHome,
             result);
-        Assert.Equal(
-            ["V", "Esc", "撤退", "放弃并结算", "结算下一步"],
-            fixture.Input.Actions);
+        // 1.2.91 点法（用户令 2026-09-05 晚）："放弃并结算"后立即连点（多次 AbandonAttempts），
+        // 结算推进=保存并退出单击+中下部连点（SettlementNextAttempts≥1）——不再是无连点的单击序列。
+        Assert.Equal("V", fixture.Input.Actions.FirstOrDefault());
+        Assert.Contains("Esc", fixture.Input.Actions);
+        Assert.Contains("撤退", fixture.Input.Actions);
+        Assert.Contains("放弃并结算", fixture.Input.Actions);
+        Assert.Equal("结算下一步", fixture.Input.Actions[^1]);
+        Assert.True(fixture.Input.AbandonAttempts >= 1, $"abandon={fixture.Input.AbandonAttempts}");
         Assert.Equal(1, fixture.Input.RetreatAttempts);
-        Assert.Equal(1, fixture.Input.AbandonAttempts);
+        // 1.2.95 审查 P2-1 红线守卫：保存并退出单击后夹具立即返回主页——击前探针必在
+        // 推进循环首次迭代刹停，计数恰为 1；若回归击后探测（旧结构）会先在主页多落一击=2。
+        // 回主页后不得再有任何点击（rule 8.2#6 模式边界）。
         Assert.Equal(1, fixture.Input.SettlementNextAttempts);
+        // 顺序契约：撤退先于放弃并结算（审查 P2-1 顺手补回精确序列放宽后丢失的相对顺序）。
+        Assert.True(
+            fixture.Input.Actions.IndexOf("撤退") < fixture.Input.Actions.IndexOf("放弃并结算"),
+            $"order={string.Join(",", fixture.Input.Actions)}");
     }
 
     [Fact]

@@ -203,6 +203,11 @@ public sealed class GrailDecisionEngine(
         GrailRunSnapshot s => $"羁绊={s.BondMemberCount} 金={s.Gold} 血={s.TeamHealth?.ToString() ?? "?"}",
         GrailPageFact p => $"页面={p.PageId ?? "未知"}",
         GrailSellResult r => $"卖出={r.SoldCount} 金={r.EstimatedGold}",
+        // 1.2.95 备案清理（1.2.70 P3 销账）：I2 货架/I3 备战席的载荷是 GrailCharacterFact
+        // 列表——引擎目前不发这两条，一旦将来发出（对账需要）落 _ 兜底会打"OK："空尾巴。
+        IReadOnlyList<GrailCharacterFact> facts => string.Join(
+            ",",
+            facts.Select(f => $"{f.Slot}={f.Name ?? "?"}({f.Cost?.ToString() ?? "?"}费)")),
         // P-14/P-21（1.2.70）：M7 回执此前在此处无分支（打"OK："空尾巴）、M8 未成功
         // 曾打"命中=—"——对齐 CommandTestWindow.FormatPayload 的诚实口径。
         RewardStageAutomationResult s => $"策略={s.Status}：{s.Message}",

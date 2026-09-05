@@ -761,6 +761,68 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                 TaskEventLevel.Warning);
             if (attempt < maximumAttempts)
             {
+                // 1.2.89 Esc 纪律（用户令 2026-09-05 第 5 问题）：补按前必须先认页——
+                // ①预期弹框其实已开（识别慢/漏帧）时再按=把弹框关掉，改为继续等待；
+                // ②已在主界面时再按=退出货币战争模式（16:32 实锤弹到游戏本体），立即停手；
+                // ③Unknown（弹框疑似开着）不补按，继续等待；
+                // ④祈愿试炼弹框不按 Esc（模态，需 M3 应答），继续等待；
+                // 仅当稳定读到"仍在对局页"（preparation_ 族）才允许补按。
+                var currentPageBeforeRetry = await ReadStablePageAsync(
+                    windowHandle,
+                    cancellationToken);
+                var currentPageId = currentPageBeforeRetry?.PageId ?? string.Empty;
+                if (string.Equals(currentPageId, expectedPageId, StringComparison.OrdinalIgnoreCase))
+                {
+                    Publish(
+                        "RecoveryKeyPageConfirmedLate",
+                        $"页面其实已是预期页（识别滞后）——不补按，继续等待稳定确认。");
+                    var lateDetected = await WaitForPageAsync(
+                        windowHandle,
+                        expectedPageId,
+                        verificationTimeout,
+                        cancellationToken);
+                    if (lateDetected is not null)
+                    {
+                        Publish(
+                            "RecoveryKeySucceeded",
+                            $"按键方案“{displayName}”成功（延迟确认）。");
+                        return lateDetected;
+                    }
+
+                    continue;
+                }
+
+                if (currentPageId is "normal_hud" or "currency_wars_home")
+                {
+                    Publish(
+                        "RecoveryKeyAbortAtHome",
+                        "已识别货币战争主界面——停止按键方案（防止 Esc 退出模式）。",
+                        TaskEventLevel.Warning);
+                    return null;
+                }
+
+                if (currentPageBeforeRetry is null
+                    || currentPageId.StartsWith("wish_trial", StringComparison.OrdinalIgnoreCase))
+                {
+                    Publish(
+                        "RecoveryKeySkipRetryUnknown",
+                        currentPageBeforeRetry is null
+                            ? "当前页面无法识别（疑似弹框开着）——不补按 Esc，继续等待识别。"
+                            : "检测到祈愿试炼弹框——Esc 无效且有害，不补按，继续等待识别。",
+                        TaskEventLevel.Warning);
+                    var graceDetected = await WaitForPageAsync(
+                        windowHandle,
+                        expectedPageId,
+                        verificationTimeout,
+                        cancellationToken);
+                    if (graceDetected is not null)
+                    {
+                        return graceDetected;
+                    }
+
+                    continue;
+                }
+
                 await Task.Delay(
                     TimeSpan.FromMilliseconds(500),
                     cancellationToken);

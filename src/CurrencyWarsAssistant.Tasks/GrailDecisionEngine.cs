@@ -35,6 +35,15 @@ public sealed class GrailDecisionEngine(
     public int RunsCompleted { get; private set; }
     public int RunsAbandoned { get; private set; }
 
+    /// <summary>1.2.89 盘面变异时刻：M5 购买（执行器内部自动上场）/A1 部署成功即刷新。
+    /// 部署段选槽前据此判定快照是否早于盘面变化（陈旧占用表=拖到已占槽互换，16:57 实锤）。</summary>
+    private DateTimeOffset _lastBoardMutationAt = DateTimeOffset.MinValue;
+
+    /// <summary>当前节点锚点（1.2.89）：M8 到达=1-1；M1 落地 reward_shop=1-2、
+    /// investment_strategy=1-3。银河学者规则按节点生效（用户令：仅 1-1 且凑 2 才上、
+    /// 1-3 必下必卖）。</summary>
+    private string _currentNode = "1-1";
+
     private async Task<GrailCommandResult> SendAsync(
         string commandText, GrailCommand command, nint window, CancellationToken ct)
     {
@@ -105,6 +114,14 @@ public sealed class GrailDecisionEngine(
         }
 
         emit($"[决策层/{_runClock.Elapsed:mm\\:ss}] {commandText} ⇒ {(result.Error is null ? "OK" : "失败")}：{result.Error ?? Describe(result.Payload)}");
+        // 1.2.89 盘面变异时刻：M5 购买（执行器内部自动上场）与 A1 部署成功都会改变
+        // 盘面占位——部署段选槽前据此判定快照是否早于盘面（陈旧占用表=把刚上场的
+        // 命杯成员换下，16:57 阮•梅顶掉远坂凛实锤）。
+        if (result.Error is null && command.Kind is GrailCommandKind.M5 or GrailCommandKind.A1)
+        {
+            _lastBoardMutationAt = DateTimeOffset.Now;
+        }
+
         return result;
     }
 
@@ -397,6 +414,22 @@ public sealed class GrailDecisionEngine(
         nint window, GrailRunSnapshot? existingSnapshot, CancellationToken ct)
     {
         var deployedAny = false;
+        // 1.2.89（用户令第 1 问题）：快照早于盘面变异（M5 买到/A1 部署）即不可用于选槽
+        // ——陈旧占用表会让新部署拖到已占槽=把刚上场的命杯成员换下（16:57 阮•梅顶掉
+        // 远坂凛实锤）。强制作新鲜读；变异刚发生时先等部署动画（X13：3 秒+）。
+        if (existingSnapshot is not null
+            && existingSnapshot.CapturedAt is { } capturedAt
+            && capturedAt < _lastBoardMutationAt)
+        {
+            existingSnapshot = null;
+        }
+
+        var sinceMutation = DateTimeOffset.Now - _lastBoardMutationAt;
+        if (sinceMutation >= TimeSpan.Zero && sinceMutation < TimeSpan.FromSeconds(3))
+        {
+            await Task.Delay(TimeSpan.FromSeconds(3) - sinceMutation, ct);
+        }
+
         var snapshot = existingSnapshot ?? await SnapshotWithRetryAsync(window, ct);
         if (snapshot is null && existingSnapshot is null)
         {
@@ -458,19 +491,16 @@ public sealed class GrailDecisionEngine(
             snapshotFresh = snapshot is not null;
         }
 
-        // 1.2.63（用户令去冗余+独立分析 P-15 关联）：学者补位——bond 候选部署完毕后，
-        // 前台仍有空槽且备战席存在银河学者（凑 2 学者羁绊）时补位上场。
-        // 艾丝妲滞留备战席案（19:47 局：M5 买学者先上 F1/F2，命杯互换把学者顶回备战席，
-        // 引擎此前的 bond-only 部署不再看她）。
+        // 1.2.89 学者规则重写（用户令 2026-09-05，第 1/2 问题）：
+        // ①仅 1-1 生效（学者羁绊需经过至少两个节点才能完成，1-2/1-3 上学者无意义）；
+        // ②仅当备战席同时存在两名不同银河学者才上场（凑 2 羁绊；单学者绝不上）；
+        // ③只能上到空槽——绝不替换已上场单位（16:57 阮•梅顶掉远坂凛实锤根因之一：
+        //   陈旧快照占用表）；
+        // ④1-3 反向操作：场上银河学者（非星徽携带者）必须下场并卖掉（省金币）。
         if (!snapshotFresh)
         {
             snapshot = await SnapshotWithRetryAsync(window, ct);
             snapshotFresh = snapshot is not null;
-        }
-
-        if (snapshot is null || snapshot.OccupiedFrontSlots.Count >= 4)
-        {
-            return (deployedAny, snapshotFresh ? snapshot : null);
         }
 
         var scholarNames = new HashSet<string>(
@@ -479,46 +509,162 @@ public sealed class GrailDecisionEngine(
                     bond => bond is not null && bond.Contains("银河学者", StringComparison.Ordinal)))
                 .Select(character => character.Name),
             StringComparer.OrdinalIgnoreCase);
-        var benchScholar = snapshot.BenchCharacterDetails
-            .Select(item => PureName(item.Split(':')[^1]))
-            .FirstOrDefault(name => scholarNames.Contains(name));
-        if (benchScholar is null)
+
+        if (snapshot is not null && _currentNode == "1-3")
+        {
+            var frontScholars = snapshot.DeployedCharacterDetails
+                .Where(detail => !detail.Contains("[星徽]", StringComparison.Ordinal)
+                                 && scholarNames.Contains(PureName(detail.Split(':')[^1])))
+                .ToList();
+            foreach (var detail in frontScholars.Take(2))
+            {
+                var slotHead = detail.Split(':')[0];
+                if (!int.TryParse(slotHead.Replace("F", string.Empty, StringComparison.Ordinal),
+                        out var frontSlot) || frontSlot < 1)
+                {
+                    continue;
+                }
+
+                emit($"[决策层] 1-3 学者下场：出售场上 {detail}（学者规则：1-3 必下必卖省金币）。");
+                var sell = await SendAsync(
+                    $"A2 前台 {frontSlot}",
+                    new GrailCommand(GrailCommandKind.A2,
+                        new GrailPositionArgs(PreparationLane.Front, frontSlot - 1)),
+                    window, ct);
+                if (sell.Error is not null)
+                {
+                    emit($"[决策层] 1-3 学者出售失败：{sell.Error}——交外层对账。");
+                    break;
+                }
+
+                deployedAny = true;
+                await Task.Delay(TimeSpan.FromSeconds(1), ct);
+                snapshot = await SnapshotWithRetryAsync(window, ct);
+                snapshotFresh = snapshot is not null;
+                if (snapshot is null)
+                {
+                    return (deployedAny, null);
+                }
+            }
+        }
+
+        if (snapshot is null || snapshot.OccupiedFrontSlots.Count >= 4)
         {
             return (deployedAny, snapshotFresh ? snapshot : null);
         }
 
-        var benchHead = snapshot.BenchCharacterDetails
-            .First(detail => scholarNames.Contains(PureName(detail.Split(':')[^1])))
-            .Split(':')[0];
-        if (!int.TryParse(benchHead, out var scholarBenchSlot) || scholarBenchSlot < 0)
+        if (_currentNode != "1-1")
         {
             return (deployedAny, snapshotFresh ? snapshot : null);
         }
 
-        var scholarSlot = Enumerable.Range(0, 4).FirstOrDefault(
-            i => !snapshot.OccupiedFrontSlots.Contains(i));
-        var scholarDeploy = await SendAsync(
-            $"A1 {benchScholar} 前台 {scholarSlot + 1}",
-            new GrailCommand(GrailCommandKind.A1,
-                new GrailDeployArgs(benchScholar, PreparationLane.Front, scholarSlot)),
-            window, ct);
-        if (scholarDeploy.Error is null)
+        var benchScholarPairs = snapshot.BenchCharacterDetails
+            .Select(item => (SlotHead: item.Split(':')[0], Name: PureName(item.Split(':')[^1])))
+            .Where(pair => scholarNames.Contains(pair.Name))
+            .GroupBy(pair => pair.Name)
+            .Select(group => group.First())
+            .ToList();
+        if (benchScholarPairs.Count < 2)
         {
-            emit($"[决策层] 学者补位：{benchScholar} 已部署到前台 {scholarSlot + 1} 号位。");
+            // 单学者不上（凑 2 羁绊才有意义，用户令）；无学者静默返回。
+            return (deployedAny, snapshotFresh ? snapshot : null);
+        }
+
+        foreach (var pair in benchScholarPairs.Take(2))
+        {
+            if (snapshot.OccupiedFrontSlots.Count >= 4)
+            {
+                break;
+            }
+
+            if (!int.TryParse(pair.SlotHead, out var scholarBenchSlot) || scholarBenchSlot < 0)
+            {
+                continue;
+            }
+
+            var scholarSlot = Enumerable.Range(0, 4).FirstOrDefault(
+                i => !snapshot.OccupiedFrontSlots.Contains(i));
+            var scholarDeploy = await SendAsync(
+                $"A1 {pair.Name} 前台 {scholarSlot + 1}",
+                new GrailCommand(GrailCommandKind.A1,
+                    new GrailDeployArgs(pair.Name, PreparationLane.Front, scholarSlot)),
+                window, ct);
+            if (scholarDeploy.Error is not null)
+            {
+                emit($"[决策层] 学者补位「{pair.Name}」失败：{scholarDeploy.Error}——停止本轮学者部署。");
+                break;
+            }
+
+            emit($"[决策层] 学者补位：{pair.Name} 已部署到前台 {scholarSlot + 1} 号位。");
             deployedAny = true;
             // 学者非圣杯成员，上场不触发圣杯升档弹框——单查即可。
             await EnsureWishAnsweredAsync(window, ct);
-            // 1.2.68：学者上场改变盘面占位——重读一次供快照带出（低频，每局 0-2 次）。
-            // 重读失败=无法证明快照新鲜（学者已上场，旧快照占位失真）——按契约置
-            // snapshotFresh=false 返回 null，调用方沿用自身快照兜底。
             var scholarReread = await SnapshotWithRetryAsync(window, ct);
             if (scholarReread is not null)
             {
                 snapshot = scholarReread;
+                snapshotFresh = true;
             }
             else
             {
                 snapshotFresh = false;
+                break;
+            }
+        }
+
+        // 1.2.89 填满人口（用户令"优先要补满三个人"）：命杯/学者就位后，剩余空槽用
+        // 备战席非保护单位补满（1-1/1-2 人口 3）——空着上场就是白打。保护排除：
+        // 命杯成员（bond 环已处理）、纯 5 费（067 赠体锁定）、银河学者（等待凑 2）。
+        if (snapshot is not null && _currentNode != "1-3")
+        {
+            var fillAttempts = 0;
+            while (snapshot.OccupiedFrontSlots.Count < 3
+                   && fillAttempts < 3
+                   && !ct.IsCancellationRequested)
+            {
+                fillAttempts++;
+                var fill = snapshot.BenchCharacterDetails
+                    .Select(item => (SlotHead: item.Split(':')[0], Name: PureName(item.Split(':')[^1])))
+                    .Where(pair => !scholarNames.Contains(pair.Name))
+                    .Where(pair => !executor.GrailBondMemberNames.Contains(pair.Name))
+                    .Select(pair => (Pair: pair, Candidate: ResolveProtectedCharacter(pair.Name)))
+                    .Where(pair => pair.Candidate is null
+                                   || !GrailOperationExecutor.IsPureFiveCostCharacter(pair.Candidate))
+                    .Select(pair => pair.Pair)
+                    .FirstOrDefault();
+                if (fill == default || fill.Name is null)
+                {
+                    break;
+                }
+
+                if (!int.TryParse(fill.SlotHead, out var fillBenchSlot) || fillBenchSlot < 0)
+                {
+                    break;
+                }
+
+                var fillSlot = Enumerable.Range(0, 3).FirstOrDefault(
+                    i => !snapshot.OccupiedFrontSlots.Contains(i));
+                var fillDeploy = await SendAsync(
+                    $"A1 {fill.Name} 前台 {fillSlot + 1}",
+                    new GrailCommand(GrailCommandKind.A1,
+                        new GrailDeployArgs(fill.Name, PreparationLane.Front, fillSlot)),
+                    window, ct);
+                if (fillDeploy.Error is not null)
+                {
+                    break; // 识别不到/拖拽失败——交对账，不硬塞
+                }
+
+                deployedAny = true;
+                await Task.Delay(TimeSpan.FromSeconds(1), ct);
+                var fillReread = await SnapshotWithRetryAsync(window, ct);
+                if (fillReread is null)
+                {
+                    snapshotFresh = false;
+                    break;
+                }
+
+                snapshot = fillReread;
+                snapshotFresh = true;
             }
         }
 
@@ -584,8 +730,19 @@ public sealed class GrailDecisionEngine(
     {
         if (snapshot.AnomalyNotes.Contains("同名多处", StringComparison.Ordinal))
         {
-            emit("[决策层] 卖人前发现同名多处异常注（识别身份存疑）——本轮拒绝卖出，交对账。");
-            return 0;
+            // 1.2.89（用户令 R3 口径）：同名多处=本轮快照身份存疑，先重读一次新鲜快照
+            // 复核——读干净就照卖（可卖单位存在时绝不据此宣布山穷水尽，16:53 实锤：
+            // 有可卖单位却因拒卖被 R3 判死）；仍异常才拒卖交对账。
+            emit("[决策层] 卖人前发现同名多处异常注（识别身份存疑）——重读新鲜快照复核。");
+            var anomalyReread = await SnapshotWithRetryAsync(window, ct);
+            if (anomalyReread is null
+                || anomalyReread.AnomalyNotes.Contains("同名多处", StringComparison.Ordinal))
+            {
+                emit("[决策层] 复核仍同名多处（或读不到快照）——本轮拒绝卖出，交对账。");
+                return 0;
+            }
+
+            snapshot = anomalyReread;
         }
 
         var cap = snapshot.SellableBeyondKeepLineCount;
@@ -952,6 +1109,9 @@ public sealed class GrailDecisionEngine(
                     arrived = true;
                     _abandonStreak = 0; // F1（1.2.70 交叉复核）：M8 到达=弃局链路健康，清零退避计数
                     hit067 = string.Equals(fact.MatchedEnvironmentName, "英雄登场", StringComparison.Ordinal);
+                    // 1.2.89 节点锚点+新局边界：M8 到达=1-1 开始。
+                    _currentNode = "1-1";
+                    _lastBoardMutationAt = DateTimeOffset.MinValue;
                 }
                 else if (m8.Error is not null)
                 {
@@ -981,6 +1141,10 @@ public sealed class GrailDecisionEngine(
                             ? "[决策层] 识别流已恢复——以新鲜读数重判页面。"
                             : "[决策层] 识别流 60s 未恢复——按原失败路径处理。");
                     }
+
+                    // 1.2.89（用户令第 4 问题）：弃局前先应答祈愿弹框——祈愿是模态，
+                    // Esc 会被它吞掉（17:04 实锤：A9 三轮 Esc 全被祈愿吞→弃局死锁）。
+                    await EnsureWishAnsweredAsync(window, ct, maxProbes: 2);
 
                     // 守卫拦截/导航失败：先解除 Unknown 阻塞页（仅页面未知时），
                     // 再 A9 清场重发。已知页（备战/商店/战斗）不盲点。
@@ -1037,6 +1201,8 @@ public sealed class GrailDecisionEngine(
 
             if (!arrived)
             {
+                // 1.2.89（用户令第 4 问题）：同上——A9 前先应答祈愿弹框，防 Esc 被吞死锁。
+                await EnsureWishAnsweredAsync(window, ct, maxProbes: 2);
                 emit("[决策层] M8 三次尝试未到达备战席——A9 后重开外层循环。");
                 var abandon = await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
                 await SettleAfterAbandonAsync(window, ct);
@@ -1124,6 +1290,8 @@ public sealed class GrailDecisionEngine(
             return PreparationOutcome.Dead; // 战斗未推进：外层弃局重开
         }
 
+        _currentNode = "1-2"; // 1.2.89 节点锚点：M1 落地 reward_shop=进入 1-2
+
         // ---- S3：1-2（人口 3，进场先商店）----
         m5Result = await SendAsync("M5", new GrailCommand(GrailCommandKind.M5), window, ct);
         await SendAsync("M2", new GrailCommand(GrailCommandKind.M2), window, ct);
@@ -1163,6 +1331,8 @@ public sealed class GrailDecisionEngine(
         {
             return PreparationOutcome.Dead; // 战斗未推进：外层弃局重开
         }
+
+        _currentNode = "1-3"; // 1.2.89 节点锚点：M1 落地 investment_strategy=进入 1-3
 
         // ---- S4：投资策略（禁选阿哈大悦已内置于 M7）----
         await SendAsync("M7", new GrailCommand(GrailCommandKind.M7), window, ct);
@@ -1286,8 +1456,24 @@ public sealed class GrailDecisionEngine(
                 snapshot = await SnapshotWithRetryAsync(window, ct) ?? snapshot;
                 if (snapshot.Gold < snapshot.RefreshGoldCost && sold == 0)
                 {
-                    emit("[决策层] R3：金币耗尽且无可卖——弃局重开。");
-                    return PreparationOutcome.Dead;
+                    // 1.2.89（用户令第 5 问题 R3 口径）：真山穷水尽=可卖单位为零。
+                    // 快照仍报有可卖（身份异常拒卖等）时绝不判死——复核后再卖一轮；
+                    // 仍卖不动才认输（有界，防死循环）。
+                    var freshBeforeSurrender = await SnapshotWithRetryAsync(window, ct);
+                    if (freshBeforeSurrender is not null
+                        && freshBeforeSurrender.SellableBeyondKeepLineCount > 0)
+                    {
+                        emit("[决策层] 金不足但快照确认仍有可卖单位——复核后再卖一轮，不判 R3。");
+                        var retried = await SellRedundantsAsync(window, freshBeforeSurrender, ct);
+                        snapshot = await SnapshotWithRetryAsync(window, ct) ?? freshBeforeSurrender;
+                        sold = retried;
+                    }
+
+                    if (snapshot.Gold < snapshot.RefreshGoldCost && sold == 0)
+                    {
+                        emit("[决策层] R3：金币耗尽且无可卖——弃局重开。");
+                        return PreparationOutcome.Dead;
+                    }
                 }
             }
         }

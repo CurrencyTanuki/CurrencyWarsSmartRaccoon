@@ -13,9 +13,22 @@ public sealed class GrailMacroCommands(
     RewardStageAutomationController rewardStage,
     GrailRunStateHolder stateHolder,
     GrailRecognitionListener listener,
-    Func<nint, OpeningFilterSet, OpeningRerollLoopOptions, CancellationToken, Task<OpeningRerollLoopResult>> openingLoop)
+    OpeningRerollLoopCoordinator openingCoordinator)
     : IGrailCommandHandler
 {
+    private async Task<OpeningRerollLoopResult> InvokeOpeningLoop(
+        nint windowHandle,
+        OpeningFilterSet filters,
+        OpeningRerollLoopOptions options,
+        CancellationToken cancellationToken)
+    {
+        return await openingCoordinator.RunAsync(
+            windowHandle,
+            filters,
+            options,
+            cancellationToken);
+    }
+
     public async Task<GrailCommandResult> HandleAsync(
         GrailCommand command,
         GrailCommandContext context,
@@ -274,6 +287,10 @@ public sealed class GrailMacroCommands(
         // 看门狗：250ms 轮询识别流页面序列；①记录是否见过开局页（敌人概览/投资环境选择）；
         // ②未见开局页却连续 2 帧读到新鲜备战页=续局签名 → 立即取消 openingLoop（抢在
         // 任何兜底弃局之前停止一切操作）；③全程无新鲜帧 → 守卫不可判定（绝不伪造续局事实）。
+        // 1.2.89：runEntryPagesSeen 合并导航器证据——协调器在环境页识别完整时打
+        // LastLegitimateEntryAt（导航器自己的识别，不依赖识别流），快速导航+识别流滞后
+        // 不再误伤刚命中的合格局（16:31/16:54 两局实锤）。只认 M8 启动之后的确认。
+        var m8StartedAt = DateTimeOffset.UtcNow;
         var runEntryPagesSeen = false;
         var sawFreshFrame = false;
         var tripped = false;
@@ -284,38 +301,47 @@ public sealed class GrailMacroCommands(
         {
             while (!pageTraceDone.Task.IsCompleted)
             {
+                // 1.2.89：变量提升到 while 级——导航器证据合并块也要用 page/analysis。
                 var analysis = listener.LatestAnalysis;
-                if (analysis is not null)
+                var page = analysis?.Snapshot.PageId.Value;
+                var frameFresh = analysis?.Snapshot.AsOf is { } frameAt
+                    && DateTimeOffset.Now - frameAt <= TimeSpan.FromSeconds(10);
+                if (frameFresh)
                 {
-                    if (analysis.Snapshot.AsOf is { } frameAt
-                        && DateTimeOffset.Now - frameAt <= TimeSpan.FromSeconds(10))
-                    {
-                        sawFreshFrame = true;
-                    }
+                    sawFreshFrame = true;
+                }
 
-                    var page = analysis.Snapshot.PageId.Value;
-                    if (IsRunEntryPage(page))
+                if (page is not null && IsRunEntryPage(page))
+                {
+                    runEntryPagesSeen = true;
+                }
+
+                // 1.2.89：导航器证据合并——协调器确认过开局页序列即非续局（即便识别流漏帧）。
+                if (!runEntryPagesSeen
+                    && openingCoordinator.LastLegitimateEntryAt is { } entryConfirmedAt
+                    && entryConfirmedAt >= m8StartedAt)
+                {
+                    runEntryPagesSeen = true;
+                }
+
+                if (!frameFresh)
+                {
+                    prepStrikes = 0;
+                }
+                else if (!tripped
+                    && page is not null
+                    && page.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase))
+                {
+                    prepStrikes++;
+                    if (prepStrikes >= 2 && !runEntryPagesSeen)
                     {
-                        runEntryPagesSeen = true;
-                        prepStrikes = 0;
+                        tripped = true;
+                        guardCts.Cancel(); // 抢在导航失败兜底/弃局之前停住一切
                     }
-                    else if (!tripped
-                        && page is not null
-                        && page.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase)
-                        && analysis.Snapshot.AsOf is { } prepFrameAt
-                        && DateTimeOffset.Now - prepFrameAt <= TimeSpan.FromSeconds(10))
-                    {
-                        prepStrikes++;
-                        if (prepStrikes >= 2 && !runEntryPagesSeen)
-                        {
-                            tripped = true;
-                            guardCts.Cancel(); // 抢在导航失败兜底/弃局之前停住一切
-                        }
-                    }
-                    else
-                    {
-                        prepStrikes = 0;
-                    }
+                }
+                else
+                {
+                    prepStrikes = 0;
                 }
 
                 try
@@ -333,7 +359,7 @@ public sealed class GrailMacroCommands(
             OpeningRerollLoopResult result;
             try
             {
-                result = await openingLoop(
+                result = await InvokeOpeningLoop(
                     context.WindowHandle,
                     GrailRunLoop.BuildViableEnvironmentFilter(),
                     options,

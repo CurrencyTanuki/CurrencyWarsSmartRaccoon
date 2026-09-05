@@ -163,6 +163,15 @@ public sealed class OpeningRerollLoopCoordinator(
 {
     private TimeSpan _pauseBaseline;
 
+    /// <summary>
+    /// 最近一次"导航器确认经过开局页序列"的 UTC 时刻（1.2.89）：环境页识别完整
+    /// （InvestmentEnvironments 非空）即视为合法进局证据。M8 的续局守卫此前只看
+    /// 识别流页面序列，快速导航+识别流滞后时开局页会被整程漏帧，把刚命中的合格局
+    /// 误判成"游戏自动续局"而中止（16:31/16:54 两局实锤）。守卫现在合并本证据：
+    /// M8 启动后有导航器确认=非续局。
+    /// </summary>
+    public DateTimeOffset? LastLegitimateEntryAt { get; private set; }
+
     private const string HeroEntranceInvestmentEnvironmentId =
         "investment_environment_067";
 
@@ -369,6 +378,7 @@ public sealed class OpeningRerollLoopCoordinator(
                     navigation.EnemyOverview is not null &&
                     navigation.InvestmentEnvironments is not null)
                 {
+                    LastLegitimateEntryAt = DateTimeOffset.UtcNow;
                     break;
                 }
 
@@ -381,6 +391,7 @@ public sealed class OpeningRerollLoopCoordinator(
                             .InvestmentEnvironmentFallbackSelected &&
                     navigation.InvestmentEnvironments is not null)
                 {
+                    LastLegitimateEntryAt = DateTimeOffset.UtcNow;
                     break;
                 }
 
@@ -388,6 +399,7 @@ public sealed class OpeningRerollLoopCoordinator(
                 // 首次成功立即跳出重试环——不在该页面反复试探（该页 Esc 无效）。
                 if (navigation.InvestmentEnvironments is not null)
                 {
+                    LastLegitimateEntryAt = DateTimeOffset.UtcNow;
                     Publish(
                         OpeningRerollLoopState.Navigating,
                         round,

@@ -695,10 +695,32 @@ public sealed partial class RewardStageAutomationController
     /// 供决策层引擎在"世界内卡死"时调用（该状态下 A9 的 Esc 路径进不了放弃确认页，
     /// 而暂停页撤退链路已实战验证可用）。
     /// </summary>
+    /// <summary>单帧页面 ID 探测（1.2.89 Esc 纪律用）：不做稳定确认，只回答"现在大概在哪页"。</summary>
+    private async Task<string?> ReadStablePageIdAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        var (_, frame) = await CaptureForegroundAsync(windowHandle, cancellationToken);
+        return pageClassifier.Classify(frame)?.PageId;
+    }
+
     public async Task<bool> RetreatFromBattleViewAsync(
         nint windowHandle,
         CancellationToken cancellationToken)
     {
+        // 1.2.89 Esc 纪律（用户令第 5 问题）：撤退链路先验页面身份——当前在货币战争
+        // 主界面/游戏本体时绝无战斗可撤，发 Esc 只会弹出系统菜单甚至退出模式
+        // （17:07 实锤：主界面上 Esc 弹出游戏本体菜单页）。
+        var currentPage = await ReadStablePageIdAsync(windowHandle, cancellationToken);
+        if (currentPage is "normal_hud" or "currency_wars_home")
+        {
+            Publish(
+                "RewardBattleRetreatSkippedAtHome",
+                $"当前已识别 {currentPage}——无战斗可撤，跳过撤退链路。",
+                TaskEventLevel.Information);
+            return true;
+        }
+
         return await RecoverTimedOutRewardBattleAsync(windowHandle, cancellationToken);
     }
 

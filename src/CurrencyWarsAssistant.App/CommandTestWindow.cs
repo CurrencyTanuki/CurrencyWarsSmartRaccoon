@@ -131,7 +131,7 @@ public sealed class CommandTestWindow : Window
         var operation = new GrailOperationCommands(
             _executor, rewardStage, preparationBoard, runAbandoner);
         var macro = new GrailMacroCommands(
-            _executor, rewardStage, _stateHolder, _listener, openingCoordinator.RunAsync);
+            _executor, rewardStage, _stateHolder, _listener, openingCoordinator);
         _dispatcher = new GrailCommandDispatcher(recognition, operation, macro);
 
         Title = "指令测试台（决策层由 AI 代管）";

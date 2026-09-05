@@ -48,7 +48,6 @@ public static class AutomationPageIds
         "battle_generic",
         "incomplete_lineup_prompt",
         "uncompleted_battle_prompt",
-        "disconnect_prompt",
         "challenge_success",
         "challenge_failed",
         "challenge_health_depleted",
@@ -95,41 +94,26 @@ public sealed class TemplateGamePageClassifier(
         PageClassificationResult? best = null;
         var bestPriority = int.MinValue;
         var diagnostics = new List<PageAnchorDiagnostic>();
-
-        // 1.2.77 CPU 优化：两级探针（coarse-to-fine）。第一级只探每页的"必要代表
-        // 锚点集"（页达标则代表集至少一个达标：页达标要求 ≥MinimumAnchorMatches
-        // 个锚点达标，故任意 Count-Matches+1 个锚点中必有达标者，取阈值最高者），
-        // 快速排除不可能页；第二级仅对候选页补探其余锚点做完整判定。判定语义精确
-        // 等价，锚点匹配次数显著下降（普通 CPU 减负的核心手段之一）。
+        var allAnchors = pages.SelectMany(page => page.Anchors).ToArray();
         var probeByAnchor = new Dictionary<
             TemplateDefinition,
             TemplateMatchResult?>();
-        void ProbeAll(IReadOnlyList<TemplateDefinition> anchors)
+        if (templateMatcher is IBatchTemplateMatcher batchMatcher)
         {
-            var pending = anchors.Where(anchor => !probeByAnchor.ContainsKey(anchor)).ToList();
-            if (pending.Count == 0)
+            var probes = batchMatcher.ProbeMany(frame, allAnchors);
+            for (var index = 0; index < allAnchors.Length; index++)
             {
-                return;
+                probeByAnchor[allAnchors[index]] = probes[index];
             }
-
-            if (templateMatcher is IBatchTemplateMatcher batchMatcher)
+        }
+        else
+        {
+            foreach (var anchor in allAnchors)
             {
-                var probes = batchMatcher.ProbeMany(frame, pending);
-                for (var index = 0; index < pending.Count; index++)
-                {
-                    probeByAnchor[pending[index]] = probes[index];
-                }
-            }
-            else
-            {
-                foreach (var anchor in pending)
-                {
-                    probeByAnchor[anchor] = templateMatcher.Probe(frame, anchor);
-                }
+                probeByAnchor[anchor] = templateMatcher.Probe(frame, anchor);
             }
         }
 
-        var candidatePages = new List<GamePageDefinition>();
         foreach (var page in pages)
         {
             if (page.Anchors.Count == 0)
@@ -137,31 +121,6 @@ public sealed class TemplateGamePageClassifier(
                 continue;
             }
 
-            var minimumAnchorMatches =
-                page.MinimumAnchorMatches ?? page.Anchors.Count;
-            var required = page.Anchors.Count - minimumAnchorMatches + 1;
-            var representativeAnchors = page.Anchors
-                .OrderByDescending(anchor => anchor.Threshold)
-                .Take(required)
-                .ToList();
-            ProbeAll(representativeAnchors);
-            var representativeHit = representativeAnchors.Any(anchor =>
-            {
-                var probe = probeByAnchor.GetValueOrDefault(anchor);
-                return probe is not null && probe.Confidence >= anchor.Threshold;
-            });
-            if (representativeHit)
-            {
-                candidatePages.Add(page);
-            }
-        }
-
-        ProbeAll(candidatePages
-            .SelectMany(page => page.Anchors)
-            .ToList());
-
-        foreach (var page in candidatePages)
-        {
             var minimumAnchorMatches =
                 page.MinimumAnchorMatches ?? page.Anchors.Count;
             var matches = new List<TemplateMatchResult>(page.Anchors.Count);

@@ -274,11 +274,41 @@ public sealed class CommandTestWindow : Window
 
                 AppendLog("收到急停：正在中断当前指令…");
                 AppendResult("ABORT", ok: true, summary: "已请求中断当前指令");
-                cts.Cancel();
+                // 1.2.87 增量审查 P2：abort 恰落在指令收尾窗口时，命令侧已把 CTS
+                // 置空并 Dispose（using var）——此时 Cancel 抛 ObjectDisposedException
+                // 只是"指令恰好已结束"，绝不能让它病死监听循环（死后所有后续急停
+                // 会被静默吞掉、abort 文件已消费且无回执）。引用已换新=指令已结束。
+                if (!ReferenceEquals(_activeCommandCts, cts))
+                {
+                    AppendResult("ABORT", ok: true, summary: "指令已在此前结束，无需中断");
+                    continue;
+                }
+
+                try
+                {
+                    cts.Cancel();
+                }
+                catch (ObjectDisposedException)
+                {
+                    AppendResult("ABORT", ok: true, summary: "指令已在此前结束，无需中断");
+                }
             }
             catch (IOException)
             {
                 // 文件被写入方占用时下轮再取
+            }
+            catch (Exception exception)
+            {
+                // 1.2.87 增量审查 P2：急停通道兜底——任何未预期异常都要留可见痕迹
+                // 并继续轮询，监听循环绝不允许无声死亡（本任务无观察者）。
+                try
+                {
+                    AppendResult("ABORT", ok: false, summary: $"急停监听异常（下轮继续）：{exception.Message}");
+                }
+                catch
+                {
+                    // 回执也写失败时仍继续轮询，保住通道活性。
+                }
             }
         }
     }
@@ -521,7 +551,10 @@ public sealed class CommandTestWindow : Window
     /// ①纯只读——决策层运行期间也允许（远程 AI 监督 DECIDE 时看画面的刚需）；
     /// ②GdiGameCapture 走屏幕 DC/PrintWindow，不切前台、不抢用户焦点，也与 WGC 识别
     /// 会话的捕获单例零共享（每次 new，无状态冲突）；③局限：BitBlt 路径要求窗口未被
-    /// 完全遮挡（被盖住会截到别的窗口），回执摘要里如实携带尺寸供 AI 判断坏帧。
+    /// 完全遮挡（被盖住会截到别的窗口），回执摘要里如实携带尺寸供 AI 判断坏帧；
+    /// ④残余风险（增量审查 P3）：独占全屏/极端 GPU 合成下 BitBlt 与 PrintWindow 可能
+    /// 双双产出黑帧且当前不做黑帧复检——收到尺寸正常但画面全黑的 PNG 时按坏帧处置，
+    /// 改用识别流帧（START+I1）或 computer-use 截屏交叉核对。
     /// </summary>
     private async Task ExecuteScreenshotAsync(string line)
     {

@@ -10,7 +10,9 @@ namespace CurrencyWarsAssistant.Tests;
 /// <summary>后台区域诊断：把 run 帧 5/6/7/8/9 格后台框画到原图上存 PNG，供用户看卡牌位置。</summary>
 public sealed class BackCropDiagProbe
 {
-    [Fact]
+    // 2026-09-05：取证帧源已随磁盘卫生清理（runs/run-20260818-163242），探针无数据必挂；
+    // 恢复数据或改指新取证目录时移除本 Skip。
+    [Fact(Skip = "2026-09-05 取证帧已清理（run-20260818-163242）：诊断探针数据缺席时跳过")]
     public void DumpBackCrops()
     {
         var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);

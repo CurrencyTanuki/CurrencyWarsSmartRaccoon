@@ -3,6 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using CurrencyWarsAssistant.Advisor;
+using CurrencyWarsAssistant.Automation;
+using CurrencyWarsAssistant.Core;
 using CurrencyWarsAssistant.Game;
 using CurrencyWarsAssistant.Tasks;
 using CurrencyWarsAssistant.Vision;
@@ -32,6 +34,8 @@ namespace CurrencyWarsAssistant.App;
 ///   M3 / M4 / M5               祈愿应答 / 开聘用书 / 商店 Pass（M5 圣杯=1-3 N14 循环语义）
 ///   M7 [id1,id2,...]           选投资策略（缺省=写死优先级）
 ///   M8                         刷到命中→选中进局→1-1 备战席立刻停
+///   KEY Escape|Enter|F|V|LeftAlt  原始按键（1.2.87：经提权输入栈直发，诊断/救急用）
+///   CLICK x y                  原始点击（1.2.87：游戏窗口客户区像素坐标，诊断/救急用）
 ///   STATUS                     查看状态（游戏窗口/识别会话/最新帧/目标模式）
 ///   START / STOP               启动 / 停止识别会话（实时采集）
 ///   GOAL 单人|全员              设置目标模式（影响 M3/M4 的决策语义）
@@ -53,6 +57,7 @@ public sealed class CommandTestWindow : Window
     private readonly GrailRecognitionListener _listener;
     private readonly GrailOperationExecutor _executor;
     private readonly GrailCommandDispatcher _dispatcher;
+    private readonly IInputController _input;
     private readonly GrailFlightRecorder _flightRecorder = new();
     private readonly IPhase2LiveCollectionService _collectionService;
     private readonly IGameWindowService _gameWindowService;
@@ -105,13 +110,15 @@ public sealed class CommandTestWindow : Window
         IRunAbandoner runAbandoner,
         IPhase2LiveCollectionService collectionService,
         IGameWindowService gameWindowService,
-        OpeningRerollLoopCoordinator openingCoordinator)
+        OpeningRerollLoopCoordinator openingCoordinator,
+        IInputController inputController)
     {
         _preparationBoard = preparationBoard;
         _rewardStage = rewardStage;
         _collectionService = collectionService;
         _gameWindowService = gameWindowService;
         _gameData = gameData;
+        _input = inputController;
         _listener = new GrailRecognitionListener(collectionService);
         _executor = new GrailOperationExecutor(
             rewardStage, preparationBoard, trialSelection, trialRecruit, _stateHolder, gameData);
@@ -165,6 +172,7 @@ public sealed class CommandTestWindow : Window
         };
 
         QuarantineLeftoverCommandFile();
+        DeleteStaleExitFileAtStartup();
         _timer = new DispatcherTimer(DispatcherPriority.Background)
         {
             Interval = TimeSpan.FromMilliseconds(700),
@@ -210,6 +218,29 @@ public sealed class CommandTestWindow : Window
                 // 删除也失败：轮询器仍会读到，只能记录并警示（极端占用场景）。
                 AppendLog("⚠ 检测到启动前残留的指令文件，且隔离/删除均失败——请人工检查指令文件。");
             }
+        }
+    }
+
+    /// <summary>
+    /// 启动 exit.txt 卫生（1.2.87）：exit.txt 是"停已运行实例"通道，消费方（运行中的
+    /// 实例）会自删后关窗。启动时若它仍存在=写它的时候没有实例在跑（停了个空），
+    /// 留着会让本实例首个轮询 tick 误自退——这正是"后开实例秒退"问题的根源之一。
+    /// 单实例互斥（1.2.87）保证此刻无其他实例在跑，删除是安全的。
+    /// </summary>
+    private void DeleteStaleExitFileAtStartup()
+    {
+        try
+        {
+            var exitPath = Path.Combine(AppContext.BaseDirectory, "指令测试-exit.txt");
+            if (File.Exists(exitPath))
+            {
+                File.Delete(exitPath);
+                AppendLog("启动时发现残留的 exit.txt（无实例消费过），已删除以防误自退。");
+            }
+        }
+        catch (Exception)
+        {
+            // 卫生清理失败不阻断启动；若确是运行中的停机指令，下一轮询 tick 仍会正常消费。
         }
     }
 
@@ -402,6 +433,47 @@ public sealed class CommandTestWindow : Window
         }
     }
 
+    /// <summary>
+    /// KEY/CLICK 的共享执行通道（1.2.87，用户令「AI 要能自主操作游戏」）：经已提权
+    /// 实例的输入栈直发原始按键/点击——自带急停闸（InputKillSwitch）与前台守卫
+    /// （PrepareWindow/PrepareTarget 先把游戏切到前台）。用途=语义指令覆盖不到的
+    /// 场景：弹窗取证、救急、页面身份验证。决策层运行期间拒绝并发（与语义指令同一闸门）。
+    /// 原始输入不过果断弃局看门狗（诊断指令失败不该触发 AUTO-A9）。
+    /// </summary>
+    private async Task ExecuteRawInputAsync(
+        string line,
+        Func<GameWindowInfo, Task<ActionResult>> act)
+    {
+        if (_decisionTask is { IsCompleted: false })
+        {
+            AppendResult(line, ok: false, summary: "决策层运行中，拒绝并发指令（先 DECIDE 停止）");
+            _flightRecorder.Record(line, ok: false, "决策层运行中拒绝并发指令", 0, "rejected");
+            return;
+        }
+
+        var window = FindGameWindow();
+        if (window is null)
+        {
+            AppendResult(line, ok: false, summary: "未找到可自动化的游戏窗口");
+            _flightRecorder.Record(line, ok: false, "未找到可自动化的游戏窗口", 0, "no_window");
+            return;
+        }
+
+        var flightStopwatch = System.Diagnostics.Stopwatch.StartNew();
+        AppendReceipt(line);
+        var result = await act(window);
+        flightStopwatch.Stop();
+        AppendResult(line, ok: result.Succeeded, summary: result.Message);
+        AppendLog(result.Succeeded ? $"✔ OK {result.Message}" : $"✗ 失败 {result.Message}");
+        _flightRecorder.Record(line, result.Succeeded, result.Message, flightStopwatch.ElapsedMilliseconds, "raw_input");
+    }
+
+    private static bool TryParseInputKey(string text, out InputKey key)
+    {
+        return Enum.TryParse(text, ignoreCase: true, out key)
+            && Enum.IsDefined(typeof(InputKey), key);
+    }
+
     private async Task ExecuteLineAsync(string rawLine)
     {
         var line = rawLine.Trim();
@@ -432,6 +504,37 @@ public sealed class CommandTestWindow : Window
                     return;
                 case "DECIDE":
                     HandleDecide(tokens);
+                    return;
+                case "KEY":
+                    if (tokens.Length == 2 && TryParseInputKey(tokens[1], out var rawKey))
+                    {
+                        await ExecuteRawInputAsync(
+                            line,
+                            window => _input.PressKeyAsync(window, rawKey, new ActionPolicy(), CancellationToken.None));
+                    }
+                    else
+                    {
+                        AppendLog("✗ 用法：KEY <Escape|Enter|F|V|LeftAlt>");
+                        AppendResult(line, ok: false, summary: "解析失败：KEY <Escape|Enter|F|V|LeftAlt>");
+                    }
+                    return;
+                case "CLICK":
+                    if (tokens.Length == 3
+                        && int.TryParse(tokens[1], out var clickX)
+                        && int.TryParse(tokens[2], out var clickY))
+                    {
+                        await ExecuteRawInputAsync(
+                            line,
+                            window => _input.ClickAsync(
+                                new ClickTarget("ai-raw-click", "AI诊断点击", window, new PixelRect(clickX, clickY, 1, 1)),
+                                new ActionPolicy(),
+                                CancellationToken.None));
+                    }
+                    else
+                    {
+                        AppendLog("✗ 用法：CLICK <x> <y>（游戏窗口客户区像素坐标）");
+                        AppendResult(line, ok: false, summary: "解析失败：CLICK <x> <y>（客户区像素坐标）");
+                    }
                     return;
             }
 

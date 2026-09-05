@@ -11,7 +11,9 @@ namespace CurrencyWarsAssistant.Tests;
 /// best 角 + conf + runnerUp + lead，定位 2 星霍霍为何 conf0.5<0.55。</summary>
 public sealed class BackWarpDiagProbe
 {
-    [Fact]
+    // 2026-09-05：取证帧源已随磁盘卫生清理（runs/run-20260818-163242），探针无数据必挂；
+    // 恢复数据或改指新取证目录时移除本 Skip。
+    [Fact(Skip = "2026-09-05 取证帧已清理（run-20260818-163242）：诊断探针数据缺席时跳过")]
     public void DumpWarpedBackCrops()
     {
         var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);

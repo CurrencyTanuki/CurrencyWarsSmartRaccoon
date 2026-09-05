@@ -54,12 +54,17 @@ public partial class App : Application
         }
 
         base.OnStartup(e);
-        // 1.2.72（运维解锁）：command-test（测试台）跳过单实例——它与主程序共存是
-        // 合法需求，且实测场景需要它绕过僵尸实例占用的互斥量（10656 教训）。
-        if (!headlessCommand && !commandTestMode && !TryAcquireSingleInstance())
+        // 1.2.87（用户令：恢复单实例）：1.2.72 的测试台旁路在实践中让发布循环累积
+        // 实例、后开实例还可能被残留 exit.txt 静默关掉——全模式统一互斥。测试台撞锁
+        // 时先写 exit.txt 请已存测试台实例退出（其空闲时消费并关窗）再短暂重试拿锁；
+        // 仍拿不到（普通模式僵尸占锁等）则本实例退出，绝不双开。
+        if (!headlessCommand && !TryAcquireSingleInstance())
         {
-            Shutdown(0);
-            return;
+            if (!commandTestMode || !TryRetakeSingleInstanceAsCommandTest())
+            {
+                Shutdown(0);
+                return;
+            }
         }
 
         if (headlessCommand)
@@ -463,7 +468,7 @@ public partial class App : Application
             DispatcherPriority.ApplicationIdle);
     }
 
-    private bool TryAcquireSingleInstance()
+    private bool TryAcquireSingleInstance(bool signalExisting = true)
     {
         _singleInstanceActivation = new EventWaitHandle(
             false,
@@ -484,11 +489,53 @@ public partial class App : Application
             return true;
         }
 
-        _singleInstanceActivation.Set();
+        if (signalExisting)
+        {
+            _singleInstanceActivation.Set();
+        }
         _singleInstanceActivation.Dispose();
         _singleInstanceActivation = null;
         _singleInstanceMutex.Dispose();
         _singleInstanceMutex = null;
+        return false;
+    }
+
+    /// <summary>
+    /// 1.2.87：测试台撞锁的有界接管——向 BaseDirectory 写 exit.txt 请已存测试台实例
+    /// 退出（其空闲时消费、自删、关窗），每秒重试拿锁最多 12 秒；拿到=本实例继续启动。
+    /// 普通模式实例不消费 exit.txt，占锁时必然超时失败（由人工/发布脚本停旧处理）。
+    /// 超时后删除自己写的请退文件，防止残留误伤后续实例。
+    /// </summary>
+    private bool TryRetakeSingleInstanceAsCommandTest()
+    {
+        var exitPath = Path.Combine(AppContext.BaseDirectory, "指令测试-exit.txt");
+        try
+        {
+            File.WriteAllText(exitPath, "stop");
+        }
+        catch (IOException)
+        {
+            // 写不出请退信号也要继续重试拿锁：旧实例可能本就在退出中。
+        }
+
+        for (var attempt = 0; attempt < 12; attempt++)
+        {
+            Thread.Sleep(TimeSpan.FromSeconds(1));
+            if (TryAcquireSingleInstance(signalExisting: false))
+            {
+                return true;
+            }
+        }
+
+        try
+        {
+            File.Delete(exitPath);
+        }
+        catch (IOException)
+        {
+            // 残留由下一次成功启动的实例做启动卫生清理。
+        }
+
         return false;
     }
 

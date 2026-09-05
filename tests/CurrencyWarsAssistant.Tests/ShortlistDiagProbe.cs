@@ -10,7 +10,9 @@ namespace CurrencyWarsAssistant.Tests;
 /// ②Rank(全模板) 各角色真实分数——验证"完全不像的角色为何也高到0.499"。</summary>
 public sealed class ShortlistDiagProbe
 {
-    [Fact]
+    // 2026-09-05：取证帧源已随磁盘卫生清理（runs/run-20260818-163242），探针无数据必挂；
+    // 恢复数据或改指新取证目录时移除本 Skip。
+    [Fact(Skip = "2026-09-05 取证帧已清理（run-20260818-163242）：诊断探针数据缺席时跳过")]
     public void DumpShortlistAndRank()
     {
         var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);

@@ -25,7 +25,10 @@ public sealed class SlotDeriveProbe
             var st=await an.AnalyzeAsync(f,"preparation_1_1","s:"+fn,new RunSnapshot{RunId="sd",AsOf=f.CapturedAt},default);
             string pop= st.Population.Status==ObservationStatus.Known ? st.Population.Value.ToString() : (st.Population.Status.ToString()+" OCR:"+string.Join("/",st.Population.Evidence.Select(e=>e.Summary??"")));
             string sl = st.StoreLevel.Status==ObservationStatus.Known ? st.StoreLevel.Value.ToString() : (st.StoreLevel.Status.ToString()+" OCR:"+string.Join("/",st.StoreLevel.Evidence.Select(e=>e.Summary??"")));
-            System.Console.WriteLine($"[DERIVE] {fn} population={pop} storeLevel={sl} 小计pop-sl={ (pop!="Unknown"&&sl!="Unknown" ? (int.Parse(pop)-int.Parse(sl)).ToString():"?") }");
+            var sub = st.Population.Status==ObservationStatus.Known && st.StoreLevel.Status==ObservationStatus.Known
+                ? (st.Population.Value-st.StoreLevel.Value).ToString()
+                : "?";
+            System.Console.WriteLine($"[DERIVE] {fn} population={pop} storeLevel={sl} 小计pop-sl={sub}");
             System.Console.WriteLine($"[DERIVE] {fn} -> 前台+后台 阵容槽数 = {st.Formation.Value!.Count(x=>x.Zone==FormationZone.Front||x.Zone==FormationZone.Back)} , 后台区槽位 = {st.Formation.Value!.Count(x=>x.Zone==FormationZone.Back)}");
         }
     }

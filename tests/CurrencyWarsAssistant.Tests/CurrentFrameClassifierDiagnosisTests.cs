@@ -19,7 +19,9 @@ public sealed class CurrentFrameClassifierDiagnosisTests
     public CurrentFrameClassifierDiagnosisTests(ITestOutputHelper output)
         => _output = output;
 
-    [Fact]
+    // 手动诊断探针（2026-09-04 用户令）：按需运行——设置 CW_DIAG_FRAME 环境变量指向
+    // 目标帧后，临时移除本 Skip 再执行；平时不参与套件门禁。
+    [Fact(Skip = "手动诊断探针：设置 CW_DIAG_FRAME 并临时移除本 Skip 后运行")]
     public void ClassifyCapturedFrameWithSoftwareClassifier()
     {
         var framePath = Environment.GetEnvironmentVariable("CW_DIAG_FRAME");

@@ -448,7 +448,7 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
             {
                 Publish(
                     "RecoveryStrategyCycle",
-                    "放弃结算点击输入失败；重新识别并继续下一轮。",
+                    "放弃结算点击输入失败。",
                     TaskEventLevel.Warning);
             }
             else
@@ -457,16 +457,23 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                 var challengeStrikes = 0;
                 while (ActiveUtcNow < rapidDeadline && challengeFailed is null)
                 {
-                    await ClickStandardPointAsync(
-                        windowHandle,
-                        "abandon_and_settle_rapid",
-                        "放弃并结算连点",
-                        AbandonAndSettlePoint,
-                        new ActionPolicy
-                        {
-                            AfterActionDelay = TimeSpan.Zero
-                        },
-                        cancellationToken);
+                    // 1.2.91 复审 P2：strike=1 后停止点击——(750,744) 在这些页面就是
+                    // 推进位，继续点会让 challenge_failed 永远凑不满连续 2 帧（系统性
+                    // 诚实失败）。strike≥1 后只探测直至双帧确认或窗口耗尽。
+                    if (challengeStrikes == 0)
+                    {
+                        await ClickStandardPointAsync(
+                            windowHandle,
+                            "abandon_and_settle_rapid",
+                            "放弃并结算连点",
+                            AbandonAndSettlePoint,
+                            new ActionPolicy
+                            {
+                                AfterActionDelay = TimeSpan.Zero
+                            },
+                            cancellationToken);
+                    }
+
                     await Task.Delay(
                         TimeSpan.FromMilliseconds(500),
                         cancellationToken);
@@ -529,63 +536,76 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
 
         if (challengeFailed is null)
         {
-            return Failed("放弃并结算未进入挑战失败页；已达到 2 轮安全重试上限。");
+            return Failed("放弃并结算连点 3 秒未探测到挑战失败页。");
         }
 
-        // 1.2.91（用户令点法 2026-09-05 晚）：challenge_failed 之后——
-        // ①页面偏左的"保存并退出/结算推进"位（960,899 结算链按钮）**只点击一次**；
-        // ②页面中下部（750,744）连点 3 秒（0.5 秒间隔）；
-        // ③统一验证回主页（3 秒）。替换原 12 连点×(400ms+双页检) 结构。
-        var saveExit = await ClickStandardPointAsync(
-            windowHandle,
-            "settlement_save_exit_once",
-            "保存并退出（单次）",
-            NextPoint,
-            new ActionPolicy
-            {
-                AfterActionDelay = TimeSpan.Zero
-            },
-            cancellationToken);
-        Publish(
-            saveExit.Succeeded ? "RecoveryNextClicked" : "RecoveryActionRetry",
-            saveExit.Succeeded
-                ? "已点击保存并退出/结算推进位（单次，按用户点法）。"
-                : $"保存并退出点击失败：{saveExit.Message}——继续中下部连点。",
-            saveExit.Succeeded ? TaskEventLevel.Information : TaskEventLevel.Warning);
-
-        var returnedHome = false;
-        var advanceDeadline = ActiveUtcNow + TimeSpan.FromSeconds(3);
-        while (ActiveUtcNow < advanceDeadline && !cancellationToken.IsCancellationRequested)
+        // 1.2.91 复审 P1：经主页收敛（challenge_failed_via_home 合成态）=已回主界面，
+        // **绝不再点任何位置**（16:32 红线：主界面点击=弹系统菜单/退出模式）——
+        // 直接带 returnedHome 走统一验证。
+        var convergedViaHome = challengeFailed is not null
+            && challengeFailed.DisplayName == "challenge_failed_via_home";
+        var returnedHome = convergedViaHome;
+        if (challengeFailed is not null && !convergedViaHome)
         {
-            await ClickStandardPointAsync(
+            // 1.2.91（用户令点法）：challenge_failed 之后——
+            // ①页面偏左的"保存并退出/结算推进"位（960,899 结算链按钮）**只点击一次**；
+            // ②页面中下部（750,744）连点 3 秒（0.5 秒间隔）；
+            // ③统一验证回主页（3 秒）。替换原 12 连点×(400ms+双页检) 结构。
+            var saveExit = await ClickStandardPointAsync(
                 windowHandle,
-                "settlement_advance_rapid",
-                "结算推进连点（中下部）",
-                AbandonAndSettlePoint,
+                "settlement_save_exit_once",
+                "保存并退出（单次）",
+                NextPoint,
                 new ActionPolicy
                 {
                     AfterActionDelay = TimeSpan.Zero
                 },
                 cancellationToken);
-            await Task.Delay(
-                TimeSpan.FromMilliseconds(500),
-                cancellationToken);
+            Publish(
+                saveExit.Succeeded ? "RecoveryNextClicked" : "RecoveryActionRetry",
+                saveExit.Succeeded
+                    ? "已点击保存并退出/结算推进位（单次，按用户点法）。"
+                    : $"保存并退出点击失败：{saveExit.Message}——继续中下部连点。",
+                saveExit.Succeeded ? TaskEventLevel.Information : TaskEventLevel.Warning);
 
-            // 击后单帧查主页早停（1.2.63 实拍教训保留：回主界面绝不盲点页面中部）。
-            var probeWindow = await foregroundGuard.WaitUntilForegroundAsync(
-                windowHandle,
-                cancellationToken);
-            var probeFrame = await capture.CaptureAsync(probeWindow, cancellationToken);
-            var page = classifier.Classify(probeFrame);
-            if (page is not null &&
-                string.Equals(page.PageId, "currency_wars_home", StringComparison.OrdinalIgnoreCase))
+            var advanceDeadline = ActiveUtcNow + TimeSpan.FromSeconds(3);
+            while (ActiveUtcNow < advanceDeadline && !cancellationToken.IsCancellationRequested)
             {
-                Publish(
-                    "RecoveryCompletedEarlyHome",
-                    "结算推进连点期间已确认回到货币战争主界面——停止连点。");
-                returnedHome = true;
-                break;
+                await ClickStandardPointAsync(
+                    windowHandle,
+                    "settlement_advance_rapid",
+                    "结算推进连点（中下部）",
+                    AbandonAndSettlePoint,
+                    new ActionPolicy
+                    {
+                        AfterActionDelay = TimeSpan.Zero
+                    },
+                    cancellationToken);
+                await Task.Delay(
+                    TimeSpan.FromMilliseconds(500),
+                    cancellationToken);
+
+                // 击后单帧查主页早停（1.2.63 实拍教训保留：回主界面绝不盲点页面中部）。
+                // 1.2.91 复审 P1 加固：早停含 normal_hud 与强证据兜底（与基线强度对齐）。
+                var probeWindow = await foregroundGuard.WaitUntilForegroundAsync(
+                    windowHandle,
+                    cancellationToken);
+                var probeFrame = await capture.CaptureAsync(probeWindow, cancellationToken);
+                var page = classifier.Classify(probeFrame);
+                if (page?.PageId is "currency_wars_home" or "normal_hud"
+                    || (page is null && CurrencyWarsHomeEvidence.IsMatch(probeFrame)))
+                {
+                    Publish(
+                        "RecoveryCompletedEarlyHome",
+                        "结算推进连点期间已确认回到货币战争主界面——停止连点。");
+                    returnedHome = true;
+                    break;
+                }
             }
+        }
+        else if (convergedViaHome)
+        {
+            returnedHome = true;
         }
 
         // 统一验证：连点结束后等主页出现（最多 3 秒）。

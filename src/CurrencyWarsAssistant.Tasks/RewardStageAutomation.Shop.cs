@@ -648,6 +648,26 @@ public sealed partial class RewardStageAutomationController
                 return openedCount;
             }
 
+            // 1.2.111（用户目击"金矿没开"而日志自洽=画面级盲区）：开矿前后帧落盘
+            // mine-evidence，供视觉模型与引擎认知对账（含大金球参数校准真值）。
+            var mineEvidenceBefore = pass == 1;
+            if (mineEvidenceBefore)
+            {
+                try
+                {
+                    var mineDir = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "CurrencyWarsSmartRaccoon", "mine-evidence");
+                    Directory.CreateDirectory(mineDir);
+                    frame.SavePng(Path.Combine(
+                        mineDir, $"{DateTime.Now:yyyyMMdd-HHmmssfff}-mine-before.png"));
+                }
+                catch
+                {
+                    // 取证失败不影响开矿。
+                }
+            }
+
             var mines = visualDetector.FindMineBalls(frame);
             if (mines.Count == 0)
             {

@@ -1821,6 +1821,47 @@ public sealed partial class PreparationBoardController(
         return null;
     }
 
+    /// <summary>部署时实时槽位占用（1.2.109：陈旧占用快照在商店动画期读不到已上场
+    /// 成员，曾致三名命杯成员连续互换挤压到同一槽位）。槽区识别=卖人验证同款原语；
+    /// 读帧失败返回 null 由调用方回落陈旧表。</summary>
+    internal async Task<(HashSet<int> Front, HashSet<int> Back)?> ReadLiveSlotOccupancyAsync(
+        nint windowHandle,
+        string expectedPreparationPageId,
+        CancellationToken cancellationToken)
+    {
+        var captured = await CaptureVerifiedPreparationAsync(
+            windowHandle,
+            expectedPreparationPageId,
+            allowEscapeRecovery: false,
+            cancellationToken);
+        if (captured is null)
+        {
+            return null;
+        }
+
+        var front = new HashSet<int>();
+        foreach (var (rect, index) in FrontSlots.Select((rect, index) => (rect, index)))
+        {
+            if (recognizer.Recognize(captured.Value.Frame, templates, [rect])[0].State
+                != CharacterCardSlotState.Empty)
+            {
+                front.Add(index);
+            }
+        }
+
+        var back = new HashSet<int>();
+        foreach (var (rect, index) in BackSlots.Select((rect, index) => (rect, index)))
+        {
+            if (recognizer.Recognize(captured.Value.Frame, templates, [rect])[0].State
+                != CharacterCardSlotState.Empty)
+            {
+                back.Add(index);
+            }
+        }
+
+        return (front, back);
+    }
+
     private async Task<bool> SellCharacterWithVerificationAsync(
         nint windowHandle,
         RecognizedBenchCharacter candidate,

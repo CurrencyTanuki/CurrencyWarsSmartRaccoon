@@ -653,13 +653,19 @@ public sealed partial class GrailOperationExecutor(
             }
         }
 
+        // 1.2.109（19:44 局实弹：三条独立 M5 各自的占用快照在商店动画期取，场上
+        // 已部署成员读不出→每次都判 4 号位空闲→凛/闪/Saber 连续互换挤压，羁绊恒 1）：
+        // 空槽判定改为部署时实时读前后台槽区（与卖人验证同款槽区识别原语，全天可靠），
+        // 陈旧占用表只作兜底对照；前台满则后台，全满诚实跳过（绝不互换挤人）。
         var lane = PreparationLane.Front;
-        var occupied = occupiedFront;
-        var capacity = FrontSlotCapacity;
         int? slot = null;
-        for (var i = 0; i < capacity; i++)
+        var liveOccupied = await preparationBoard.ReadLiveSlotOccupancyAsync(
+            windowHandle, expectedPreparationPageId, cancellationToken);
+        var occupiedFrontLive = liveOccupied?.Front ?? occupiedFront;
+        var occupiedBackLive = liveOccupied?.Back ?? occupiedBack;
+        for (var i = 0; i < FrontSlotCapacity; i++)
         {
-            if (!occupied.Contains(i))
+            if (!occupiedFrontLive.Contains(i))
             {
                 slot = i;
                 break;
@@ -669,11 +675,9 @@ public sealed partial class GrailOperationExecutor(
         if (slot is null)
         {
             lane = PreparationLane.Back;
-            occupied = occupiedBack;
-            capacity = BackSlotCapacity;
-            for (var i = 0; i < capacity; i++)
+            for (var i = 0; i < BackSlotCapacity; i++)
             {
-                if (!occupied.Contains(i))
+                if (!occupiedBackLive.Contains(i))
                 {
                     slot = i;
                     break;
@@ -689,7 +693,7 @@ public sealed partial class GrailOperationExecutor(
         if (await preparationBoard.GrailDeployBenchCharacterAsync(
                 windowHandle, bought, lane, slot.Value, expectedPreparationPageId, cancellationToken))
         {
-            occupied.Add(slot.Value);
+            occupiedFront.Add(slot.Value);
             return (true, lane == PreparationLane.Front ? slot.Value : null);
         }
 

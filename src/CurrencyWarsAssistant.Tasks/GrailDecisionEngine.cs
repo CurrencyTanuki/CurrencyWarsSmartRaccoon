@@ -918,7 +918,68 @@ public sealed class GrailDecisionEngine(
             {
                 if (emptyCapConfirmed)
                 {
-                    break;
+                    // 1.2.109（19:44 局实弹：S4 清场只卖了 1 人——场上 3 名杂兵在识别
+                    // 半帧里不可见，cap=0 两帧一致仍漏卖）：台账对账（1.2.90 口径识别∪
+                    // 账本）——台账记着上场而快照看不见的槽位，按台账位置直接 A2 卖
+                    // （数据级保护：命杯/纯5费/星徽携带者跳过）。卖出后复核名字消失。
+                    var carriers = executor.PeekBadgeCarrierNames();
+                    var ledgerSellable = _frontLedger
+                        .Where(kv => !carriers.Contains(kv.Key))
+                        .Select(kv => (kv.Key, kv.Value))
+                        .Where(pair => ResolveProtectedCharacter(pair.Key) is { } c
+                                       && !GrailOperationExecutor.IsPureFiveCostCharacter(c)
+                                       && !c.BondNames.Any(b =>
+                                           b is not null && b.Contains("命运圣杯", StringComparison.Ordinal)))
+                        .ToList();
+                    if (ledgerSellable.Count == 0)
+                    {
+                        break;
+                    }
+
+                    emit($"[决策层] 清场：可卖数=0 但上场台账有 {ledgerSellable.Count} 名快照不可见单位——按台账槽位对账卖出。");
+                    var ledgerSoldAny = false;
+                    foreach (var (name, slot) in ledgerSellable)
+                    {
+                        var a2 = await SendAsync(
+                            $"A2 前台 {slot + 1}（台账对账）",
+                            new GrailCommand(GrailCommandKind.A2,
+                                new GrailPositionArgs(PreparationLane.Front, slot)), window, ct);
+                        if (a2.Error is not null)
+                        {
+                            emit($"[决策层] 台账对账卖出「{name}」回执失败：{a2.Error}——跳过该名。");
+                            continue;
+                        }
+
+                        await Task.Delay(TimeSpan.FromSeconds(1), ct);
+                        var check = await SnapshotWithRetryAsync(window, ct);
+                        if (check is not null
+                            && !check.DeployedCharacterDetails.Any(d =>
+                                d.Contains(name, StringComparison.Ordinal)))
+                        {
+                            _frontLedger.Remove(name);
+                            ledgerSoldAny = true;
+                            emit($"[决策层] 台账对账卖出「{name}」复核通过。");
+                        }
+                        else
+                        {
+                            emit($"[决策层] 台账对账卖出「{name}」复核未通过——停手交对账。");
+                            break;
+                        }
+                    }
+
+                    if (!ledgerSoldAny)
+                    {
+                        break;
+                    }
+
+                    var afterLedger = await SnapshotWithRetryAsync(window, ct);
+                    if (afterLedger is not null)
+                    {
+                        snapshot = afterLedger;
+                    }
+
+                    emptyCapConfirmed = false;
+                    continue;
                 }
 
                 // cap=0 可能来自漏读帧（15:02 局根因）——终判前重读一次确认。

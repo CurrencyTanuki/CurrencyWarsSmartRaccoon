@@ -236,7 +236,9 @@ public sealed class GrailDecisionEngine(
     /// 1.2.66 冗余审计：前密后疏退避（1,1,2,2,3,5,5,5 秒），总窗口 24s（原 8×5s=40s
     /// 的 60%，交叉复核 F8 澄清：并非"相当"）——换取转场 1-3 秒完成时首次重试即命中，
     /// 识别冻结期的兜底由外层 SnapshotWithRetry 调用方的重试预算承接。</summary>
-    private static readonly int[] SnapshotRetryBackoffSeconds = [1, 1, 2, 2, 3, 5, 5, 5];
+    // 1.2.112（用户令压缩等干净帧：商店关闭动画 <1s，26 秒停顿=慢节奏白等）：
+    // 早期密集重试（0.5s 起步），总窗 24→15s；流救援仍在第 1 次失败触发。
+    private static readonly double[] SnapshotRetryBackoffSeconds = [0.5, 0.5, 1, 1, 2, 2, 3, 5];
 
     private async Task<GrailRunSnapshot?> SnapshotWithRetryAsync(nint window, CancellationToken ct)
     {

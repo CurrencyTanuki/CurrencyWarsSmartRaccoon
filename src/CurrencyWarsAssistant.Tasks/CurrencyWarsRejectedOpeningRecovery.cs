@@ -634,9 +634,26 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
         if (challengeFailed is null)
         {
             // 1.2.95 审查 P3-4：初始点击输入失败与连点未探测是两种事实，文案区分。
-            return Failed(settleClickSucceeded
-                ? "放弃并结算连点 6 秒未探测到挑战失败页。"
-                : "放弃并结算初始点击输入失败，连点推进未启动。");
+            if (!settleClickSucceeded)
+            {
+                return Failed("放弃并结算初始点击输入失败，连点推进未启动。");
+            }
+
+            // 1.2.100（实弹 09:57/09:54 两轮复现）：6 秒窗内没探到挑战失败页=游戏停在
+            // 结算链任意中间页（放弃弹框确认链/总结页族）——此前直接 Failed 交外层，
+            // 引擎 M8 导航对 Unknown 空转 1-2 分钟才被恢复层救回。按 rule 四.22（中间页
+            // 不识别、盲点到回主界面）超时即直通，压缩恢复延迟到秒级。
+            Publish(
+                "RecoverySettleTimeoutBlindAdvance",
+                "放弃结算连点 6 秒未探测到挑战失败页——按弃局原则盲点直通主界面（不识别中间页）。",
+                TaskEventLevel.Warning);
+            if (await BlindAdvanceToHomeAsync(windowHandle, cancellationToken))
+            {
+                return RejectedOpeningRecoveryResult.Recovered(
+                    "放弃结算超时后盲点推进已回到货币战争主界面。");
+            }
+
+            return Failed("放弃并结算连点 6 秒未探测到挑战失败页；盲点直通也未确认回主界面。");
         }
 
         // 1.2.91 复审 P1：经主页收敛（challenge_failed_via_home 合成态）=已回主界面，
@@ -733,8 +750,21 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
         const string message = "已放弃不合格开局并返回货币战争主界面。";
         if (!returnedHome)
         {
+            // 1.2.100（实弹 09:54 复现）：推进连点+3 秒统一验证都没确认主页=游戏仍在
+            // 结算链中间页——此前 Failed 交"被动恢复"，实弹证明被动恢复要空转 1-2 分钟。
+            // 按 rule 四.22 超时即盲点直通（击前主页/备战页急停内置）。
+            Publish(
+                "RecoveryAdvanceTimeoutBlindAdvance",
+                "结算推进后未确认主页——按弃局原则盲点直通主界面（不识别中间页）。",
+                TaskEventLevel.Warning);
+            if (await BlindAdvanceToHomeAsync(windowHandle, cancellationToken))
+            {
+                return RejectedOpeningRecoveryResult.Recovered(
+                    "结算推进超时后盲点推进已回到货币战争主界面。");
+            }
+
             return Failed(
-                "结算推进连点 3 秒后仍未确认回到主界面；输入已停止，交被动恢复接管。");
+                "结算推进连点 3 秒后仍未确认回到主界面；盲点直通也未确认回主界面。");
         }
 
         Publish("RecoveryCompleted", message);

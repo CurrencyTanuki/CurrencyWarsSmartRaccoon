@@ -321,6 +321,65 @@ public sealed class RejectedOpeningRecoveryRetryTests
         Assert.Contains("RecoveryBlindAdvanceAbortPreparation", sink.EventNames);
     }
 
+    [Fact]
+    public async Task SettleTimeoutFallsThroughToBlindAdvanceAndRecovers()
+    {
+        // （1.2.100 审查 P3-2：SettlementPageUnknown/NeverReturnHome 是死配置已删——
+        // 本路径 Stage 不会到 Settlement，settle 段不读这两个开关。）
+        var input = new StagedInputController
+        {
+            SettleNeverChallengeFailed = true
+        };
+        var sink = new RecordingEventSink();
+        var window = Window();
+        var recovery = new CurrencyWarsRejectedOpeningRecovery(
+            new PreparationNavigator(),
+            new StaticCapture(),
+            new StagedClassifier(input),
+            input,
+            new ImmediateForegroundGuard(window),
+            sink);
+
+        var result = await recovery.RecoverAsync(
+            window.Handle,
+            new OpeningSnapshot([], [], []),
+            new OpeningFilterEvaluation(false, ["reject"], [], []),
+            CancellationToken.None);
+
+        // 1.2.100（实弹 09:54/09:57 两轮复现）：settle 连点 6 秒不出挑战失败页
+        // =游戏停在结算链中间页——超时即盲点直通（rule 四.22），不再 Failed 交外层空转。
+        Assert.Equal(RejectedOpeningRecoveryStatus.Recovered, result.Status);
+        Assert.Equal(1, input.BlindAdvanceClicks);
+        Assert.Contains("RecoverySettleTimeoutBlindAdvance", sink.EventNames);
+    }
+
+    [Fact]
+    public async Task AdvanceTimeoutFallsThroughToBlindAdvanceAndRecovers()
+    {
+        var input = new StagedInputController { AdvanceNeverHome = true };
+        var sink = new RecordingEventSink();
+        var window = Window();
+        var recovery = new CurrencyWarsRejectedOpeningRecovery(
+            new PreparationNavigator(),
+            new StaticCapture(),
+            new StagedClassifier(input),
+            input,
+            new ImmediateForegroundGuard(window),
+            sink);
+
+        var result = await recovery.RecoverAsync(
+            window.Handle,
+            new OpeningSnapshot([], [], []),
+            new OpeningFilterEvaluation(false, ["reject"], [], []),
+            CancellationToken.None);
+
+        // 1.2.100 审查 P2-1：推进连点+3 秒验证仍未确认主页=游戏在结算链中间页——
+        // 超时即盲点直通（rule 四.22），Recovered 而非 Failed 交被动恢复空转。
+        Assert.Equal(RejectedOpeningRecoveryStatus.Recovered, result.Status);
+        Assert.Equal(1, input.BlindAdvanceClicks);
+        Assert.Contains("RecoveryAdvanceTimeoutBlindAdvance", sink.EventNames);
+    }
+
     private sealed class RecordingEventSink : ITaskEventSink
     {
         public List<string> EventNames { get; } = [];
@@ -347,6 +406,32 @@ public sealed class RejectedOpeningRecoveryRetryTests
             // 1.2.97 审查 P2 用例夹具：恒 Unknown 驱动 A9 兜底耗尽；盲点首击后
             // 分类器确认主页——击前探测刹停（点击数有界，不烧满 15s 窗口）。
             if (input.BlindAdvanceScenario)
+            {
+                return input.BlindAdvanceClicks >= 1
+                    ? new PageClassificationResult(
+                        "currency_wars_home",
+                        "currency_wars_home",
+                        0.99,
+                        [])
+                    : null;
+            }
+
+            // 1.2.100 用例夹具：settle 连点窗内永不出现挑战失败页；盲点首击后回主页。
+            // 仅 Abandon 阶段生效——Exit 阶段的 abandon_settlement_prompt 识别保持原规则，
+            // 否则 RecoverAsync 在 Esc 链兜底就分流，走不进 settle 段。
+            if (input.SettleNeverChallengeFailed && input.Stage == InputStage.Abandon)
+            {
+                return input.BlindAdvanceClicks >= 1
+                    ? new PageClassificationResult(
+                        "currency_wars_home",
+                        "currency_wars_home",
+                        0.99,
+                        [])
+                    : null;
+            }
+
+            // 1.2.100 审查 P2-1 用例夹具：推进段（含统一验证窗）恒不见主页；盲点首击后 home。
+            if (input.AdvanceNeverHome && input.Stage == InputStage.Settlement)
             {
                 return input.BlindAdvanceClicks >= 1
                     ? new PageClassificationResult(
@@ -430,6 +515,10 @@ public sealed class RejectedOpeningRecoveryRetryTests
         public bool BlindAdvanceScenario { get; init; }
         public bool PreparationStuck { get; init; }
         public int BlindAdvanceClicks { get; private set; }
+        // 1.2.100：settle 连点 6 秒不出挑战失败页（盲点直通接管）。
+        public bool SettleNeverChallengeFailed { get; init; }
+        // 1.2.100 审查 P2-1：推进连点+验证窗恒不见主页（盲点直通接管）。
+        public bool AdvanceNeverHome { get; init; }
         public bool NeverReturnHome { get; init; }
         public bool SettlementPageUnknown { get; init; }
         public int ReturnHomeAfterSettlementAttempts { get; init; } = 1;

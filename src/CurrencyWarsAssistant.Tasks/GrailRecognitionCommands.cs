@@ -1,5 +1,7 @@
 using CurrencyWarsAssistant.Advisor;
+using CurrencyWarsAssistant.Core;
 using CurrencyWarsAssistant.Game;
+using CurrencyWarsAssistant.Vision;
 
 namespace CurrencyWarsAssistant.Tasks;
 
@@ -16,7 +18,9 @@ public sealed class GrailRecognitionCommands(
     GameDataCatalog gameData,
     PreparationBoardController preparationBoard,
     RewardStageAutomationController rewardStage,
-    WishTrialSelectionAutomation trialSelection) : IGrailCommandHandler
+    WishTrialSelectionAutomation trialSelection,
+    IGameCapture? capture = null,
+    IGameWindowService? windowService = null) : IGrailCommandHandler
 {
     /// <summary>last-known 缓存的陈旧度窗口（与 GrailRunLoop.AssembleLatest 的 15 秒口径一致）。</summary>
     private static readonly TimeSpan StaleAfter = TimeSpan.FromSeconds(15);
@@ -34,11 +38,65 @@ public sealed class GrailRecognitionCommands(
             GrailCommandKind.I4 => ReadField(),
             GrailCommandKind.I5 => ReadMeter(isHealth: true),
             GrailCommandKind.I6 => ReadMeter(isHealth: false),
-            GrailCommandKind.I7 or GrailCommandKind.I9 or GrailCommandKind.I10 =>
+            GrailCommandKind.I7 => await ReadBadgesAsync(context, cancellationToken),
+            GrailCommandKind.I9 or GrailCommandKind.I10 =>
                 AssembleFromSnapshot(command.Kind, context),
             GrailCommandKind.I8 => ReadWishDialog(),
             _ => GrailCommandResult.Fail(command.Kind, $"识别层不受理指令 {command.Kind}。"),
         };
+    }
+
+    /// <summary>
+    /// I7 未携带星徽（1.2.98，用户 2026-09-03 拍板"星徽识别只修一件事"落地）：
+    /// 装备识别链（坑 36"多件只认第一件"回归）对物品栏星徽恒读 0——2026-09-06 实锤
+    /// （4 个 019 局物品栏有徽而 I7 全 0、A4 全晚未发；Locator 对同日实拍帧回放 HIT 0.62~0.85）。
+    /// 修复=快照读 0 时用 StarBadgeLocator 实拍定位接管（A4 组件本体本就直接走 Locator，
+    /// 全链唯一断点在此）；Locator 未命中/异常时回落装备识别链读数（诚实兜底）。
+    /// </summary>
+    private async Task<GrailCommandResult> ReadBadgesAsync(
+        GrailCommandContext context,
+        CancellationToken cancellationToken)
+    {
+        var result = AssembleFromSnapshot(GrailCommandKind.I7, context);
+        if (result.Error is not null || result.Payload is not GrailBadgeFact snapshotFact)
+        {
+            return result;
+        }
+
+        if (capture is not null && windowService is not null && snapshotFact.Uncarried == 0)
+        {
+            try
+            {
+                var window = windowService.Refresh(context.WindowHandle);
+                if (window is not null && window.IsReadyForAutomation)
+                {
+                    var frame = await capture.CaptureAsync(window, cancellationToken);
+                    if (StarBadgeLocator.TryLocate(frame, out var center, out var score))
+                    {
+                        rewardStage.PublishGrailTelemetry(
+                            "I7StarBadgeLocated",
+                            $"物品栏实拍定位到命运圣杯星徽（{center.X},{center.Y}，模板分 {score:F2}）——装备识别链读 0 已由定位器接管，未携带=1。");
+                        var carried = snapshotFact.TotalObtained - snapshotFact.Uncarried;
+                        return GrailCommandResult.Ok(
+                            GrailCommandKind.I7,
+                            new GrailBadgeFact(carried + 1, 1));
+                    }
+
+                    rewardStage.PublishGrailTelemetry(
+                        "I7StarBadgeNotLocated",
+                        $"物品栏实拍未定位到星徽（模板分峰值 {score:F2}）——维持装备识别链读数（未携带=0）。");
+                }
+            }
+            catch (Exception exception) when (exception is not OperationCanceledException)
+            {
+                rewardStage.PublishGrailTelemetry(
+                    "I7StarBadgeProbeFailed",
+                    $"星徽实拍探测异常（{exception.Message}）——回落装备识别链读数。",
+                    TaskEventLevel.Warning);
+            }
+        }
+
+        return result;
     }
 
     private GrailCommandResult ReadPage()

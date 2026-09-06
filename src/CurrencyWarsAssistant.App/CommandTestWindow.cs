@@ -115,7 +115,8 @@ public sealed class CommandTestWindow : Window
         IPhase2LiveCollectionService collectionService,
         IGameWindowService gameWindowService,
         OpeningRerollLoopCoordinator openingCoordinator,
-        IInputController inputController)
+        IInputController inputController,
+        IGameCapture gameCapture)
     {
         _preparationBoard = preparationBoard;
         _rewardStage = rewardStage;
@@ -127,7 +128,8 @@ public sealed class CommandTestWindow : Window
         _executor = new GrailOperationExecutor(
             rewardStage, preparationBoard, trialSelection, trialRecruit, _stateHolder, gameData);
         var recognition = new GrailRecognitionCommands(
-            _listener, _stateHolder, gameData, preparationBoard, rewardStage, trialSelection);
+            _listener, _stateHolder, gameData, preparationBoard, rewardStage, trialSelection,
+            gameCapture, gameWindowService);
         var operation = new GrailOperationCommands(
             _executor, rewardStage, preparationBoard, runAbandoner);
         var macro = new GrailMacroCommands(

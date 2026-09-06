@@ -291,6 +291,10 @@ public sealed class CurrencyWarsNavigationTask(
         TimeSpan.FromSeconds(8);
     private static readonly StandardPoint FastStartRunPoint =
         new(1690, 967);
+    // 1.2.101 恢复（用户 2026-09-06 澄清机制）：投资环境页机制上固定允许刷新一次
+    // （非"免费刷新"概念——那是商店里的特殊按钮，与本页无关）。
+    private static readonly StandardPoint InvestmentRefreshPoint =
+        new(676, 984);
     private static readonly StandardPoint BlueSeaRewardCardPoint =
         new(960, 530);
     private static readonly StandardPoint BlueSeaRewardConfirmPoint =
@@ -996,10 +1000,80 @@ public sealed class CurrencyWarsNavigationTask(
                 "投资环境识别已进入任选一项后强制重开的降级路径。");
         }
 
-        // 2026-09-04 用户令（机制纠正）：环境页"免费刷新"额度来自部分投资策略、不固定
-        // 存在，绝不能把"免费刷新一次"写死进刷开局逻辑——无额度时点刷新=付出真实代价。
-        // 未命中偏好→不点刷新，直接按未命中交回协调器弃局重开（重刷开局才是免费的）。
-        // （原实现此处每轮未命中都点击刷新按钮，被用户审计定性。）
+        // 2026-09-06 用户令（机制澄清，恢复 1.2.67 删除的刷新）：投资环境页机制上
+        // 固定允许刷新一次——未命中偏好先用掉这次机制刷新重新找一批，还没有才弃局
+        // 重开。（09-04 删除时的"免费额度不固定"顾虑系与商店"免费刷新"混淆，已澄清：
+        // 商店的免费刷新是另一个东西，本软件不管它。）
+        if (preferredIds.Count > 0 &&
+            !_investmentEnvironments.InvestmentEnvironments.Any(
+                item => preferredIds.Contains(item.Id)))
+        {
+            Publish(
+                CurrencyWarsNavigationState.Acting,
+                pageId,
+                "首轮三个投资环境均未命中偏好，使用一次机制刷新重新寻找。");
+            var window = await WaitForForegroundWindowAsync(
+                windowHandle,
+                cancellationToken);
+            if (window is null)
+            {
+                return ActionResult.Failure(
+                    "刷新投资环境前游戏窗口已失效。");
+            }
+
+            var refreshPoint = MapStandardPoint(
+                window,
+                InvestmentRefreshPoint);
+            var refresh = await input.ClickAsync(
+                new ClickTarget(
+                    "refresh_investment_options",
+                    "刷新投资环境候选",
+                    window,
+                    BoundsAround(window, refreshPoint)),
+                new ActionPolicy
+                {
+                    AfterActionDelay = TimeSpan.FromMilliseconds(250)
+                },
+                cancellationToken);
+            if (!refresh.Succeeded)
+            {
+                return refresh;
+            }
+
+            // 1.2.101 审查 P2-1：换牌动画等待——识别累加器槽位 2 票即胜且票数不重置，
+            // 刷新后立即稳定读会把刷新前的旧三件套当"刷新后"结果（效力被静默作废）。
+            // 先等换牌动画走完再起稳定读。
+            await Task.Delay(
+                TimeSpan.FromMilliseconds(1300),
+                cancellationToken);
+
+            var refreshedInvestments =
+                await ReadStableInvestmentEnvironmentsAsync(
+                    windowHandle,
+                    cancellationToken);
+            if (refreshedInvestments.Result is null)
+            {
+                return ActionResult.Failure(
+                    "点击刷新后未取得任何可用投资环境识别帧。");
+            }
+
+            _investmentEnvironments = refreshedInvestments.Result;
+            if (!refreshedInvestments.Succeeded)
+            {
+                _investmentEnvironmentFallbackRequired = true;
+                PublishFallback(
+                    "InvestmentEnvironmentRefreshRecognitionDegraded",
+                    "刷新后的投资环境仍未能完整稳定识别；将任选一个候选进入 1-1，" +
+                    "随后把本轮按未命中安全重开。");
+                return ActionResult.Success(
+                    "刷新后识别已进入任选一项并强制重开的降级路径。");
+            }
+
+            Publish(
+                CurrencyWarsNavigationState.WaitingForPage,
+                pageId,
+                $"刷新后的投资环境：{FormatItems(_investmentEnvironments.Options)}");
+        }
 
         if (!options.StopAfterOpeningRecognition &&
             preferredIds.Count > 0 &&
@@ -1007,7 +1081,7 @@ public sealed class CurrencyWarsNavigationTask(
                 item => preferredIds.Contains(item.Id)))
         {
             return ActionResult.Failure(
-                "三个投资环境均未命中用户可接受列表；未选择随机候选。");
+                "机制刷新后仍没有命中用户可接受的投资环境；未选择随机候选。");
         }
 
         return ActionResult.Success("投资环境已连续两次稳定识别。");

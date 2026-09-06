@@ -160,16 +160,14 @@ public sealed class RejectedOpeningRecoveryRetryTests
             new OpeningFilterEvaluation(false, ["reject"], [], []),
             CancellationToken.None);
 
-        // 1.2.91 点法（用户令 2026-09-05 晚）：结算推进上限由 12 次计数改为 3 秒时框
-        // （0.5 秒节奏）——永不回主页时按时框停，输入有界仍是契约本体。
-        // 1.2.95 审查 P3-2 收紧：3 秒窗+硬性 500ms 延迟下确定性约 6 次，4..8 仍拦住
-        // 节奏加快（<375ms）与循环跑飞两类回归。
+        // 1.2.101 点法（用户令）：挑战失败页后 (750,744) 连点直到主页，15 秒时框
+        // （0.5 秒节奏+击前探测）——永不回主页时按时框停，输入有界仍是契约本体。
         Assert.Equal(RejectedOpeningRecoveryStatus.Failed, result.Status);
-        Assert.InRange(input.SettlementNextAttempts, 4, 8);
+        Assert.InRange(input.SettlementNextAttempts, 18, 32);
     }
 
     [Fact]
-    public async Task SettlementAdvanceAlternatesBetweenTwoPointPositions()
+    public async Task SettlementAdvanceClicksSingleMidLowButton()
     {
         var input = new StagedInputController
         {
@@ -192,18 +190,11 @@ public sealed class RejectedOpeningRecoveryRetryTests
             CancellationToken.None);
 
         Assert.Equal(RejectedOpeningRecoveryStatus.Failed, result.Status);
-        // 1.2.94 双点位交替契约（handoff 四.B.7"rapid 连点零用例"销账）：保存并退出
-        // 单击与推进首击同为 960,899（"下一页/对局未完成"总结页推进位），推进段自
-        // 第二击起与 750,744（确认链推进位）严格交替——结算链任意形态都能被点穿。
+        // 1.2.101 点法（用户令）：结算推进全部点击单一位置 750,744（页面中间偏下
+        // "下一页"）——不再点 960,899"保存并退出"（用户："保存个鬼"）、不交替。
         var xs = input.SettlementNextClickCenterXs;
         Assert.True(xs.Count >= 3, $"clicks={xs.Count}");
-        Assert.Equal(960, xs[0]);
-        Assert.Equal(960, xs[1]);
-        Assert.All(xs, x => Assert.True(x is 750 or 960, $"x={x}"));
-        for (var i = 2; i < xs.Count; i++)
-        {
-            Assert.NotEqual(xs[i - 1], xs[i]);
-        }
+        Assert.All(xs, x => Assert.Equal(750, x));
     }
 
     [Fact]
@@ -354,7 +345,7 @@ public sealed class RejectedOpeningRecoveryRetryTests
     }
 
     [Fact]
-    public async Task AdvanceTimeoutFallsThroughToBlindAdvanceAndRecovers()
+    public async Task AdvanceTimeoutFailsHonestlyAfterClickThroughWindow()
     {
         var input = new StagedInputController { AdvanceNeverHome = true };
         var sink = new RecordingEventSink();
@@ -373,11 +364,12 @@ public sealed class RejectedOpeningRecoveryRetryTests
             new OpeningFilterEvaluation(false, ["reject"], [], []),
             CancellationToken.None);
 
-        // 1.2.100 审查 P2-1：推进连点+3 秒验证仍未确认主页=游戏在结算链中间页——
-        // 超时即盲点直通（rule 四.22），Recovered 而非 Failed 交被动恢复空转。
-        Assert.Equal(RejectedOpeningRecoveryStatus.Recovered, result.Status);
-        Assert.Equal(1, input.BlindAdvanceClicks);
-        Assert.Contains("RecoveryAdvanceTimeoutBlindAdvance", sink.EventNames);
+        // 1.2.101（用户令点法）：推进本身就是 (750,744) 连点直到主页——15 秒窗尽
+        // 仍未主页=诚实 Failed 交外层（连点即终点，不再另起盲点直通）。
+        Assert.Equal(RejectedOpeningRecoveryStatus.Failed, result.Status);
+        Assert.Equal(0, input.BlindAdvanceClicks);
+        Assert.True(input.SettlementNextAttempts >= 18,
+            $"settlementNext={input.SettlementNextAttempts}");
     }
 
     private sealed class RecordingEventSink : ITaskEventSink

@@ -544,33 +544,12 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
             else
             {
                 settleClickSucceeded = true;
+                // 1.2.101（用户令点法重申）：放弃并结算**只点一次**——首击后不再点击，
+                // 只探测等挑战失败页出现（此前交替连点会打扰双帧确认且无必要）。
                 var rapidDeadline = ActiveUtcNow + TimeSpan.FromSeconds(6);
                 var challengeStrikes = 0;
-                var toggle = false;
                 while (ActiveUtcNow < rapidDeadline && challengeFailed is null)
                 {
-                    // 1.2.91 复审 P2：strike=1 后停止点击——(750,744) 在这些页面就是
-                    // 推进位，继续点会让 challenge_failed 永远凑不满连续 2 帧（系统性
-                    // 诚实失败）。strike≥1 后只探测直至双帧确认或窗口耗尽。
-                    if (challengeStrikes == 0)
-                    {
-                        // 1.2.94 提速：双点位交替——(750,744) 推进弹框/确认链，
-                        // (960,899) 推进"下一页/对局未完成总结"页（纯过路弃局的必经页，
-                        // 用户令：盲点中间直接点到回主界面，不识别中间页）。
-                        var point = toggle ? NextPoint : AbandonAndSettlePoint;
-                        toggle = !toggle;
-                        await ClickStandardPointAsync(
-                            windowHandle,
-                            "abandon_and_settle_rapid",
-                            "放弃结算交替连点",
-                            point,
-                            new ActionPolicy
-                            {
-                                AfterActionDelay = TimeSpan.Zero
-                            },
-                            cancellationToken);
-                    }
-
                     await Task.Delay(
                         TimeSpan.FromMilliseconds(500),
                         cancellationToken);
@@ -585,9 +564,9 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                     {
                         Publish(
                             "RecoveryRapidClickAbortPreparation",
-                            "连点探测到备战页——弃局未生效，立即停止推进（备战页绝不点击）。",
+                            "探测到备战页——弃局未生效，停止推进（备战页绝不点击）。",
                             TaskEventLevel.Warning);
-                        return Failed("弃局连点期间回到备战页；已停止推进交外层处理。");
+                        return Failed("弃局期间回到备战页；已停止推进交外层处理。");
                     }
 
                     if (page is not null &&
@@ -599,7 +578,7 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                             challengeFailed = page;
                             Publish(
                                 "RecoveryPromptConfirmed",
-                                $"连点推进已进入挑战失败页（{page.Confidence:P1}，连续 {challengeStrikes} 帧）。");
+                                $"已进入挑战失败页（{page.Confidence:P1}，连续 {challengeStrikes} 帧）。");
                         }
                     }
                     else
@@ -617,7 +596,7 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                             []);
                         Publish(
                             "RecoveryCompletedEarlyHome",
-                            "连点期间已回到货币战争主界面（结算直接完成）——停止连点。");
+                            "探测期间已回到货币战争主界面（结算直接完成）——停止推进。");
                     }
                 }
 
@@ -625,7 +604,7 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                 {
                     Publish(
                         "RecoveryStrategyCycle",
-                        "放弃结算连点 6 秒未探测到挑战失败页。",
+                        "放弃结算后 6 秒未探测到挑战失败页。",
                         TaskEventLevel.Warning);
                 }
             }
@@ -664,57 +643,43 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
         var returnedHome = convergedViaHome;
         if (challengeFailed is not null && !convergedViaHome)
         {
-            // 1.2.91（用户令点法）：challenge_failed 之后——
-            // ①页面偏左的"保存并退出/结算推进"位（960,899 结算链按钮）**只点击一次**；
-            // ②页面中下部（750,744）连点 3 秒（0.5 秒间隔）；
-            // ③统一验证回主页（3 秒）。替换原 12 连点×(400ms+双页检) 结构。
-            var saveExit = await ClickStandardPointAsync(
-                windowHandle,
-                "settlement_next_save_exit_once",
-                "保存并退出（单次）",
-                NextPoint,
-                new ActionPolicy
-                {
-                    AfterActionDelay = TimeSpan.Zero
-                },
-                cancellationToken);
-            Publish(
-                saveExit.Succeeded ? "RecoveryNextClicked" : "RecoveryActionRetry",
-                saveExit.Succeeded
-                    ? "已点击保存并退出/结算推进位（单次，按用户点法）。"
-                    : $"保存并退出点击失败：{saveExit.Message}——继续中下部连点。",
-                saveExit.Succeeded ? TaskEventLevel.Information : TaskEventLevel.Warning);
-
-            var advanceDeadline = ActiveUtcNow + TimeSpan.FromSeconds(3);
-            var advanceToggle = false;
+            // 1.2.101（用户令点法）：看到挑战失败页后点页面中间偏下的"下一页"(750,744)，
+            // 然后**一直连点同一位置直到主页**——不点"保存并退出"(960,899)、不交替、
+            // 不加任何其他操作（用户原话："你都已经放弃了，你还保存，你保存个鬼"）。
+            // 击前主页/备战页急停保留（1.2.63 红线）；15 秒上限兜底。
+            var advanceDeadline = ActiveUtcNow + TimeSpan.FromSeconds(15);
             while (ActiveUtcNow < advanceDeadline && !cancellationToken.IsCancellationRequested)
             {
-                // 击前主页检查（1.2.63 实拍教训保留）：已回主界面绝不再点页面中部。
-                // 1.2.91 复审 P1 加固：早停含 normal_hud 与强证据兜底（与基线强度对齐）。
                 var probeWindow = await foregroundGuard.WaitUntilForegroundAsync(
                     windowHandle,
                     cancellationToken);
                 var probeFrame = await capture.CaptureAsync(probeWindow, cancellationToken);
                 var page = classifier.Classify(probeFrame);
+
                 if (page?.PageId is "currency_wars_home" or "normal_hud"
                     || (page is null && CurrencyWarsHomeEvidence.IsMatch(probeFrame)))
                 {
                     Publish(
                         "RecoveryCompletedEarlyHome",
-                        "结算推进前已确认回到货币战争主界面——停止连点。");
+                        "结算推进连点确认回到货币战争主界面——停止连点。");
                     returnedHome = true;
                     break;
                 }
 
-                // 1.2.94：与 settle 段同款双点位交替（960,899 推进"下一页/对局未完成"总结页，
-                // 750,744 推进其余确认链）——结算链任意形态都能被点穿。
-                var advancePoint = advanceToggle ? AbandonAndSettlePoint : NextPoint;
-                advanceToggle = !advanceToggle;
+                if (page?.PageId.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    Publish(
+                        "RecoveryAdvanceAbortPreparation",
+                        $"结算推进探测到备战页（{page.PageId}）——立即停止（备战页绝不点击推进位）。",
+                        TaskEventLevel.Warning);
+                    return Failed("结算推进期间回到备战页；已停止推进交外层处理。");
+                }
+
                 await ClickStandardPointAsync(
                     windowHandle,
                     "settlement_next_advance_rapid",
-                    "结算推进连点（双点位交替）",
-                    advancePoint,
+                    "结算下一页连点（中偏下）",
+                    AbandonAndSettlePoint,
                     new ActionPolicy
                     {
                         AfterActionDelay = TimeSpan.Zero
@@ -730,41 +695,11 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
             returnedHome = true;
         }
 
-        // 统一验证：连点结束后等主页出现（最多 3 秒）。
-        var finalPage = await WaitForKnownSettlementPageAsync(
-            windowHandle,
-            TimeSpan.FromMilliseconds(3000),
-            cancellationToken);
-        if (finalPage is { PageId: "currency_wars_home" })
-        {
-            returnedHome = true;
-        }
-        else
-        {
-            Publish(
-                "RecoverySettlementPending",
-                "结算连点推进后仍未确认主页；继续有限推进或交由被动恢复。",
-                TaskEventLevel.Information);
-        }
-
         const string message = "已放弃不合格开局并返回货币战争主界面。";
         if (!returnedHome)
         {
-            // 1.2.100（实弹 09:54 复现）：推进连点+3 秒统一验证都没确认主页=游戏仍在
-            // 结算链中间页——此前 Failed 交"被动恢复"，实弹证明被动恢复要空转 1-2 分钟。
-            // 按 rule 四.22 超时即盲点直通（击前主页/备战页急停内置）。
-            Publish(
-                "RecoveryAdvanceTimeoutBlindAdvance",
-                "结算推进后未确认主页——按弃局原则盲点直通主界面（不识别中间页）。",
-                TaskEventLevel.Warning);
-            if (await BlindAdvanceToHomeAsync(windowHandle, cancellationToken))
-            {
-                return RejectedOpeningRecoveryResult.Recovered(
-                    "结算推进超时后盲点推进已回到货币战争主界面。");
-            }
-
             return Failed(
-                "结算推进连点 3 秒后仍未确认回到主界面；盲点直通也未确认回主界面。");
+                "结算下一页连点 15 秒后仍未确认回到主界面；输入已停止，交外层恢复。");
         }
 
         Publish("RecoveryCompleted", message);
@@ -870,67 +805,8 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
         return null;
     }
 
-    private async Task<PageClassificationResult?>
-        WaitForKnownSettlementPageAsync(
-            nint windowHandle,
-            TimeSpan timeout,
-            CancellationToken cancellationToken)
-    {
-        var deadline = ActiveUtcNow + timeout;
-        string? previousPageId = null;
-        PageClassificationResult? previous = null;
-        var stable = 0;
-        while (ActiveUtcNow < deadline)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            var window = await foregroundGuard.WaitUntilForegroundAsync(
-                windowHandle,
-                cancellationToken);
-            var frame = await capture.CaptureAsync(window, cancellationToken);
-            var current = classifier.Classify(frame);
-            if (current is null && CurrencyWarsHomeEvidence.IsMatch(frame))
-            {
-                current = new PageClassificationResult(
-                    "currency_wars_home",
-                    "currency_wars_home_context",
-                    0.95,
-                    []);
-            }
-            else if (current is null &&
-                RewardSettlementDetailEvidence.IsMatch(frame))
-            {
-                current = new PageClassificationResult(
-                    "challenge_failed",
-                    "settlement_detail",
-                    0.95,
-                    []);
-            }
-            var accepted = current?.PageId is
-                "challenge_failed" or "currency_wars_home";
-            if (accepted && string.Equals(
-                    previousPageId,
-                    current!.PageId,
-                    StringComparison.OrdinalIgnoreCase))
-            {
-                stable++;
-            }
-            else
-            {
-                stable = accepted ? 1 : 0;
-            }
-
-            previousPageId = accepted ? current!.PageId : null;
-            previous = accepted ? current : null;
-            if (stable >= 2)
-            {
-                return previous;
-            }
-
-            await Task.Delay(PollInterval, cancellationToken);
-        }
-
-        return null;
-    }
+    // 1.2.101 审查 P3-3：WaitForKnownSettlementPageAsync 已删（统一验证窗移除后零调用者）；
+    // RewardSettlementDetailEvidence 保留（测试公用+盲点段潜在取证价值）。
 
     private async Task<PageClassificationResult?> PressKeyUntilPageAsync(
         nint windowHandle,

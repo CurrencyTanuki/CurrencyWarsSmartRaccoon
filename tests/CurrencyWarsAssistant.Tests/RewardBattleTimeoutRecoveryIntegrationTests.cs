@@ -23,16 +23,18 @@ public sealed class RewardBattleTimeoutRecoveryIntegrationTests
         Assert.Equal(
             RewardBattleTimeoutHandlingResult.RecoveredToHome,
             result);
-        // 1.2.91 点法（用户令 2026-09-05 晚）："放弃并结算"后立即连点（多次 AbandonAttempts），
-        // 结算推进=保存并退出单击+中下部连点（SettlementNextAttempts≥1）——不再是无连点的单击序列。
+        // 1.2.101 点法（用户令 2026-09-06）："放弃并结算"只点一次（AbandonAttempts=1），
+        // 挑战失败页后中偏下 (750,744) 连点直到主页（SettlementNextAttempts 由击前探测刹停）。
         Assert.Equal("V", fixture.Input.Actions.FirstOrDefault());
         Assert.Contains("Esc", fixture.Input.Actions);
         Assert.Contains("撤退", fixture.Input.Actions);
         Assert.Contains("放弃并结算", fixture.Input.Actions);
+        // 1.2.101：末动作=结算推进点击（夹具对 settlement_next* 记固定名"结算下一步"；
+        // 实际动作=下一页连点（中偏下，单一位置 750,744））。
         Assert.Equal("结算下一步", fixture.Input.Actions[^1]);
-        // 1.2.96 审查 A P3-3 收紧：strikes 门控下放弃并结算快速击确定 2 次；
+        // 1.2.101 用户令点法：放弃并结算**只点一次**（此前首击+交替连点=2 次）；
         // Esc（暂停菜单）先于撤退是生产暂停页门禁保证的顺序契约。
-        Assert.Equal(2, fixture.Input.AbandonAttempts);
+        Assert.Equal(1, fixture.Input.AbandonAttempts);
         Assert.True(
             fixture.Input.Actions.IndexOf("Esc") < fixture.Input.Actions.IndexOf("撤退"),
             $"order={string.Join(",", fixture.Input.Actions)}");

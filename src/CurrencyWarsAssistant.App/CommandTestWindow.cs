@@ -1,8 +1,6 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using CurrencyWarsAssistant.Advisor;
 using CurrencyWarsAssistant.Automation;
@@ -518,10 +516,10 @@ public sealed class CommandTestWindow : Window
         }
     }
 
-    /// <summary>
     // 1.2.99 最终交付剥离（用户 2026-09-05 令）：KEY/CLICK/SCREENSHOT 三条 AI 诊断指令
     // 已从交付版移除——原始输入/截屏通道对最终用户无用且增大攻击面；语义指令集
     // （I/A/M+STATUS/START/STOP/GOAL/DECIDE）不受影响。需要取证时用识别流帧（START+I1）。
+    // （_input 注入=有意保留：DI 构造签名稳定，App.xaml.cs 的注册为产品在用。）
 
     private async Task ExecuteLineAsync(string rawLine)
     {

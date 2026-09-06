@@ -257,6 +257,74 @@ public sealed partial class PreparationBoardController
                 "GrailBadgePanelProbe",
                 $"物品栏星徽探测命中（模板分 {badgeScore:F2}），质心=({badgeCenter.X},{badgeCenter.Y}) 客户区坐标。");
             var targetPoint = MapReferencePoint(window, targetReference.Center);
+
+            // 1.2.104（019 局实弹 9 连败取证）：同目标点角色卡拖拽成功而星徽拖拽
+            // 不吸附（450ms 按压+300ms 悬停均无效）——物品栏图标的交互与备战席卡牌
+            // 不同。策略=奇数次拖拽、偶数次改用"点选装备"（点星徽选中→点目标角色），
+            // 两种模式交替，拖后自证共用。
+            if (attempt % 2 == 0)
+            {
+                Publish(
+                    TaskEventLevel.Information,
+                    "GrailBadgeAssemblyAttempt",
+                    $"N2 点选装备：点击物品栏星徽选中（第 {attempt}/3 次，点选模式）。");
+                var selectBadge = await input.ClickAsync(
+                    new ClickTarget(
+                        $"grail_badge_select_{targetId}",
+                        $"选中物品栏星徽（点选模式）",
+                        window,
+                        BoundsAround(window, sourcePoint)),
+                    new ActionPolicy
+                    {
+                        AfterActionDelay = TimeSpan.FromMilliseconds(350)
+                    },
+                    cancellationToken);
+                if (selectBadge.Succeeded)
+                {
+                    Publish(
+                        TaskEventLevel.Information,
+                        "GrailBadgeAssemblyAttempt",
+                        $"N2 点选装备：点击{targetLabel}完成装备（点选模式）。");
+                    var equipTarget = await input.ClickAsync(
+                        new ClickTarget(
+                            $"grail_badge_equip_{targetId}",
+                            $"点选装备到{targetLabel}",
+                            window,
+                            BoundsAround(window, targetPoint)),
+                        new ActionPolicy
+                        {
+                            AfterActionDelay = TimeSpan.FromMilliseconds(50)
+                        },
+                        cancellationToken);
+                    if (!equipTarget.Succeeded)
+                    {
+                        Publish(
+                            TaskEventLevel.Warning,
+                            "GrailBadgeAssemblyInputRejected",
+                            $"N2 点选装备第 {attempt}/3 次输入未发送成功：" + equipTarget.Message);
+                        continue;
+                    }
+
+                    await Task.Delay(TimeSpan.FromMilliseconds(500), cancellationToken);
+                    var afterSelect = await CaptureVerifiedPreparationAsync(
+                        windowHandle,
+                        expectedPreparationPageId,
+                        allowEscapeRecovery: false,
+                        cancellationToken);
+                    if (afterSelect is not null &&
+                        !StarBadgeLocator.TryLocate(afterSelect.Value.Frame, out _, out _))
+                    {
+                        Publish(
+                            TaskEventLevel.Information,
+                            "GrailBadgeAssemblySelected",
+                            $"点选模式装配成功——星徽已不在物品栏（第 {attempt}/3 次）。");
+                        return true;
+                    }
+                }
+
+                continue;
+            }
+
             Publish(
                 TaskEventLevel.Information,
                 "GrailBadgeAssemblyAttempt",

@@ -99,10 +99,30 @@ public sealed partial class RewardStageAutomationController
                     startOwnership.Observe(RewardBattleFlowState.Preparation);
                     if (battleClicks >= maximumBattleClicks)
                     {
+                        // 1.2.108：出战失败留取证帧（下次复现直接看画面是什么挡住了出战）。
+                        try
+                        {
+                            var (_, failFrame) = await CaptureForegroundAsync(
+                                windowHandle,
+                                cancellationToken);
+                            var directory = Path.Combine(
+                                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                                "CurrencyWarsSmartRaccoon",
+                                "battle-evidence");
+                            Directory.CreateDirectory(directory);
+                            failFrame.SavePng(Path.Combine(
+                                directory,
+                                $"{DateTime.Now:yyyyMMdd-HHmmssfff}-battle-start-failed.png"));
+                        }
+                        catch
+                        {
+                            // 取证失败不影响失败路径本身。
+                        }
+
                         Publish(
                             "RewardBattleStartFailed",
                             $"已在 {preparationPageId} 执行 {maximumBattleClicks} 次出战，" +
-                            "仍未进入战斗或成功页；安全停止。",
+                            "仍未进入战斗或成功页（取证帧已存 battle-evidence）；安全停止。",
                             TaskEventLevel.Warning);
                         return false;
                     }
@@ -134,9 +154,12 @@ public sealed partial class RewardStageAutomationController
 
                     if (allowIncompleteLineupConfirmation)
                     {
+                        // 1.2.108（17:30 局实弹：徽已装上的 019 命中局出战 3 连败被弃）：
+                        // 弹框渲染/分类抖动需要更长观察窗——点击后确认窗口 4→10 秒。
                         await ConfirmIncompleteLineupPromptIfPresentAsync(
                             windowHandle,
-                            cancellationToken);
+                            cancellationToken,
+                            windowSeconds: 10);
                     }
 
                     var afterStart = await WaitForRelevantBattlePageAsync(
@@ -916,10 +939,11 @@ public sealed partial class RewardStageAutomationController
 
     private async Task<bool> ConfirmIncompleteLineupPromptIfPresentAsync(
         nint windowHandle,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        double windowSeconds = 4)
     {
         const string promptPageId = "incomplete_lineup_prompt";
-        var deadline = ActiveUtcNow + TimeSpan.FromSeconds(4);
+        var deadline = ActiveUtcNow + TimeSpan.FromSeconds(windowSeconds);
         var stableFrames = 0;
         while (ActiveUtcNow < deadline)
         {

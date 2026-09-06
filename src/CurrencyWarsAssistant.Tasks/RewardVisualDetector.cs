@@ -21,6 +21,7 @@ public sealed class RewardVisualDetector
     public IReadOnlyList<PixelPoint> FindMineBalls(CaptureFrame frame)
     {
         using var normalized = Normalize(frame);
+        var points = new List<PixelPoint>();
         using var roi = new Mat(
             normalized,
             new Rect(
@@ -40,16 +41,77 @@ public sealed class RewardVisualDetector
             24,
             12,
             42);
-        return circles
+        points.AddRange(circles
             .Select(circle => new PixelPoint(
                 MineRegion.X + (int)Math.Round(circle.Center.X),
                 MineRegion.Y + (int)Math.Round(circle.Center.Y)))
             .Where(point =>
                 HasMineLikeColour(
                     normalized,
-                    point))
-            .Distinct()
-            .ToArray();
+                    point)));
+
+        // 1.2.108（用户实弹目击"非常大的金色球"漏开=历次"金矿没开"根因）：普通检测
+        // 三重致盲——半径上限 42 装不下大金球、色彩门只认蓝/中性、固定矿区太窄。
+        // 第二趟：扩区+大半径 Hough+HSV 金盘占比校验。
+        points.AddRange(FindLargeGoldBalls(normalized));
+
+        return points.Distinct().ToArray();
+    }
+
+    /// <summary>大金矿球检测（1.2.108）：1920 基准扩区 (1150,100,760,660)——覆盖普通
+    /// 矿区及周边、排除顶栏与右侧羁绊栏；半径 48-130；圆盘内金色像素占比 ≥45% 才认定
+    /// （防误检：羁绊金图标/金币 UI 均小且不满足大圆盘）。命中即与普通矿球同路径点击。</summary>
+    private static IEnumerable<PixelPoint> FindLargeGoldBalls(Mat normalized)
+    {
+        var region = new Rect(1150, 100, 760, 660);
+        using var roi = new Mat(normalized, region);
+        using var gray = new Mat();
+        Cv2.CvtColor(roi, gray, ColorConversionCodes.BGR2GRAY);
+        Cv2.GaussianBlur(gray, gray, new Size(9, 9), 2.0);
+        var circles = Cv2.HoughCircles(
+            gray,
+            HoughModes.Gradient,
+            1.5,
+            60,
+            100,
+            28,
+            48,
+            130);
+        if (circles.Length == 0)
+        {
+            yield break;
+        }
+
+        using var hsv = new Mat();
+        Cv2.CvtColor(roi, hsv, ColorConversionCodes.BGR2HSV);
+        using var goldMask = new Mat();
+        Cv2.InRange(
+            hsv,
+            new Scalar(10, 90, 140),
+            new Scalar(35, 255, 255),
+            goldMask);
+        foreach (var circle in circles)
+        {
+            var radius = Math.Max(1, (int)Math.Round(circle.Radius));
+            var cx = (int)Math.Round(circle.Center.X);
+            var cy = (int)Math.Round(circle.Center.Y);
+            var x0 = Math.Max(0, cx - radius);
+            var y0 = Math.Max(0, cy - radius);
+            var width = Math.Min(roi.Width - x0, radius * 2);
+            var height = Math.Min(roi.Height - y0, radius * 2);
+            if (width <= 0 || height <= 0)
+            {
+                continue;
+            }
+
+            using var disk = new Mat(goldMask, new Rect(x0, y0, width, height));
+            if (Cv2.CountNonZero(disk) < 0.45 * width * height)
+            {
+                continue;
+            }
+
+            yield return new PixelPoint(region.X + cx, region.Y + cy);
+        }
     }
 
     public AutoBattleVisualReading ReadAutoBattleState(CaptureFrame frame)

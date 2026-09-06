@@ -678,14 +678,14 @@ public sealed class GrailDecisionEngine(
             .Select(group => group.First())
             .ToList();
         var deployableScholars = Math.Min(Math.Max(0, 2 - onFieldScholarCount), benchScholarPairs.Count);
-        if (deployableScholars <= 0)
+        // 1.2.108（17:24 067 局+17:29 019 局实弹）：此处原为提前 return——会让下方
+        // "填满人口"块永远执行不到：备战席无学者的命中局（067 赠体全非白名单/019 赠体
+        // 只有星徽），命杯白名单又没货→前台空→判死弃掉命中局（17:29 局连到手星徽一起
+        // 浪费）。学者无可上时不再返回，直接落到填充块用杂兵填前台。
+        if (deployableScholars > 0)
         {
-            // 场上学者已满 2 或备战席无可上学者——静默返回。
-            return (deployedAny, snapshotFresh ? snapshot : null);
-        }
-
-        foreach (var pair in benchScholarPairs.Take(deployableScholars))
-        {
+            foreach (var pair in benchScholarPairs.Take(deployableScholars))
+            {
             if (snapshot.OccupiedFrontSlots.Count >= 4)
             {
                 break;
@@ -728,6 +728,7 @@ public sealed class GrailDecisionEngine(
             {
                 snapshotFresh = false;
                 break;
+            }
             }
         }
 
@@ -1606,9 +1607,24 @@ public sealed class GrailDecisionEngine(
         await Task.Delay(TimeSpan.FromMilliseconds(500), ct);
         await EnsureWishAnsweredAsync(window, ct);
 
-        // ---- S4 顺序（2026-09-03 终版）：策略后弹店=M5 裸收起（货架有命杯则机会性买下，
-        // 2026-09-03 实测获用户默认）→ 晶矿 → 卖冗余 → M5 圣杯循环 ----
-        await SendAsync("M5", new GrailCommand(GrailCommandKind.M5), window, ct);
+        // ---- S4 顺序（用户 2026-09-06 第 4 次重申强制令，最终口径）：
+        // 选投资策略 → 游戏强制弹出的商店**必须扫描并购买**（绝不直接关掉不扫）→
+        // 开金矿（必须开完）→ 卖角色清场 → M5 圣杯循环。
+        // 1.2.108（18:05 局实弹：弹出店货架被槽位识别半帧误读——吉尔伽美什在架上
+        // 却识别成别的名单→零购买；金矿 5 球检测后仍有漏开）：裸 M5 买到 0 且货架
+        // 含未识别槽位=识别半帧实锤，重发一次裸 M5 重扫（有界一次，不刷新）。 ----
+        var poppedShop = await SendAsync("M5", new GrailCommand(GrailCommandKind.M5), window, ct);
+        if (poppedShop.Error is null
+            && poppedShop.Payload is GrailShopPassFact poppedFact
+            && (poppedFact.BoughtCharacterNames?.Count ?? 0) == 0
+            && (poppedFact.ShelfCharacterNames?.Any(name =>
+                    name.Contains("未识别", StringComparison.Ordinal)) ?? false))
+        {
+            emit("[决策层] 弹出商店首轮识别含未识别槽位且零购买——静置后重扫一次。");
+            await Task.Delay(TimeSpan.FromMilliseconds(1200), ct);
+            await SendAsync("M5 rescan", new GrailCommand(GrailCommandKind.M5), window, ct);
+        }
+
         await SendAsync("M2", new GrailCommand(GrailCommandKind.M2), window, ct);
         snapshot = await SnapshotWithRetryAsync(window, ct);
         if (snapshot is null)

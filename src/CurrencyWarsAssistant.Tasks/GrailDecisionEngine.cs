@@ -233,12 +233,15 @@ public sealed class GrailDecisionEngine(
     }
 
     /// <summary>带退避的快照读取：转场/识别冻结期单帧失败是常态（实测教训）。
-    /// 1.2.66 冗余审计：前密后疏退避（1,1,2,2,3,5,5,5 秒），总窗口 24s（原 8×5s=40s
+    /// 1.2.66 冗余审计：前密后疏退避（1.2.66 时 8 档 24s；1.2.116 实测定稿 5 档 5s，见下）（原 8×5s=40s
     /// 的 60%，交叉复核 F8 澄清：并非"相当"）——换取转场 1-3 秒完成时首次重试即命中，
     /// 识别冻结期的兜底由外层 SnapshotWithRetry 调用方的重试预算承接。</summary>
     // 1.2.112（用户令压缩等干净帧：商店关闭动画 <1s，26 秒停顿=慢节奏白等）：
-    // 早期密集重试（0.5s 起步），总窗 24→15s；流救援仍在第 1 次失败触发。
-    private static readonly double[] SnapshotRetryBackoffSeconds = [0.5, 0.5, 1, 1, 2, 2, 3, 5];
+    // 早期密集重试（0.5s 起步）；流救援仍在第 1 次失败触发。
+    // 1.2.116（用户令实测定稿）：录像逐帧实测收店视觉尾巴 <1s（94.0s 帧仍有店/95.0s 帧
+    // 已净，见 handoff B.3）→ 梯改 [0.5,0.5,1,1,2]，总窗 15→5s；识别冻结期长尾由
+    // 调用方（60s 追帧/流救援）承接，不在梯内堆叠。
+    private static readonly double[] SnapshotRetryBackoffSeconds = [0.5, 0.5, 1, 1, 2];
 
     private async Task<GrailRunSnapshot?> SnapshotWithRetryAsync(nint window, CancellationToken ct)
     {
@@ -250,7 +253,7 @@ public sealed class GrailDecisionEngine(
                     TimeSpan.FromSeconds(SnapshotRetryBackoffSeconds[attempt - 1]), ct);
             }
 
-            // 1.2.94 提速（提速方案 #2）：首败即救援识别流——不等 24s 退避窗口走完
+            // 1.2.94 提速（提速方案 #2）：首败即救援识别流——不等退避窗口走完
             // 才在长尾入口救援。委托异常吞掉；15s 冷却与单飞由测试台侧把守。
             if (attempt == 1 && requestStreamRevive is not null)
             {
@@ -275,8 +278,8 @@ public sealed class GrailDecisionEngine(
     }
 
     /// <summary>
-    /// P1-3（1.2.73 实测根因修复）：识别流追帧长尾——SnapshotWithRetryAsync（8 次退避
-    /// ≈24s）全败后，若 M8/导航流刚用实时分类确认过页面（调用方自行判定），识别流的
+    /// P1-3（1.2.73 实测根因修复）：识别流追帧长尾——SnapshotWithRetryAsync（1.2.116 起 5 档
+    /// ≈5s）全败后，若 M8/导航流刚用实时分类确认过页面（调用方自行判定），识别流的
     /// LatestAnalysis 可能仍在追赶游戏状态（实测进 1-1 后 19s+ 无新分析帧）。本方法以
     /// 5 秒间隔再追 60 秒；管线恢复即自愈，仍失败如实返回 null（调用方走弃局）。
     /// </summary>
@@ -1154,6 +1157,102 @@ public sealed class GrailDecisionEngine(
         Field
     }
 
+    /// <summary>
+    /// 凑息（1.2.116，用户拍板"1-2 出战前凑 10 金"）：金币&lt;10 时卖备战席冗余卡到 ≥10，
+    /// 使 1-3 开局多得 1 金利息（10 金=+1）。保护线与清场同源（TryParseSellable：
+    /// 命杯/纯5费/星徽佩戴者绝不卖）+材料线（InterestTopUpPlanner：同名 ≥2 张=升星
+    /// 材料链不卖）+上限 2 张；每卖后重读金币，回执失败或金币未增=反证即停（坑 38 纪律）；
+    /// 凑不到 10 或无候选=静默放行出战（1 金收益不值得卡流程，更不值得不可逆误卖）。
+    /// 仅 1-2 出战前调用（S3）；1-1 出战前不凑（用户口径只覆盖 1-2→1-3）。
+    /// </summary>
+    private async Task TopUpInterestGoldBeforeBattleAsync(
+        nint window,
+        GrailRunSnapshot snapshot,
+        CancellationToken ct)
+    {
+        const int interestTargetGold = 10;
+        const int maxSales = 2;
+        if (snapshot.Gold >= interestTargetGold)
+        {
+            return;
+        }
+
+        emit($"[决策层] 凑息：金={snapshot.Gold} < 10——尝试卖备战席冗余卡凑利息线。");
+        var nameCounts = InterestTopUpPlanner.CountNames(
+            snapshot.BenchCharacterDetails, snapshot.DeployedCharacterDetails);
+        var working = snapshot;
+        var sold = 0;
+        while (working.Gold < interestTargetGold && sold < maxSales)
+        {
+            SellTarget? target = null;
+            foreach (var detail in working.BenchCharacterDetails)
+            {
+                if (!TryParseSellable(detail, bench: true, out var candidate)
+                    || candidate is null
+                    || !InterestTopUpPlanner.IsInterestSellable(detail, nameCounts))
+                {
+                    continue;
+                }
+
+                // 1.2.116 审查 P1-1b（卖价感知）：卖价=卡最低费用（既有口径 Costs.Min）。
+                // 金+卖价仍 <10 → 卖了也凑不齐=白损战力换 0 利息，跳过该候选；
+                // 费用解析不出=按 0 处理=永不达标（保守不卖，顺带覆盖 Gold=0 假帧）。
+                var character = ResolveProtectedCharacter(candidate.Name);
+                var saleValue = InterestTopUpPlanner.SaleValueOf(character?.Costs);
+                if (!InterestTopUpPlanner.ReachesTarget(working.Gold, saleValue, interestTargetGold))
+                {
+                    continue;
+                }
+
+                target = candidate;
+                break;
+            }
+
+            if (target is null)
+            {
+                emit("[决策层] 凑息：保护线/材料线/达标线过滤后无可卖冗余——静默放行出战。");
+                return;
+            }
+
+            var sell = await SendAsync(
+                $"A3 {target.SlotNumber + 1}（凑息:{target.Name}）",
+                new GrailCommand(GrailCommandKind.A3, new GrailBenchSlotArgs(target.SlotNumber)),
+                window,
+                ct);
+            if (sell.Error is not null)
+            {
+                emit($"[决策层] 凑息卖出「{target.Name}」回执失败：{sell.Error}——反证即停，放行出战。");
+                return;
+            }
+
+            sold++;
+            var reread = await SnapshotWithRetryAsync(window, ct);
+            if (reread is null)
+            {
+                emit("[决策层] 凑息：卖出后重读快照失败——停手放行出战（防动画期盲卖）。");
+                return;
+            }
+
+            // 1.2.116 审查 P2-1：与清场 VerifySaleApplied 对齐——金币实增不能证明卖的是
+            // 目标槽那张（识别半帧错位时可能误卖材料卡），目标槽同名消失才算数。
+            if (!VerifySaleApplied(reread, target))
+            {
+                emit($"[决策层] 凑息：卖出「{target.Name}」后目标槽同名仍在——反证即停，放行出战。");
+                return;
+            }
+
+            if (reread.Gold <= working.Gold)
+            {
+                emit($"[决策层] 凑息：卖出「{target.Name}」后金币未增（{working.Gold}→{reread.Gold}）——反证即停。");
+                return;
+            }
+
+            working = reread;
+        }
+
+        emit($"[决策层] 凑息完成：金={working.Gold}（卖出 {sold} 张）——出战。");
+    }
+
     /// <summary>从快照选下一条可卖目标：备战席优先（A3），场上次之（A2 前台/后台）。</summary>
     private SellTarget? SelectNextSellableTarget(GrailRunSnapshot snapshot)
     {
@@ -1566,7 +1665,7 @@ public sealed class GrailDecisionEngine(
         var snapshot = await SnapshotWithRetryAsync(window, ct);
         if (snapshot is null)
         {
-            emit("[决策层] 快照 24s 窗口全败——M8 刚确认到达备战页，判定为识别流滞后，进入 60s 追帧长尾。");
+            emit("[决策层] 快照 5s 窗口全败——M8 刚确认到达备战页，判定为识别流滞后，进入 60s 追帧长尾。");
             snapshot = await SnapshotWithRetrySlowTailAsync(window, ct);
         }
 
@@ -1652,7 +1751,7 @@ public sealed class GrailDecisionEngine(
             // P1-3 补全（1.2.74 实测）：02:40 命中局在 1-2 进场后 I10 连续 8 次全败
             //（M5 买到黑塔+商店/备战切换的识别流滞后）→ 好局又被 Interrupted 弃掉。
             // 与 S2 同款追帧长尾。
-            emit("[决策层] S3 快照 24s 窗口全败——判定为识别流滞后，进入 60s 追帧长尾。");
+            emit("[决策层] S3 快照 5s 窗口全败——判定为识别流滞后，进入 60s 追帧长尾。");
             snapshot = await SnapshotWithRetrySlowTailAsync(window, ct);
         }
 
@@ -1677,6 +1776,10 @@ public sealed class GrailDecisionEngine(
         {
             return PreparationOutcome.Dead;
         }
+
+        // 凑息（1.2.116 用户拍板）：1-2 出战前金币<10 → 卖备战席冗余卡凑 ≥10，
+        // 1-3 开局多得 1 金利息。在部署/弹框应答之后、M1 之前执行（金币已定型）。
+        await TopUpInterestGoldBeforeBattleAsync(window, snapshot, ct);
 
         m1 = await SendAsync("M1 preparation_generic investment_strategy",
             new GrailCommand(GrailCommandKind.M1,
@@ -1846,7 +1949,10 @@ public sealed class GrailDecisionEngine(
                     // 1.2.89（用户令第 5 问题 R3 口径）：真山穷水尽=可卖单位为零。
                     // 快照仍报有可卖（身份异常拒卖等）时绝不判死——复核后再卖一轮；
                     // 仍卖不动才认输（有界，防死循环）。
-                    var freshBeforeSurrender = await SnapshotWithRetryAsync(window, ct);
+                    // 1.2.116 审查 P2-2：梯压至 5s 后，识别流中等滞后（实测 7-19s）原本能在
+                    // 15s 窗内自愈放弃 R3 的部分会落进全败——判死前必须长尾承接（误弃不可逆）。
+                    var freshBeforeSurrender = await SnapshotWithRetryAsync(window, ct)
+                        ?? await SnapshotWithRetrySlowTailAsync(window, ct);
                     if (freshBeforeSurrender is not null
                         && freshBeforeSurrender.SellableBeyondKeepLineCount > 0)
                     {

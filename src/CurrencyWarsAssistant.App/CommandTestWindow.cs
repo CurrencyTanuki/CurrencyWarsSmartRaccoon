@@ -36,13 +36,10 @@ namespace CurrencyWarsAssistant.App;
 ///   M3 / M4 / M5               祈愿应答 / 开聘用书 / 商店 Pass（M5 圣杯=1-3 N14 循环语义）
 ///   M7 [id1,id2,...]           选投资策略（缺省=写死优先级）
 ///   M8                         刷到命中→选中进局→1-1 备战席立刻停
-///   KEY Escape|Enter|F|V|LeftAlt  原始按键（1.2.87：经提权输入栈直发，诊断/救急用）
-///   CLICK x y                  原始点击（1.2.87：游戏窗口客户区像素坐标，诊断/救急用）
-///   SCREENSHOT                 抓游戏窗口当前画面存 PNG（1.2.87：GDI PrintWindow 后台截屏，
-///                              不抢前台；回执给文件路径，AI 辅助通道）
 ///   STATUS                     查看状态（游戏窗口/识别会话/最新帧/目标模式）
 ///   START / STOP               启动 / 停止识别会话（实时采集）
 ///   GOAL 单人|全员              设置目标模式（影响 M3/M4 的决策语义）
+/// 1.2.99 最终交付剥离：KEY/CLICK/SCREENSHOT 三条 AI 诊断指令已移除（用户令）。
 /// 尚无底层实现的指令（A2/A4/A5/A7/A11/A12/A13/A14、M2/M6）返回失败事实并注明缺口。
 /// </para>
 /// </summary>
@@ -522,141 +519,9 @@ public sealed class CommandTestWindow : Window
     }
 
     /// <summary>
-    /// KEY/CLICK 的共享执行通道（1.2.87，用户令「AI 要能自主操作游戏」）：经已提权
-    /// 实例的输入栈直发原始按键/点击。审查 P1（1.2.87）修复：①先显式强制切前台——
-    /// 前台守卫（PrepareWindow/PrepareTarget 内 WaitUntilForegroundAsync）语义是
-    /// "无限等前台"而非"切前台"，远程指令必须先 BringToForeground（提权实例的
-    /// ForceForegroundWindow 有效），失败即诚实回执绝不挂死；②挂独立 CTS 并接入
-    /// _activeCommandCts——abort.txt 急停通道对原始输入可用（前台守卫的等待可被中断），
-    /// 令牌同步传入输入层。用途=语义指令覆盖不到的场景：弹窗取证、救急、页面身份验证。
-    /// 决策层运行期间拒绝并发（与语义指令同一闸门）；不过果断弃局看门狗（诊断指令
-    /// 失败不该触发 AUTO-A9）。
-    /// </summary>
-    private async Task ExecuteRawInputAsync(
-        string line,
-        Func<GameWindowInfo, CancellationToken, Task<ActionResult>> act)
-    {
-        if (_decisionTask is { IsCompleted: false })
-        {
-            AppendResult(line, ok: false, summary: "决策层运行中，拒绝并发指令（先 DECIDE 停止）");
-            _flightRecorder.Record(line, ok: false, "决策层运行中拒绝并发指令", 0, "rejected");
-            return;
-        }
-
-        var window = FindGameWindow();
-        if (window is null)
-        {
-            AppendResult(line, ok: false, summary: "未找到可自动化的游戏窗口");
-            _flightRecorder.Record(line, ok: false, "未找到可自动化的游戏窗口", 0, "no_window");
-            return;
-        }
-
-        using var commandCts = new CancellationTokenSource();
-        _activeCommandCts = commandCts;
-        var flightStopwatch = System.Diagnostics.Stopwatch.StartNew();
-        AppendReceipt(line);
-        ActionResult result;
-        try
-        {
-            if (!_gameWindowService.BringToForeground(window))
-            {
-                result = ActionResult.Failure("无法将游戏窗口切换到前台；未发送任何输入。");
-            }
-            else
-            {
-                result = await act(window, commandCts.Token);
-            }
-        }
-        catch (OperationCanceledException)
-        {
-            AppendResult(line, ok: false, summary: "已急停中断；游戏当前状态用 SCREENSHOT 查看，用下一条指令接续");
-            _flightRecorder.Record(
-                line, ok: false, "已急停中断", flightStopwatch.ElapsedMilliseconds, "aborted");
-            return;
-        }
-        finally
-        {
-            _activeCommandCts = null;
-        }
-
-        flightStopwatch.Stop();
-        AppendResult(line, ok: result.Succeeded, summary: result.Message);
-        AppendLog(result.Succeeded ? $"✔ OK {result.Message}" : $"✗ 失败 {result.Message}");
-        _flightRecorder.Record(line, result.Succeeded, result.Message, flightStopwatch.ElapsedMilliseconds, "raw_input");
-    }
-
-    private static bool TryParseInputKey(string text, out InputKey key)
-    {
-        // P3-4（审查 1.2.87）：Enum.TryParse 会把已定义枚举的数字字符串当别名放行
-        // （"KEY 3"→Enter），显式拒绝纯数字输入。
-        if (text.All(char.IsDigit))
-        {
-            key = default;
-            return false;
-        }
-
-        return Enum.TryParse(text, ignoreCase: true, out key)
-            && Enum.IsDefined(typeof(InputKey), key);
-    }
-
-    /// <summary>
-    /// SCREENSHOT（1.2.87，AI 辅助通道）：GDI 抓游戏窗口当前画面存 PNG 到 exe 同目录
-    /// 「指令测试-screen.png」（覆盖写），回执给路径。设计要点：
-    /// ①纯只读——决策层运行期间也允许（远程 AI 监督 DECIDE 时看画面的刚需）；
-    /// ②GdiGameCapture 走屏幕 DC/PrintWindow，不切前台、不抢用户焦点，也与 WGC 识别
-    /// 会话的捕获单例零共享（每次 new，无状态冲突）；③局限：BitBlt 路径要求窗口未被
-    /// 完全遮挡（被盖住会截到别的窗口），回执摘要里如实携带尺寸供 AI 判断坏帧；
-    /// ④残余风险（增量审查 P3）：独占全屏/极端 GPU 合成下 BitBlt 与 PrintWindow 可能
-    /// 双双产出黑帧且当前不做黑帧复检——收到尺寸正常但画面全黑的 PNG 时按坏帧处置，
-    /// 改用识别流帧（START+I1）或 computer-use 截屏交叉核对。
-    /// </summary>
-    private async Task ExecuteScreenshotAsync(string line)
-    {
-        var window = FindGameWindow();
-        if (window is null)
-        {
-            AppendResult(line, ok: false, summary: "未找到可自动化的游戏窗口");
-            _flightRecorder.Record(line, ok: false, "未找到可自动化的游戏窗口", 0, "screenshot");
-            return;
-        }
-
-        var flightStopwatch = System.Diagnostics.Stopwatch.StartNew();
-        AppendReceipt(line);
-        try
-        {
-            var capture = new GdiGameCapture();
-            var frame = await capture.CaptureAsync(window, CancellationToken.None);
-            var outputPath = Path.Combine(AppContext.BaseDirectory, "指令测试-screen.png");
-            var bitmapSource = BitmapSource.Create(
-                frame.Width,
-                frame.Height,
-                96,
-                96,
-                PixelFormats.Bgra32,
-                null,
-                frame.BgraPixels,
-                frame.Stride);
-            var encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
-            using (var stream = File.Create(outputPath))
-            {
-                encoder.Save(stream);
-            }
-
-            flightStopwatch.Stop();
-            var summary = $"已存 {outputPath}（{frame.Width}x{frame.Height}）";
-            AppendResult(line, ok: true, summary: summary);
-            AppendLog($"✔ OK {summary}");
-            _flightRecorder.Record(line, true, summary, flightStopwatch.ElapsedMilliseconds, "screenshot");
-        }
-        catch (Exception exception)
-        {
-            flightStopwatch.Stop();
-            AppendResult(line, ok: false, summary: $"截屏失败：{exception.Message}");
-            AppendLog($"✗ 失败 截屏失败：{exception.Message}");
-            _flightRecorder.Record(line, false, $"截屏失败：{exception.Message}", flightStopwatch.ElapsedMilliseconds, "screenshot");
-        }
-    }
+    // 1.2.99 最终交付剥离（用户 2026-09-05 令）：KEY/CLICK/SCREENSHOT 三条 AI 诊断指令
+    // 已从交付版移除——原始输入/截屏通道对最终用户无用且增大攻击面；语义指令集
+    // （I/A/M+STATUS/START/STOP/GOAL/DECIDE）不受影响。需要取证时用识别流帧（START+I1）。
 
     private async Task ExecuteLineAsync(string rawLine)
     {
@@ -688,40 +553,6 @@ public sealed class CommandTestWindow : Window
                     return;
                 case "DECIDE":
                     HandleDecide(tokens);
-                    return;
-                case "KEY":
-                    if (tokens.Length == 2 && TryParseInputKey(tokens[1], out var rawKey))
-                    {
-                        await ExecuteRawInputAsync(
-                            line,
-                            (window, token) => _input.PressKeyAsync(window, rawKey, new ActionPolicy(), token));
-                    }
-                    else
-                    {
-                        AppendLog("✗ 用法：KEY <Escape|Enter|F|V|LeftAlt>");
-                        AppendResult(line, ok: false, summary: "解析失败：KEY <Escape|Enter|F|V|LeftAlt>");
-                    }
-                    return;
-                case "CLICK":
-                    if (tokens.Length == 3
-                        && int.TryParse(tokens[1], out var clickX)
-                        && int.TryParse(tokens[2], out var clickY))
-                    {
-                        await ExecuteRawInputAsync(
-                            line,
-                            (window, token) => _input.ClickAsync(
-                                new ClickTarget("ai-raw-click", "AI诊断点击", window, new PixelRect(clickX, clickY, 1, 1)),
-                                new ActionPolicy(),
-                                token));
-                    }
-                    else
-                    {
-                        AppendLog("✗ 用法：CLICK <x> <y>（游戏窗口客户区像素坐标）");
-                        AppendResult(line, ok: false, summary: "解析失败：CLICK <x> <y>（客户区像素坐标）");
-                    }
-                    return;
-                case "SCREENSHOT":
-                    await ExecuteScreenshotAsync(line);
                     return;
             }
 

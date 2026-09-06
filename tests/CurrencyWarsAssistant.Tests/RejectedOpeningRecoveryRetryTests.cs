@@ -394,7 +394,7 @@ public sealed class RejectedOpeningRecoveryRetryTests
             window.Handle,
             CancellationToken.None);
 
-        Assert.True(dismissed);
+        Assert.Equal(GalaBondDismissOutcome.NotOnScreen, dismissed);
         Assert.Equal(0, input.ClickAttempts);
         Assert.Equal(0, input.GalaPortraitClicks);
         Assert.Equal(0, input.GalaConfirmClicks);

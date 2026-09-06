@@ -13,7 +13,8 @@ public sealed class GrailOperationCommands(
     GrailOperationExecutor executor,
     RewardStageAutomationController rewardStage,
     PreparationBoardController preparationBoard,
-    IRunAbandoner? runAbandoner) : IGrailCommandHandler
+    IRunAbandoner? runAbandoner,
+    IGalaBondPopupHandler? galaPopupHandler = null) : IGrailCommandHandler
 {
     // 上场槽位占用序（前台 4 槽、后台 6 槽，与 PreparationBoardController 的槽位表一致）。
     // 本计数器只服务 A1：M5 内部上场走执行器自己的计数，两本账不得混用。
@@ -45,6 +46,7 @@ public sealed class GrailOperationCommands(
             GrailCommandKind.A4 => await AssembleBadgeAsync(command, context, cancellationToken),
             GrailCommandKind.A5 => await MoveToLeftSlotAsync(command, context, cancellationToken),
             GrailCommandKind.A15 => await ChooseSimpleEquipmentAsync(command, context, cancellationToken),
+            GrailCommandKind.A16 => await DismissGalaPopupAsync(context, cancellationToken),
             GrailCommandKind.A7 => GrailCommandResult.Fail(command.Kind,
                 "环境页免费刷新无独立实现（环境选择在 opening 刷开局流程内承载）。"),
             GrailCommandKind.A11 => GrailCommandResult.Fail(command.Kind,
@@ -431,6 +433,49 @@ public sealed class GrailOperationCommands(
         }
 
         return abandonResult;
+    }
+
+    /// <summary>
+    /// A16 盛会之星升档选择框消除（1.2.115，用户令单功能隔离测试）：弹框在屏才应答
+    /// （任选角色+确认选择），不在屏=Ok(NotOnScreen) 零点击；绝不弃局、不碰状态机。
+    /// 回执区分"已消除/不在屏"，失败如实 Fail。
+    /// </summary>
+    private async Task<GrailCommandResult> DismissGalaPopupAsync(
+        GrailCommandContext context,
+        CancellationToken cancellationToken)
+    {
+        if (galaPopupHandler is null)
+        {
+            return GrailCommandResult.Fail(GrailCommandKind.A16, "未注入 IGalaBondPopupHandler，无法消除。");
+        }
+
+        try
+        {
+            return await galaPopupHandler.DismissGalaBondPopupIfUpAsync(
+                    context.WindowHandle, cancellationToken) switch
+            {
+                GalaBondDismissOutcome.Dismissed => GrailCommandResult.Ok(
+                    GrailCommandKind.A16,
+                    "盛会之星升档选择框已应答关闭（任选角色+确认选择）。"),
+                GalaBondDismissOutcome.NotOnScreen => GrailCommandResult.Ok(
+                    GrailCommandKind.A16,
+                    "盛会之星升档选择框不在屏（识别未命中，零点击）。"),
+                _ => GrailCommandResult.Fail(
+                    GrailCommandKind.A16,
+                    "应答后弹框仍在屏——候选点位耗尽（见 RecoveryGalaPopupDismissFailed 事件）。"),
+            };
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception error)
+        {
+            // 与 A9 P1-2 同款包装：组件异常（GPU TDR/窗口失效类）回事实不裸抛。
+            return GrailCommandResult.Fail(
+                GrailCommandKind.A16,
+                $"消除序列异常（{error.GetType().Name}）：{error.Message}（常见诱因=游戏窗口失效/GPU 崩溃，可先 I1 核实画面）。");
+        }
     }
 
     private async Task<GrailCommandResult> SelectStrategyAsync(

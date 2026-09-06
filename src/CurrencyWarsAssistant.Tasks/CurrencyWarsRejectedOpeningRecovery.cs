@@ -137,6 +137,19 @@ public interface IRunAbandoner
         CancellationToken cancellationToken);
 }
 
+/// <summary>盛会弹框消除结果三态（坑50；A16 回执与泵退避共用）。</summary>
+public enum GalaBondDismissOutcome
+{
+    /// <summary>弹框不在屏（零点击，识别未命中）。</summary>
+    NotOnScreen,
+
+    /// <summary>弹框已应答关闭（任选角色+确认选择）。</summary>
+    Dismissed,
+
+    /// <summary>应答后弹框仍在（候选点位耗尽，如实失败）。</summary>
+    Failed,
+}
+
 /// <summary>
 /// 盛会之星羁绊升档选择框的按需消除（坑50，1.2.114）：弹框在屏才点击
 /// （任选一名角色+确认选择，用户 2026-09-06 23:0x 口径"随便点一个"），
@@ -144,7 +157,7 @@ public interface IRunAbandoner
 /// </summary>
 public interface IGalaBondPopupHandler
 {
-    Task<bool> DismissGalaBondPopupIfUpAsync(
+    Task<GalaBondDismissOutcome> DismissGalaBondPopupIfUpAsync(
         nint windowHandle,
         CancellationToken cancellationToken);
 }
@@ -339,18 +352,20 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
         return Failed("弃局兜底：Esc 与退出按钮均未能进入放弃结算确认页；盲点直通也未确认回主界面。");
     }
 
-    /// <summary>IGalaBondPopupHandler：弹框在屏才应答（任选角色+确认选择）；不在屏=成功语义零点击。</summary>
-    public async Task<bool> DismissGalaBondPopupIfUpAsync(
+    /// <summary>IGalaBondPopupHandler：弹框在屏才应答（任选角色+确认选择）；不在屏=NotOnScreen 零点击。</summary>
+    public async Task<GalaBondDismissOutcome> DismissGalaBondPopupIfUpAsync(
         nint windowHandle,
         CancellationToken cancellationToken)
     {
         _pauseBaseline = foregroundGuard.TotalPausedDuration;
         if (!await IsGalaBondPopupOnScreenAsync(windowHandle, cancellationToken))
         {
-            return true;
+            return GalaBondDismissOutcome.NotOnScreen;
         }
 
-        return await DismissGalaBondPopupCoreAsync(windowHandle, cancellationToken);
+        return await DismissGalaBondPopupCoreAsync(windowHandle, cancellationToken)
+            ? GalaBondDismissOutcome.Dismissed
+            : GalaBondDismissOutcome.Failed;
     }
 
     /// <summary>

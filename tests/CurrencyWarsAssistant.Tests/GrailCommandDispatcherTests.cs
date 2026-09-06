@@ -66,9 +66,9 @@ public class GrailCommandDispatcherTests
     [Fact]
     public void Command_Catalog_Matches_v431()
     {
-        // I×10 + A×14（A8 已删；A15=简易装备选择，2026-09-03 实测新增） + M×8 = 32。
+        // I×10 + A×15（A8 已删；A15=简易装备选择 2026-09-03；A16=盛会弹框消除 1.2.115 用户令单功能测试） + M×8 = 33。
         var values = Enum.GetValues<GrailCommandKind>();
-        Assert.Equal(32, values.Length);
+        Assert.Equal(33, values.Length);
         Assert.False(Enum.IsDefined(typeof(GrailCommandKind), (GrailCommandKind)208), "A8 应已删除。");
     }
 

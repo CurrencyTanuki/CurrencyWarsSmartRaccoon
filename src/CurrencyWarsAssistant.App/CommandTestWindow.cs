@@ -126,7 +126,8 @@ public sealed class CommandTestWindow : Window
             _listener, _stateHolder, gameData, preparationBoard, rewardStage, trialSelection,
             gameCapture, gameWindowService);
         var operation = new GrailOperationCommands(
-            _executor, rewardStage, preparationBoard, runAbandoner);
+            _executor, rewardStage, preparationBoard, runAbandoner,
+            runAbandoner as IGalaBondPopupHandler);
         var macro = new GrailMacroCommands(
             _executor, rewardStage, _stateHolder, _listener, openingCoordinator, runAbandoner);
         _dispatcher = new GrailCommandDispatcher(recognition, operation, macro);

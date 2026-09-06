@@ -470,7 +470,7 @@ public sealed class GrailMacroCommands(
                 {
                     if (await galaHandler.DismissGalaBondPopupIfUpAsync(
                             windowHandle,
-                            cancellationToken))
+                            cancellationToken) != GalaBondDismissOutcome.Failed)
                     {
                         _galaDismissFailures = 0;
                     }

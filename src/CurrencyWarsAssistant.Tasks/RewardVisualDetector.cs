@@ -58,12 +58,13 @@ public sealed class RewardVisualDetector
         return points.Distinct().ToArray();
     }
 
-    /// <summary>大金矿球检测（1.2.108）：1920 基准扩区 (1150,100,760,660)——覆盖普通
-    /// 矿区及周边、排除顶栏与右侧羁绊栏；半径 48-130；圆盘内金色像素占比 ≥45% 才认定
-    /// （防误检：羁绊金图标/金币 UI 均小且不满足大圆盘）。命中即与普通矿球同路径点击。</summary>
+    /// <summary>大金矿球检测（1.2.108）：1920 基准区域 (1250,100,660,460)——审查 P2 收缩：
+    /// 覆盖普通矿区（1270-1660×165-555）及周边，排除出战按钮（y=750）、前台 4 号槽
+    /// （x≤1234）；半径 48-130；金盘占比≥45%（外接矩形口径，折算圆盘≈57%，偏防误检）。
+    /// 命中即与普通矿球同路径点击（OpenMineBallsAsync 有备战页门禁，商店开面板时不点）。</summary>
     private static IEnumerable<PixelPoint> FindLargeGoldBalls(Mat normalized)
     {
-        var region = new Rect(1150, 100, 760, 660);
+        var region = new Rect(1250, 100, 660, 460);
         using var roi = new Mat(normalized, region);
         using var gray = new Mat();
         Cv2.CvtColor(roi, gray, ColorConversionCodes.BGR2GRAY);

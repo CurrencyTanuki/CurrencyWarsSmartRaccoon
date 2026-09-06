@@ -635,6 +635,19 @@ public sealed partial class RewardStageAutomationController
             var (window, frame) = await CaptureForegroundAsync(
                 windowHandle,
                 cancellationToken);
+            // 1.2.108（审查 P2-1 加固）：开矿点击前页面门禁——备战页以外（商店面板
+            // 开着/弹框/结算）矿球不可交互，点了会打到面板上（误触购买/误点按钮）。
+            var minePassPage = pageClassifier.Classify(frame)?.PageId;
+            if (minePassPage is not null
+                && !minePassPage.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase))
+            {
+                Publish(
+                    "MineBallsSkippedNonPreparationPage",
+                    $"当前页面 {minePassPage} 非备战页——矿球不可交互，本轮跳过开矿点击。",
+                    TaskEventLevel.Warning);
+                return openedCount;
+            }
+
             var mines = visualDetector.FindMineBalls(frame);
             if (mines.Count == 0)
             {

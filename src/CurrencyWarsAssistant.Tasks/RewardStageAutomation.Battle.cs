@@ -100,6 +100,7 @@ public sealed partial class RewardStageAutomationController
                     if (battleClicks >= maximumBattleClicks)
                     {
                         // 1.2.108：出战失败留取证帧（下次复现直接看画面是什么挡住了出战）。
+                        var evidenceSaved = false;
                         try
                         {
                             var (_, failFrame) = await CaptureForegroundAsync(
@@ -113,6 +114,7 @@ public sealed partial class RewardStageAutomationController
                             failFrame.SavePng(Path.Combine(
                                 directory,
                                 $"{DateTime.Now:yyyyMMdd-HHmmssfff}-battle-start-failed.png"));
+                            evidenceSaved = true;
                         }
                         catch
                         {
@@ -122,7 +124,9 @@ public sealed partial class RewardStageAutomationController
                         Publish(
                             "RewardBattleStartFailed",
                             $"已在 {preparationPageId} 执行 {maximumBattleClicks} 次出战，" +
-                            "仍未进入战斗或成功页（取证帧已存 battle-evidence）；安全停止。",
+                            "仍未进入战斗或成功页" +
+                            (evidenceSaved ? "（取证帧已存 battle-evidence）" : string.Empty) +
+                            "；安全停止。",
                             TaskEventLevel.Warning);
                         return false;
                     }

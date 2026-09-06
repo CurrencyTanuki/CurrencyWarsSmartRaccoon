@@ -1614,13 +1614,14 @@ public sealed class GrailDecisionEngine(
         // 却识别成别的名单→零购买；金矿 5 球检测后仍有漏开）：裸 M5 买到 0 且货架
         // 含未识别槽位=识别半帧实锤，重发一次裸 M5 重扫（有界一次，不刷新）。 ----
         var poppedShop = await SendAsync("M5", new GrailCommand(GrailCommandKind.M5), window, ct);
+        // 1.2.108 审查 P1 修正：货架名单里不存在"未识别"字样（识别失败槽位在 Fact
+        // 组装时被整体剔除，全空时 ShelfCharacterNames=null）——半帧信号=槽位数<5。
         if (poppedShop.Error is null
             && poppedShop.Payload is GrailShopPassFact poppedFact
             && (poppedFact.BoughtCharacterNames?.Count ?? 0) == 0
-            && (poppedFact.ShelfCharacterNames?.Any(name =>
-                    name.Contains("未识别", StringComparison.Ordinal)) ?? false))
+            && (poppedFact.ShelfCharacterNames?.Count ?? 0) < 5)
         {
-            emit("[决策层] 弹出商店首轮识别含未识别槽位且零购买——静置后重扫一次。");
+            emit("[决策层] 弹出商店首轮识别不完整（货架槽位数<5）且零购买——静置后重扫一次。");
             await Task.Delay(TimeSpan.FromMilliseconds(1200), ct);
             await SendAsync("M5 rescan", new GrailCommand(GrailCommandKind.M5), window, ct);
         }

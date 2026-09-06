@@ -639,17 +639,28 @@
       "minimumAnchorMatches": 1,
       "anchors": [
         {
-          "id": "gala_star_bond_title",
-          "displayName": "盛会之星升档框标题带金线（请选择1名角色成为巨星）",
-          "file": "templates/1920x1080/pages/gala-star-bond-title.png",
+          "id": "gala_star_bond_subtitle",
+          "displayName": "请选择1名角色成为巨星（副标题行，彩色）",
+          "file": "templates/1920x1080/pages/gala-star-bond-subtitle.png",
           "searchRegion": {
             "x": 0.18,
             "y": 0.1,
             "width": 0.25,
             "height": 0.08
           },
-          "threshold": 0.78,
-          "edgeDetection": true
+          "threshold": 0.85
+        },
+        {
+          "id": "gala_star_bond_bigtitle",
+          "displayName": "盛会之星大标题（金色，彩色）",
+          "file": "templates/1920x1080/pages/gala-star-bond-bigtitle.png",
+          "searchRegion": {
+            "x": 0.44,
+            "y": 0.04,
+            "width": 0.2,
+            "height": 0.1
+          },
+          "threshold": 0.8
         }
       ]
     }

@@ -182,8 +182,21 @@
             "height": 0.2
           },
           "threshold": 0.9
+        },
+        {
+          "id": "currency_wars_home_start_button",
+          "displayName": "开始「货币战争」按钮（3D 主页与零和博弈赛季主页同按钮，审查补 1.2.117）",
+          "file": "templates/1920x1080/pages/currency-wars-home-start-button.png",
+          "searchRegion": {
+            "x": 0.64,
+            "y": 0.82,
+            "width": 0.35,
+            "height": 0.14
+          },
+          "threshold": 0.85
         }
-      ]
+      ],
+      "minimumAnchorMatches": 1
     },
     {
       "id": "mode_selection",

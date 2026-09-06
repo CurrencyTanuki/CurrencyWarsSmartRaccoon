@@ -13,6 +13,29 @@ namespace CurrencyWarsAssistant.Tasks;
 /// </summary>
 public sealed partial class PreparationBoardController
 {
+    /// <summary>星徽装配取证帧落盘（1.2.106 用户令"拿出装上的证据"）：装配成功/失败
+    /// 的前后帧各存一张到 %LOCALAPPDATA%\CurrencyWarsSmartRaccoon\badge-evidence\，
+    /// 保存异常绝不影响装配主流程。</summary>
+    private static void SaveBadgeEvidence(
+        CaptureFrame frame,
+        string tag)
+    {
+        try
+        {
+            var directory = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "CurrencyWarsSmartRaccoon",
+                "badge-evidence");
+            Directory.CreateDirectory(directory);
+            var name = $"{DateTime.Now:yyyyMMdd-HHmmssfff}-{tag}.png";
+            frame.SavePng(Path.Combine(directory, name));
+        }
+        catch
+        {
+            // 取证保存失败不影响装配。
+        }
+    }
+
     /// <summary>把一名备战席角色拖上场（前台/后台指定槽位，既有 DeployWithVerificationAsync 带验证）。</summary>
     internal async Task<bool> GrailDeployBenchCharacterAsync(
         nint windowHandle,
@@ -252,6 +275,7 @@ public sealed partial class PreparationBoardController
             }
 
             var sourcePoint = badgeCenter;
+            SaveBadgeEvidence(captured.Value.Frame, $"badge-before-a{attempt}");
             Publish(
                 TaskEventLevel.Information,
                 "GrailBadgePanelProbe",
@@ -311,14 +335,17 @@ public sealed partial class PreparationBoardController
                         expectedPreparationPageId,
                         allowEscapeRecovery: false,
                         cancellationToken);
-                    if (afterSelect is not null &&
-                        !StarBadgeLocator.TryLocate(afterSelect.Value.Frame, out _, out _))
+                    if (afterSelect is not null)
                     {
-                        Publish(
-                            TaskEventLevel.Information,
-                            "GrailBadgeAssemblySelected",
-                            $"点选模式装配成功——星徽已不在物品栏（第 {attempt}/3 次）。");
-                        return true;
+                        SaveBadgeEvidence(afterSelect.Value.Frame, $"badge-clickselect-a{attempt}");
+                        if (!StarBadgeLocator.TryLocate(afterSelect.Value.Frame, out _, out _))
+                        {
+                            Publish(
+                                TaskEventLevel.Information,
+                                "GrailBadgeAssemblySelected",
+                                $"点选模式装配成功——星徽已不在物品栏（第 {attempt}/3 次）。");
+                            return true;
+                        }
                     }
                 }
 
@@ -361,6 +388,7 @@ public sealed partial class PreparationBoardController
             // 拖后自证（审查 P2）：连续两帧（间隔 300ms）均未定位到星徽=装配成功；
             // 单帧阴性可能被动画/悬浮窗遮挡误判，不得据此谎报成功；任一帧仍在=未装上重试。
             var badgeStillVisible = false;
+            CaptureFrame? lastCheckFrame = null;
             foreach (var checkDelay in new[] { 300, 300 })
             {
                 await Task.Delay(TimeSpan.FromMilliseconds(checkDelay), cancellationToken);
@@ -381,12 +409,15 @@ public sealed partial class PreparationBoardController
                 if (StarBadgeLocator.TryLocate(check.Value.Frame, out var remainingCenter, out var remainingScore))
                 {
                     badgeStillVisible = true;
+                    SaveBadgeEvidence(check.Value.Frame, $"badge-stillpanel-a{attempt}");
                     Publish(
                         TaskEventLevel.Warning,
                         "GrailBadgeAssemblyRetry",
                         $"拖后星徽仍在物品栏（质心=({remainingCenter.X},{remainingCenter.Y})，模板分 {remainingScore:F2}），第 {attempt}/3 次未装上，重试。");
                     break;
                 }
+
+                lastCheckFrame = check.Value.Frame;
             }
 
             if (badgeStillVisible)
@@ -394,10 +425,15 @@ public sealed partial class PreparationBoardController
                 continue;
             }
 
+            if (lastCheckFrame is not null)
+            {
+                SaveBadgeEvidence(lastCheckFrame, "badge-ASSEMBLED");
+            }
+
             Publish(
                 TaskEventLevel.Information,
                 "GrailBadgeAssemblyVerified",
-                "连续两帧未在物品栏定位到星徽，判定装配成功。");
+                "连续两帧未在物品栏定位到星徽，判定装配成功（取证帧已存 badge-evidence）。");
             return true;
         }
 

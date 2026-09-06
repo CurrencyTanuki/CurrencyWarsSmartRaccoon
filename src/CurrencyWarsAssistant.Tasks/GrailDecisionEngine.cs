@@ -882,17 +882,58 @@ public sealed class GrailDecisionEngine(
             snapshot = anomalyReread;
         }
 
-        var cap = snapshot.SellableBeyondKeepLineCount;
+        // 1.2.105（15:02 局实弹：S4 前置快照漏读 2 名场上单位→cap 算小→清场漏卖，
+        // 用户令"上过场的角色也要卖出"）：cap 不再取自单一快照——卖出后的 I10 复核
+        // 本身就是新鲜快照，循环条件改用实时 SellableBeyondKeepLineCount，前置漏读
+        // 在下一轮自愈；cap=0 终判前必须连续两帧一致（防漏读帧提前收工）。
+        // 保留线（未携带星徂数）语义由 SellableBeyondKeepLineCount 继续承担。
+        // 可卖数>0 却选不出目标=识别不一致帧：重读复核最多 2 次；绝对上限 13 条
+        // （备战席 9+前台 4）防异常振荡。1.2.58 反证即停语义不变。
         var sold = 0;
-
-        // 1.2.58：逐卖重读循环——每轮从最新快照选一条可卖（备战席优先、场上次之），
-        // 卖出后立即 I10 复核；复核反证（目标槽未空/名字未消失/快照拿不到）立即停手。
-        while (sold < cap && !ct.IsCancellationRequested)
+        var inconsistentRereads = 0;
+        var emptyCapConfirmed = false;
+        while (sold < 13 && !ct.IsCancellationRequested)
         {
+            if (snapshot.SellableBeyondKeepLineCount <= 0)
+            {
+                if (emptyCapConfirmed)
+                {
+                    break;
+                }
+
+                // cap=0 可能来自漏读帧（15:02 局根因）——终判前重读一次确认。
+                emptyCapConfirmed = true;
+                var confirm = await SnapshotWithRetryAsync(window, ct);
+                if (confirm is null)
+                {
+                    emit("[决策层] 清场：可卖数=0 终判前重读快照失败——停手交对账。");
+                    break;
+                }
+
+                snapshot = confirm;
+                continue;
+            }
+
+            emptyCapConfirmed = false;
             var target = SelectNextSellableTarget(snapshot);
             if (target is null)
             {
-                break;
+                inconsistentRereads++;
+                if (inconsistentRereads > 2)
+                {
+                    emit("[决策层] 清场：连续 3 帧可卖数与明细不一致——停手交对账。");
+                    break;
+                }
+
+                var reread = await SnapshotWithRetryAsync(window, ct);
+                if (reread is null)
+                {
+                    emit("[决策层] 清场：重读快照失败——停手交对账。");
+                    break;
+                }
+
+                snapshot = reread;
+                continue;
             }
 
             var sell = target.Kind == SellTargetKind.Bench
@@ -912,6 +953,7 @@ public sealed class GrailDecisionEngine(
             }
 
             sold++;
+            inconsistentRereads = 0; // 卖出成功=不一致帧已过去，重计"连续"次数（审查 P3-2）
             await Task.Delay(TimeSpan.FromSeconds(1), ct);
 
             // 防错④：卖出后 I10 复核=硬性收尾。复核失败=反证，立即停手交对账。
@@ -1418,9 +1460,27 @@ public sealed class GrailDecisionEngine(
             maxProbes: BoughtNonXilianMember(m5Result) && !deployed ? 4 : 1);
         // P2-1（1.2.71 运行时审计）：justActed 纳入"执行器内部上场"——M5 买到成员的
         // 上场动画同样会让立即 I10 读到空前台（19:17 误弃好局同款），前置门按动画期处理。
-        if (await EnsureFrontHasUnitAsync(
-                window, snapshot,
-                deployed || assembled || BoughtNonXilianMember(m5Result), ct) is null)
+        var frontCheck = await EnsureFrontHasUnitAsync(
+            window, snapshot,
+            deployed || assembled || BoughtNonXilianMember(m5Result), ct);
+        if (frontCheck is null)
+        {
+            // 1.2.105（15:54 局实弹：067 命中局开局快照连续 3 帧漏读备战席→部署段零
+            // 候选→前台空判死，误弃命中局；对照 15:47 同环境开局备战席有 3 名可部署
+            // 单位且数值读数完全相同）。判死前重读一次：读到备战席单位=漏读实锤→
+            // 补跑一次部署段再终判。不对称风险与 justActed 放行同款：误放行有
+            // M1 弹窗+A9 兜底（可逆），误弃局不可逆。
+            var deathReread = await SnapshotWithRetryAsync(window, ct);
+            if (deathReread is not null && deathReread.BenchCharacterDetails.Count > 0)
+            {
+                emit("[决策层] 判死前重读发现备战席有单位（此前为漏读帧）——补跑一次部署段。");
+                var (redeployed, _) = await DeployBondMembersAsync(window, deathReread, ct);
+                frontCheck = await EnsureFrontHasUnitAsync(
+                    window, deathReread, redeployed, ct);
+            }
+        }
+
+        if (frontCheck is null)
         {
             // 1.2.58（架构审查 2-3）：M1 前置门——场上无人时出战必被"前台区域
             // 无角色"弹窗拦下，自 heal 循环烧时间。空场局判 Dead 走弃局重开。

@@ -72,6 +72,26 @@ public class GrailShopPurchaseNamesTests
     }
 
     [Fact]
+    public void GalaxyScholarGateClosed_ConditionalBranchAlsoDisabled()
+    {
+        // 1.2.105（15:13 局实锤，12:00 事故第二次重演的根因）：节点门关闭时，
+        // "已拥有其一→追加其余学者"的条件分支同样必须禁用——1-3 场上已有
+        // 黑塔+艾丝妲时，裸 M5 曾把真理医生买进并上场（门此前只接了同帧双学者分支）。
+        var executor = new ExecutorHolder(GameData).Executor;
+        executor.AllowGalaxyScholarPurchase = false;
+        var names = executor.BuildShopPurchaseNames(
+            new HashSet<string>(["黑塔", "艾丝妲"], StringComparer.OrdinalIgnoreCase));
+
+        Assert.DoesNotContain("真理医生", names);
+        Assert.DoesNotContain("阮•梅", names);
+        Assert.DoesNotContain("大黑塔", names);
+        // 学者门不影响命杯成员与昔涟
+        Assert.Contains("远坂凛", names);
+        Assert.Contains("吉尔伽美什", names);
+        Assert.Contains("昔涟", names);
+    }
+
+    [Fact]
     public void ShelfWithAnotherTarget_TriggersFollowUpPass()
     {
         var executor = new ExecutorHolder(GameData).Executor;

@@ -1677,7 +1677,7 @@ public sealed partial class PreparationBoardController(
                 Publish(
                     TaskEventLevel.Warning,
                     "PreparationBenchSaleSkipped",
-                    $"出售“{candidate.Character.Name}”经过 3 次有限尝试后仍未能确认源槽为空；" +
+                    $"出售“{candidate.Character.Name}”经 3 次直卖+搬槽兜底后仍未确认源槽为空；" +
                     "已跳过该角色。出售属于可选经济优化，不会因此停止奖励关自动化。");
                 continue;
             }
@@ -1827,6 +1827,11 @@ public sealed partial class PreparationBoardController(
         string expectedPreparationPageId,
         CancellationToken cancellationToken)
     {
+        // 1.2.105（花火/银枝/缇宝实弹：备战席5号位(屏幕 x≈1255)卖出拖拽 18/18 游戏侧
+        // 无效——同点部署拖拽成功、1-4 号位卖出成功、两侧参数完全一致；650ms 时长下
+        // 5 号位→出售区路径最长(~1142px)，慢机日疑似长路径拖拽丢抓取）。升级策略：
+        // 第 1 次直卖（原参数）→第 2/3 次加长时长 1300ms+按压 300ms+抓取点卡内横移
+        // →仍失败搬槽兜底（把卡拖到空备战槽再卖，1-4 号位卖出无失败记录）。
         for (var attempt = 1; attempt <= 3; attempt++)
         {
             var captured = await CaptureVerifiedPreparationAsync(
@@ -1872,6 +1877,13 @@ public sealed partial class PreparationBoardController(
             var sourcePoint = MapReferencePoint(
                 captured.Value.Window,
                 BenchSlots[candidate.BenchSlot].Center);
+            // 1.2.105：第 2 次起抓取点在卡内横移（屏幕 +28px，卡宽 ~167px 仍在卡上），
+            // 规避中心点抓取热区异常。
+            if (attempt >= 2)
+            {
+                sourcePoint = new PixelPoint(sourcePoint.X + 28, sourcePoint.Y);
+            }
+
             var targetIndex = (attempt - 1) % SellTargetPoints.Count;
             var targetPoint = MapReferencePoint(
                 captured.Value.Window,
@@ -1881,7 +1893,8 @@ public sealed partial class PreparationBoardController(
                 "PreparationBenchSaleAttempt",
                 $"出售“{candidate.Character.Name}”：第 {attempt}/3 次从备战席" +
                 $"{candidate.BenchSlot + 1}号位拖到" +
-                $"{(targetIndex == 0 ? "左侧" : "右侧")}出售区。");
+                $"{(targetIndex == 0 ? "左侧" : "右侧")}出售区" +
+                (attempt >= 2 ? "（加长 1300ms+按压 300ms+抓取点横移）。" : "。"));
             var drag = await input.DragAsync(
                 new ClickTarget(
                     $"sell_{candidate.Character.Id}",
@@ -1889,9 +1902,12 @@ public sealed partial class PreparationBoardController(
                     captured.Value.Window,
                     BoundsAround(captured.Value.Window, sourcePoint)),
                 targetPoint,
-                TimeSpan.FromMilliseconds(650),
+                TimeSpan.FromMilliseconds(attempt >= 2 ? 1300 : 650),
                 new ActionPolicy
                 {
+                    MouseButtonHoldDelay = attempt >= 2
+                        ? TimeSpan.FromMilliseconds(300)
+                        : TimeSpan.Zero,
                     AfterActionDelay = TimeSpan.FromMilliseconds(50)
                 },
                 cancellationToken);
@@ -1923,6 +1939,203 @@ public sealed partial class PreparationBoardController(
                 "PreparationBenchSalePostconditionUnmet",
                 $"出售“{candidate.Character.Name}”第 {attempt}/3 次拖动已发送，" +
                 "但未连续两帧确认原槽为空；将重新识别原槽后再决定是否重试。");
+        }
+
+        // 1.2.105：三次直卖全败→搬槽兜底。
+        return await SellBenchCharacterViaRelocationAsync(
+            windowHandle,
+            candidate,
+            expectedPreparationPageId,
+            cancellationToken);
+    }
+
+    /// <summary>
+    /// 1.2.105 搬槽兜底（备战席5号位直卖 18/18 游戏侧无效的最终手段）：
+    /// 把候选卡拖到一个空备战槽（空槽=纯移动，不涉及交换语义），搬后复核新槽确为
+    /// 候选卡，再从新槽按加长参数卖出（1-4 号位卖出无失败记录）。复核不过=诚实失败。
+    /// </summary>
+    private async Task<bool> SellBenchCharacterViaRelocationAsync(
+        nint windowHandle,
+        RecognizedBenchCharacter candidate,
+        string expectedPreparationPageId,
+        CancellationToken cancellationToken)
+    {
+        var captured = await CaptureVerifiedPreparationAsync(
+            windowHandle,
+            expectedPreparationPageId,
+            allowEscapeRecovery: false,
+            cancellationToken);
+        if (captured is null)
+        {
+            return false;
+        }
+
+        var slots = recognizer.Recognize(captured.Value.Frame, templates, BenchSlots);
+        var sourceSlot = slots.Single(item => item.SlotIndex == candidate.BenchSlot);
+        if (sourceSlot.State == CharacterCardSlotState.Empty)
+        {
+            Publish(
+                TaskEventLevel.Information,
+                "PreparationBenchSaleAlreadyCompleted",
+                $"搬槽兜底前复核发现“{candidate.Character.Name}”原备战槽已空——按已卖出处理。");
+            return true;
+        }
+
+        var emptySlot = slots.FirstOrDefault(item =>
+            item.State == CharacterCardSlotState.Empty);
+        if (emptySlot is null)
+        {
+            Publish(
+                TaskEventLevel.Warning,
+                "PreparationBenchSaleRelocationSkipped",
+                "搬槽兜底跳过：备战席无空槽（交换式搬槽语义未验证，不做）。");
+            return false;
+        }
+
+        Publish(
+            TaskEventLevel.Information,
+            "PreparationBenchSaleRelocation",
+            $"三次直卖未生效——把“{candidate.Character.Name}”从备战席" +
+            $"{candidate.BenchSlot + 1}号位搬到{emptySlot.SlotIndex + 1}号位（空槽纯移动）后重卖。");
+        var moveDrag = await input.DragAsync(
+            new ClickTarget(
+                $"sell_relocate_{candidate.Character.Id}",
+                $"搬槽{candidate.Character.Name}",
+                captured.Value.Window,
+                BoundsAround(
+                    captured.Value.Window,
+                    MapReferencePoint(captured.Value.Window, BenchSlots[candidate.BenchSlot].Center))),
+            MapReferencePoint(captured.Value.Window, BenchSlots[emptySlot.SlotIndex].Center),
+            TimeSpan.FromMilliseconds(900),
+            new ActionPolicy
+            {
+                MouseButtonHoldDelay = TimeSpan.FromMilliseconds(300),
+                AfterActionDelay = TimeSpan.FromMilliseconds(300)
+            },
+            cancellationToken);
+        if (!moveDrag.Succeeded)
+        {
+            Publish(
+                TaskEventLevel.Warning,
+                "PreparationBenchSaleRelocationInputRejected",
+                "搬槽拖拽输入未发送成功：" + moveDrag.Message);
+            return false;
+        }
+
+        var afterMove = await CaptureVerifiedPreparationAsync(
+            windowHandle,
+            expectedPreparationPageId,
+            allowEscapeRecovery: false,
+            cancellationToken);
+        if (afterMove is null)
+        {
+            return false;
+        }
+
+        var afterSlots = recognizer.Recognize(afterMove.Value.Frame, templates, BenchSlots);
+        var movedTo = afterSlots.Single(item => item.SlotIndex == emptySlot.SlotIndex);
+        if (movedTo.State != CharacterCardSlotState.Recognized
+            || !string.Equals(
+                movedTo.CharacterId,
+                candidate.Character.Id,
+                StringComparison.OrdinalIgnoreCase))
+        {
+            Publish(
+                TaskEventLevel.Warning,
+                "PreparationBenchSaleRelocationUnverified",
+                "搬槽后新槽未确认到候选卡（移动未生效或识别不一致）——放弃搬槽兜底。");
+            return false;
+        }
+
+        var relocated = candidate with { BenchSlot = emptySlot.SlotIndex };
+        for (var attempt = 1; attempt <= 2; attempt++)
+        {
+            var recaptured = await CaptureVerifiedPreparationAsync(
+                windowHandle,
+                expectedPreparationPageId,
+                allowEscapeRecovery: false,
+                cancellationToken);
+            if (recaptured is null)
+            {
+                return false;
+            }
+
+            var check = recognizer.Recognize(recaptured.Value.Frame, templates, BenchSlots)
+                .Single(item => item.SlotIndex == relocated.BenchSlot);
+            if (check.State == CharacterCardSlotState.Empty)
+            {
+                Publish(
+                    TaskEventLevel.Information,
+                    "PreparationBenchSaleVerified",
+                    $"搬槽后复核发现“{candidate.Character.Name}”已不在新槽——按已卖出处理。");
+                return true;
+            }
+
+            if (check.State != CharacterCardSlotState.Recognized
+                || !string.Equals(
+                    check.CharacterId,
+                    candidate.Character.Id,
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                Publish(
+                    TaskEventLevel.Warning,
+                    "PreparationBenchSaleSourceChanged",
+                    $"搬槽后复核发现{relocated.BenchSlot + 1}号位已不是候选卡——停止重卖。");
+                return false;
+            }
+
+            var fromPoint = MapReferencePoint(
+                recaptured.Value.Window,
+                BenchSlots[relocated.BenchSlot].Center);
+            var targetPoint = MapReferencePoint(
+                recaptured.Value.Window,
+                SellTargetPoints[(attempt - 1) % SellTargetPoints.Count]);
+            Publish(
+                TaskEventLevel.Information,
+                "PreparationBenchSaleAttempt",
+                $"搬槽后出售“{candidate.Character.Name}”：第 {attempt}/2 次从备战席" +
+                $"{relocated.BenchSlot + 1}号位拖到" +
+                $"{((attempt - 1) % SellTargetPoints.Count == 0 ? "左侧" : "右侧")}出售区（1300ms+按压 300ms）。");
+            var drag = await input.DragAsync(
+                new ClickTarget(
+                    $"sell_relocated_{candidate.Character.Id}",
+                    $"出售{candidate.Character.Name}(搬槽后)",
+                    recaptured.Value.Window,
+                    BoundsAround(recaptured.Value.Window, fromPoint)),
+                targetPoint,
+                TimeSpan.FromMilliseconds(1300),
+                new ActionPolicy
+                {
+                    MouseButtonHoldDelay = TimeSpan.FromMilliseconds(300),
+                    AfterActionDelay = TimeSpan.FromMilliseconds(50)
+                },
+                cancellationToken);
+            if (!drag.Succeeded)
+            {
+                Publish(
+                    TaskEventLevel.Warning,
+                    "PreparationBenchSaleInputRejected",
+                    $"搬槽后出售第 {attempt}/2 次输入未发送成功：" + drag.Message);
+                continue;
+            }
+
+            if (await VerifyBenchSlotEmptyAsync(
+                    windowHandle,
+                    relocated.BenchSlot,
+                    expectedPreparationPageId,
+                    cancellationToken))
+            {
+                Publish(
+                    TaskEventLevel.Information,
+                    "PreparationBenchSaleVerified",
+                    $"已连续两帧确认“{candidate.Character.Name}”搬槽后的新槽为空（搬槽兜底成功）。");
+                return true;
+            }
+
+            Publish(
+                TaskEventLevel.Warning,
+                "PreparationBenchSalePostconditionUnmet",
+                $"搬槽后出售“{candidate.Character.Name}”第 {attempt}/2 次仍未确认新槽为空。");
         }
 
         return false;

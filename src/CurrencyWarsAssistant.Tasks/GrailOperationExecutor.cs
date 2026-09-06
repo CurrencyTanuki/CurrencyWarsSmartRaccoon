@@ -161,7 +161,12 @@ public sealed partial class GrailOperationExecutor(
         var owned = ownedNames as IReadOnlySet<string> ??
             new HashSet<string>(ownedNames, StringComparer.OrdinalIgnoreCase);
         var galaxyScholars = GetBondMemberNames("银河学者");
-        if (galaxyScholars.Count(name => owned.Contains(name)) >= 1)
+        // 1.2.105（15:13 局实锤，12:00 事故第二次重演的根因）：条件追加分支此前不受
+        // AllowGalaxyScholarPurchase 节点门约束——1-3 场上已有黑塔+艾丝妲时，裸 M5
+        // 白名单自动追加真理医生买入并上场（门只接了同帧双学者分支）。学者购买仅 1-1：
+        // 门关闭时条件分支同样禁用。
+        if (AllowGalaxyScholarPurchase
+            && galaxyScholars.Count(name => owned.Contains(name)) >= 1)
         {
             foreach (var name in galaxyScholars)
             {

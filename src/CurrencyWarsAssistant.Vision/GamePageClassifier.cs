@@ -54,6 +54,8 @@ public static class AutomationPageIds
         "investment_environment",
         "investment_strategy",
         "wish_trial_selection",
+        // 坑50（1.2.114）：盛会之星羁绊升档选择框——弃局链/循环泵按页 ID 应答消除。
+        "gala_star_bond_selection",
         "companion_selection",
     };
 

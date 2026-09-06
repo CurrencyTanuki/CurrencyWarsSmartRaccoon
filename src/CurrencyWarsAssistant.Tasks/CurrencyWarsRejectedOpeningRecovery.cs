@@ -137,6 +137,18 @@ public interface IRunAbandoner
         CancellationToken cancellationToken);
 }
 
+/// <summary>
+/// 盛会之星羁绊升档选择框的按需消除（坑50，1.2.114）：弹框在屏才点击
+/// （任选一名角色+确认选择，用户 2026-09-06 23:0x 口径"随便点一个"），
+/// 不在屏时零点击零副作用——供循环泵在运营 tick 前应答，与祈愿弹框同性质。
+/// </summary>
+public interface IGalaBondPopupHandler
+{
+    Task<bool> DismissGalaBondPopupIfUpAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken);
+}
+
 public sealed class CurrencyWarsRejectedOpeningRecovery(
     ICurrencyWarsOpeningNavigator navigator,
     IGameCapture capture,
@@ -146,7 +158,8 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
     ITaskEventSink eventSink) :
     IRejectedOpeningRecovery,
     IAbandonSettlementRecovery,
-    IRunAbandoner
+    IRunAbandoner,
+    IGalaBondPopupHandler
 {
     private const int ReferenceWidth = 1920;
     private const int ReferenceHeight = 1080;
@@ -154,6 +167,20 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
     private static readonly StandardPoint NextPoint = new(960, 899);
     // "前台区域无角色，无法出战"提示弹窗的确认按钮（12:08 实拍帧裁测，1920 参考系）。
     private static readonly StandardPoint UncompletedPromptConfirmPoint = new(960, 699);
+
+    // ---- 盛会之星羁绊升档选择框（坑50，1.2.114）----
+    // 页面 ID 与识别表/AutomationPageIds/FastPageIds 三处同步（坑48 纪律）。
+    public const string GalaBondPopupPageId = "gala_star_bond_selection";
+    // 卡片行候选点位（1920 参考系，stall_end.png 实拍标定 2026-09-06 深夜）：
+    // 卡片间距 248、行中心 x≈1075，候选覆盖 1~4 卡布局；点间隙无害（无选中，
+    // 确认钮置灰），复查不过换下一候选。全部点位都在弹框矩形内（模态吞输入，
+    // 误点不落底层页面——坑39 盲点击纪律按页 ID 门禁）。
+    private static readonly StandardPoint[] GalaPortraitCandidates =
+    [
+        new(970, 270), new(1218, 270), new(1094, 270), new(846, 270), new(1342, 270)
+    ];
+    // 「确认选择」按钮（未选人时置灰，点选后激活；点击置灰态无害）。
+    private static readonly StandardPoint GalaConfirmPoint = new(1540, 590);
     private static readonly TimeSpan PollInterval = TimeSpan.FromMilliseconds(150);
     private TimeSpan _pauseBaseline;
 
@@ -198,6 +225,34 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                     windowHandle,
                     cancellationToken);
                 var fallbackPageId = fallbackPage?.PageId ?? string.Empty;
+
+                // 坑50（1.2.114）：盛会之星羁绊升档选择框浮在备战页上——此前识别表
+                // 无此页（I1 报底层 preparation 族）+ Esc 被模态吞掉 → 弃局 5 连败
+                // 自保停机（22:33/22:49 两次实锤）。现已入识别表：先应答关闭
+                //（任选角色+确认选择），下一轮 Esc 即可正常弃局；消除失败也绝不
+                // fallthrough 到 (960,899)（该点在此弹框上的语义未经验证）。
+                if (string.Equals(
+                        fallbackPageId,
+                        GalaBondPopupPageId,
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    Publish(
+                        "RecoveryGalaPopupBlocked",
+                        "Esc 无效根因=盛会之星羁绊升档选择框在屏——先应答关闭（任选一名角色+确认选择）再弃局。",
+                        TaskEventLevel.Warning);
+                    if (await DismissGalaBondPopupCoreAsync(
+                            windowHandle,
+                            cancellationToken))
+                    {
+                        continue;
+                    }
+
+                    await Task.Delay(
+                        TimeSpan.FromSeconds(1),
+                        cancellationToken);
+                    continue;
+                }
+
                 if (fallbackPageId.StartsWith(
                         "preparation_",
                         StringComparison.OrdinalIgnoreCase))
@@ -284,6 +339,110 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
         return Failed("弃局兜底：Esc 与退出按钮均未能进入放弃结算确认页；盲点直通也未确认回主界面。");
     }
 
+    /// <summary>IGalaBondPopupHandler：弹框在屏才应答（任选角色+确认选择）；不在屏=成功语义零点击。</summary>
+    public async Task<bool> DismissGalaBondPopupIfUpAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        _pauseBaseline = foregroundGuard.TotalPausedDuration;
+        if (!await IsGalaBondPopupOnScreenAsync(windowHandle, cancellationToken))
+        {
+            return true;
+        }
+
+        return await DismissGalaBondPopupCoreAsync(windowHandle, cancellationToken);
+    }
+
+    /// <summary>
+    /// 盛会之星升档选择框消除核心：随便点一张角色卡 → 点「确认选择」→ 复查页。
+    /// 点到卡片间隙=无选中（确认钮置灰、弹框不动），复查不过换下一候选；
+    /// 全部候选耗尽仍不退出=如实失败（不升级为盲点）。复查等待含弹框退出动画。
+    /// 审查 P2-1：每次点击前单帧认页——弹框已退出（含 >3s 退出动画窗）立即收手，
+    /// 后续点击绝不落到已恢复的底层备战页（(970,270) 等点位在备战页语义未验证，坑39）。
+    /// </summary>
+    private async Task<bool> DismissGalaBondPopupCoreAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        foreach (var portrait in GalaPortraitCandidates)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (!await IsGalaBondPopupOnScreenAsync(windowHandle, cancellationToken))
+            {
+                Publish(
+                    "RecoveryGalaPopupDismissed",
+                    "盛会之星升档选择框已不在屏（点击前认页）——视为已消除。");
+                return true;
+            }
+
+            var selectResult = await ClickStandardPointAsync(
+                windowHandle,
+                $"gala_portrait_{portrait.X}_{portrait.Y}",
+                "盛会之星升档框：任选一名角色（用户口径：随便点）",
+                portrait,
+                new ActionPolicy { AfterActionDelay = TimeSpan.FromMilliseconds(350) },
+                cancellationToken);
+            if (!selectResult.Succeeded)
+            {
+                continue;
+            }
+
+            if (!await IsGalaBondPopupOnScreenAsync(windowHandle, cancellationToken))
+            {
+                Publish(
+                    "RecoveryGalaPopupDismissed",
+                    "盛会之星升档选择框已不在屏（选人后认页）——确认钮不再点击。");
+                return true;
+            }
+
+            await ClickStandardPointAsync(
+                windowHandle,
+                "gala_confirm",
+                "盛会之星升档框：确认选择",
+                GalaConfirmPoint,
+                new ActionPolicy { AfterActionDelay = TimeSpan.Zero },
+                cancellationToken);
+
+            var deadline = ActiveUtcNow + TimeSpan.FromSeconds(3);
+            while (ActiveUtcNow < deadline)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                if (!await IsGalaBondPopupOnScreenAsync(windowHandle, cancellationToken))
+                {
+                    Publish(
+                        "RecoveryGalaPopupDismissed",
+                        "盛会之星升档选择框已应答关闭（任选角色+确认选择）——Esc 链可正常继续。");
+                    return true;
+                }
+
+                await Task.Delay(
+                    TimeSpan.FromMilliseconds(300),
+                    cancellationToken);
+            }
+        }
+
+        Publish(
+            "RecoveryGalaPopupDismissFailed",
+            "盛会之星升档选择框应答后仍未退出——候选点位耗尽，如实失败（不盲点）。",
+            TaskEventLevel.Warning);
+        return false;
+    }
+
+    /// <summary>单帧认页：盛会弹框是否仍在屏（坑50；所有应答点击的击前门禁）。</summary>
+    private async Task<bool> IsGalaBondPopupOnScreenAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        var window = await foregroundGuard.WaitUntilForegroundAsync(
+            windowHandle,
+            cancellationToken);
+        var frame = await capture.CaptureAsync(window, cancellationToken);
+        return string.Equals(
+            classifier.Classify(frame)?.PageId,
+            GalaBondPopupPageId,
+            StringComparison.OrdinalIgnoreCase);
+    }
+
     public async Task<RejectedOpeningRecoveryResult> RecoverAsync(
         nint windowHandle,
         OpeningSnapshot rejectedOpening,
@@ -352,6 +511,22 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                 windowHandle,
                 cancellationToken);
             var fallbackPageId = fallbackPage?.PageId ?? string.Empty;
+            // 坑50（1.2.114，审查 P2-3）：与 AbandonCurrentRunAsync 对称——本路径
+            //（开局不合格弃局）遇盛会升档弹框同样先应答，否则 (960,899)×3 落在
+            // 弹框上仅靠模态吞输入免祸，动画窗内则真实落在出战键附近。
+            if (string.Equals(
+                    fallbackPageId,
+                    GalaBondPopupPageId,
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                Publish(
+                    "RecoveryGalaPopupBlocked",
+                    "Esc 无效根因=盛会之星羁绊升档选择框在屏——先应答关闭再弃局。",
+                    TaskEventLevel.Warning);
+                await DismissGalaBondPopupCoreAsync(windowHandle, cancellationToken);
+                return Failed("盛会之星升档选择框阻断弃局——已尝试应答，交由外层重试。");
+            }
+
             if (fallbackPageId.StartsWith(
                     "preparation_",
                     StringComparison.OrdinalIgnoreCase))
@@ -455,6 +630,27 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                     $"盲点推进探测到备战页（{probePage.PageId}）——立即停止（备战页绝不点击推进位）。",
                     TaskEventLevel.Warning);
                 return false;
+            }
+
+            // 坑50（1.2.114）：盲点推进位 (960,899) 在盛会之星升档选择框上的语义
+            // 未经验证（模态吞输入）——先尝试应答关闭；关不掉就停手交外层，不盲点。
+            if (string.Equals(
+                    probePage?.PageId,
+                    GalaBondPopupPageId,
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                Publish(
+                    "RecoveryBlindAdvanceGalaPopup",
+                    "盲点推进探测到盛会之星升档选择框——先应答关闭（任选一名角色+确认选择）。",
+                    TaskEventLevel.Warning);
+                if (!await DismissGalaBondPopupCoreAsync(
+                        windowHandle,
+                        cancellationToken))
+                {
+                    return false;
+                }
+
+                continue;
             }
 
             if (probePage?.PageId is "currency_wars_home" or "normal_hud"

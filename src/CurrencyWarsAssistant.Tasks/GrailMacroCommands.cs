@@ -13,9 +13,14 @@ public sealed class GrailMacroCommands(
     RewardStageAutomationController rewardStage,
     GrailRunStateHolder stateHolder,
     GrailRecognitionListener listener,
-    OpeningRerollLoopCoordinator openingCoordinator)
+    OpeningRerollLoopCoordinator openingCoordinator,
+    IRunAbandoner? runAbandoner = null)
     : IGrailCommandHandler
 {
+    // 坑50（1.2.114，审查 P2-5）：盛会弹框泵连续消除失败的退避状态。
+    private int _galaDismissFailures;
+    private DateTimeOffset _galaDismissBackoffUntil = DateTimeOffset.MinValue;
+
     private async Task<OpeningRerollLoopResult> InvokeOpeningLoop(
         nint windowHandle,
         OpeningFilterSet filters,
@@ -444,6 +449,37 @@ public sealed class GrailMacroCommands(
                 try
                 {
                     await executor.ExecuteWishDialogAsync(windowHandle, cancellationToken);
+                }
+                catch (OperationCanceledException)
+                {
+                    throw;
+                }
+                catch (Exception)
+                {
+                    // 泵故障不外泄（外泄会杀死 M8）：吞掉后继续轮询
+                }
+            }
+            // 坑50（1.2.114）：盛会之星升档选择框同泵应答——DECIDE 路径 opening 期
+            //（M8 刷开局）的弹框消除入口，与祈愿同槽（恢复类实现，弹框在屏才点击）。
+            // 审查 P2-5：连续消除失败 3 次→5 分钟退避。
+            else if (listener.IsGalaBondPopupOpen &&
+                     runAbandoner is IGalaBondPopupHandler galaHandler &&
+                     DateTimeOffset.UtcNow >= _galaDismissBackoffUntil)
+            {
+                try
+                {
+                    if (await galaHandler.DismissGalaBondPopupIfUpAsync(
+                            windowHandle,
+                            cancellationToken))
+                    {
+                        _galaDismissFailures = 0;
+                    }
+                    else if (++_galaDismissFailures >= 3)
+                    {
+                        _galaDismissBackoffUntil =
+                            DateTimeOffset.UtcNow + TimeSpan.FromMinutes(5);
+                        _galaDismissFailures = 0;
+                    }
                 }
                 catch (OperationCanceledException)
                 {

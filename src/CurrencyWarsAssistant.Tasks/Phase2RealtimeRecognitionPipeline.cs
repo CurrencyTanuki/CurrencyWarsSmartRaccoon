@@ -423,6 +423,9 @@ public sealed class Phase2FastPageClassifier : IPhase2FastPageClassifier
             "challenge_health_depleted",
             "investment_environment",
             "investment_strategy",
+            // 坑50（1.2.114）：盛会之星升档框进 fast 集——弹框浮在备战页上时
+            // fast 层必须能报出它，否则"未知"覆盖全量结论（坑48 同型病理）。
+            "gala_star_bond_selection",
             "companion_selection",
             "enemy_overview"
         };

@@ -15,10 +15,14 @@ public sealed record GrailRecognitionEvent(
 public sealed class GrailRecognitionListener
 {
     private const string WishDialogPageId = "wish_trial_selection";
+    // 坑50（1.2.114）：盛会之星羁绊升档选择框页 ID 与识别表/恢复类同源。
+    private const string GalaBondPopupPageId =
+        CurrencyWarsRejectedOpeningRecovery.GalaBondPopupPageId;
     private readonly IPhase2LiveCollectionService _collectionService;
     private readonly object _gate = new();
     private bool _subscribed;
     private bool _dialogWasOpen;
+    private bool _galaPopupOpen;
     private TaskCompletionSource? _firstAnalysisSignal = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
     public GrailRecognitionListener(IPhase2LiveCollectionService collectionService)
@@ -39,6 +43,12 @@ public sealed class GrailRecognitionListener
     public bool IsWishDialogOpen
     {
         get { lock (_gate) { return _dialogWasOpen; } }
+    }
+
+    /// <summary>盛会之星升档选择框当前是否在屏上（坑50，1.2.114；供循环泵应答）。</summary>
+    public bool IsGalaBondPopupOpen
+    {
+        get { lock (_gate) { return _galaPopupOpen; } }
     }
 
     /// <summary>等待识别流产出首帧（识别预热可能远超固定延迟，事件驱动替代盲等；超时返回 false）。</summary>
@@ -65,6 +75,7 @@ public sealed class GrailRecognitionListener
             }
 
             _dialogWasOpen = false;
+            _galaPopupOpen = false;
             _collectionService.Updated += OnUpdated;
             _subscribed = true;
         }
@@ -95,6 +106,13 @@ public sealed class GrailRecognitionListener
         var pageId = analysis.Snapshot.PageId.Value;
         var isDialogNow = string.Equals(pageId, WishDialogPageId, StringComparison.OrdinalIgnoreCase);
 
+        // 坑50（1.2.114）：盛会之星升档选择框与祈愿弹框同性质（模态吞输入）——
+        // 在屏期间保持上一备战快照、不转发决策 tick（弹框帧不是备战页事实）。
+        var isGalaPopupNow = string.Equals(
+            pageId,
+            GalaBondPopupPageId,
+            StringComparison.OrdinalIgnoreCase);
+
         List<EventHandler<GrailRecognitionEvent>>? dialogHandlers;
         List<EventHandler<ScreenshotAnalysisResult>>? analysisHandlers;
         lock (_gate)
@@ -103,13 +121,14 @@ public sealed class GrailRecognitionListener
                 ? WishDialogOpened?.GetInvocationList().Cast<EventHandler<GrailRecognitionEvent>>().ToList()
                 : null;
             _dialogWasOpen = isDialogNow;
-            if (!isDialogNow)
+            _galaPopupOpen = isGalaPopupNow;
+            if (!isDialogNow && !isGalaPopupNow)
             {
                 LatestAnalysis = analysis;
                 _firstAnalysisSignal?.TrySetResult();
             }
 
-            analysisHandlers = isDialogNow
+            analysisHandlers = isDialogNow || isGalaPopupNow
                 ? null
                 : AnalysisUpdated?.GetInvocationList().Cast<EventHandler<ScreenshotAnalysisResult>>().ToList();
         }

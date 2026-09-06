@@ -314,6 +314,93 @@ public sealed class RejectedOpeningRecoveryRetryTests
     }
 
     [Fact]
+    public async Task AbandonFallbackAnswersGalaBondPopupThenEscSucceeds()
+    {
+        // 坑50（1.2.114；22:33/22:49 两次实锤卡死）：盛会之星羁绊升档选择框
+        // 浮在备战页上——Esc 被模态吞掉，此前识别表无此页→5 连败自保停机。
+        // 契约：识别出弹框页→任选一名角色+确认选择→下一轮 Esc 正常弃局；
+        // 弹框在屏期间绝不 fallthrough 点 (960,899)（语义未验证，坑39 纪律）。
+        var input = new StagedInputController { GalaPopupOnEsc = true };
+        var sink = new RecordingEventSink();
+        var window = Window();
+        var recovery = new CurrencyWarsRejectedOpeningRecovery(
+            new PreparationNavigator(),
+            new StaticCapture(),
+            new StagedClassifier(input),
+            input,
+            new ImmediateForegroundGuard(window),
+            sink);
+
+        var result = await recovery.AbandonCurrentRunAsync(
+            window.Handle,
+            CancellationToken.None);
+
+        Assert.Equal(RejectedOpeningRecoveryStatus.Recovered, result.Status);
+        Assert.Equal(1, input.GalaPortraitClicks);
+        Assert.Equal(1, input.GalaConfirmClicks);
+        Assert.Equal(0, input.AbandonExitNextClicks);
+        Assert.Equal(0, input.BlindAdvanceClicks);
+        Assert.Contains("RecoveryGalaPopupBlocked", sink.EventNames);
+        Assert.Contains("RecoveryGalaPopupDismissed", sink.EventNames);
+    }
+
+    [Fact]
+    public async Task AbandonFallbackGalaPopupNeverDismissesFailsHonestly()
+    {
+        // 坑50 防御分支：应答点击输入失败（候选耗尽）——如实 Failed，
+        // 全程零盲点推进、零 (960,899) 兜底点击，不升级为盲点。
+        var input = new StagedInputController
+        {
+            GalaPopupOnEsc = true,
+            GalaPopupForever = true,
+            GalaPortraitClickFails = true
+        };
+        var sink = new RecordingEventSink();
+        var window = Window();
+        var recovery = new CurrencyWarsRejectedOpeningRecovery(
+            new PreparationNavigator(),
+            new StaticCapture(),
+            new StagedClassifier(input),
+            input,
+            new ImmediateForegroundGuard(window),
+            sink);
+
+        var result = await recovery.AbandonCurrentRunAsync(
+            window.Handle,
+            CancellationToken.None);
+
+        Assert.Equal(RejectedOpeningRecoveryStatus.Failed, result.Status);
+        Assert.Equal(0, input.BlindAdvanceClicks);
+        Assert.Equal(0, input.AbandonExitNextClicks);
+        Assert.Contains("RecoveryGalaPopupDismissFailed", sink.EventNames);
+    }
+
+    [Fact]
+    public async Task DismissGalaBondPopupWhenNotOnScreenIsSuccessWithZeroClicks()
+    {
+        // 坑50 审查 P3-4b：IGalaBondPopupHandler 契约——弹框不在屏=成功语义+零点击
+        //（循环泵监听标志可能滞后一帧，陈旧标志绝不产生点击副作用）。
+        var input = new StagedInputController();
+        var window = Window();
+        var recovery = new CurrencyWarsRejectedOpeningRecovery(
+            new PreparationNavigator(),
+            new StaticCapture(),
+            new FixedClassifier("preparation_generic"),
+            input,
+            new ImmediateForegroundGuard(window),
+            new RecordingEventSink());
+
+        var dismissed = await recovery.DismissGalaBondPopupIfUpAsync(
+            window.Handle,
+            CancellationToken.None);
+
+        Assert.True(dismissed);
+        Assert.Equal(0, input.ClickAttempts);
+        Assert.Equal(0, input.GalaPortraitClicks);
+        Assert.Equal(0, input.GalaConfirmClicks);
+    }
+
+    [Fact]
     public async Task SettleTimeoutFallsThroughToBlindAdvanceAndRecovers()
     {
         // （1.2.100 审查 P3-2：SettlementPageUnknown/NeverReturnHome 是死配置已删——
@@ -435,6 +522,22 @@ public sealed class RejectedOpeningRecoveryRetryTests
                     : null;
             }
 
+            // 坑50（1.2.114）用例夹具：盛会之星升档选择框——Esc 被模态吞掉（页面
+            // 恒为 gala_star_bond_selection），任选角色+确认后退出恢复原阶段机；
+            // GalaPopupForever=应答后仍不退出（候选耗尽→诚实失败）。
+            if (input.GalaPopupOnEsc)
+            {
+                var dismissed = !input.GalaPopupForever && input.GalaConfirmClicks >= 1;
+                if (!dismissed)
+                {
+                    return new PageClassificationResult(
+                        CurrencyWarsRejectedOpeningRecovery.GalaBondPopupPageId,
+                        CurrencyWarsRejectedOpeningRecovery.GalaBondPopupPageId,
+                        0.99,
+                        []);
+                }
+            }
+
             var pageId = input.Stage switch
             {
                 InputStage.Exit when
@@ -516,6 +619,14 @@ public sealed class RejectedOpeningRecoveryRetryTests
         public bool SettlementPageUnknown { get; init; }
         public int ReturnHomeAfterSettlementAttempts { get; init; } = 1;
         public TimeSpan? HomeTransitionDelay { get; init; }
+        // 坑50（1.2.114）：盛会之星升档选择框场景观测面——Esc 后弹框在屏，
+        // 任选角色+确认后退出；GalaPortraitClickFails=点击输入失败（候选耗尽→诚实失败）。
+        public bool GalaPopupOnEsc { get; init; }
+        public bool GalaPopupForever { get; init; }
+        public bool GalaPortraitClickFails { get; init; }
+        public int GalaPortraitClicks { get; private set; }
+        public int GalaConfirmClicks { get; private set; }
+        public int AbandonExitNextClicks { get; private set; }
         public TimeSpan ElapsedSinceSettlement => _settlementStartedAt is null
             ? TimeSpan.Zero
             : DateTimeOffset.UtcNow - _settlementStartedAt.Value;
@@ -555,6 +666,28 @@ public sealed class RejectedOpeningRecoveryRetryTests
                          StringComparison.OrdinalIgnoreCase))
             {
                 BlindAdvanceClicks++;
+            }
+            else if (target.Id.StartsWith(
+                         "grail_abandon_exit",
+                         StringComparison.OrdinalIgnoreCase))
+            {
+                AbandonExitNextClicks++;
+            }
+            else if (target.Id.StartsWith(
+                         "gala_portrait_",
+                         StringComparison.OrdinalIgnoreCase))
+            {
+                GalaPortraitClicks++;
+                if (GalaPortraitClickFails)
+                {
+                    return Task.FromResult(ActionResult.Failure("模拟输入失败"));
+                }
+            }
+            else if (target.Id.StartsWith(
+                         "gala_confirm",
+                         StringComparison.OrdinalIgnoreCase))
+            {
+                GalaConfirmClicks++;
             }
 
             return Task.FromResult(ActionResult.Success(target.DisplayName));

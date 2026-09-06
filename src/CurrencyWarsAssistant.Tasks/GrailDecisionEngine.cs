@@ -1315,6 +1315,24 @@ public sealed class GrailDecisionEngine(
                 return;
             }
 
+            // 坑50（1.2.114，审查 P1-1 改法 a）：入口遇盛会之星升档选择框（22:49 停机后
+            // 弹框遗留屏上的重启场景）——preparation 分支看不到它、M8 导航被模态挡死。
+            // 不在引擎层复制点击（两套点位=漂移事故）：直接发 A9，恢复例程会先按页 ID
+            // 应答弹框（任选角色+确认选择）再走 Esc 弃局；A9 失败则 M8 开局弹框泵
+            //（同样 gala 感知）兜底二次消除。
+            if (entryPage is { IsStale: false, PageId: CurrencyWarsRejectedOpeningRecovery.GalaBondPopupPageId })
+            {
+                emit("[决策层] 入口检测到盛会之星升档选择框——发 A9 走弃局链（先应答弹框再弃局）后重判页。");
+                var entryAbandon = await SendAsync(
+                    "A9", new GrailCommand(GrailCommandKind.A9), window, ct);
+                if (entryAbandon.Error is not null)
+                {
+                    emit("[决策层] 入口 A9 失败（" + entryAbandon.Error + "）——依赖 M8 开局弹框泵兜底消除。");
+                }
+
+                entryPage = await PageAsync(window, ct);
+            }
+
             if (entryPage is { IsStale: false, PageId: not null } &&
                 entryPage.PageId.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase))
             {

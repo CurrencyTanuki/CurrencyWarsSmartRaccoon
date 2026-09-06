@@ -47,6 +47,10 @@ public sealed class GrailRunLoop(
 
     /// <summary>可选录屏器（编排层组装时注入）。</summary>
     public IRoundRecorder? RoundRecorder { get; set; }
+
+    // 坑50（1.2.114，审查 P2-5）：盛会弹框泵连续消除失败的退避状态（两处泵共享）。
+    private int _galaDismissFailures;
+    private DateTimeOffset _galaDismissBackoffUntil = DateTimeOffset.MinValue;
     public async Task<GrailLoopOutcome> RunAsync(
         nint windowHandle,
         GrailUserGoal goal,
@@ -168,6 +172,40 @@ public sealed class GrailRunLoop(
                 await executor.ExecuteWishDialogAsync(windowHandle, cancellationToken);
                 await Task.Delay(900, cancellationToken); // 确认后等识别跟上
             }
+            // 坑50（1.2.114）：盛会之星升档选择框与祈愿同性质（模态吞输入）——
+            // 在屏即应答（任选角色+确认选择），恢复类实现、零新增装配。
+            // 审查 P2-4：兜底 catch（前台守卫/capture 异常不击穿整跑）；
+            // 审查 P2-5：连续消除失败 3 次→5 分钟退避（防点位失配整夜空转刷屏）。
+            else if (listener.IsGalaBondPopupOpen &&
+                     runAbandoner is IGalaBondPopupHandler galaHandler &&
+                     DateTimeOffset.UtcNow >= _galaDismissBackoffUntil)
+            {
+                try
+                {
+                    if (await galaHandler.DismissGalaBondPopupIfUpAsync(
+                            windowHandle,
+                            cancellationToken))
+                    {
+                        _galaDismissFailures = 0;
+                    }
+                    else if (++_galaDismissFailures >= 3)
+                    {
+                        _galaDismissBackoffUntil =
+                            DateTimeOffset.UtcNow + TimeSpan.FromMinutes(5);
+                        _galaDismissFailures = 0;
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    throw;
+                }
+                catch
+                {
+                    // 消除异常不外泄：记录在恢复类事件里，运营循环继续
+                }
+
+                await Task.Delay(900, cancellationToken); // 确认后等识别跟上
+            }
 
             // N14 衔接：策略确认后游戏可能停在商店页（商店已开）——直接读商店买命杯，
             // 不走"开店"（页门禁会因当前页非备战页而拒绝）
@@ -282,6 +320,37 @@ public sealed class GrailRunLoop(
                 try
                 {
                     await executor.ExecuteWishDialogAsync(windowHandle, cancellationToken);
+                }
+                catch (OperationCanceledException)
+                {
+                    throw;
+                }
+                catch (Exception exception)
+                {
+                    // 泵故障不外泄（外泄会杀死整跑）：记录后继续轮询
+                    _ = exception;
+                }
+            }
+            // 坑50（1.2.114）：盛会之星升档选择框同泵应答（祈愿之外的第二个模态源）。
+            // 审查 P2-5：连续消除失败 3 次→5 分钟退避。
+            else if (listener.IsGalaBondPopupOpen &&
+                     runAbandoner is IGalaBondPopupHandler galaHandler &&
+                     DateTimeOffset.UtcNow >= _galaDismissBackoffUntil)
+            {
+                try
+                {
+                    if (await galaHandler.DismissGalaBondPopupIfUpAsync(
+                            windowHandle,
+                            cancellationToken))
+                    {
+                        _galaDismissFailures = 0;
+                    }
+                    else if (++_galaDismissFailures >= 3)
+                    {
+                        _galaDismissBackoffUntil =
+                            DateTimeOffset.UtcNow + TimeSpan.FromMinutes(5);
+                        _galaDismissFailures = 0;
+                    }
                 }
                 catch (OperationCanceledException)
                 {

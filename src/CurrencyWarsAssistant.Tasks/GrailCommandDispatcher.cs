@@ -18,7 +18,8 @@ public sealed class GrailCommandDispatcher(
         {
             >= GrailCommandKind.I1 and <= GrailCommandKind.I10 =>
                 await recognition.HandleAsync(command, context, cancellationToken),
-            >= GrailCommandKind.A1 and <= GrailCommandKind.A15 =>
+            // A16（1.2.117 热修：路由段漏含 A16，指令通道上从未到达操作层——单测直调操作层没覆盖到分发器，通宵首验实锤）。
+            >= GrailCommandKind.A1 and <= GrailCommandKind.A16 =>
                 await operation.HandleAsync(command, context, cancellationToken),
             >= GrailCommandKind.M1 and <= GrailCommandKind.M8 =>
                 await DispatchMacroAsync(command, context, cancellationToken),

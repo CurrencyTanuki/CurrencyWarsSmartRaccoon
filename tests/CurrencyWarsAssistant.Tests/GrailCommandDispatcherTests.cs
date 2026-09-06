@@ -47,6 +47,23 @@ public class GrailCommandDispatcherTests
     }
 
     [Fact]
+    public async Task A16_Routes_To_Operation_Layer()
+    {
+        // 1.2.117 热修守卫：路由段曾漏含 A16（指令通道报"未知指令类别"）——
+        // 1.2.115 单测直调操作层没覆盖分发器路由，本用例堵该盲区。
+        var recognition = new RecordingHandler(GrailCommandResult.Ok(GrailCommandKind.I1));
+        var operation = new RecordingHandler(GrailCommandResult.Ok(GrailCommandKind.A16));
+        var macro = new RecordingHandler(GrailCommandResult.Ok(GrailCommandKind.M1));
+        var dispatcher = new GrailCommandDispatcher(recognition, operation, macro);
+
+        var result = await dispatcher.DispatchAsync(
+            new GrailCommand(GrailCommandKind.A16), Context(), CancellationToken.None);
+
+        Assert.Equal([GrailCommandKind.A16], operation.Received);
+        Assert.Null(result.Error);
+    }
+
+    [Fact]
     public async Task Unknown_Kind_Fails_Without_Routing()
     {
         var recognition = new RecordingHandler(GrailCommandResult.Ok(GrailCommandKind.I1));

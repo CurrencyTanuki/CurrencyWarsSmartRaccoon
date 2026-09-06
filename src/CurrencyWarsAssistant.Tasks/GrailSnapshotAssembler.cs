@@ -342,9 +342,16 @@ public static class GrailSnapshotAssembler
 
         // 1.2.31：同名多处=识别身份事故标记（坑 34/审计症状 D），供决策层拒采；
         // 追加星徽账本状态（坑38 批次）：账本可诊断（名字携带者+挂起槽位），漏算可见。
+        // 1.2.110（20:2x 全窗口实弹：零卖出根因——"同名多处"把场上+备战席的合法
+        // 重复持有〔如场上爻光+备战席又一张爻光〕也判成识别身份事故，S4 清场与
+        // R3 复核的拒卖守卫全被堵死，杂兵占场成员上不了、羁绊涨不动、金尽弃局）。
+        // 异常注本意=同区双读同名（场上两槽同名/备战席两槽同名）的识别错误——
+        // 分区分桶，跨区（场上+备战席）同名=合法重复持有不再注记。
         foreach (var kv in nameSlots)
         {
-            if (kv.Value.Count > 1)
+            var fieldCount = kv.Value.Count(pos => pos.StartsWith('F'));
+            var benchCount = kv.Value.Count(pos => pos.StartsWith('B'));
+            if (fieldCount > 1 || benchCount > 1)
             {
                 anomalyNotes.Append($"⚠同名多处:{kv.Key}@{string.Join("/", kv.Value)} ");
             }

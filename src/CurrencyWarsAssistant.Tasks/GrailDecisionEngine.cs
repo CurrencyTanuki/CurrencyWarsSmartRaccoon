@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using CurrencyWarsAssistant.Advisor;
 using CurrencyWarsAssistant.Game;
 
 namespace CurrencyWarsAssistant.Tasks;
@@ -923,8 +924,11 @@ public sealed class GrailDecisionEngine(
                     // 账本）——台账记着上场而快照看不见的槽位，按台账位置直接 A2 卖
                     // （数据级保护：命杯/纯5费/星徽携带者跳过）。卖出后复核名字消失。
                     var carriers = executor.PeekBadgeCarrierNames();
+                    var pendingSlots = executor.PeekBadgePendingSlotKeys();
                     var ledgerSellable = _frontLedger
                         .Where(kv => !carriers.Contains(kv.Key))
+                        .Where(kv => !pendingSlots.Contains(
+                            GrailSnapshotAssembler.BadgeLedgerSlotKey(FormationZone.Front, kv.Value)))
                         .Select(kv => (kv.Key, kv.Value))
                         .Where(pair => ResolveProtectedCharacter(pair.Key) is { } c
                                        && !GrailOperationExecutor.IsPureFiveCostCharacter(c)
@@ -940,31 +944,51 @@ public sealed class GrailDecisionEngine(
                     var ledgerSoldAny = false;
                     foreach (var (name, slot) in ledgerSellable)
                     {
+                        // 1.2.109 审查 P1-1：A2 只认位置，卖出前必须双源确认该槽位
+                        // **实际占用人**可卖（压缩位移/挤压可能让保护成员站进台账槽位）；
+                        // 身份不可识别=不可证安全，跳过该条。卖出后槽位实测变空才算数
+                        //（堵"名字缺席即通过"的空真复核）。
+                        var occupant = await executor.PeekFrontSlotCharacterAsync(
+                            window, slot, "preparation_generic", ct);
+                        if (occupant is null)
+                        {
+                            emit($"[决策层] 台账对账：前台 {slot + 1} 号位占用人身份不可证（空/不可识别）——跳过「{name}」。");
+                            continue;
+                        }
+
+                        var occupantData = ResolveProtectedCharacter(occupant);
+                        if (occupantData is null
+                            || GrailOperationExecutor.IsPureFiveCostCharacter(occupantData)
+                            || occupantData.BondNames.Any(b =>
+                                b is not null && b.Contains("命运圣杯", StringComparison.Ordinal))
+                            || carriers.Contains(occupant))
+                        {
+                            emit($"[决策层] 台账对账：前台 {slot + 1} 号位实际占用人「{occupant}」受保护——跳过（台账名「{name}」可能已位移）。");
+                            continue;
+                        }
+
                         var a2 = await SendAsync(
-                            $"A2 前台 {slot + 1}（台账对账）",
+                            $"A2 前台 {slot + 1}（台账对账：{occupant}）",
                             new GrailCommand(GrailCommandKind.A2,
                                 new GrailPositionArgs(PreparationLane.Front, slot)), window, ct);
                         if (a2.Error is not null)
                         {
-                            emit($"[决策层] 台账对账卖出「{name}」回执失败：{a2.Error}——跳过该名。");
+                            emit($"[决策层] 台账对账卖出「{occupant}」回执失败：{a2.Error}——跳过该槽。");
                             continue;
                         }
 
                         await Task.Delay(TimeSpan.FromSeconds(1), ct);
-                        var check = await SnapshotWithRetryAsync(window, ct);
-                        if (check is not null
-                            && !check.DeployedCharacterDetails.Any(d =>
-                                d.Contains(name, StringComparison.Ordinal)))
+                        if (await executor.PeekFrontSlotCharacterAsync(
+                                window, slot, "preparation_generic", ct) is not null)
                         {
-                            _frontLedger.Remove(name);
-                            ledgerSoldAny = true;
-                            emit($"[决策层] 台账对账卖出「{name}」复核通过。");
-                        }
-                        else
-                        {
-                            emit($"[决策层] 台账对账卖出「{name}」复核未通过——停手交对账。");
+                            emit($"[决策层] 台账对账卖出「{occupant}」后槽位仍有卡——反证即停，交对账。");
                             break;
                         }
+
+                        _frontLedger.Remove(name);
+                        ledgerSoldAny = true;
+                        sold++;
+                        emit($"[决策层] 台账对账卖出「{occupant}」复核通过（槽位实测变空）。");
                     }
 
                     if (!ledgerSoldAny)

@@ -1862,6 +1862,40 @@ public sealed partial class PreparationBoardController(
         return (front, back);
     }
 
+    /// <summary>读单个前台槽位的实际占用人名字（1.2.109 审查 P1-1：台账对账卖出前的
+    /// 双源确认）。返回 null=槽空/身份不可识别（不可证安全，调用方跳过）。</summary>
+    internal async Task<string?> ReadFrontSlotCharacterAsync(
+        nint windowHandle,
+        int frontSlot,
+        string expectedPreparationPageId,
+        CancellationToken cancellationToken)
+    {
+        if (frontSlot < 0 || frontSlot >= FrontSlots.Count)
+        {
+            return null;
+        }
+
+        var captured = await CaptureVerifiedPreparationAsync(
+            windowHandle,
+            expectedPreparationPageId,
+            allowEscapeRecovery: false,
+            cancellationToken);
+        if (captured is null)
+        {
+            return null;
+        }
+
+        var state = recognizer.Recognize(captured.Value.Frame, templates, [FrontSlots[frontSlot]])[0];
+        if (state.State != CharacterCardSlotState.Recognized
+            || string.IsNullOrEmpty(state.CharacterId)
+            || !_characters.TryGetValue(state.CharacterId, out var character))
+        {
+            return null;
+        }
+
+        return character.Name;
+    }
+
     private async Task<bool> SellCharacterWithVerificationAsync(
         nint windowHandle,
         RecognizedBenchCharacter candidate,

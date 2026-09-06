@@ -75,6 +75,17 @@ public sealed partial class GrailOperationExecutor(
     public IReadOnlySet<string> PeekBadgeCarrierNames() =>
         stateHolder.PeekBadgeLedger().CarrierNames;
 
+    /// <summary>星徽账本挂起槽位键（front:{n}，1.2.109 审查 P2-1：对账卖出须排除——
+    /// 占用者识别不可见时挂起槽位无法提升名字，可能正是星徽载体）。</summary>
+    public IReadOnlySet<string> PeekBadgePendingSlotKeys() =>
+        stateHolder.PeekBadgeLedger().PendingSlots.Keys.ToHashSet(StringComparer.Ordinal);
+
+    /// <summary>读单个前台槽位实际占用人名（1.2.109 台账对账卖出的双源确认）。</summary>
+    public async Task<string?> PeekFrontSlotCharacterAsync(
+        nint windowHandle, int frontSlot, string expectedPreparationPageId, CancellationToken ct) =>
+        await preparationBoard.ReadFrontSlotCharacterAsync(
+            windowHandle, frontSlot, expectedPreparationPageId, ct);
+
     /// <summary>单次 ExecuteShopPassAsync 的购买目标上限（命杯 1 + 双银河学者场景兜底）。</summary>
     private const int MaxShopBuyTargetsPerPass = 3;
 
@@ -661,8 +672,14 @@ public sealed partial class GrailOperationExecutor(
         int? slot = null;
         var liveOccupied = await preparationBoard.ReadLiveSlotOccupancyAsync(
             windowHandle, expectedPreparationPageId, cancellationToken);
-        var occupiedFrontLive = liveOccupied?.Front ?? occupiedFront;
-        var occupiedBackLive = liveOccupied?.Back ?? occupiedBack;
+        // 1.2.109 审查 P2-2：并集语义——实时帧半帧读空时陈旧表仍守住已部署槽位
+        //（替换语义会丢本 pass 已部署项）；读帧失败等价全并集=回落修复前行为。
+        var occupiedFrontLive = liveOccupied is null
+            ? occupiedFront
+            : new HashSet<int>(occupiedFront.Concat(liveOccupied.Value.Front));
+        var occupiedBackLive = liveOccupied is null
+            ? occupiedBack
+            : new HashSet<int>(occupiedBack.Concat(liveOccupied.Value.Back));
         for (var i = 0; i < FrontSlotCapacity; i++)
         {
             if (!occupiedFrontLive.Contains(i))
@@ -693,7 +710,8 @@ public sealed partial class GrailOperationExecutor(
         if (await preparationBoard.GrailDeployBenchCharacterAsync(
                 windowHandle, bought, lane, slot.Value, expectedPreparationPageId, cancellationToken))
         {
-            occupiedFront.Add(slot.Value);
+            // 1.2.109 审查 P2-2：按 lane 回落登记到正确的陈旧集合。
+            (lane == PreparationLane.Front ? occupiedFront : occupiedBack).Add(slot.Value);
             return (true, lane == PreparationLane.Front ? slot.Value : null);
         }
 

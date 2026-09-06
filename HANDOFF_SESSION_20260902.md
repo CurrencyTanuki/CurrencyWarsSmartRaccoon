@@ -61,7 +61,7 @@
 ## 四、最新待办（2026-09-06 深夜重写；历史版本条目见第二节）
 
 ### A. 立即（下一班第一优先）
-1. **坑50 实机首验（已修复待验证）**：1.2.114 已上线——DECIDE 重启后入口即遇 22:49 遗留弹框，观察事件链 RecoveryGalaPopupBlocked→(gala_portrait_*/gala_confirm 点击)→RecoveryGalaPopupDismissed→弃局闭环回主页；之后每个盛会升档弹框都应被循环泵秒应答（事件含来源泵）。若 DismissFailed 出现=候选点位/识别阈值需回调（对照 Recordings 视频尾帧）。
+1. **坑50 实机首验（代码已上线，等游戏窗口）**：1.2.114 已发布（DEPLOY-OK 23:58:55，版本戳 1.2.114+edf3d12 为已知显示怪癖，内容=10745d6）；**游戏 23:48 被用户关闭**——23:59:29 DECIDE 下发失败（未找到游戏窗口），按"用户关游戏=授权收回"不自动拉起。**用户重开游戏后**：重发 DECIDE（稳定目录 指令测试-command.txt），入口若仍遇遗留弹框→看事件链 入口A9→RecoveryGalaPopupBlocked→gala_portrait/gala_confirm 点击→RecoveryGalaPopupDismissed→弃局闭环；之后每个盛会升档弹框应被弹框泵秒应答。若 DismissFailed 出现=候选点位/识别阈值需回调（对照 Recordings 视频尾帧）。
 2. **DECIDE 重启后观察**：1.2.113 已发布（DECIDE 自动录制+1.2.112 等帧压缩），引擎 22:43 已重启；若再卡死看 Recordings/decide-*.mp4 尾帧。
 
 ### B. 短期（素材到位后）

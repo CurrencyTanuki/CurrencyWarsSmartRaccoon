@@ -1,8 +1,0 @@
-{
-  "schemaVersion": "1.0.0",
-  "generatedAt": "2026-08-08T14:46:52.3876212+00:00",
-  "sourceDirectory": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-002-missing-runtime-config\\empty-input",
-  "outputDirectory": "D:\\Codex-2\\work\\CurrencyWarsAssistant-0.2.839-audit-20260808\\audit\\issues\\ISSUE-002-missing-runtime-config\\after-output",
-  "writesFormalRunRecords": false,
-  "images": []
-}

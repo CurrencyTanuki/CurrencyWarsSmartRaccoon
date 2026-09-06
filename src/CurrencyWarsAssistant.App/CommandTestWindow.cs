@@ -130,6 +130,7 @@ public sealed class CommandTestWindow : Window
         var macro = new GrailMacroCommands(
             _executor, rewardStage, _stateHolder, _listener, openingCoordinator);
         _dispatcher = new GrailCommandDispatcher(recognition, operation, macro);
+        _recordingCapture = gameCapture;
 
         Title = "指令测试台（决策层由 AI 代管）";
         Width = 720;
@@ -857,6 +858,11 @@ public sealed class CommandTestWindow : Window
     }
 
     /// <summary>DECIDE 开始|停止：启动/停止决策层引擎（整局自主：M8→1-1→1-2→1-3→终局/重开）。</summary>
+    private GrailRollingRecorder? _decideRecorder;
+    private readonly IGameCapture _recordingCapture;
+    private static readonly string DecideRecordingDirectory =
+        Path.Combine(AppContext.BaseDirectory, "Recordings");
+
     private void HandleDecide(string[] tokens)
     {
         var action = tokens.Length >= 2 ? tokens[1] : "开始";
@@ -888,6 +894,32 @@ public sealed class CommandTestWindow : Window
 
         var handle = window.Handle;
         _decisionCts = new CancellationTokenSource();
+        // 1.2.113（用户令 DECIDE 自动录制）：整段决策层录制为单个 MP4（低画质 15fps
+        // 省 CPU），ffmpeg 缺失时静默跳过不阻断决策。录毕存 Recordings\decide-*。
+        GrailRollingRecorder? recorder = null;
+        try
+        {
+            var ffmpeg = FfmpegLocator.Locate();
+            if (ffmpeg.Found)
+            {
+                recorder = new GrailRollingRecorder(
+                    _recordingCapture,
+                    window,
+                    FateGrailRecordingQuality.FromLevel(FateGrailRecordingQualityLevel.Low),
+                    ffmpeg.ExecutablePath!,
+                    Path.Combine(Path.GetTempPath(), "GrailRecordingTemp"));
+            }
+            else
+            {
+                AppendLog("未找到 ffmpeg——本轮 DECIDE 不录制（仅日志+证据帧监督）。");
+            }
+        }
+        catch
+        {
+            recorder = null; // 录制装配失败绝不阻断决策
+        }
+
+        _decideRecorder = recorder;
         var board = _preparationBoard;
         _decisionEngine = new GrailDecisionEngine(
             _dispatcher, _stateHolder, _executor, _gameData,
@@ -910,6 +942,12 @@ public sealed class CommandTestWindow : Window
         {
             try
             {
+                if (recorder is not null)
+                {
+                    await recorder.StartAsync(
+                        $"decide-{DateTime.Now:yyyyMMdd-HHmmss}", cts.Token);
+                }
+
                 await _decisionEngine.RunAsync(handle, _goal, cts.Token);
                 AppendResult("DECIDE", ok: true, summary: "决策层已结束");
             }
@@ -920,6 +958,24 @@ public sealed class CommandTestWindow : Window
             catch (Exception exception)
             {
                 AppendResult("DECIDE", ok: false, summary: $"决策层异常 {exception.GetType().Name}: {exception.Message}");
+            }
+            finally
+            {
+                if (recorder is not null)
+                {
+                    try
+                    {
+                        await recorder.FinishAsync(true, DecideRecordingDirectory, CancellationToken.None);
+                        AppendLog("▶ DECIDE 录制已保存到 Recordings。");
+                    }
+                    catch
+                    {
+                        // 录制收尾失败不影响决策层终态。
+                    }
+
+                    recorder.Dispose();
+                    _decideRecorder = null;
+                }
             }
         });
         AppendLog("▶ 决策层引擎已启动（自主整局）。");

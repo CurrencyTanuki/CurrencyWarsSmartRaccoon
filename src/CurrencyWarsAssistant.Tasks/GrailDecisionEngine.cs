@@ -386,9 +386,15 @@ public sealed class GrailDecisionEngine(
 
     /// <summary>等待祈愿弹框并应答。1.2.66 冗余审计：例行检查（未部署成员的轮次）
     /// 无弹框概率极高，单查一次立即返回；仅部署命杯成员后升档弹框会延迟弹出
-    /// （实测），传 maxProbes=8 轮询（间隔 1.5 秒，窗口 ≈12 秒）。</summary>
+    /// （实测），传 maxProbes=8 轮询（间隔 1.5 秒，窗口 ≈12 秒）。
+    /// 1.2.106 confirmWithDetector：部署/买到成员后的调用点（弹框必出）在 I1 报
+    /// 无弹框时追加 M3 检测器终判——I1 快速分类器在弹框浮层下会把页面报成底层
+    /// preparation_generic（16:53 局实弹漏检→带弹框出战→误弃命中局；1.2.102 确认器
+    /// 同款病理），而 M3 内部 WishTrialSelectionAutomation 检测可靠且不在屏时不点击、
+    /// 诚实返回 Responded=False 无副作用。</summary>
     private async Task<bool> AnswerWishIfUpAsync(
-        nint window, CancellationToken ct, int maxProbes, double probeIntervalSeconds = 1.5)
+        nint window, CancellationToken ct, int maxProbes, double probeIntervalSeconds = 1.5,
+        bool confirmWithDetector = false)
     {
         for (var attempt = 0; attempt < maxProbes; attempt++)
         {
@@ -397,6 +403,18 @@ public sealed class GrailDecisionEngine(
             {
                 var m3 = await SendAsync("M3", new GrailCommand(GrailCommandKind.M3), window, ct);
                 return m3.Error is null;
+            }
+
+            if (confirmWithDetector)
+            {
+                var detector = await SendAsync("M3", new GrailCommand(GrailCommandKind.M3), window, ct);
+                if (detector.Error is null
+                    && detector.Payload is GrailWishOutcomeFact answered
+                    && answered.Responded)
+                {
+                    emit("[决策层] I1 未报祈愿但 M3 检测器确认弹框在屏并已应答（快速分类器漏检兜底）。");
+                    return true;
+                }
             }
 
             if (attempt < maxProbes - 1)
@@ -409,9 +427,10 @@ public sealed class GrailDecisionEngine(
     }
 
     /// <summary>确认升档祈愿已应答（弹框在屏必答；不在屏按已答/延迟处理）。
-    /// maxProbes 缺省 1=例行单查；部署命杯成员后的调用点传 4。</summary>
-    private Task EnsureWishAnsweredAsync(nint window, CancellationToken ct, int maxProbes = 1) =>
-        AnswerWishIfUpAsync(window, ct, maxProbes);
+    /// maxProbes 缺省 1=例行单查；部署命杯成员后的调用点传 8+检测器终判（1.2.106）。</summary>
+    private Task EnsureWishAnsweredAsync(
+        nint window, CancellationToken ct, int maxProbes = 1, bool confirmWithDetector = false) =>
+        AnswerWishIfUpAsync(window, ct, maxProbes, confirmWithDetector: confirmWithDetector);
 
     /// <summary>M5 回执是否买到非昔涟成员（昔涟只买不上场、不升档）——
     /// 执行器内部上场的成员同样触发升档弹框，外层须补轮询捕获延迟弹出。</summary>
@@ -1454,10 +1473,14 @@ public sealed class GrailDecisionEngine(
         // 1.2.66：M5 可能买了角色（盘面已变）→ 部署段须现读快照（传 null）。
         var (deployed, _) = await DeployBondMembersAsync(window, null, ct);
         var assembled = await AssembleBadgeIfAvailableAsync(window, ct, hit067);
-        // 买到的成员由执行器内部上场且部署段未再部署时，无任何轮询覆盖延迟弹出
-        // 的升档框——此时外层补轮询；其余轮次单查。
+        // 1.2.106（16:53 局实弹：部署 2 名命杯成员触发祈愿弹框，探针仅 1 次且 I1 把
+        // 弹框报成底层 preparation_generic→漏检→带弹框出战 M1 失败→误弃命中局）：
+        // 部署/买到成员后弹框必出（rule 四.7）→探针窗 8 次（≈12 秒，与 1.2.94 M5 路径
+        // 对齐）+M3 检测器终判兜底；其余轮次维持单查。
+        var wishExpected = deployed || BoughtNonXilianMember(m5Result);
         await EnsureWishAnsweredAsync(window, ct,
-            maxProbes: BoughtNonXilianMember(m5Result) && !deployed ? 4 : 1);
+            maxProbes: wishExpected ? 8 : 1,
+            confirmWithDetector: wishExpected);
         // P2-1（1.2.71 运行时审计）：justActed 纳入"执行器内部上场"——M5 买到成员的
         // 上场动画同样会让立即 I10 读到空前台（19:17 误弃好局同款），前置门按动画期处理。
         var frontCheck = await EnsureFrontHasUnitAsync(
@@ -1492,6 +1515,22 @@ public sealed class GrailDecisionEngine(
                 new GrailBattleArgs("preparation_generic", "reward_shop")), window, ct);
         if (m1.Error is not null)
         {
+            // 1.2.106（16:53 局实弹兜底层）：祈愿弹框在屏时出战必失败——先应答弹框
+            // （M3 检测器不在屏时不点击、无副作用）再重试一次出战，仍失败才判死弃局。
+            var wishRetry = await SendAsync("M3", new GrailCommand(GrailCommandKind.M3), window, ct);
+            if (wishRetry.Error is null
+                && wishRetry.Payload is GrailWishOutcomeFact answered
+                && answered.Responded)
+            {
+                emit("[决策层] M1 失败时祈愿弹框在屏并已应答——重试一次出战。");
+                m1 = await SendAsync("M1 preparation_generic reward_shop",
+                    new GrailCommand(GrailCommandKind.M1,
+                        new GrailBattleArgs("preparation_generic", "reward_shop")), window, ct);
+            }
+        }
+
+        if (m1.Error is not null)
+        {
             return PreparationOutcome.Dead; // 战斗未推进：外层弃局重开
         }
 
@@ -1519,8 +1558,11 @@ public sealed class GrailDecisionEngine(
         // 1.2.66：此快照后无任何操作 → 复用给部署段（省一次背靠背 I10）。
         (deployed, _) = await DeployBondMembersAsync(window, snapshot, ct);
         assembled = await AssembleBadgeIfAvailableAsync(window, ct, hit067); // 1-2 新得徽补装（审查 P3）
+        // 1.2.106：与 S2 同款——部署/买到成员后弹框必出，8 次探针+检测器终判。
+        var wishExpectedS3 = deployed || BoughtNonXilianMember(m5Result);
         await EnsureWishAnsweredAsync(window, ct,
-            maxProbes: BoughtNonXilianMember(m5Result) && !deployed ? 4 : 1);
+            maxProbes: wishExpectedS3 ? 8 : 1,
+            confirmWithDetector: wishExpectedS3);
         // P2-1（1.2.71 运行时审计）：justActed 纳入"执行器内部上场"——M5 买到成员的
         // 上场动画同样会让立即 I10 读到空前台（19:17 误弃好局同款），前置门按动画期处理。
         if (await EnsureFrontHasUnitAsync(
@@ -1533,6 +1575,22 @@ public sealed class GrailDecisionEngine(
         m1 = await SendAsync("M1 preparation_generic investment_strategy",
             new GrailCommand(GrailCommandKind.M1,
                 new GrailBattleArgs("preparation_generic", "investment_strategy")), window, ct);
+        if (m1.Error is not null)
+        {
+            // 1.2.106（审查 P2 当场修）：与 S2 同款兜底——祈愿弹框在屏时出战必失败，
+            // 先应答（M3 检测器不在屏时零副作用）再重试一次，仍失败才判死弃局。
+            var wishRetryS3 = await SendAsync("M3", new GrailCommand(GrailCommandKind.M3), window, ct);
+            if (wishRetryS3.Error is null
+                && wishRetryS3.Payload is GrailWishOutcomeFact answeredS3
+                && answeredS3.Responded)
+            {
+                emit("[决策层] S3 M1 失败时祈愿弹框在屏并已应答——重试一次出战。");
+                m1 = await SendAsync("M1 preparation_generic investment_strategy",
+                    new GrailCommand(GrailCommandKind.M1,
+                        new GrailBattleArgs("preparation_generic", "investment_strategy")), window, ct);
+            }
+        }
+
         if (m1.Error is not null)
         {
             return PreparationOutcome.Dead; // 战斗未推进：外层弃局重开

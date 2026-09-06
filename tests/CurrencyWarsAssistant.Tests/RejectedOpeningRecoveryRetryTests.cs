@@ -190,11 +190,12 @@ public sealed class RejectedOpeningRecoveryRetryTests
             CancellationToken.None);
 
         Assert.Equal(RejectedOpeningRecoveryStatus.Failed, result.Status);
-        // 1.2.101 点法（用户令）：结算推进全部点击单一位置 750,744（页面中间偏下
-        // "下一页"）——不再点 960,899"保存并退出"（用户："保存个鬼"）、不交替。
+        // 1.2.102（实弹修正）：结算推进全部点击单一位置 960,899（用户口径"页面中间
+        // 偏下的下一页"=正中偏底；1.2.100 盲点同点位 43/43 实弹全成功；750,744 曾致
+        // 8/8 弃局烧满）。单一位置连点直到主页，不交替。
         var xs = input.SettlementNextClickCenterXs;
         Assert.True(xs.Count >= 3, $"clicks={xs.Count}");
-        Assert.All(xs, x => Assert.Equal(750, x));
+        Assert.All(xs, x => Assert.Equal(960, x));
     }
 
     [Fact]

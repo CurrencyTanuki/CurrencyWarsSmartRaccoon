@@ -1254,6 +1254,7 @@ public sealed class GrailDecisionEngine(
                     hit067 = string.Equals(fact.MatchedEnvironmentName, "英雄登场", StringComparison.Ordinal);
                     // 1.2.89 节点锚点+新局边界：M8 到达=1-1 开始。
                     _currentNode = "1-1";
+                    executor.AllowGalaxyScholarPurchase = true; // 1.2.102：学者购买仅 1-1
                     _frontLedger.Clear();
                     _lastBoardMutationAt = DateTimeOffset.MinValue;
                 }
@@ -1435,6 +1436,7 @@ public sealed class GrailDecisionEngine(
         }
 
         _currentNode = "1-2"; // 1.2.89 节点锚点：M1 落地 reward_shop=进入 1-2
+        executor.AllowGalaxyScholarPurchase = false; // 1.2.102：学者购买仅 1-1（S3 商店 pass 前置同步）
 
         // ---- S3：1-2（人口 3，进场先商店）----
         m5Result = await SendAsync("M5", new GrailCommand(GrailCommandKind.M5), window, ct);
@@ -1477,6 +1479,7 @@ public sealed class GrailDecisionEngine(
         }
 
         _currentNode = "1-3"; // 1.2.89 节点锚点：M1 落地 investment_strategy=进入 1-3
+        executor.AllowGalaxyScholarPurchase = false; // 1.2.102：学者购买仅 1-1
 
         // ---- S4：投资策略（禁选阿哈大悦已内置于 M7）----
         await SendAsync("M7", new GrailCommand(GrailCommandKind.M7), window, ct);
@@ -1507,10 +1510,10 @@ public sealed class GrailDecisionEngine(
             }
         }
 
-        if (snapshot.Gold < 8)
-        {
-            await SellRedundantsAsync(window, snapshot, ct);
-        }
+        // 1.2.102（用户第四次重申，最终口径）：一到 1-3 就全员清场——除命杯成员/
+        // 星徽佩戴者/五费外全部卖掉一个不留（不再"金<8 才卖"）；保留线=未携带星徽数
+        // （拿到命运圣杯星徽→少卖一个作装配载体，A4 装配段消费该候选）。
+        await SellRedundantsAsync(window, snapshot, ct);
 
         // ---- S5/S7：运营循环 ----
         for (var opsRound = 0; opsRound < 30 && !ct.IsCancellationRequested; opsRound++)

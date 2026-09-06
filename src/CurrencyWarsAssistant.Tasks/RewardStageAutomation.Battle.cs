@@ -937,7 +937,12 @@ public sealed partial class RewardStageAutomationController
             else
             {
                 stableFrames = 0;
-                if (pageId is not null)
+                // 1.2.102（实弹 11:51 067 局弃局根因）：弹框浮在备战页上，分类器常把
+                // 帧报成底层 preparation 族（弹框动画期/半透明）——此时不能立即放弃
+                // （弹框可能马上出现），继续等到窗口尽；只有互斥页（战斗/成功/落地页
+                // 等非备战结论）才确认"无弹框"退出。
+                if (pageId is not null &&
+                    !pageId.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase))
                 {
                     return false;
                 }

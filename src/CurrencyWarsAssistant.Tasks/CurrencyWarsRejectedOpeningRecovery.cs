@@ -643,10 +643,10 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
         var returnedHome = convergedViaHome;
         if (challengeFailed is not null && !convergedViaHome)
         {
-            // 1.2.101（用户令点法）：看到挑战失败页后点页面中间偏下的"下一页"(750,744)，
-            // 然后**一直连点同一位置直到主页**——不点"保存并退出"(960,899)、不交替、
-            // 不加任何其他操作（用户原话："你都已经放弃了，你还保存，你保存个鬼"）。
-            // 击前主页/备战页急停保留（1.2.63 红线）；15 秒上限兜底。
+            // 1.2.102（实弹修正）：用户口径"页面中间偏下的下一页"=(960,899)（正中偏底，
+            // 1.2.100 盲点直通同点位 43/43 实弹全成功；1.2.101 误映射 750,744 导致 8/8
+            // 弃局烧满 15 秒）。看到挑战失败页后一直连点 (960,899) 直到主页——不加任何
+            // 其他操作。击前主页/备战页急停保留（1.2.63 红线）；15 秒上限兜底。
             var advanceDeadline = ActiveUtcNow + TimeSpan.FromSeconds(15);
             while (ActiveUtcNow < advanceDeadline && !cancellationToken.IsCancellationRequested)
             {
@@ -679,7 +679,7 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                     windowHandle,
                     "settlement_next_advance_rapid",
                     "结算下一页连点（中偏下）",
-                    AbandonAndSettlePoint,
+                    NextPoint,
                     new ActionPolicy
                     {
                         AfterActionDelay = TimeSpan.Zero

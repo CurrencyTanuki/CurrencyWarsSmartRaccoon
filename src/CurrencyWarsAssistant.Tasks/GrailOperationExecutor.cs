@@ -26,6 +26,13 @@ public sealed partial class GrailOperationExecutor(
         rewardStage.PublishGrailTelemetry(code, message, level);
 
     /// <summary>
+    /// 1.2.102（用户第四次重申口径）：银河学者购买**仅 1-1 生效**——引擎按节点锚点
+    /// 同步（1-2/1-3 一律 false）。此前裸 M5 白名单无节点门，1-3 买了真理医生并自动
+    /// 上场（实弹 12:00:14，挤占真目标金币与槽位）。
+    /// </summary>
+    internal bool AllowGalaxyScholarPurchase { get; set; } = true;
+
+    /// <summary>
     /// 新对局必须调用：上场槽计数器是进程级字段，不归零会把上一局用过的
     /// 槽位串进本局（2026-09-02 实测事故：上局黑塔占前台1号位，本局远坂凛
     /// 被放到前台2号位，1号位空着）。
@@ -236,8 +243,10 @@ public sealed partial class GrailOperationExecutor(
         var owned = new HashSet<string>(
             snapshot.OwnedCharacterNames, StringComparer.OrdinalIgnoreCase);
         owned.UnionWith(_grailPurchaseLedger);
-        var galaxyScholars = new HashSet<string>(
-            GetBondMemberNames("银河学者"), StringComparer.OrdinalIgnoreCase);
+        var galaxyScholars = AllowGalaxyScholarPurchase
+            ? new HashSet<string>(
+                GetBondMemberNames("银河学者"), StringComparer.OrdinalIgnoreCase)
+            : []; // 1.2.102：仅 1-1 允许学者购买（引擎节点门）
         var extraTargets = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var boughtNames = new List<string>();
         var boughtAny = false;

@@ -202,6 +202,68 @@ powershell -Command "Get-ChildItem 'C:\Users\zzz81\Desktop\CurrencyWarsAssistant
 
 ---
 
+## 七、AI 工具常见 Windows 错误对照表(网络调研)
+
+> 2026-09-07 网络调研沉淀:AI 编程工具(Claude Code/Copilot/国产 Agent 等)在 Windows 命令行上反复犯的错。每行 = 错误现象 → 根因(带来源)→ 一步到位正确做法。与第一~六节交叉引用;本文档第一~六节的案例与下述外部根因互为印证。
+
+### 7.1 执行策略与编码类(对应第五节)
+
+| 错误现象 | 根因(来源) | 一步到位正确做法 |
+|---|---|---|
+| 跑 .ps1 报 "running scripts is disabled on this system" | Windows 客户端默认执行策略 Restricted(所有 scope 未定义时生效);执行策略是纵深防御非安全边界([about_Execution_Policies](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies)) | 单次(首选,零系统改动):`powershell -NoProfile -ExecutionPolicy Bypass -File x.ps1`(Process 级仅当前会话);长期:`Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`。勿全局 Bypass/Unrestricted;改 LocalMachine 需管理员 PowerShell |
+| PowerShell 写出的中文文件/脚本内容乱码 | Windows PowerShell 5.1 的 `Set-Content`/`Add-Content` 在无显式 `-Encoding` 且目标为空/新建时默认 **Default(系统 ANSI 旧代码页,中文系统=GBK/CP936)**;`Out-File` 与 `>` 重定向默认 UTF-16LE([about_Character_Encoding](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_character_encoding)) | 读写一律显式 `-Encoding UTF8`(见 1.3/1.4 标准命令);不要依赖默认编码。AI 工具实测同坑:Agent 管线把 GB2312 输出按错误编码处理导致乱码([LobsterAI issue #455](https://github.com/netease-youdao/LobsterAI/issues/455)) |
+| 含中文的 .ps1 脚本本身被解析成乱码 | 无 BOM 的 UTF-8 脚本会被 Windows PowerShell 按 ANSI 代码页误读;官方原话:"If you need to use non-Ascii characters in your scripts, save them as UTF-8 with BOM"([about_Character_Encoding](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_character_encoding)) | 含中文的 .ps1 必须 **UTF-8 with BOM** 保存(与记忆 `scripted-edit-shell-pitfalls.md` 的 .ps1 必须 BOM 条款互证) |
+| 控制台输出中文显示乱码(读文件正确、显示层错) | 控制台活动代码页非 UTF-8(中文系统 OEM 936);`chcp 65001` 只对**之后启动的程序**生效,之前启动的程序继续用旧代码页([chcp 官方文档 Remarks](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/chcp)) | 判断文件内容真伪用 PowerShell 读(见 5.2),不要信显示层;需要修显示层时 `[Console]::OutputEncoding = [System.Text.Encoding]::UTF8`(会话内)或 `chcp 65001`(对后续进程);PowerShell 与外部程序管道编码由 `$OutputEncoding` 控制 |
+| 把"Beta: Use Unicode UTF-8 for worldwide language support"当乱码万能解 | 该选项把系统 ANSI/OEM 代码页整体改成 65001,依赖旧代码页的软件会坏:工业 SCADA 停摆([Levexsa](https://www.levexsa.com/en/blog/enabling-beta-use-unicode-utf-8-for-worldwide-language-support-in-windows-10-1803-or-later-may-lead-to-citect-scada-not-functioning-properly-si-experimenta-una-situacion-similar-le-recomendamos-ponerse-en-contacto-con-un-especialista-de-levex?elem=887849))、商业软件声明不兼容([Febooti](https://www.febooti.com/products/automation-workshop/online-help/events/workshop-service/2273.html))、OpenJDK 帮助文本反乱码([microsoft/openjdk#43](https://github.com/microsoft/openjdk/issues/43));原理见 [StackOverflow 56419639](https://stackoverflow.com/questions/56419639/what-does-beta-use-unicode-utf-8-for-worldwide-language-support-actually-do) | 不为解决脚本乱码开此选项(机器级副作用不可控);脚本层显式编码(上一行)是唯一正解;已开且出问题的软件,解法=取消勾选+重启([MS Q&A](https://learn.microsoft.com/en-au/answers/questions/4230605/i-want-to-uncheck-the-tick-of-beta-use-unicode-utf)) |
+
+### 7.2 UAC/管理员权限自动化类(对应第一节、第三章)
+
+| 错误现象 | 根因(来源) | 一步到位正确做法 |
+|---|---|---|
+| 无人值守 `Start-Process -Verb RunAs`/`start exe` 报"操作已被用户取消" | UAC 提示显示在安全桌面,**2 分钟无交互硬超时自动取消**([SuperUser 1264363](https://superuser.com/questions/1264363/prevent-timeout-for-uac-popup-on-windows-10)、[ScreenConnect 社区同证](https://screenconnect.product.connectwise.com/communities/1/topics/579-fix-uac-should-never-lose-ability-to-control-machine-remotely));提级提示与安全桌面机制见 [微软 UAC 官方文档](https://learn.microsoft.com/en-us/windows/security/application-security/application-control/user-account-control/how-it-works) | 无人值守免 UAC 首选**计划任务**:`schtasks /create ... /rl HIGHEST`(官方:"HIGHEST = highest level of privileges, such as Superuser accounts",[schtasks create](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/schtasks-create))+ `Start-ScheduledTask`(本文档 1.1);交互场景可用 gsudo(凭证缓存默认 5 分钟,`gsudo -k` 清除,提权失败退出码 999,[gsudo](https://github.com/gerardog/gsudo)) |
+| 想关 UAC 提示省事 | 注册表 `ConsentPromptBehaviorAdmin=0`(Elevate without prompting)可免提示([Server Fault 1148724](https://serverfault.com/questions/1148724/best-practice-of-uac-behavior-of-the-elevation-prompt-for-administrators-in-adm)、[4sysops](https://4sysops.com/archives/why-and-how-to-disable-the-uac-elevation-prompts-secure-desktop-prompting/)) | **本项目不做此配置**——安全代价大,且计划任务方案已彻底绕开 UAC(见上),风险更小且零安全降级 |
+| 普通权限 Stop-Process/taskkill 杀提权进程报 "Access is denied" | 官方明文:"to stop a process that is not owned by the current user, you must start PowerShell by using the Run as administrator option"(非本人进程必须管理员 PowerShell;lsass 示例同样报 Access denied,[Stop-Process](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/stop-process)) | 这不是 bug 是设计。普通权限 AI **无法强杀提权进程**→按本文档三升级用户任务管理器/重启,不要反复重试(禁止事项 2) |
+| UI 自动化点不了提权软件窗口 | 完整性级别隔离(UIPI):"Applications with lower integrity levels can't modify data in applications with higher integrity levels"([微软 UAC 官方文档](https://learn.microsoft.com/en-us/windows/security/application-security/application-control/user-account-control/how-it-works)) | 同上,识别为提权墙后立即升级用户操作(本文档 3.1),勿当工具 bug 修 |
+
+### 7.3 进程强杀与睡眠类(对应第三章、第四节)
+
+| 错误现象 | 根因(来源) | 一步到位正确做法 |
+|---|---|---|
+| `taskkill /F` 杀掉主进程但子进程残留 | `/F` 只强制结束指定进程;`/T` 才会连子进程:"Ends the specified process and any child processes started by it"([taskkill 官方文档](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/taskkill)) | 树杀标准命令:`taskkill /T /F /PID <pid>`(本项目停止序列仍以 exit.txt 优先,见 1.3;强杀兜底时补 /T) |
+| 所有睡眠项都设"从不",唤醒后 2 分钟又睡 | UNATTENDSLEEP(无人值守空闲睡眠)是独立设置,官方定义:"duration of inactivity before the system automatically enters sleep **after waking from sleep in an unattended state**",默认 2 分钟([Sleep unattended idle timeout - MS Learn](https://learn.microsoft.com/en-us/windows-hardware/customize/power-settings/sleep-settings-sleep-unattended-idle-timeout)、[MS Answers 同症案例](https://learn.microsoft.com/en-us/answers/questions/3866858/windows-11-pc-goes-back-to-sleep-even-though-all-s)) | `powercfg /setacvalueindex scheme_current sub_sleep unattendsleep 0; powercfg /setactive scheme_current`(本文档四第三项,缺它全盘皆输) |
+| 以为 `powercfg /change` 能设所有超时 | `/change` 只支持 monitor/disk/standby/hibernate-timeout(ac/dc)八项;其余设置须 `/setacvalueindex scheme sub setting value` 且 **/setactive 后才生效**;别名(sub_sleep/unattendsleep)可用 `powercfg /aliases` 查([powercfg 官方文档](https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/powercfg-command-line-options)) | 标准四项见第四节;/change 覆盖不到的一律 setacvalueindex+setactive 成对执行 |
+| 排查"软件静默/杀不掉"从进程入手绕圈子 | 现代待机/睡眠期间进程整体冻结,症状与挂死/提权同貌;官方提供 `/sleepstudy`、`/systemsleepdiagnostics` 报告工具([powercfg 官方文档](https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/powercfg-command-line-options),两者需管理员) | 诊断流程先问"系统睡过吗"(本文档三决策树第 0 步对时);需要证据时 `powercfg /sleepstudy` 看睡眠迁移记录 |
+
+### 7.4 文件锁/部署类(对应第二节)
+
+| 错误现象 | 根因(来源) | 一步到位正确做法 |
+|---|---|---|
+| robocopy 默认参数发布挂死几十分钟 | 官方默认:`/r` = **1,000,000 次**重试、`/w` = **30 秒**([robocopy 官方文档](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/robocopy)) | 必带 `/R:5 /W:2`(本文档 2.1;1.2.97 挂死 30 分钟事故的官方根因) |
+| rc<8 就当部署成功,结果文件新旧混搭 | 官方退出码表:0~7 均非失败("No failure was encountered"),**"Any value equal to or greater than 8 indicates that there was at least one failure"**;rc=3="Some files were copied. Additional files were present"——被跳过的锁文件不进退出码([robocopy 官方文档](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/robocopy)) | rc 只做失败筛查;成功判定=部署后验证 App.dll ProductVersion+LastWriteTime(本文档 2.2 第 4 步)+端到端验收 |
+| 只看屏幕输出复盘发布 | 官方建议:"It's highly recommended when running the robocopy command to create a log file that can be viewed once the process completes verifying its integrity"([robocopy 官方文档](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/robocopy)) | 大批量/排障时加 `/LOG:<file>`(或 `/LOG+` 追加、`/V` 显示 skipped 文件),用日志核对跳过清单 |
+
+### 来源清单(本章全部外部引用)
+
+1. [robocopy - Microsoft Learn](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/robocopy)(退出码、/R /W 默认值、/LOG 建议)
+2. [taskkill - Microsoft Learn](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/taskkill)(/T /F 定义)
+3. [powercfg command-line options - Microsoft Learn](https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/powercfg-command-line-options)(/change 支持范围、/setacvalueindex 语法、/aliases、/sleepstudy)
+4. [Sleep unattended idle timeout - Microsoft Learn](https://learn.microsoft.com/en-us/windows-hardware/customize/power-settings/sleep-settings-sleep-unattended-idle-timeout)(UNATTENDSLEEP 官方定义)
+5. [Windows 11 PC goes back to sleep - Microsoft Q&A](https://learn.microsoft.com/en-us/answers/questions/3866858/windows-11-pc-goes-back-to-sleep-even-though-all-s)(unattendsleep=0 修法)
+6. [chcp - Microsoft Learn](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/chcp)(代码页与生效范围)
+7. [about_Character_Encoding - Microsoft Learn](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_character_encoding)(PS5.1 默认编码、BOM、$OutputEncoding)
+8. [about_Execution_Policies - Microsoft Learn](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies)(Restricted/RemoteSigned 默认值、Bypass 会话级)
+9. [Stop-Process - Microsoft Learn](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/stop-process)(非本人进程须管理员)
+10. [How User Account Control works - Microsoft Learn](https://learn.microsoft.com/en-us/windows/security/application-security/application-control/user-account-control/how-it-works)(安全桌面、完整性级别/UIPI)
+11. [schtasks create - Microsoft Learn](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/schtasks-create)(/RL HIGHEST)
+12. [gsudo - GitHub](https://github.com/gerardog/gsudo)(凭证缓存、退出码 999)
+13. [Prevent timeout for UAC popup - Super User](https://superuser.com/questions/1264363/prevent-timeout-for-uac-popup-on-windows-10)(UAC 2 分钟超时)
+14. [ScreenConnect 社区:UAC 2 分钟自动取消](https://screenconnect.product.connectwise.com/communities/1/topics/579-fix-uac-should-never-lose-ability-to-control-machine-remotely)(无人值守同症)
+15. [Server Fault:UAC 提示行为最佳实践](https://serverfault.com/questions/1148724/best-practice-of-uac-behavior-of-the-elevation-prompt-for-administrators-in-adm)、[4sysops:安全桌面提示](https://4sysops.com/archives/why-and-how-to-disable-the-uac-elevation-prompts-secure-desktop-prompting/)(ConsentPromptBehaviorAdmin)
+16. [StackOverflow 56419639:Beta UTF-8 选项原理](https://stackoverflow.com/questions/56419639/what-does-beta-use-unicode-utf-8-for-worldwide-language-support-actually-do)
+17. [microsoft/openjdk#43](https://github.com/microsoft/openjdk/issues/43)、[Febooti 不兼容声明](https://www.febooti.com/products/automation-workshop/online-help/events/workshop-service/2273.html)、[Levexsa SCADA 案例](https://www.levexsa.com/en/blog/enabling-beta-use-unicode-utf-8-for-worldwide-language-support-in-windows-10-1803-or-later-may-lead-to-citect-scada-not-functioning-properly-si-experimenta-una-situacion-similar-le-recomendamos-ponerse-en-contacto-con-un-especialista-de-levex?elem=887849)(Beta UTF-8 副作用实锤)
+18. [LobsterAI issue #455:Agent 管线 GB2312 乱码](https://github.com/netease-youdao/LobsterAI/issues/455)(AI 工具 Windows 编码坑实证)
+19. [MS Q&A:取消 Beta UTF-8 勾选](https://learn.microsoft.com/en-au/answers/questions/4230605/i-want-to-uncheck-the-tick-of-beta-use-unicode-utf)
+
 ## 附:相关脚本与文件
 
 | 文件 | 用途 |

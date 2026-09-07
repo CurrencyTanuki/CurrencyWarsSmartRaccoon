@@ -11,7 +11,8 @@
 - **🔴 启动静默已定性=启动模式错误，非代码回归**：09-07 14:33~18:15 全部 7 个"静默"实例（14:33/14:47/14:51/18:03/18:08/18:10/18:15）jsonl 首事件=OpeningFilterSelectionsLoaded=**MainViewModel 专属签名=普通模式（无 --command-test）启动**；普通模式天然不消费指令文件+提权杀不掉+占单实例锁令后续计划任务实例 12 秒自退（jsonl 0 字节）。command-test 签名=首事件 Phase2RecognitionWarmUpCompleted（22:22 健康局与 23:31 实例均如此）。**上一班的 DI 二分撤回前提被推翻，已恢复被撤回的两注册（closeShop Func+IWishTrialPopupHandler）**。
 - **autodecide 挂机补全（09-08 代码）**：23:31 取证证明原实现无窗口时 DECIDE 直接失败返回，"开机开游戏自动继续刷局"不成立——已实现等窗循环（20s 探测，窗口就绪经 UI 线程自动 DECIDE；决策层结束后 10s 重新武装；DECIDE 停止/关窗解除武装）。构建 0/0+涉事测试 161/161。
 - **未解尾巴（不阻塞部署）**：①谁/为何以普通模式启动 7 例（嫌疑=09-07 下午回退实验期直接 start exe/双击，UAC 由在场用户点过）；②23:31 实例（1.2.117）23:37 交接后无崩溃记录干净消失（疑外部结束或另一次启动的 exit 握手）；③写 autodecide.txt 与启动存在竞态（Loaded 先过则开关漏检，23:31 实锤：START 被定时器消费而 DECIDE 未发）——**每次启动后必须核对：jsonl 首事件签名+autodecide.txt 是否已被删**。
-- **下一步**：批次二整批对抗审查（坑 52 硬门）→通过后按 WINDOWS_OPS_STANDARD 五步部署 1.2.119→验 App.dll ProductVersion=1.2.119+HEAD→计划任务启动→验 jsonl 首事件=warmup+STATUS 回执→写 autodecide 并复核被消费。
+- **帧沙箱可行性案已出（用户 09-08 令）**：docs/SANDBOX_FEASIBILITY_20260908.md——动机=五费聘用书试炼永远等不到真帧；方案=DI 层换 4 个基础设施实现（FileSequenceGameCapture/RecordingInputController/StubWindowService/AlwaysForegroundGuard），决策/操作/识别零改动；脚本=每帧+允许操作集，期望操作满足才切帧、偏离=违规（驱动器+裁判合一）。接缝与素材已勘察：PageReplay 107 张+runs screenshots 316 张+归档 1759 目录；**缺口=五费聘用书试炼页帧（素材来源 a 抽帧/b 合成/c 等真帧，待用户拍板）**。Phase 1 骨架待开工（批次二审查与部署优先）。
+- **下一步**：批次二整批对抗审查（坑 52 硬门）→通过后按 WINDOWS_OPS_STANDARD 五步部署 1.2.119→验 App.dll ProductVersion=1.2.119+HEAD→计划任务启动→验 jsonl 首事件=warmup+STATUS 回执→写 autodecide 并复核被消费。**用户已授权：审查通过即可直接发布并打开软件（游戏暂不开，之后用户令继续）**。
 
 ---
 

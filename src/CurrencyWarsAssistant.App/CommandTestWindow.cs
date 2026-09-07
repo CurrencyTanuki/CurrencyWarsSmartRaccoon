@@ -92,6 +92,8 @@ public sealed class CommandTestWindow : Window
     /// <summary>识别流自动复活（2026-09-04 用户提速令）：会话死亡/帧冻结 ≥45 秒时
     /// 自动 STOP/START 重连——识别流反复死亡是实测最大的隐性耗时源。节流 300 秒防会话重叠。</summary>
     private DateTimeOffset _lastStreamReviveAt = DateTimeOffset.MinValue;
+    // 1.2.118 焦点豁免：最近一次检测到游戏不在前台的时刻（切回前台恢复缓冲的锚点）。
+    private DateTimeOffset _lastNonForegroundAt = DateTimeOffset.MinValue;
     private bool _streamReviveInProgress;
     /// <summary>用户显式 STOP 标志（审查 90a8a0f4 P1）：置位后自动复活绝不拉起，START 时清除。</summary>
     private bool _streamStopRequested;
@@ -323,10 +325,13 @@ public sealed class CommandTestWindow : Window
 
     /// <summary>
     /// 识别流自动复活（审查 90a8a0f4 修复版）：会话死亡→直接重启；会话在跑但 ≥45 秒
-    /// 无新帧→STOP/START 重连。节流 300 秒。约束：
+    /// 无流活动→STOP/START 重连。节流 300 秒。约束：
     /// ①显式 STOP 后绝不复活（W1：_streamStopRequested）；
     /// ②决策层运行期间照常复活（引擎 I10 依赖识别流）但节流内不重叠；
-    /// ③capture 为单例共享会话，revive 是重启同一会话而非制造第二会话。
+    /// ③capture 为单例共享会话，revive 是重启同一会话而非制造第二会话；
+    /// ④失焦豁免（1.2.118）：分析自动暂停=等待不是卡死，失焦期 stale 不触发。
+    /// 判据 1.2.118 修订：LatestAnalysis.AsOf 帧龄→流活动脉冲（弹框抑制期假性
+    /// 帧龄不再误报，审计 #5）。
     /// </summary>
     private void CheckStreamHealth()
     {
@@ -344,10 +349,15 @@ public sealed class CommandTestWindow : Window
             return;
         }
 
-        var analysis = _listener.LatestAnalysis;
-        var lastFrameAt = analysis?.Snapshot.AsOf;
-        var stale = lastFrameAt is null
-            || DateTimeOffset.Now - lastFrameAt.Value > TimeSpan.FromSeconds(45);
+        var lastPulseAt = _listener.LastUpdateAt ?? _listener.LatestAnalysis?.Snapshot.AsOf;
+        var stale = lastPulseAt is null
+            || DateTimeOffset.Now - lastPulseAt.Value > TimeSpan.FromSeconds(45);
+        // 焦点豁免（1.2.118）：失焦=分析自动暂停（设计行为，等待不是卡死）——
+        // 暂停期脉冲停走是预期，stale 不成立；dead（采集任务退出）不受豁免。
+        if (stale && !IsGameForegroundWithResumeGrace())
+        {
+            stale = false;
+        }
         var dead = _collectionTask is null || _collectionTask.IsCompleted;
         if (!dead && !stale)
         {
@@ -356,21 +366,61 @@ public sealed class CommandTestWindow : Window
 
         _streamReviveInProgress = true;
         _lastStreamReviveAt = DateTimeOffset.Now; // 节流戳在触发点置位（09:1x 实测：漏置位=复活热循环）
-        var reason = dead ? "识别流已死亡" : "识别流冻结（45 秒无新帧）";
+        var reason = dead ? "识别流已死亡" : "识别流冻结（45 秒无流活动）";
         AppendLog($"⚠ {reason}，自动重启识别会话。诊断: {FormatStreamDiagnostics()}");
         _ = Task.Run(RunStreamReviveCoreAsync);
     }
 
     /// <summary>
-    /// 引擎侧帧龄探测（1.2.89，M8 在途看门狗用）：与 CheckStreamHealth 同源口径
-    /// （LatestAnalysis.AsOf），阈值 30s——超过即视为流冻结，引擎会据此请求救援重启。
-    /// 可从引擎后台线程调用：只读字段快照，无 UI 依赖。
+    /// 冻结判定的焦点豁免（1.2.118，用户令「焦点判断逻辑得搞好」）：返回 false=豁免
+    /// （不判冻结），true=游戏在前台且已过恢复缓冲、脉冲判据有效。两种豁免场景：
+    /// ①失焦期=分析自动暂停（设计行为，「等待不是卡死」，GrailRunLoop 帧停流同款
+    /// 口径）——M8 在途中途失焦/前台 4 号位推理期失焦都不得触发 revive；
+    /// ②切回前台后的恢复缓冲（60s，覆盖管线预热窗 20-40s，审计 #4）——若无缓冲，
+    /// 「把游戏切回前台」这个动作本身会立即触发幻影重启（失焦期脉冲停走、300s 节流
+    /// 已过、切回第一 tick 即判冻结）。缓冲走完脉冲仍停=切回后管线真没起来，照报。
+    /// 窗口找不到/检测异常=按失焦豁免（周期重试，漏报一轮无害；误报 revive 才有害；
+    /// 游戏被关闭由 dead 判据兜底）。DateTimeOffset 跨线程裸写与 _lastStreamReviveAt
+    /// 同口径（最坏=一次错误豁免，下轮自愈）。
+    /// </summary>
+    private bool IsGameForegroundWithResumeGrace()
+    {
+        try
+        {
+            var window = FindGameWindow();
+            if (window is not null && _gameWindowService.IsForeground(window))
+            {
+                return DateTimeOffset.Now - _lastNonForegroundAt >= TimeSpan.FromSeconds(60);
+            }
+        }
+        catch
+        {
+            // 检测失败走失焦豁免路径
+        }
+
+        _lastNonForegroundAt = DateTimeOffset.Now;
+        return false;
+    }
+
+    /// <summary>
+    /// 引擎侧流活性探测（1.2.89，M8 在途看门狗用）：判据 1.2.118 修订（审计 #5）——
+    /// 原口径 LatestAnalysis.AsOf 帧龄被坑50 弹框抑制冻结（弹框在屏期 LatestAnalysis
+    /// 停在弹框前旧帧），导致弹框期必然误报冻结（通宵 6 次幻影重启根因）。现口径=
+    /// 流活动脉冲（LastUpdateAt，任何 Updated 事件含心跳/弹框帧都刷新），阈值 30s
+    /// ——事件流停走即真挂死（服务层帧流看门狗 60s 兜底的同款死亡），引擎据此请求
+    /// 救援重启。焦点豁免见 IsGameForegroundWithResumeGrace。
+    /// 可从引擎后台线程调用：Win32 窗口枚举（毫秒级），无 Dispatcher 依赖。
     /// </summary>
     private bool IsEngineStreamStale()
     {
-        var analysis = _listener.LatestAnalysis;
-        return analysis is null
-            || DateTimeOffset.Now - analysis.Snapshot.AsOf > TimeSpan.FromSeconds(30);
+        if (!IsGameForegroundWithResumeGrace())
+        {
+            return false;
+        }
+
+        var lastPulseAt = _listener.LastUpdateAt ?? _listener.LatestAnalysis?.Snapshot.AsOf;
+        return lastPulseAt is null
+            || DateTimeOffset.Now - lastPulseAt.Value > TimeSpan.FromSeconds(30);
     }
 
     /// <summary>
@@ -426,8 +476,10 @@ public sealed class CommandTestWindow : Window
     /// 决策层发起的识别流救援重启（1.2.88，命中局实锤：长尾 60s &lt; 启发式节流 300s，
     /// 好局在等待自愈时被弃）。引擎在追帧长尾入口经委托调用本方法，立即 STOP/START
     /// 识别会话（蓝图 X3 药方），绕过 300s 启发式节流但共享单飞标志与显式 STOP 尊重。
-    /// 帧陈旧前置（审查 P3）：仅当帧龄 &gt;20s（真冻结）才重启——健康流遇到持续页面门禁
-    /// 拒绝（帧新鲜但页面不对）不重启，对齐启发式"不必要重启只制造帧抖动"原则。
+    /// 活性前置（审查 P3，1.2.118 判据修订）：仅当游戏在前台且流活动停走 &gt;20s
+    /// （真冻结）才重启——弹框抑制期的假性帧龄（审计 #5 误报根因）与失焦暂停期
+    /// （设计行为，2026-09-07 用户令）都不触发，对齐启发式
+    /// "不必要重启只制造帧抖动"原则。
     /// 可从引擎后台线程调用：经 BeginInvokeIfAlive 摊回 UI 线程，核心在 Task.Run 执行。
     /// </summary>
     private void ForceStreamRevive(string reason)
@@ -439,14 +491,28 @@ public sealed class CommandTestWindow : Window
 
         BeginInvokeIfAlive(() =>
         {
-            var analysis = _listener.LatestAnalysis;
-            var stale = analysis is null
-                || DateTimeOffset.Now - analysis.Snapshot.AsOf > TimeSpan.FromSeconds(20);
-            if (!stale
+            // 活性前置（审查 P3；1.2.118 判据修订）：仅当游戏在前台（含恢复缓冲，
+            // 见 IsGameForegroundWithResumeGrace）且流活动停走 >20s（真冻结）才重启
+            // ——弹框抑制期的假性帧龄（审计 #5）与失焦暂停/切回恢复期（设计行为）
+            // 都不是重启理由；失焦期 revive 毫无意义（重启后照样暂停，还在 M8 在途
+            // 制造帧抖动）。健康流遇到持续页面门禁拒绝（事件在流动）不重启。
+            if (!IsGameForegroundWithResumeGrace()
                 || _streamReviveInProgress
                 || _streamStopRequested
                 || _collectionCts is null)
             {
+                return;
+            }
+
+            var lastPulseAt = _listener.LastUpdateAt ?? _listener.LatestAnalysis?.Snapshot.AsOf;
+            var stale = lastPulseAt is null
+                || DateTimeOffset.Now - lastPulseAt.Value > TimeSpan.FromSeconds(20);
+            if (!stale)
+            {
+                // P3-6（审查 1.2.118）：拒绝必须留痕——审计 #5 的"回执 OK 但没重启"
+                // 排查困局即源于静默 return。此处触发频率低（引擎仅脉冲停走时才请求），
+                // 不会刷屏；外层焦点豁免/单飞拒绝保持静默（失焦期高频，日志会刷屏）。
+                AppendLog("决策层救援请求被活性前置拒绝（脉冲新鲜，非真冻结）——不重启。");
                 return;
             }
 

@@ -19,6 +19,10 @@ public class GrailRecognitionPageFactTests
         public void Raise(ScreenshotAnalysisResult analysis) =>
             Updated?.Invoke(this, new LiveCollectionUpdate("run-test", 1, analysis, string.Empty));
 
+        /// <summary>模拟 null Analysis 的纯文本更新（服务层心跳外的错误/里程碑消息）。</summary>
+        public void RaiseMessage(string message) =>
+            Updated?.Invoke(this, new LiveCollectionUpdate("run-test", 1, null, message, IsError: true));
+
         public Task RunAsync(
             nint gameWindowHandle,
             AdvisorSelection selection,
@@ -94,5 +98,54 @@ public class GrailRecognitionPageFactTests
         Assert.Null(fact.PageId);
         Assert.Null(fact.CapturedAt);
         Assert.True(fact.IsStale);
+    }
+
+    [Fact]
+    public void StreamPulse_Refreshes_On_Dialog_Frames_While_Suppressing_Analysis()
+    {
+        // 审计 #5（1.2.118）回归：盛会弹框在屏期 LatestAnalysis 抑制（坑50），但
+        // LastUpdateAt 必须照常刷新——冻结判据看活动脉冲，弹框期不得误报冻结。
+        var service = new FakeCollectionService();
+        var listener = new GrailRecognitionListener(service);
+        listener.Subscribe();
+
+        var baseline = Analysis(DateTimeOffset.Now.AddMinutes(-2), "preparation_generic");
+        service.Raise(baseline);
+        Assert.Equal(baseline, listener.LatestAnalysis);
+
+        var dialogFrame = Analysis(DateTimeOffset.Now, "gala_star_bond_selection");
+        service.Raise(dialogFrame);
+
+        // 抑制语义保持：弹框帧不得进入 LatestAnalysis（决策层仍持弹框前备战帧）。
+        Assert.Equal(baseline, listener.LatestAnalysis);
+        // 活动脉冲照常刷新：事件在流动=流活着。
+        Assert.NotNull(listener.LastUpdateAt);
+        Assert.True(
+            DateTimeOffset.Now - listener.LastUpdateAt!.Value < TimeSpan.FromSeconds(5),
+            "弹框帧到达后 LastUpdateAt 应为刚刷新的活动脉冲");
+    }
+
+    [Fact]
+    public void StreamPulse_Refreshes_On_Null_Analysis_Message()
+    {
+        // 服务层纯文本消息（错误/里程碑，Analysis=null）同样算活动脉冲——失败帧
+        // 即时产出场景（失焦抓屏失败等）不构成冻结。
+        var service = new FakeCollectionService();
+        var listener = new GrailRecognitionListener(service);
+        listener.Subscribe();
+
+        service.RaiseMessage("识别流看门狗：失败帧即时上报");
+
+        Assert.Null(listener.LatestAnalysis);
+        Assert.NotNull(listener.LastUpdateAt);
+    }
+
+    [Fact]
+    public void StreamPulse_Null_Before_Any_Event()
+    {
+        // 从未收到任何事件（会话未启动/管线挂死且零消息）=无活动脉冲，冻结判据成立。
+        var listener = new GrailRecognitionListener(new FakeCollectionService());
+        listener.Subscribe();
+        Assert.Null(listener.LastUpdateAt);
     }
 }

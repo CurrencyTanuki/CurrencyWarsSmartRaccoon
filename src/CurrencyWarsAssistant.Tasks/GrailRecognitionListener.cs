@@ -23,6 +23,7 @@ public sealed class GrailRecognitionListener
     private bool _subscribed;
     private bool _dialogWasOpen;
     private bool _galaPopupOpen;
+    private DateTimeOffset? _lastUpdateAt;
     private TaskCompletionSource? _firstAnalysisSignal = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
     public GrailRecognitionListener(IPhase2LiveCollectionService collectionService)
@@ -38,6 +39,19 @@ public sealed class GrailRecognitionListener
 
     /// <summary>最近一条非弹框帧识别结果（弹框期间保持上一备战帧，供组装）。</summary>
     public ScreenshotAnalysisResult? LatestAnalysis { get; private set; }
+
+    /// <summary>
+    /// 识别服务最后活动脉冲（1.2.118，审计 #5 冻结误报修复）：任何 Updated 事件
+    /// （心跳/弹框帧/null Analysis 消息）到达即刷新——这是「流是否活着」的真信号。
+    /// LatestAnalysis 不是：弹框抑制（坑50）让它停在弹框前旧帧，拿它算帧龄会把
+    /// 「弹框在屏」误读成「流冻结」（通宵 6 次幻影重启根因）。弹框期/预热期/失焦
+    /// 暂停期事件持续在发，只有管线真挂死（服务层帧流看门狗 60s 兜底的同款死亡）
+    /// 本时间戳才会停走。
+    /// </summary>
+    public DateTimeOffset? LastUpdateAt
+    {
+        get { lock (_gate) { return _lastUpdateAt; } }
+    }
 
     /// <summary>祈愿弹框当前是否在屏上（边沿检测的对外只读视图）。</summary>
     public bool IsWishDialogOpen
@@ -97,6 +111,13 @@ public sealed class GrailRecognitionListener
 
     private void OnUpdated(object? sender, LiveCollectionUpdate update)
     {
+        // 活动脉冲在最前面无条件刷新（1.2.118）：弹框帧/null Analysis 消息也算
+        // 「流活着」的证据——冻结判据看的是事件流是否死亡，不是快照新鲜度。
+        lock (_gate)
+        {
+            _lastUpdateAt = DateTimeOffset.Now;
+        }
+
         var analysis = update.Analysis;
         if (analysis is null)
         {

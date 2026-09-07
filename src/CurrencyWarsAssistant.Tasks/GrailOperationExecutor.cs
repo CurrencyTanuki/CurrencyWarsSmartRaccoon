@@ -410,6 +410,9 @@ public sealed partial class GrailOperationExecutor(
         var refreshes = 0;
         var readFailures = 0;
         var lastShelfSignature = string.Empty; // P-07（1.2.69）刷新失效检测
+        // 1.2.119（审计簇 F1/F3）：换点位重试与降级重扫的"有界一次"标志。
+        var refreshOffsetRetried = false;
+        var degradedRescanUsed = false;
         var staleShelfRounds = 0;
         // P-16（1.2.70）：购买决策留痕——聚合变量，循环结束发一条 GrailShopLoopSummary。
         string? endReason = null;
@@ -550,6 +553,35 @@ public sealed partial class GrailOperationExecutor(
                 ? staleShelfRounds + 1
                 : 0;
             lastShelfSignature = shelfSignature;
+
+            // 1.2.119（审计簇 F3）：货架识别降级（槽数<5=有未识别槽）——静置 1.2s
+            // 重扫一次（1.2.108 弹店重扫先例推广），有界一次防循环；降级段不刷新
+            //（省金币）。重扫仍降级→照常走刷新/判定流程。
+            if ((pass.ShopCharacterNames?.Count ?? 0) < 5 && !degradedRescanUsed)
+            {
+                degradedRescanUsed = true;
+                rewardStage.PublishGrailTelemetry(
+                    "GrailShopDegradedRescan",
+                    "货架识别降级（槽数<5）——静置 1.2s 后重扫一次（有界，不刷新）。",
+                    TaskEventLevel.Warning);
+                await Task.Delay(TimeSpan.FromMilliseconds(1200), cancellationToken);
+                continue;
+            }
+
+            // 1.2.119（审计簇 F1，1-2/2-3）：首次货架签名不变=刷新点击未生效——
+            // 换点位(−20,+12)重试一次刷新后重新识别（continue），不再连点同点位
+            // 空烧金币；重试后仍不变→落下方 ShelfStale 判停（有界）。
+            if (staleShelfRounds == 1 && !refreshOffsetRetried)
+            {
+                refreshOffsetRetried = true;
+                if (await rewardStage.RetryShopRefreshWithOffsetAsync(
+                        windowHandle,
+                        cancellationToken))
+                {
+                    continue;
+                }
+            }
+
             if (staleShelfRounds >= 2)
             {
                 endReason = "ShelfSignatureStale";

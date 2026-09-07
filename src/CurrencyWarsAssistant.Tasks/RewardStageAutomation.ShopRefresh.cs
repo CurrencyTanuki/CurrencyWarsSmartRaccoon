@@ -66,6 +66,26 @@ public sealed partial class RewardStageAutomationController
     }
 
     /// <summary>
+    /// 1.2.119（审计 1-2/2-3，簇 F1）：刷新失效换点位重试——刷新点击后货架签名
+    /// 不变=点击大概率未命中按钮或被游戏吞掉。向原点位偏移 (-20,+12) 再点一次
+    /// （按钮热区边缘，仍在按钮矩形内不落他物），有界一次。
+    /// </summary>
+    internal async Task<bool> RetryShopRefreshWithOffsetAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        Publish(
+            "GrailShopRefreshRetryOffset",
+            "刷新后货架未变化——判定刷新点击未生效，换点位(−20,+12)重试一次。",
+            TaskEventLevel.Warning);
+        return await ClickShopRefreshAsync(
+            windowHandle,
+            cancellationToken,
+            offsetX: -20,
+            offsetY: 12);
+    }
+
+    /// <summary>
     /// 刷新循环的最大轮次上限（安全阀，防止目标一直不出现时无限刷新烧金币/盲点）。
     /// 正常情况由"名单买齐"或"金币不足"提前退出，此值只在异常时兜底。
     /// </summary>
@@ -257,12 +277,19 @@ public sealed partial class RewardStageAutomationController
 
     private async Task<bool> ClickShopRefreshAsync(
         nint windowHandle,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        int offsetX = 0,
+        int offsetY = 0)
     {
         var window = await foregroundGuard.WaitUntilForegroundAsync(
             windowHandle,
             cancellationToken);
+        // 1.2.119（审计簇 F1）：offsetX/Y=刷新失效换点位重试的偏移量（客户区像素）。
         var point = MapRefreshPixelPoint(window, ShopRefreshCenterPoint2K);
+        if (offsetX != 0 || offsetY != 0)
+        {
+            point = new PixelPoint(point.X + offsetX, point.Y + offsetY);
+        }
         var target = new ClickTarget(
             "shop_refresh",
             "刷新商店",

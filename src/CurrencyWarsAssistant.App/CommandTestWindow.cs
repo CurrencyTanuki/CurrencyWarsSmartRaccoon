@@ -101,6 +101,9 @@ public sealed class CommandTestWindow : Window
     private GrailDecisionEngine? _decisionEngine;
     private CancellationTokenSource? _decisionCts;
     private Task? _decisionTask;
+    /// <summary>autodecide 挂机武装标志：置位=游戏窗口就绪即自动下发 DECIDE，
+    /// 且决策层意外结束后自动重新等待；用户显式 DECIDE 停止/关窗时解除。</summary>
+    private bool _autoDecideArmed;
 
     public CommandTestWindow(
         GameDataCatalog gameData,
@@ -167,9 +170,10 @@ public sealed class CommandTestWindow : Window
                 var autoDecidePath = Path.Combine(AppContext.BaseDirectory, "指令测试-autodecide.txt");
                 if (File.Exists(autoDecidePath))
                 {
-                    _ = ExecuteLineAsync("DECIDE");
                     try { File.Delete(autoDecidePath); } catch { /* 删除失败下轮再清 */ }
-                    AppendLog("检测到 autodecide 开关——已自动下发 DECIDE（挂机模式）。");
+                    _autoDecideArmed = true;
+                    _ = AutoDecideWaitForGameLoopAsync();
+                    AppendLog("检测到 autodecide 开关——挂机模式：等待游戏窗口就绪后自动下发 DECIDE。");
                 }
             }
             catch (Exception autoDecideError)
@@ -183,6 +187,7 @@ public sealed class CommandTestWindow : Window
             // 关窗必须同时中断执行中的指令（如 M8 的整局循环）与识别会话——
             // 2026-09-02 事故：只停识别会话时，协调器任务在关窗后仍持续
             // 自愈弃局/重开导航一个多小时（事件日志 01:20~02:05 可证）。
+            _autoDecideArmed = false;
             _activeCommandCts?.Cancel();
             _decisionCts?.Cancel();
             _collectionCts?.Cancel();
@@ -954,6 +959,7 @@ public sealed class CommandTestWindow : Window
         var action = tokens.Length >= 2 ? tokens[1] : "开始";
         if (action.StartsWith("停", StringComparison.Ordinal) || action.StartsWith("S", StringComparison.OrdinalIgnoreCase))
         {
+            _autoDecideArmed = false; // 用户显式停止=真停：挂机等待循环一并解除
             if (_decisionTask is null || _decisionTask.IsCompleted)
             {
                 AppendResult("DECIDE", ok: false, summary: "决策层未在运行");
@@ -1082,9 +1088,48 @@ public sealed class CommandTestWindow : Window
                     _decideRecorder = null;
                 }
             }
+
+            if (_autoDecideArmed)
+            {
+                // 挂机模式：决策层因关游戏/异常结束后隔 10 秒重新进入窗口等待，
+                // 实现"开机开游戏后自动继续刷局"；用户 DECIDE 停止已在停止分支解除武装。
+                await Task.Delay(TimeSpan.FromSeconds(10));
+                if (_autoDecideArmed)
+                {
+                    AppendLog("挂机模式：决策层已结束——重新等待游戏窗口。");
+                    _ = AutoDecideWaitForGameLoopAsync();
+                }
+            }
         });
         AppendLog("▶ 决策层引擎已启动（自主整局）。");
         AppendResult("DECIDE", ok: true, summary: "决策层已启动");
+    }
+
+    /// <summary>
+    /// autodecide 挂机等待循环（2026-09-08 值守班补全）：autodecide 启动时游戏窗口可能
+    /// 尚未开启（用户开机先拉软件后开游戏）——原实现无窗口时 DECIDE 直接失败返回，
+    /// "开机开游戏后自动继续刷局"实际不成立（09-07 深夜 23:31 实例取证）。本循环每
+    /// 20 秒探测一次，窗口就绪即经 UI 线程下发 DECIDE；决策层结束后的重新武装见
+    /// HandleDecide 完成回调，DECIDE 停止/关窗已解除武装。
+    /// </summary>
+    private async Task AutoDecideWaitForGameLoopAsync()
+    {
+        while (_autoDecideArmed)
+        {
+            if (_decisionTask is not null && !_decisionTask.IsCompleted)
+            {
+                return; // 决策层已在运行（如用户手动下发）——等待循环使命完成
+            }
+
+            if (!_busy && FindGameWindow() is not null)
+            {
+                AppendLog("挂机模式：检测到游戏窗口——自动下发 DECIDE。");
+                BeginInvokeIfAlive(() => _ = ExecuteLineAsync("DECIDE"));
+                return;
+            }
+
+            await Task.Delay(TimeSpan.FromSeconds(20));
+        }
     }
 
     // ---- 识别会话 ----

@@ -277,11 +277,26 @@ public partial class App : Application
         services.AddTransient<
             IRewardStageAutomationController,
             RewardStageAutomationController>();
+        // 1.2.119（审查复核对 P2-2 的修正）：closeShopIfOpen 委托注册进容器——三个
+        // 恢复接口均为普通 AddTransient，自动解析该委托（此前工厂只包了
+        // IRejectedOpeningRecovery，而生产弃局路径解析的是 IRunAbandoner，委托恒 null）。
+        services.AddSingleton<Func<nint, CancellationToken, Task<bool>>>(provider =>
+        {
+            var rewardStage = provider.GetRequiredService<RewardStageAutomationController>();
+            return (handle, token) =>
+                rewardStage.CloseShopAsync(handle, "preparation_generic", token);
+        });
         services.AddTransient<IRejectedOpeningRecovery, CurrencyWarsRejectedOpeningRecovery>();
         services.AddTransient<IAbandonSettlementRecovery, CurrencyWarsRejectedOpeningRecovery>();
         services.AddTransient<IRunAbandoner, CurrencyWarsRejectedOpeningRecovery>();
-        // 【二分诊断临时撤回】1.2.119 两个新工厂注册（Func 关店委托+IWishTrialPopupHandler）
-        // ——疑似启动静默回归的二分定位。
+        // 1.2.119（审计簇 C）：弃局恢复类注入祈愿弹框应答能力（IWishTrialPopupHandler）
+        // ——此前祈愿弹框在屏时弃局链只能空转（审计局 4/6：68/74 秒无人应答→弃局）。
+        // WishTrialSelectionAutomation 已单例注册，同一实例实现该接口（P2-7 同实例互斥）。
+        services.AddSingleton<IWishTrialPopupHandler>(provider =>
+            provider.GetRequiredService<WishTrialSelectionAutomation>());
+        // 09-08 值守班恢复上述两个注册：09-07 的「二分诊断临时撤回」前提已被推翻
+        // （启动静默实锤=实例被以普通模式（无 --command-test）启动，jsonl 首事件
+        // OpeningFilterSelectionsLoaded=MainViewModel 专属签名，与 DI 无关）。
         services.AddSingleton<UiTaskEventSink>();
         services.AddSingleton<ITaskEventSink>(
             provider => provider.GetRequiredService<UiTaskEventSink>());

@@ -58,6 +58,10 @@ public sealed class CommandTestWindow : Window
     private readonly GrailCommandDispatcher _dispatcher;
     private readonly IInputController _input;
     private readonly GrailFlightRecorder _flightRecorder = new();
+    /// <summary>1.2.119 P1-2（对抗审查）：引擎判定事件（StrategyAbandonDecided 等）落 jsonl 审计链。</summary>
+    private readonly ITaskEventSink _taskEventSink;
+    /// <summary>P1-1（对抗审查）：弃局器兼弹框守卫（CurrencyWarsRejectedOpeningRecovery 实现 IModalGuard）。</summary>
+    private readonly IRunAbandoner _runAbandoner;
     private readonly IPhase2LiveCollectionService _collectionService;
     private readonly IGameWindowService _gameWindowService;
     private readonly GameDataCatalog _gameData;
@@ -116,8 +120,11 @@ public sealed class CommandTestWindow : Window
         IGameWindowService gameWindowService,
         OpeningRerollLoopCoordinator openingCoordinator,
         IInputController inputController,
-        IGameCapture gameCapture)
+        IGameCapture gameCapture,
+        ITaskEventSink taskEventSink)
     {
+        _taskEventSink = taskEventSink;
+        _runAbandoner = runAbandoner;
         _preparationBoard = preparationBoard;
         _rewardStage = rewardStage;
         _collectionService = collectionService;
@@ -981,6 +988,12 @@ public sealed class CommandTestWindow : Window
         if (window is null)
         {
             AppendResult("DECIDE", ok: false, summary: "未找到游戏窗口");
+            // P2-5（对抗审查）：挂机武装中派发失败不得让等待链死亡——回炉继续等窗口。
+            if (_autoDecideArmed)
+            {
+                AppendLog("挂机模式：DECIDE 因未找到游戏窗口未启动——继续等待窗口出现。");
+                _ = AutoDecideWaitForGameLoopAsync();
+            }
             return;
         }
 
@@ -1028,7 +1041,17 @@ public sealed class CommandTestWindow : Window
                 _rewardStage.RetreatFromBattleViewAsync(handle, token),
             requestStreamRevive: reason =>
                 ForceStreamRevive(reason),
-            isStreamStale: IsEngineStreamStale);
+            isStreamStale: IsEngineStreamStale,
+            // P1-1（对抗审查）：弹框守卫接线——此前从未注入，簇C/E 的
+            // EnsureNoBlockingModal 是死代码（快照不可得→弹框救回链断裂）。
+            modalGuard: _runAbandoner as IModalGuard,
+            // P1-2（对抗审查）：判定事件落 jsonl（StrategyAbandonDecided/BuyXpForDeploy）。
+            publishEvent: (code, detail) =>
+                _taskEventSink.Publish(new TaskEvent(
+                    DateTimeOffset.Now,
+                    TaskEventLevel.Information,
+                    code,
+                    detail)));
         var cts = _decisionCts;
         // 1.2.119 证据留存（用户令"发布版本要留存所有必要证据"）：DECIDE 启动时把
         // 上一段决策叙述归档为带时间戳文件——result.txt 是滚动覆盖的单文件，通宵
@@ -1116,20 +1139,45 @@ public sealed class CommandTestWindow : Window
     {
         while (_autoDecideArmed)
         {
-            if (_decisionTask is not null && !_decisionTask.IsCompleted)
+            try
             {
-                return; // 决策层已在运行（如用户手动下发）——等待循环使命完成
-            }
+                if (_decisionTask is not null && !_decisionTask.IsCompleted)
+                {
+                    return; // 决策层已在运行（如用户手动下发）——结束后由完成回调重武装
+                }
 
-            if (!_busy && FindGameWindow() is not null)
+                if (!_busy && FindGameWindow() is not null)
+                {
+                    AppendLog("挂机模式：检测到游戏窗口——自动下发 DECIDE。");
+                    // P2-5（对抗审查）：派发时刻在 UI 线程原子复查——armed 可能已被
+                    // "DECIDE 停"/关窗解除、轮询可能已在长指令中（busy）、决策层可能
+                    // 已被手动拉起。复查不过=回炉继续等，绝不带病派发。
+                    BeginInvokeIfAlive(TryAutoDispatchDecide);
+                    return;
+                }
+            }
+            catch (Exception exception)
             {
-                AppendLog("挂机模式：检测到游戏窗口——自动下发 DECIDE。");
-                BeginInvokeIfAlive(() => _ = ExecuteLineAsync("DECIDE"));
-                return;
+                // P2-5（对抗审查）：fire-and-forget 循环异常即无声死亡——必须兜底继续等。
+                AppendLog($"挂机等待循环异常（继续等待）：{exception.Message}");
             }
 
             await Task.Delay(TimeSpan.FromSeconds(20));
         }
+    }
+
+    /// <summary>P2-5：自动 DECIDE 的派发时刻复查（UI 线程执行，与轮询/手动指令串行）。</summary>
+    private void TryAutoDispatchDecide()
+    {
+        if (!_autoDecideArmed
+            || _busy
+            || (_decisionTask is not null && !_decisionTask.IsCompleted))
+        {
+            _ = AutoDecideWaitForGameLoopAsync(); // 条件不满足——回炉继续等待
+            return;
+        }
+
+        _ = ExecuteLineAsync("DECIDE");
     }
 
     // ---- 识别会话 ----

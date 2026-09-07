@@ -121,10 +121,31 @@ public sealed class WishTrialSelectionAutomation(
         return status == WishTrialSelectionStatus.Confirmed;
     }
 
+    // P3-1（对抗审查 1.2.119 复核）：祈愿应答并发双击防护——引擎弹框守卫（IModalGuard，
+    // P1-1 接线后激活）与操作层 M3/两处泵可能并发进入应答，双重点击会落到底层页面。
+    // 本类为 DI 单例，实例信号量即全局限（gala 侧 recovery 为 Transient 故用 static 门）。
+    private readonly SemaphoreSlim _wishSelectionGate = new(1, 1);
+
     public async Task<WishTrialSelectionStatus> TryHandleSelectionAsync(
         nint windowHandle,
         CancellationToken cancellationToken,
         Func<string?, string?, int?>? select = null)
+    {
+        await _wishSelectionGate.WaitAsync(cancellationToken);
+        try
+        {
+            return await TryHandleSelectionCoreAsync(windowHandle, cancellationToken, select);
+        }
+        finally
+        {
+            _wishSelectionGate.Release();
+        }
+    }
+
+    private async Task<WishTrialSelectionStatus> TryHandleSelectionCoreAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken,
+        Func<string?, string?, int?>? select)
     {
         var window = await foregroundGuard.WaitUntilForegroundAsync(
             windowHandle,

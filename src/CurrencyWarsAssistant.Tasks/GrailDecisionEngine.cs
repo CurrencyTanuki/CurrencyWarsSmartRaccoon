@@ -24,7 +24,8 @@ public sealed class GrailDecisionEngine(
     Func<nint, CancellationToken, Task<bool>>? retreatFromBattleView = null,
     Action<string>? requestStreamRevive = null,
     Func<bool>? isStreamStale = null,
-    IModalGuard? modalGuard = null)
+    IModalGuard? modalGuard = null,
+    Action<string, string>? publishEvent = null)
 {
     private readonly Stopwatch _runClock = Stopwatch.StartNew();
 
@@ -277,7 +278,11 @@ public sealed class GrailDecisionEngine(
             var snapshot = await SnapshotAsync(window, ct);
             if (snapshot is not null)
             {
-                _lastKnownTeamHealth = snapshot.TeamHealth ?? _lastKnownTeamHealth;
+                // P2-4（对抗审查）：null=本局血量未知，绝不沿用陈旧缓存回填（F13）。
+                if (snapshot.TeamHealth is > 0)
+                {
+                    _lastKnownTeamHealth = snapshot.TeamHealth;
+                }
                 return snapshot;
             }
         }
@@ -430,7 +435,11 @@ public sealed class GrailDecisionEngine(
             if (recovered is not null)
             {
                 emit($"[决策层] 快照在第 {round} 轮恢复——继续原流程。");
-                _lastKnownTeamHealth = recovered.TeamHealth ?? _lastKnownTeamHealth;
+                // P2-4（对抗审查）：同上，null 不回填陈旧值。
+                if (recovered.TeamHealth is > 0)
+                {
+                    _lastKnownTeamHealth = recovered.TeamHealth;
+                }
                 return recovered;
             }
         }
@@ -631,11 +640,18 @@ public sealed class GrailDecisionEngine(
                 // 金≥买经验总价（含诅咒涨价）且本局未买过→买经验升人口后重试一次；
                 // 金不足或仍失败=如实交外层对账（绝不无限重试）。
                 if (slot.Value == 3
+                    && string.Equals(_currentNode, "1-3", StringComparison.Ordinal)
                     && !stateHolder.XpBoughtThisRun
                     && snapshot.Gold >= snapshot.XpPurchaseTotalCost)
                 {
-                    emit($"[决策层] 前台4号位部署失败且金={snapshot.Gold}≥买经验价" +
-                         "——判定人口不足，买经验升人口（rule 四.5）后重试部署。");
+                    // P2-3（对抗审查）：节点门=1-3 显式前置（FIX_PLAN 八.P1-1"仅 1-3，
+                    // 1-1/1-2 绝不触发"）——1-2 半帧误报空 4 号位时绝不动资金；人口复验
+                    // 由闩锁+节点等效承担（本局未买过经验且在 1-3 ⇒ 人口=4 自然值）。
+                    emit($"[决策层] BuyXpForDeploy：前台4号位部署失败且金={snapshot.Gold}≥买经验价" +
+                         $"（{snapshot.XpPurchaseTotalCost}）——判定人口不足，买经验升人口（rule 四.5）后重试部署。");
+                    publishEvent?.Invoke(
+                        "BuyXpForDeploy",
+                        $"1-3 前台4号位部署失败 金={snapshot.Gold}≥价{snapshot.XpPurchaseTotalCost}——买经验升人口");
                     var buyXp = await SendAsync(
                         "A6",
                         new GrailCommand(GrailCommandKind.A6),
@@ -1481,6 +1497,9 @@ public sealed class GrailDecisionEngine(
         _goal = goal;
         stateHolder.Reset();
         executor.ResetDeploymentProgressForNewMatch();
+        // P2-4（对抗审查）：血量缓存随局复位——原实现跨局沿用上一局缓存，
+        // 本局快照血量 null 时会拿陈旧值继续判 ≤86（F13 口径=null=未知不弃）。
+        _lastKnownTeamHealth = null;
         emit("[决策层] 启动：目标=" + (goal == GrailUserGoal.All ? "全员" : "单人"));
 
         while (!ct.IsCancellationRequested)
@@ -1820,6 +1839,7 @@ public sealed class GrailDecisionEngine(
         {
             // 1.2.58（架构审查 2-3）：M1 前置门——场上无人时出战必被"前台区域
             // 无角色"弹窗拦下，自 heal 循环烧时间。空场局判 Dead 走弃局重开。
+            _lastAbandonReason = "空场判死:出战前置门前台无人"; // P2-2 弃局标签真实化
             return PreparationOutcome.Dead;
         }
 
@@ -1844,6 +1864,7 @@ public sealed class GrailDecisionEngine(
 
         if (m1.Error is not null)
         {
+            _lastAbandonReason = "出战失败:S2 M1 两败（含祈愿应答重试）"; // P2-2 弃局标签真实化
             return PreparationOutcome.Dead; // 战斗未推进：外层弃局重开
         }
 
@@ -1915,6 +1936,7 @@ public sealed class GrailDecisionEngine(
 
         if (m1.Error is not null)
         {
+            _lastAbandonReason = "出战失败:S3 M1 两败（含祈愿应答重试）"; // P2-2 弃局标签真实化
             return PreparationOutcome.Dead; // 战斗未推进：外层弃局重开
         }
 
@@ -1936,29 +1958,40 @@ public sealed class GrailDecisionEngine(
         // 不弃留痕。触发=事件 StrategyAbandonDecided+A9（reason 带血/策略，簇 A 新链）。
         if (_goal == GrailUserGoal.All
             && m7.Error is null
-            && m7.Payload is RewardStageAutomationResult m7Result
-            && !string.IsNullOrEmpty(m7Result.SelectedStrategyId)
-            && !string.Equals(
-                m7Result.SelectedStrategyId,
+            && m7.Payload is RewardStageAutomationResult m7Result)
+        {
+            var selectedStrategyId = m7Result.SelectedStrategyId;
+            if (string.IsNullOrEmpty(selectedStrategyId))
+            {
+                // P1-2（对抗审查）：SoftFallbackLeftmost 已带 ID，但识别降级路径 ID 未知——
+                // 原实现在此整段静默跳过零留痕。防御不弃+显式留痕。
+                emit("[决策层] StrategyAbandonDecided 未触发：M7 回执未带选定策略 ID" +
+                     "（识别降级/兜底路径）——策略未知，防御不弃，留痕。");
+            }
+            else if (!string.Equals(
+                selectedStrategyId,
                 GrailInvestmentStrategyDecider.DiodeId,
                 StringComparison.OrdinalIgnoreCase))
-        {
-            var healthAtS3 = _lastKnownTeamHealth;
-            if (healthAtS3 is > 0 and <= 86)
             {
-                emit($"[决策层] 策略弃局判定成立（goal=全员 血={healthAtS3}≤86 " +
-                     $"策略={m7Result.SelectedStrategyId}≠二极管）——立即弃局重刷。");
-                await SendAsync(
-                    "A9",
-                    new GrailCommand(GrailCommandKind.A9,
-                        $"策略弃局:血{healthAtS3}≤86/策略{m7Result.SelectedStrategyId}"),
-                    window,
-                    ct);
-                return PreparationOutcome.Interrupted; // 走外层弃局重开（不重入 S5）
-            }
+                var healthAtS3 = _lastKnownTeamHealth;
+                if (healthAtS3 is > 0 and <= 86)
+                {
+                    // P2-1（对抗审查）：本分支只置真实原因并返回 Interrupted，A9 由外层
+                    // 单点发送——原实现自发 A9 后外层再发一条默认 R3 标签的第二条 A9
+                    //（双重弃局+第二条落在主界面上 Esc）。FIX_PLAN 八.P1-2 数据源贯通。
+                    _lastAbandonReason =
+                        $"策略弃局:血{healthAtS3}≤86/策略{selectedStrategyId}";
+                    publishEvent?.Invoke(
+                        "StrategyAbandonDecided",
+                        $"goal=全员 血={healthAtS3}≤86 策略={selectedStrategyId}≠二极管——弃局重刷");
+                    emit($"[决策层] 策略弃局判定成立（goal=全员 血={healthAtS3}≤86 " +
+                         $"策略={selectedStrategyId}≠二极管）——立即弃局重刷。");
+                    return PreparationOutcome.Interrupted; // 外层按 _lastAbandonReason 发 A9（不重入 S5）
+                }
 
-            emit($"[决策层] 策略弃局未触发：血量={healthAtS3?.ToString() ?? "未知"}" +
-                 "（>86 或不可知，F13 防御口径不弃，已留痕）。");
+                emit($"[决策层] 策略弃局未触发：血量={healthAtS3?.ToString() ?? "未知"}" +
+                     "（>86 或不可知，F13 防御口径不弃，已留痕）。");
+            }
         }
 
         // ---- S4 顺序（用户 2026-09-06 第 4 次重申强制令，最终口径）：
@@ -2127,6 +2160,7 @@ public sealed class GrailDecisionEngine(
             }
         }
 
+        _lastAbandonReason = "运营轮上限（异常兜底）"; // P2-2 弃局标签真实化
         return PreparationOutcome.Dead; // 运营轮上限（异常兜底）
     }
 }

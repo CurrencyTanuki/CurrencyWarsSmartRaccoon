@@ -289,6 +289,9 @@ public partial class App : Application
         services.AddTransient<IRejectedOpeningRecovery, CurrencyWarsRejectedOpeningRecovery>();
         services.AddTransient<IAbandonSettlementRecovery, CurrencyWarsRejectedOpeningRecovery>();
         services.AddTransient<IRunAbandoner, CurrencyWarsRejectedOpeningRecovery>();
+        // P1-1（对抗审查 1.2.119 复核）：簇C/E 弹框守卫补 DI 注册——生产引擎路径经
+        // CommandTestWindow 传入（runAbandoner 同实现），此处注册保证引擎 DI 路径可用。
+        services.AddTransient<IModalGuard, CurrencyWarsRejectedOpeningRecovery>();
         // 1.2.119（审计簇 C）：弃局恢复类注入祈愿弹框应答能力（IWishTrialPopupHandler）
         // ——此前祈愿弹框在屏时弃局链只能空转（审计局 4/6：68/74 秒无人应答→弃局）。
         // WishTrialSelectionAutomation 已单例注册，同一实例实现该接口（P2-7 同实例互斥）。

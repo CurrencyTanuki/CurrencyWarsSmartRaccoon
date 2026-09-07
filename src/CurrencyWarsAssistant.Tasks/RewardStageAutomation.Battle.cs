@@ -1292,6 +1292,7 @@ public sealed partial class RewardStageAutomationController
                 fallback?.Slot ?? 0,
                 fallbackName,
                 source: "SoftFallbackLeftmost",
+                strategyId: fallback?.Strategy?.Id, // P1-2（对抗审查）：回执带真实策略 ID，四.13a 数据源贯通
                 cancellationToken: cancellationToken);
         }
 

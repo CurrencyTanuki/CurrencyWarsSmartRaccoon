@@ -22,7 +22,7 @@ namespace CurrencyWarsAssistant.Tests;
 public sealed class DiResolutionCycleRegressionTests
 {
     [Fact]
-    public void IRunAbandoner_Resolution_WithPerInterfaceFactories_Terminates()
+    public async Task IRunAbandoner_Resolution_WithPerInterfaceFactories_Terminates()
     {
         var services = new ServiceCollection();
         services.AddSingleton<ITaskEventSink>(new NullTaskEventSink());
@@ -31,11 +31,21 @@ public sealed class DiResolutionCycleRegressionTests
         services.AddSingleton<IInputController>(new StubInput());
         services.AddSingleton<IGameForegroundGuard>(new StubForegroundGuard());
         services.AddSingleton<ICurrencyWarsOpeningNavigator>(new StubNavigator());
+        services.AddSingleton<IWishTrialPopupHandler>(new StubWishPopupHandler());
         // 生产形状：controller 为 Transient，其 IAbandonSettlementRecovery=普通 Transient recovery。
+        // 具名参数（复核 P3-2）：防止未来插入新参数时静默错位。
         services.AddTransient(sp => new RewardStageAutomationController(
-            null!, null!, null!, null!, null!, null!, null!, null!, null!,
-            sp.GetRequiredService<IAbandonSettlementRecovery>(),
-            sp.GetRequiredService<ITaskEventSink>(),
+            capture: null!,
+            pageClassifier: null!,
+            shopReader: null!,
+            shopPurchasePlanner: null!,
+            strategyReader: null!,
+            visualDetector: null!,
+            input: null!,
+            foregroundGuard: null!,
+            preparationCompletionController: null!,
+            settlementRecovery: sp.GetRequiredService<IAbandonSettlementRecovery>(),
+            eventSink: sp.GetRequiredService<ITaskEventSink>(),
             recognitionFeed: null));
         services.AddTransient<IAbandonSettlementRecovery, CurrencyWarsRejectedOpeningRecovery>();
         // 修复后形状：逐接口显式工厂——工厂体内先解析 controller 再 new recovery，
@@ -46,11 +56,18 @@ public sealed class DiResolutionCycleRegressionTests
 
         using var provider = services.BuildServiceProvider();
         var stopwatch = Stopwatch.StartNew();
-        var abandoner = provider.GetRequiredService<IRunAbandoner>();
+        // 复核 P2-1：断言必须包住阻塞解析本身——若断言放在解析之后，
+        // 死锁回归形态下解析永不返回，断言成为死代码（靠外部超时才能暴露）。
+        var resolveTask = Task.Run(() => provider.GetRequiredService<IRunAbandoner>());
+        var completed = await Task.WhenAny(resolveTask, Task.Delay(TimeSpan.FromSeconds(30)));
+        Assert.True(
+            completed == resolveTask,
+            $"IRunAbandoner 解析 30 秒未返回——DI 工厂环回归（启动挂死形状）");
+        var abandoner = await resolveTask;
         stopwatch.Stop();
         Assert.True(
             stopwatch.Elapsed < TimeSpan.FromSeconds(30),
-            $"IRunAbandoner 解析耗时 {stopwatch.Elapsed}——DI 工厂环回归（启动挂死形状）");
+            $"IRunAbandoner 解析耗时 {stopwatch.Elapsed}——DI 工厂环回归");
         Assert.NotNull(abandoner);
     }
 
@@ -66,10 +83,17 @@ public sealed class DiResolutionCycleRegressionTests
             provider.GetRequiredService<IInputController>(),
             provider.GetRequiredService<IGameForegroundGuard>(),
             provider.GetRequiredService<ITaskEventSink>(),
-            wishTrialHandler: null,
+            wishTrialHandler: provider.GetRequiredService<IWishTrialPopupHandler>(),
             closeShopIfOpen: async (handle, token) =>
                 await rewardStage.CloseShopAsync(handle, "preparation_generic", token),
             selectLeftmostStrategyIfUp: null);
+    }
+
+    private sealed class StubWishPopupHandler : IWishTrialPopupHandler
+    {
+        public Task<bool> DismissWishTrialPopupIfUpAsync(
+            nint windowHandle, CancellationToken cancellationToken) =>
+            Task.FromResult(false);
     }
 
     private sealed class StubCapture : IGameCapture

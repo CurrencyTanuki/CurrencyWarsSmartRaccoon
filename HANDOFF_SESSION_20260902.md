@@ -13,7 +13,9 @@
 - **未解尾巴（不阻塞部署）**：①谁/为何以普通模式启动 7 例（嫌疑=09-07 下午回退实验期直接 start exe/双击，UAC 由在场用户点过）；②23:31 实例（1.2.117）23:37 交接后无崩溃记录干净消失（疑外部结束或另一次启动的 exit 握手）；③写 autodecide.txt 与启动存在竞态（Loaded 先过则开关漏检，23:31 实锤：START 被定时器消费而 DECIDE 未发）——**每次启动后必须核对：jsonl 首事件签名+autodecide.txt 是否已被删**。
 - **帧沙箱可行性案已出（用户 09-08 令）**：docs/SANDBOX_FEASIBILITY_20260908.md——动机=五费聘用书试炼永远等不到真帧；方案=DI 层换 4 个基础设施实现（FileSequenceGameCapture/RecordingInputController/StubWindowService/AlwaysForegroundGuard），决策/操作/识别零改动；脚本=每帧+允许操作集，期望操作满足才切帧、偏离=违规（驱动器+裁判合一）。接缝与素材已勘察：PageReplay 107 张+runs screenshots 316 张+归档 1759 目录；**缺口=五费聘用书试炼页帧（素材来源 a 抽帧/b 合成/c 等真帧，待用户拍板）**。Phase 1 骨架待开工（批次二审查与部署优先）。
 - **帧素材审帧完成（用户 09-08 令）**：docs/SANDBOX_FRAMES_AUDIT_20260908.md——视频本就在桌面（无需回 B 站）；**视频 2（A850 三星昔涟）=1920×1080 原生主素材源，拿到「5费聘用书·请选择1个」选择页全帧（第 119 秒）等核心画面**；视频 1（全网首发教程）=1728×1080 画幅不匹配仅作参考；叠加物（水印/中央字幕/后期大数字）全部可用选帧规避，不构成阻断；视频 1 解说=纯脑测未验证不采信，只采信画面。帧在 %LOCALAPPDATA%\CurrencyWarsSmartRaccoon\sandbox-frames\（不入 git）。
-- **下一步**：批次二整批对抗审查（坑 52 硬门）→通过后按 WINDOWS_OPS_STANDARD 五步部署 1.2.119→验 App.dll ProductVersion=1.2.119+HEAD→计划任务启动→验 jsonl 首事件=warmup+STATUS 回执→写 autodecide 并复核被消费。**用户已授权：审查通过即可直接发布并打开软件（游戏暂不开，之后用户令继续）**。
+- **批次二对抗审查完成（09-08）= APPROVED after fixes（2×P1+4×P2+8×P3）**：P1-1 弹框守卫从未接线（死代码）/P1-2 四.13a 数据源在 SoftFallback 路径断裂+事件未落 jsonl；P2-1 13a 双重 A9+标签污染/P2-2 Dead 出口混标 R3/P2-3 买经验缺 1-3 门/P2-4 血量缓存跨局陈旧/P2-5 autodecide 三处竞态。**修复已全部落地（562cb98）**：modalGuard 接线+IModalGuard 注册、SoftFallback 带 strategyId、StrategyAbandonDecided/BuyXpForDeploy 经 publishEvent 落 jsonl（引擎新增可选参数）、13a 单点 A9、四 Dead 出口标签真实化、买经验 1-3 节点门、血量缓存随局复位、autodecide 派发时刻原子复查+失败回炉+循环兜底、wish 应答实例信号量互斥（P3-1 同批）。build 0/0+161/161。**修复复核已发回原审查员（后台），PASS 即部署**。
+- **挂账新增**：①引擎级 13a/买经验判定单测（SendAsync 私有不可注桩，重构引擎管道超出本批）=**goal=All 启用前硬前置**（当前 Single 下两判定休眠）；②P3 备案项：闩锁布尔语义无法区分人口步进、降级重扫判据 Count<5 与 P2-5 量化口径不一致、弃局链无环境页"过路必选"分支、selectLeftmostStrategyIfUp 无注入点恒 null、证据文件无上限需轮转、XML 注释漂移两处。
+- **下一步**：修复复核 PASS→按 WINDOWS_OPS_STANDARD 五步部署 1.2.119→验 App.dll ProductVersion=1.2.119+HEAD→计划任务启动→验 jsonl 首事件=warmup+STATUS 回执→写 autodecide 并复核被消费。**用户已授权：审查通过即可直接发布并打开软件（游戏暂不开，之后用户令继续）**。
 
 ---
 

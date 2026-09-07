@@ -62,7 +62,7 @@ public sealed class WishTrialSelectionAutomation(
     PpOcrOfflineOcr ocr,
     IInputController input,
     IGameForegroundGuard foregroundGuard,
-    ITaskEventSink eventSink)
+    ITaskEventSink eventSink) : IWishTrialPopupHandler
 {
     /// <summary>祈愿试炼弹框页面 id。</summary>
     public const string SelectionPageId = "wish_trial_selection";
@@ -106,6 +106,21 @@ public sealed class WishTrialSelectionAutomation(
     /// 返回 null 时本方法以 <see cref="WishTrialSelectionStatus.RecognitionFailed"/> 结束且不点击。
     /// 不传 select 时用内置 PickWinningSide（两侧都不可达成 → 不点击）。
     /// </param>
+    /// <summary>
+    /// 1.2.119（审计簇 C）：IWishTrialPopupHandler 实现——祈愿试炼弹框在屏则应答
+    /// （检测/选侧/确认全部由本类 TryHandleSelectionAsync 完成，不在屏=零点击零
+    /// 副作用，1.2.106 已证可靠）。返回 true=弹框已应答退出（Confirmed）。
+    /// </summary>
+    public async Task<bool> DismissWishTrialPopupIfUpAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        var status = await TryHandleSelectionAsync(
+            windowHandle,
+            cancellationToken);
+        return status == WishTrialSelectionStatus.Confirmed;
+    }
+
     public async Task<WishTrialSelectionStatus> TryHandleSelectionAsync(
         nint windowHandle,
         CancellationToken cancellationToken,

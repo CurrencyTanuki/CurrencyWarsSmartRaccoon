@@ -129,12 +129,31 @@ public static class CurrencyWarsHomeEvidence
 /// abandons the run, advances the settlement pages and verifies that the
 /// Currency Wars home page has returned.
 /// </summary>
-/// <summary>弃局兜底：主动放弃当前对局并回到安全入口页。异常不外泄，失败也继续（四轮 R1-R5）。</summary>
+/// <summary>
+/// 1.2.119（审计簇 C）：祈愿试炼弹框的按需应答能力。可靠检测/应答核心在
+/// WishTrialSelectionAutomation（1.2.106 已证不在屏零副作用），由持有该组件的
+/// 类实现本接口并注入弃局恢复类——此前恢复类只认 gala 弹框，祈愿弹框在屏时
+/// 弃局链只敢空转等待（审计局 4/6：弹框在屏 68/74 秒无人应答→弃局）。
+/// </summary>
+public interface IWishTrialPopupHandler
+{
+    /// <summary>祈愿试炼弹框在屏则应答（检测+选侧+确认），返回是否已处理。</summary>
+    Task<bool> DismissWishTrialPopupIfUpAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken);
+}
+
+/// <summary>
+/// 弃局兜底：主动放弃当前对局并回到安全入口页。异常不外泄，失败也继续（四轮 R1-R5）。
+/// 1.2.119（审计簇 A）：追加 reason 留痕参数——所有弃局必须带发起原因
+/// （消灭审计定性的"无留痕弃局"：R3/失败 混用标签导致弃局决策不可审计）。
+/// </summary>
 public interface IRunAbandoner
 {
     Task<RejectedOpeningRecoveryResult> AbandonCurrentRunAsync(
         nint windowHandle,
-        CancellationToken cancellationToken);
+        CancellationToken cancellationToken,
+        string? reason = null);
 }
 
 /// <summary>盛会弹框消除结果三态（坑50；A16 回执与泵退避共用）。</summary>
@@ -168,7 +187,10 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
     IGamePageClassifier classifier,
     IInputController input,
     IGameForegroundGuard foregroundGuard,
-    ITaskEventSink eventSink) :
+    ITaskEventSink eventSink,
+    IWishTrialPopupHandler? wishTrialHandler = null,
+    Func<nint, CancellationToken, Task<bool>>? closeShopIfOpen = null,
+    Func<nint, CancellationToken, Task<bool>>? selectLeftmostStrategyIfUp = null) :
     IRejectedOpeningRecovery,
     IAbandonSettlementRecovery,
     IRunAbandoner,
@@ -180,6 +202,13 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
     private static readonly StandardPoint NextPoint = new(960, 899);
     // "前台区域无角色，无法出战"提示弹窗的确认按钮（12:08 实拍帧裁测，1920 参考系）。
     private static readonly StandardPoint UncompletedPromptConfirmPoint = new(960, 699);
+    // 1.2.119（审计簇 A）：弃局链硬上限——此前该链在 Esc 无效页面上每 40 秒空转，
+    // 通宵实测 15 段游程合计 ≈117 分钟（占窗口 47%，最长 23 分钟）。
+    private static readonly TimeSpan AbandonChainHardDeadline =
+        TimeSpan.FromSeconds(90);
+    // 1.2.119（审计簇 C）：gala 应答与三处既有泵的并发双击防护（P2-7）——
+    // DI 为 Transient 多实例，实例字段退避不共享，故用类级信号量串行化点击。
+    private static readonly SemaphoreSlim GalaDismissGate = new(1, 1);
 
     // ---- 盛会之星羁绊升档选择框（坑50，1.2.114）----
     // 页面 ID 与识别表/AutomationPageIds/FastPageIds 三处同步（坑48 纪律）。
@@ -209,11 +238,33 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
     /// </summary>
     public async Task<RejectedOpeningRecoveryResult> AbandonCurrentRunAsync(
         nint windowHandle,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        string? reason = null)
     {
         _pauseBaseline = foregroundGuard.TotalPausedDuration;
+        // 1.2.119（审计簇 A3）：弃局发起原因必须留痕——此前 R3/失败/策略弃局共用
+        // 一个"本局判定结束"标签，弃局决策完全不可审计（无留痕弃局 3 例）。
+        Publish(
+            "RecoveryAbandonStarted",
+            string.IsNullOrWhiteSpace(reason)
+                ? "弃局链启动（未提供原因——调用方应传 reason 以供审计）。"
+                : $"弃局链启动，原因：{reason}",
+            TaskEventLevel.Warning);
+        // 1.2.119（审计簇 A）：硬上限 90 秒——此前 Esc 空转最长 23 分钟。
+        var deadline = ActiveUtcNow + AbandonChainHardDeadline;
         for (var attempt = 1; attempt <= 3; attempt++)
         {
+            if (ActiveUtcNow >= deadline)
+            {
+                Publish(
+                    "RecoveryAbandonDeadlineExceeded",
+                    $"弃局链达到 {AbandonChainHardDeadline.TotalSeconds:F0} 秒硬上限" +
+                    "（页面始终不满足任何可推进分支）——如实失败并交外层。",
+                    TaskEventLevel.Warning);
+                return RejectedOpeningRecoveryResult.Failed(
+                    "弃局链 90 秒硬上限耗尽（页面身份始终无法推进）。");
+            }
+
             // 1.2.58（独立分析 P-12）：进 1-1 后 1ms 即发 Esc 的失败率 22%——
             // 先给入场动画 2.5 秒；Esc 重试 1→2 次（多数失败几秒后重按即成功）。
             await Task.Delay(TimeSpan.FromSeconds(1.5), cancellationToken);
@@ -230,18 +281,21 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
             {
                 // 2026-09-04 用户令：兜底点击必须按页面身份分流——
                 // ①备战页（preparation_）绝不点击：(960,899) 在备战页上是出战按钮，
-                //   误触会真实开战（备战期灾难）；Esc 无法弃局就如实报失败。
+                //   误触会真实开战（备战期灾难）。
+                //   1.2.119（审计簇 A）：改为 StillInGame 如实返回——此前该分支
+                //   continue 空转，通宵实测单段最长空转 23 分钟（审计 6-7-2/8-1）。
                 // ②主界面（normal_hud/currency_wars_home）：弃局目标已达成，直接成功。
                 // ③无法出战提示弹窗：点"确认"关闭。
-                // ④其余（结算详情页等）：点"下一页/保存并退出"位推进，链走完回主界面。
+                // ④盛会/祈愿弹框：先应答再弃（1.2.114+1.2.119 簇 C）。
+                // ⑤商店页：先关店再弃（1.2.119 审计 2-2）。
+                // ⑥投资策略页：过路选择再弃（坑 19：Esc 无效模态）。
+                // ⑦Unknown：禁止一切兜底点击。
                 var fallbackPage = await ReadStablePageAsync(
                     windowHandle,
                     cancellationToken);
                 var fallbackPageId = fallbackPage?.PageId ?? string.Empty;
 
-                // 坑50（1.2.114）：盛会之星羁绊升档选择框浮在备战页上——此前识别表
-                // 无此页（I1 报底层 preparation 族）+ Esc 被模态吞掉 → 弃局 5 连败
-                // 自保停机（22:33/22:49 两次实锤）。现已入识别表：先应答关闭
+                // 坑50（1.2.114）：盛会之星羁绊升档选择框浮在备战页上——先应答关闭
                 //（任选角色+确认选择），下一轮 Esc 即可正常弃局；消除失败也绝不
                 // fallthrough 到 (960,899)（该点在此弹框上的语义未经验证）。
                 if (string.Equals(
@@ -266,19 +320,98 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                     continue;
                 }
 
+                // 1.2.119（审计簇 A/簇 C）：祈愿试炼弹框在屏=应答而非空转——
+                // 审计局 4/6：弹框在屏 68/74 秒无人应答→弃局链全败。
+                if (string.Equals(
+                        fallbackPageId,
+                        "wish_trial_selection",
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    if (wishTrialHandler is not null
+                        && await wishTrialHandler.DismissWishTrialPopupIfUpAsync(
+                            windowHandle,
+                            cancellationToken))
+                    {
+                        continue;
+                    }
+
+                    Publish(
+                        "RecoveryWishPopupDismissFailed",
+                        "祈愿试炼弹框应答失败（无处理器或应答未通过）——如实失败，不盲点。",
+                        TaskEventLevel.Warning);
+                    return RejectedOpeningRecoveryResult.Failed(
+                        "弃局链遇祈愿试炼弹框且应答失败。");
+                }
+
+                // 1.2.119（审计 2-2/簇 A 分流表）：商店页在屏=先关店再弃——
+                // 此前落"其余→点 (960,899)"桶，该点在商店页=货架卡片区（语义未验证）。
+                if (string.Equals(
+                        fallbackPageId,
+                        "reward_shop",
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    if (closeShopIfOpen is not null
+                        && await closeShopIfOpen(windowHandle, cancellationToken))
+                    {
+                        continue;
+                    }
+
+                    return RejectedOpeningRecoveryResult.StillInGame(
+                        "弃局链遇商店页且无关店能力（closeShopIfOpen 未注入或失败）——对局仍在。");
+                }
+
+                // 1.2.119（审计簇 A 分流表）：投资策略页=强制模态（坑 19：Esc 无效），
+                // 过路选择（最左+确认）进局后下一轮 Esc 走局内弃局。
+                if (string.Equals(
+                        fallbackPageId,
+                        "investment_strategy",
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    if (selectLeftmostStrategyIfUp is not null
+                        && await selectLeftmostStrategyIfUp(
+                            windowHandle,
+                            cancellationToken))
+                    {
+                        continue;
+                    }
+
+                    Publish(
+                        "RecoveryStrategyPageStuck",
+                        "投资策略页过路选择失败（无委托或选择未生效）——如实失败。",
+                        TaskEventLevel.Warning);
+                    return RejectedOpeningRecoveryResult.Failed(
+                        "弃局链遇投资策略页且过路选择失败。");
+                }
+
+                // 1.2.119（审计簇 A 分流表）：出战人数不足提示=点确认关闭（既有点位）。
+                if (string.Equals(
+                        fallbackPageId,
+                        "incomplete_lineup_prompt",
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    await ClickStandardPointAsync(
+                        windowHandle,
+                        "recovery_incomplete_prompt_confirm",
+                        "弃局链：确认关闭无法出战提示",
+                        UncompletedPromptConfirmPoint,
+                        new ActionPolicy(),
+                        cancellationToken);
+                    continue;
+                }
+
                 if (fallbackPageId.StartsWith(
                         "preparation_",
                         StringComparison.OrdinalIgnoreCase))
                 {
+                    // 1.2.119（审计簇 A）：对局仍在=弃局前提不成立，StillInGame 如实
+                    // 返回交上层按语义分流（入口重刷期=维持弃局重开；局内弃局=终止
+                    // 弃局回入口判页）。**绝不重入运营循环 S5**（复核 P1-6④）。
                     Publish(
-                        "RecoverySkipPreparationClick",
-                        $"当前为备战页（{fallbackPageId}），Esc 无法弃局且禁止点击出战区；" +
-                        "等待外层重试或人工结算。",
+                        "RecoveryStillInGame",
+                        $"当前为备战页（{fallbackPageId}）——对局仍在，弃局链如实终止（StillInGame）。",
                         TaskEventLevel.Warning);
-                    await Task.Delay(
-                        TimeSpan.FromSeconds(1),
-                        cancellationToken);
-                    continue;
+                    return RejectedOpeningRecoveryResult.StillInGame(
+                        $"弃局链检测到对局仍在（{fallbackPageId}）。");
                 }
 
                 if (fallbackPageId is "normal_hud" or "currency_wars_home")
@@ -366,6 +499,75 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
         return await DismissGalaBondPopupCoreAsync(windowHandle, cancellationToken)
             ? GalaBondDismissOutcome.Dismissed
             : GalaBondDismissOutcome.Failed;
+    }
+
+    /// <summary>
+    /// 1.2.119（审计簇 C）：统一模态弹框守卫——按需单帧实拍+分类器认页，在屏即应答。
+    /// **禁用 I1 作为验页源**（I1 读识别流 LatestAnalysis：盛会弹框期按设计抑制 1.2.114、
+    /// 流异常期陈旧——审计 4-1/6-7-3 的弹框场景下 I1 恒失效）。覆盖四大模态：盛会
+    /// 升档框（自答）/祈愿试炼框（注入的 IWishTrialPopupHandler）/出战人数不足提示
+    /// （点确认）/列车同行伙伴选择框（识别表内 companion_selection，任选点击点位
+    /// 未标定——本版仅报告不点击，待标定后接入）。返回 true=检测到模态并已处理。
+    /// </summary>
+    public async Task<bool> DismissBlockingModalIfUpAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        _pauseBaseline = foregroundGuard.TotalPausedDuration;
+        var page = await ReadStablePageAsync(windowHandle, cancellationToken);
+        var pageId = page?.PageId ?? string.Empty;
+
+        if (string.Equals(pageId, GalaBondPopupPageId, StringComparison.OrdinalIgnoreCase))
+        {
+            await GalaDismissGate.WaitAsync(cancellationToken);
+            try
+            {
+                return await DismissGalaBondPopupCoreAsync(
+                    windowHandle,
+                    cancellationToken);
+            }
+            finally
+            {
+                GalaDismissGate.Release();
+            }
+        }
+
+        if (string.Equals(pageId, "wish_trial_selection", StringComparison.OrdinalIgnoreCase))
+        {
+            return wishTrialHandler is not null
+                && await wishTrialHandler.DismissWishTrialPopupIfUpAsync(
+                    windowHandle,
+                    cancellationToken);
+        }
+
+        if (string.Equals(
+                pageId,
+                "incomplete_lineup_prompt",
+                StringComparison.OrdinalIgnoreCase))
+        {
+            await ClickStandardPointAsync(
+                windowHandle,
+                "modal_guard_incomplete_confirm",
+                "弹框守卫：确认关闭无法出战提示",
+                UncompletedPromptConfirmPoint,
+                new ActionPolicy(),
+                cancellationToken);
+            return true;
+        }
+
+        if (string.Equals(
+                pageId,
+                "companion_selection",
+                StringComparison.OrdinalIgnoreCase))
+        {
+            Publish(
+                "RecoveryCompanionSelectionUntested",
+                "弹框守卫：列车同行伙伴选择框在屏（任选点位未标定，本版不点击）——请上报此日志以补充标定。",
+                TaskEventLevel.Warning);
+            return false;
+        }
+
+        return false;
     }
 
     /// <summary>

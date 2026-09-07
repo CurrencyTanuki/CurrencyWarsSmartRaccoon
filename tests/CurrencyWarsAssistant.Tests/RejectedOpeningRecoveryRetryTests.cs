@@ -289,8 +289,12 @@ public sealed class RejectedOpeningRecoveryRetryTests
     }
 
     [Fact]
-    public async Task AbandonFallbackBlindAdvanceAbortsOnPreparationPage()
+    public async Task AbandonChainStillInGame_PrecedesBlindAdvance_OnPreparationPage()
     {
+        // 1.2.119（审计簇 A）契约更新：弃局链遇备战页（对局仍在）=StillInGame
+        // 立即返回，取代 1.2.97 旧行为（continue 空转→盲点急停 Failed）——
+        // 通宵实测旧行为单段空转最长 23 分钟。盲点直通的击前备战页急停
+        // （BlindAdvanceToHomeAsync 内部防御）保留作为其他入口的兜底。
         var input = new StagedInputController { PreparationStuck = true };
         var sink = new RecordingEventSink();
         var window = Window();
@@ -306,11 +310,9 @@ public sealed class RejectedOpeningRecoveryRetryTests
             window.Handle,
             CancellationToken.None);
 
-        // 1.2.97 审查 P2：盲点推进位 (960,899) 在备战页=出战按钮——击前探测到
-        // 备战页必须急停（零点击、诚实失败），防误触真实开战。
-        Assert.Equal(RejectedOpeningRecoveryStatus.Failed, result.Status);
+        Assert.Equal(RejectedOpeningRecoveryStatus.StillInGame, result.Status);
         Assert.Equal(0, input.BlindAdvanceClicks);
-        Assert.Contains("RecoveryBlindAdvanceAbortPreparation", sink.EventNames);
+        Assert.Contains("RecoveryStillInGame", sink.EventNames);
     }
 
     [Fact]
@@ -464,7 +466,130 @@ public sealed class RejectedOpeningRecoveryRetryTests
     {
         public List<string> EventNames { get; } = [];
 
-        public void Publish(TaskEvent taskEvent) => EventNames.Add(taskEvent.Code);
+        public List<string> Messages { get; } = [];
+
+        public void Publish(TaskEvent taskEvent)
+        {
+            EventNames.Add(taskEvent.Code);
+            Messages.Add(taskEvent.Message);
+        }
+    }
+
+    /// <summary>1.2.119（簇 C）：可编程假祈愿处理器——应答即翻转夹具状态。</summary>
+    private sealed class FakeWishHandler(StagedInputController input) : IWishTrialPopupHandler
+    {
+        public int Calls { get; private set; }
+
+        public async Task<bool> DismissWishTrialPopupIfUpAsync(
+            nint windowHandle,
+            CancellationToken cancellationToken)
+        {
+            Calls++;
+            await Task.Delay(1, cancellationToken);
+            input.WishAnswered = true;
+            return true;
+        }
+    }
+
+    [Fact]
+    public async Task AbandonChainReturnsStillInGame_OnPreparationPage()
+    {
+        // 1.2.119（审计簇 A，6-7-2/8-1）：弃局链遇备战页=对局仍在——旧行为 continue
+        // 空转（单段最长 23 分钟），新行为 StillInGame 如实立即返回。
+        var input = new StagedInputController { PreparationStuck = true };
+        var sink = new RecordingEventSink();
+        var window = Window();
+        var recovery = new CurrencyWarsRejectedOpeningRecovery(
+            new PreparationNavigator(),
+            new StaticCapture(),
+            new StagedClassifier(input),
+            input,
+            new ImmediateForegroundGuard(window),
+            sink);
+
+        var result = await recovery.AbandonCurrentRunAsync(
+            window.Handle,
+            CancellationToken.None,
+            reason: "审计簇 A 单测：备战页粘滞");
+
+        Assert.Equal(RejectedOpeningRecoveryStatus.StillInGame, result.Status);
+        Assert.Contains("RecoveryStillInGame", sink.EventNames);
+        Assert.Contains("RecoveryAbandonStarted", sink.EventNames);
+        Assert.Contains(sink.Messages, m => m.Contains("审计簇 A 单测：备战页粘滞"));
+    }
+
+    [Fact]
+    public async Task AbandonChainWishPopupAnswered_ContinuesToRecovery()
+    {
+        // 1.2.119（审计 4-1/6-7-3）：祈愿弹框在屏=应答而非空转。应答后下一轮
+        // Esc 正常弃局（夹具恢复原阶段机→abandon_settlement_prompt→结算→主页）。
+        var input = new StagedInputController { WishPopupOnEsc = true };
+        var sink = new RecordingEventSink();
+        var wish = new FakeWishHandler(input);
+        var window = Window();
+        var recovery = new CurrencyWarsRejectedOpeningRecovery(
+            new PreparationNavigator(),
+            new StaticCapture(),
+            new StagedClassifier(input),
+            input,
+            new ImmediateForegroundGuard(window),
+            sink,
+            wishTrialHandler: wish);
+
+        var result = await recovery.AbandonCurrentRunAsync(
+            window.Handle,
+            CancellationToken.None,
+            reason: "审计簇 C 单测：祈愿弹框应答");
+
+        Assert.Equal(RejectedOpeningRecoveryStatus.Recovered, result.Status);
+        Assert.Equal(1, wish.Calls);
+        Assert.Contains("RecoveryAbandonStarted", sink.EventNames);
+    }
+
+    [Fact]
+    public async Task AbandonChainWishPopupWithoutHandler_FailsHonestly()
+    {
+        // 1.2.119（审计簇 A）：无祈愿处理器注入时——不空转、不盲点，如实 Failed。
+        var input = new StagedInputController { WishPopupOnEsc = true };
+        var sink = new RecordingEventSink();
+        var window = Window();
+        var recovery = new CurrencyWarsRejectedOpeningRecovery(
+            new PreparationNavigator(),
+            new StaticCapture(),
+            new StagedClassifier(input),
+            input,
+            new ImmediateForegroundGuard(window),
+            sink);
+
+        var result = await recovery.AbandonCurrentRunAsync(
+            window.Handle,
+            CancellationToken.None);
+
+        Assert.Equal(RejectedOpeningRecoveryStatus.Failed, result.Status);
+        Assert.Contains("RecoveryWishPopupDismissFailed", sink.EventNames);
+    }
+
+    [Fact]
+    public async Task DismissBlockingModal_AnswersGalaPopup_AndReturnsTrue()
+    {
+        // 1.2.119（审计簇 C）：统一弹框守卫——盛会弹框在屏=自答并返回 true。
+        var input = new StagedInputController { GalaPopupOnEsc = true };
+        var sink = new RecordingEventSink();
+        var window = Window();
+        var recovery = new CurrencyWarsRejectedOpeningRecovery(
+            new PreparationNavigator(),
+            new StaticCapture(),
+            new StagedClassifier(input),
+            input,
+            new ImmediateForegroundGuard(window),
+            sink);
+
+        var handled = await recovery.DismissBlockingModalIfUpAsync(
+            window.Handle,
+            CancellationToken.None);
+
+        Assert.True(handled);
+        Assert.Contains("RecoveryGalaPopupDismissed", sink.EventNames);
     }
 
     private sealed class StagedClassifier(StagedInputController input)
@@ -520,6 +645,17 @@ public sealed class RejectedOpeningRecoveryRetryTests
                         0.99,
                         [])
                     : null;
+            }
+
+            // 1.2.119（审计簇 A/簇 C）用例夹具：祈愿试炼弹框——Esc 被模态吞掉，
+            // 应答（WishAnswered）后恢复原阶段机。
+            if (input.WishPopupOnEsc && !input.WishAnswered)
+            {
+                return new PageClassificationResult(
+                    "wish_trial_selection",
+                    "wish_trial_selection",
+                    0.99,
+                    []);
             }
 
             // 坑50（1.2.114）用例夹具：盛会之星升档选择框——Esc 被模态吞掉（页面
@@ -623,6 +759,10 @@ public sealed class RejectedOpeningRecoveryRetryTests
         // 任选角色+确认后退出；GalaPortraitClickFails=点击输入失败（候选耗尽→诚实失败）。
         public bool GalaPopupOnEsc { get; init; }
         public bool GalaPopupForever { get; init; }
+        // 1.2.119（审计簇 A/簇 C）：祈愿弹框场景观测面——Esc 后 wish_trial_selection
+        // 在屏；FakeWishHandler 应答（WishAnswered=true）后恢复原阶段机。
+        public bool WishPopupOnEsc { get; init; }
+        public bool WishAnswered { get; set; }
         public bool GalaPortraitClickFails { get; init; }
         public int GalaPortraitClicks { get; private set; }
         public int GalaConfirmClicks { get; private set; }

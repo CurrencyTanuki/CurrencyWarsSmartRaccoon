@@ -8,7 +8,11 @@ public enum RejectedOpeningRecoveryStatus
 {
     Recovered,
     RecoveryNotConfigured,
-    Failed
+    Failed,
+    /// <summary>1.2.119（审计簇 A）：弃局链在备战页检测到「对局仍在」——
+    /// 弃局前提不成立，链路如实终止并交回调用方按语义分流（引擎入口重刷期=
+    /// 维持弃局重开；局内 R3/策略弃局=终止弃局回外层入口判页，绝不重入 S5）。</summary>
+    StillInGame
 }
 
 public sealed record RejectedOpeningRecoveryResult(
@@ -23,6 +27,9 @@ public sealed record RejectedOpeningRecoveryResult(
 
     public static RejectedOpeningRecoveryResult Failed(string message) =>
         new(RejectedOpeningRecoveryStatus.Failed, message);
+
+    public static RejectedOpeningRecoveryResult StillInGame(string message) =>
+        new(RejectedOpeningRecoveryStatus.StillInGame, message);
 }
 
 public interface IRejectedOpeningRecovery
@@ -392,6 +399,21 @@ public sealed class OpeningRerollLoopCoordinator(
                     navigation.InvestmentEnvironments is not null)
                 {
                     LastLegitimateEntryAt = DateTimeOffset.UtcNow;
+                    break;
+                }
+
+                // 1.2.119（审计簇 H，4-3/6-7-1：NavigationFailed 悖论×5）：遗留弹框
+                // 应答后导航会直接落在 1-1 备战页（过路环境已被确认）——ReachedPreparation
+                // =导航事实成功，只是没有环境识别数据。按"环境不完整→未命中→安全重开"
+                // 同款路径放行，绝不判 NavigationFailed（此前每例白弃一局且卡死重试环）。
+                if (navigation.FinalState is CurrencyWarsNavigationState.ReachedPreparation)
+                {
+                    LastLegitimateEntryAt = DateTimeOffset.UtcNow;
+                    Publish(
+                        OpeningRerollLoopState.Navigating,
+                        round,
+                        "导航直接到达 1-1 备战页（遗留弹框应答后过路进局，无环境识别数据）" +
+                        "——按未命中处理并安全重开。");
                     break;
                 }
 
@@ -805,6 +827,19 @@ public sealed class OpeningRerollLoopCoordinator(
                     navigation,
                     recoveryResult,
                     recoveryResult.Message);
+            }
+
+            // 1.2.119（审计簇 A）：StillInGame=弃局链在备战页发现「对局仍在」——
+            // 重刷语境下（本协调器）弃局本就是目的，直接视为已脱离并继续下一轮
+            // 重刷（对局由下一轮的入口判页/弃局闭环自然处理），不再判 RecoveryFailed。
+            if (recoveryResult.Status == RejectedOpeningRecoveryStatus.StillInGame)
+            {
+                Publish(
+                    OpeningRerollLoopState.Recovering,
+                    round,
+                    $"第 {round} 轮弃局链检测到对局仍在（{recoveryResult.Message}）" +
+                    "——按重试处理，继续下一轮。");
+                continue;
             }
 
             if (recoveryResult.Status != RejectedOpeningRecoveryStatus.Recovered)

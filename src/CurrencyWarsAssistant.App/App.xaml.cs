@@ -280,6 +280,11 @@ public partial class App : Application
         services.AddTransient<IRejectedOpeningRecovery, CurrencyWarsRejectedOpeningRecovery>();
         services.AddTransient<IAbandonSettlementRecovery, CurrencyWarsRejectedOpeningRecovery>();
         services.AddTransient<IRunAbandoner, CurrencyWarsRejectedOpeningRecovery>();
+        // 1.2.119（审计簇 C）：弃局恢复类注入祈愿弹框应答能力（IWishTrialPopupHandler）
+        // ——此前祈愿弹框在屏时弃局链只能空转（审计局 4/6：68/74 秒无人应答→弃局）。
+        // WishTrialSelectionAutomation 已单例注册，同一实例实现该接口（P2-7 同实例互斥）。
+        services.AddSingleton<IWishTrialPopupHandler>(provider =>
+            provider.GetRequiredService<WishTrialSelectionAutomation>());
         services.AddSingleton<UiTaskEventSink>();
         services.AddSingleton<ITaskEventSink>(
             provider => provider.GetRequiredService<UiTaskEventSink>());

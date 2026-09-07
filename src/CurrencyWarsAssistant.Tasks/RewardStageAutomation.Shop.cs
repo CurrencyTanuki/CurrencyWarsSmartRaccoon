@@ -76,7 +76,9 @@ public sealed partial class RewardStageAutomationController
         return false;
     }
 
-    internal async Task<bool> CloseShopAsync(
+    // 1.2.119：internal→public——弃局恢复类经 DI 工厂注入 closeShopIfOpen 委托
+    // （审计 2-2：商店页在屏时弃局链需先关店；装配根在 App 程序集需可见）。
+    public async Task<bool> CloseShopAsync(
         nint windowHandle,
         string expectedPreparationPage,
         CancellationToken cancellationToken)

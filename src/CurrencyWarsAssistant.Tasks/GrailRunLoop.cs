@@ -93,7 +93,7 @@ public sealed class GrailRunLoop(
 
                     if (runAbandoner is not null)
                     {
-                        try { await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken); }
+                        try { await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken, reason: "RunLoop:弃局闭环(局内失败/山穷水尽)"); }
                         catch (OperationCanceledException) { throw; }
                         catch (Exception abandonException)
                         {
@@ -249,7 +249,7 @@ public sealed class GrailRunLoop(
                         // 外层 for 启动下一轮，opening 从主页重新导航正好衔接。
                         if (runAbandoner is not null)
                         {
-                            try { await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken); }
+                            try { await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken, reason: "RunLoop:弃局重开(下一局前恢复安全页)"); }
                             catch (OperationCanceledException) { throw; }
                             catch { /* 弃局失败也继续下一轮 */ }
                         }

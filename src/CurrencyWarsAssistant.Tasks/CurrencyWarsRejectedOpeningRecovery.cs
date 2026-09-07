@@ -343,6 +343,21 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                         "弃局链遇祈愿试炼弹框且应答失败。");
                 }
 
+                // 1.2.119（审查 P3-1）：列车同行伙伴选择框（模态）——任选点位未标定，
+                // 绝不 fallthrough 到 (960,899)（该模态页语义未验证），如实失败交外层。
+                if (string.Equals(
+                        fallbackPageId,
+                        "companion_selection",
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    Publish(
+                        "RecoveryCompanionSelectionUntested",
+                        "弃局链遇列车同行伙伴选择框（任选点位未标定，本版不点击）——如实失败。",
+                        TaskEventLevel.Warning);
+                    return RejectedOpeningRecoveryResult.Failed(
+                        "弃局链遇列车同行伙伴选择框且无标定点位。");
+                }
+
                 // 1.2.119（审计 2-2/簇 A 分流表）：商店页在屏=先关店再弃——
                 // 此前落"其余→点 (960,899)"桶，该点在商店页=货架卡片区（语义未验证）。
                 if (string.Equals(
@@ -519,17 +534,11 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
 
         if (string.Equals(pageId, GalaBondPopupPageId, StringComparison.OrdinalIgnoreCase))
         {
-            await GalaDismissGate.WaitAsync(cancellationToken);
-            try
-            {
-                return await DismissGalaBondPopupCoreAsync(
-                    windowHandle,
-                    cancellationToken);
-            }
-            finally
-            {
-                GalaDismissGate.Release();
-            }
+            // 互斥由 DismissGalaBondPopupCoreAsync 内部的类级门统一保证（P2-1 修正：
+            // 门下沉到 Core，泵/弃局链/守卫三条路径全部覆盖）。
+            return await DismissGalaBondPopupCoreAsync(
+                windowHandle,
+                cancellationToken);
         }
 
         if (string.Equals(pageId, "wish_trial_selection", StringComparison.OrdinalIgnoreCase))
@@ -578,6 +587,26 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
     /// 后续点击绝不落到已恢复的底层备战页（(970,270) 等点位在备战页语义未验证，坑39）。
     /// </summary>
     private async Task<bool> DismissGalaBondPopupCoreAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        // 1.2.119（审查 P2-1 修正）：类级门下沉到 Core 本体——弃局链/泵（经
+        // DismissGalaBondPopupIfUpAsync，与本类同实例）/统一守卫三条调用路径
+        // 全部串行化，杜绝并发双击。Core 自身绝不重入（无内部再等待该门路径）。
+        await GalaDismissGate.WaitAsync(cancellationToken);
+        try
+        {
+            return await DismissGalaBondPopupCoreLockedAsync(
+                windowHandle,
+                cancellationToken);
+        }
+        finally
+        {
+            GalaDismissGate.Release();
+        }
+    }
+
+    private async Task<bool> DismissGalaBondPopupCoreLockedAsync(
         nint windowHandle,
         CancellationToken cancellationToken)
     {

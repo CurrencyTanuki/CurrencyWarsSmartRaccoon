@@ -825,6 +825,43 @@ public sealed class OpeningRerollLoopCoordinatorTests
         };
     }
 
+    [Fact]
+    public async Task ReachedPreparationAfterDialogAnswer_ReroutesToMissInsteadOfNavigationFailed()
+    {
+        // 1.2.119（审计簇 H，4-3/6-7-1：NavigationFailed 悖论×5）：遗留弹框应答后
+        // 导航直接到达 1-1（无环境识别数据）——修复前该路径要么 ToSnapshot NRE、
+        // 要么判 NavigationFailed 卡死重试环；契约=按未命中处理并安全重开。
+        var navigator = new FakeNavigator(
+            CompleteNavigation(),
+            ReachedPreparation(),
+            CompleteNavigation());
+        var recovery = new FakeRecovery(
+            RejectedOpeningRecoveryResult.Recovered("recovered"));
+        var coordinator = CreateCoordinator(navigator, recovery);
+        var filters = new OpeningFilterSet
+        {
+            EnemyModifiers =
+            [
+                new OpeningItemFilter(
+                    "missing_required",
+                    "missing_required",
+                    OpeningFilterState.Require)
+            ]
+        };
+
+        var result = await coordinator.RunAsync(
+            1,
+            filters,
+            new OpeningRerollLoopOptions { MaximumRounds = 3 },
+            CancellationToken.None);
+
+        Assert.Equal(OpeningRerollLoopState.MaximumRoundsReached, result.FinalState);
+        Assert.True(result.CompletedRounds >= 2,
+            $"reach 轮应按未命中重开（实际轮数 {result.CompletedRounds}，消息：{result.Message}）");
+        Assert.True(recovery.Snapshots.Count >= 2,
+            $"弃局应被实际执行（实际弃局 {recovery.Snapshots.Count} 次）");
+    }
+
     private static CurrencyWarsNavigationResult ReachedPreparation(
         string? selectedInvestmentEnvironmentId = null) =>
         new CurrencyWarsNavigationResult(

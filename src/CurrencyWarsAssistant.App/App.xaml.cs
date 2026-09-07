@@ -277,7 +277,25 @@ public partial class App : Application
         services.AddTransient<
             IRewardStageAutomationController,
             RewardStageAutomationController>();
-        services.AddTransient<IRejectedOpeningRecovery, CurrencyWarsRejectedOpeningRecovery>();
+        services.AddTransient<IRejectedOpeningRecovery>(provider =>
+        {
+            var rewardStage = provider.GetRequiredService<RewardStageAutomationController>();
+            return new CurrencyWarsRejectedOpeningRecovery(
+                provider.GetRequiredService<ICurrencyWarsOpeningNavigator>(),
+                provider.GetRequiredService<IGameCapture>(),
+                provider.GetRequiredService<IGamePageClassifier>(),
+                provider.GetRequiredService<IInputController>(),
+                provider.GetRequiredService<IGameForegroundGuard>(),
+                provider.GetRequiredService<ITaskEventSink>(),
+                wishTrialHandler: provider.GetRequiredService<IWishTrialPopupHandler>(),
+                // 1.2.119（审查 P2-2 修正）：注入关店委托——审计 2-2（商店页在屏时
+                // 弃局链门禁拦×3→空转）的承接；策略页过路选择委托批次二接。
+                closeShopIfOpen: async (handle, token) =>
+                    await rewardStage.CloseShopAsync(
+                        handle,
+                        "preparation_generic",
+                        token));
+        });
         services.AddTransient<IAbandonSettlementRecovery, CurrencyWarsRejectedOpeningRecovery>();
         services.AddTransient<IRunAbandoner, CurrencyWarsRejectedOpeningRecovery>();
         // 1.2.119（审计簇 C）：弃局恢复类注入祈愿弹框应答能力（IWishTrialPopupHandler）

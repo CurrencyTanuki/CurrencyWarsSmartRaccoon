@@ -400,7 +400,10 @@ public sealed class GrailOperationCommands(
         Task<RejectedOpeningRecoveryResult> abandonTask;
         try
         {
-            abandonTask = runAbandoner.AbandonCurrentRunAsync(context.WindowHandle, cancellationToken);
+            abandonTask = runAbandoner.AbandonCurrentRunAsync(
+                context.WindowHandle,
+                cancellationToken,
+                reason: "A9:决策层弃局指令");
         }
         catch (Exception abandonStartError) when (abandonStartError is not OperationCanceledException)
         {

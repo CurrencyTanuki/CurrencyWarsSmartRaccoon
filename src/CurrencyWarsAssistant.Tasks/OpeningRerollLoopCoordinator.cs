@@ -227,7 +227,7 @@ public sealed class OpeningRerollLoopCoordinator(
                     windowHandle, TimeSpan.FromSeconds(20), cancellationToken);
                 if (string.IsNullOrEmpty(recoveredPage) && runAbandoner is not null)
                 {
-                    try { await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken); }
+                    try { await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken, reason: "重刷:开局未命中弃局(Esc链)"); }
                     catch (Exception abandonException) when (abandonException is not OperationCanceledException)
                     {
                         Publish(OpeningRerollLoopState.Recovering, 0,
@@ -251,7 +251,7 @@ public sealed class OpeningRerollLoopCoordinator(
                 windowHandle, TimeSpan.FromSeconds(20), cancellationToken);
             if (string.IsNullOrEmpty(recoveredAfterFailure) && runAbandoner is not null)
             {
-                try { await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken); }
+                try { await runAbandoner.AbandonCurrentRunAsync(windowHandle, cancellationToken, reason: "重刷:环境不匹配弃局(Esc链)"); }
                 catch (Exception abandonException) when (abandonException is not OperationCanceledException)
                 {
                     Publish(OpeningRerollLoopState.Recovering, 0,
@@ -869,9 +869,12 @@ public sealed class OpeningRerollLoopCoordinator(
     private static OpeningSnapshot ToSnapshot(
         CurrencyWarsNavigationResult navigation) =>
         new(
-            navigation.InvestmentEnvironments!.InvestmentEnvironments
+            // 1.2.119（审查 P1 实锤修正）：簇 H 放行路径（ReachedPreparation）环境数据
+            // 必为 null（环境页从未经过）——非空断言在此路径必 NRE。空环境快照→评估
+            // 未命中→走弃局重开，正是该路径的设计意图。
+            navigation.InvestmentEnvironments?.InvestmentEnvironments
                 .Select(item => item.Id)
-                .ToArray(),
+                .ToArray() ?? [],
             // 入口状态修复：从投资环境页直接进入时敌情页未经过，敌情为空属正常（过滤器只含环境条件）。
             navigation.EnemyOverview?.RecognizedCompetitors
                 .Select(item => item.Id)

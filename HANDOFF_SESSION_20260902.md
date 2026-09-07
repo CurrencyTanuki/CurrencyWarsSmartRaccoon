@@ -12,6 +12,7 @@
 - **autodecide 挂机补全（09-08 代码）**：23:31 取证证明原实现无窗口时 DECIDE 直接失败返回，"开机开游戏自动继续刷局"不成立——已实现等窗循环（20s 探测，窗口就绪经 UI 线程自动 DECIDE；决策层结束后 10s 重新武装；DECIDE 停止/关窗解除武装）。构建 0/0+涉事测试 161/161。
 - **未解尾巴（不阻塞部署）**：①谁/为何以普通模式启动 7 例（嫌疑=09-07 下午回退实验期直接 start exe/双击，UAC 由在场用户点过）；②23:31 实例（1.2.117）23:37 交接后无崩溃记录干净消失（疑外部结束或另一次启动的 exit 握手）；③写 autodecide.txt 与启动存在竞态（Loaded 先过则开关漏检，23:31 实锤：START 被定时器消费而 DECIDE 未发）——**每次启动后必须核对：jsonl 首事件签名+autodecide.txt 是否已被删**。
 - **帧沙箱可行性案已出（用户 09-08 令）**：docs/SANDBOX_FEASIBILITY_20260908.md——动机=五费聘用书试炼永远等不到真帧；方案=DI 层换 4 个基础设施实现（FileSequenceGameCapture/RecordingInputController/StubWindowService/AlwaysForegroundGuard），决策/操作/识别零改动；脚本=每帧+允许操作集，期望操作满足才切帧、偏离=违规（驱动器+裁判合一）。接缝与素材已勘察：PageReplay 107 张+runs screenshots 316 张+归档 1759 目录；**缺口=五费聘用书试炼页帧（素材来源 a 抽帧/b 合成/c 等真帧，待用户拍板）**。Phase 1 骨架待开工（批次二审查与部署优先）。
+- **帧素材审帧完成（用户 09-08 令）**：docs/SANDBOX_FRAMES_AUDIT_20260908.md——视频本就在桌面（无需回 B 站）；**视频 2（A850 三星昔涟）=1920×1080 原生主素材源，拿到「5费聘用书·请选择1个」选择页全帧（第 119 秒）等核心画面**；视频 1（全网首发教程）=1728×1080 画幅不匹配仅作参考；叠加物（水印/中央字幕/后期大数字）全部可用选帧规避，不构成阻断；视频 1 解说=纯脑测未验证不采信，只采信画面。帧在 %LOCALAPPDATA%\CurrencyWarsSmartRaccoon\sandbox-frames\（不入 git）。
 - **下一步**：批次二整批对抗审查（坑 52 硬门）→通过后按 WINDOWS_OPS_STANDARD 五步部署 1.2.119→验 App.dll ProductVersion=1.2.119+HEAD→计划任务启动→验 jsonl 首事件=warmup+STATUS 回执→写 autodecide 并复核被消费。**用户已授权：审查通过即可直接发布并打开软件（游戏暂不开，之后用户令继续）**。
 
 ---

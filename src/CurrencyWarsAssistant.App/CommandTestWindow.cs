@@ -450,8 +450,25 @@ public sealed class CommandTestWindow : Window
         }
 
         var lastPulseAt = _listener.LastUpdateAt ?? _listener.LatestAnalysis?.Snapshot.AsOf;
-        return lastPulseAt is null
-            || DateTimeOffset.Now - lastPulseAt.Value > TimeSpan.FromSeconds(30);
+        if (lastPulseAt is null
+            || DateTimeOffset.Now - lastPulseAt.Value > TimeSpan.FromSeconds(30))
+        {
+            return true;
+        }
+
+        // 09-08 通宵实锤：同 ForceStreamRevive——心跳续传但完整分析冻结（无弹框抑制期）
+        // 也要判 stale，否则引擎在 M8 在途永远等不到识别恢复（快照不可得弃局根因）。
+        if (!_listener.IsWishDialogOpen && !_listener.IsGalaBondPopupOpen)
+        {
+            var analysisAt = _listener.LatestAnalysis?.Snapshot.AsOf;
+            if (analysisAt is not null
+                && DateTimeOffset.Now - analysisAt.Value > TimeSpan.FromSeconds(45))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -538,6 +555,17 @@ public sealed class CommandTestWindow : Window
             var lastPulseAt = _listener.LastUpdateAt ?? _listener.LatestAnalysis?.Snapshot.AsOf;
             var stale = lastPulseAt is null
                 || DateTimeOffset.Now - lastPulseAt.Value > TimeSpan.FromSeconds(20);
+            // 09-08 通宵实锤（3 次停滞/45 分钟，2 局被"快照持续不可得"误弃）：
+            // 商店重 OCR 后出现"心跳续传但完整分析冻结"形态——LastUpdateAt 永远新鲜，
+            // 活性判据永远不触发，追帧长尾等到地老天荒。补分析年龄判据：无祈愿/盛会
+            // 弹框在屏（排除坑50 弹框抑制期的合法分析停走=1.2.118 幻影重启教训）且
+            // 最后一次完整分析 >45 秒 → 视为冻结，允许重启。
+            if (!stale && !_listener.IsWishDialogOpen && !_listener.IsGalaBondPopupOpen)
+            {
+                var analysisAt = _listener.LatestAnalysis?.Snapshot.AsOf;
+                stale = analysisAt is not null
+                    && DateTimeOffset.Now - analysisAt.Value > TimeSpan.FromSeconds(45);
+            }
             if (!stale)
             {
                 // P3-6（审查 1.2.118）：拒绝必须留痕——审计 #5 的"回执 OK 但没重启"

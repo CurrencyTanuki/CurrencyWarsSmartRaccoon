@@ -262,6 +262,7 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                 ? "弃局链启动（未提供原因——调用方应传 reason 以供审计）。"
                 : $"弃局链启动，原因：{reason}",
             TaskEventLevel.Warning);
+        await SaveAbandonEvidenceAsync(windowHandle, "start", cancellationToken);
         // 1.2.119（审计簇 A）：硬上限 90 秒——此前 Esc 空转最长 23 分钟。
         var deadline = ActiveUtcNow + AbandonChainHardDeadline;
         for (var attempt = 1; attempt <= 3; attempt++)
@@ -437,6 +438,7 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                         "RecoveryStillInGame",
                         $"当前为备战页（{fallbackPageId}）——对局仍在，弃局链如实终止（StillInGame）。",
                         TaskEventLevel.Warning);
+                    await SaveAbandonEvidenceAsync(windowHandle, "still-in-game", cancellationToken);
                     return RejectedOpeningRecoveryResult.StillInGame(
                         $"弃局链检测到对局仍在（{fallbackPageId}）。");
                 }
@@ -503,12 +505,14 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
             "RecoveryFallbackBlindAdvance",
             "Esc 与退出按钮链耗尽仍未进入放弃结算确认页——按弃局原则盲点直通主界面（不识别中间页）。",
             TaskEventLevel.Warning);
+        await SaveAbandonEvidenceAsync(windowHandle, "blind-advance", cancellationToken);
         if (await BlindAdvanceToHomeAsync(windowHandle, cancellationToken))
         {
             return RejectedOpeningRecoveryResult.Recovered(
                 "Esc 链走不通后盲点推进已回到货币战争主界面。");
         }
 
+        await SaveAbandonEvidenceAsync(windowHandle, "failed", cancellationToken);
         return Failed("弃局兜底：Esc 与退出按钮均未能进入放弃结算确认页；盲点直通也未确认回主界面。");
     }
 
@@ -684,6 +688,36 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
             "盛会之星升档选择框应答后仍未退出——候选点位耗尽，如实失败（不盲点）。",
             TaskEventLevel.Warning);
         return false;
+    }
+
+    /// <summary>
+    /// 1.2.119 证据留存（用户令"留存所有必要证据，事后一起分析"）：弃局链关键节点
+    /// 实拍落盘 abandon-evidence\——事后审计对照画面真值，验证弃局定性（快照不可得/
+    /// 弹框在屏/真山穷水尽）是否属实。保存异常绝不影响弃局主流程。
+    /// </summary>
+    private async Task SaveAbandonEvidenceAsync(
+        nint windowHandle,
+        string tag,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var window = await foregroundGuard.WaitUntilForegroundAsync(
+                windowHandle,
+                cancellationToken);
+            var frame = await capture.CaptureAsync(window, cancellationToken);
+            var directory = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "CurrencyWarsSmartRaccoon",
+                "abandon-evidence");
+            Directory.CreateDirectory(directory);
+            var name = $"{DateTime.Now:yyyyMMdd-HHmmssfff}-abandon-{tag}.png";
+            frame.SavePng(Path.Combine(directory, name));
+        }
+        catch
+        {
+            // 取证保存失败不影响弃局。
+        }
     }
 
     /// <summary>单帧认页：盛会弹框是否仍在屏（坑50；所有应答点击的击前门禁）。</summary>

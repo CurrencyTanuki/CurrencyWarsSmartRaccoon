@@ -2681,6 +2681,29 @@ public sealed partial class PreparationBoardController(
                 $"第 {attempt} 次拖动未产生画面变化，准备重试。");
         }
 
+        // 1.2.119 证据留存（用户令）：部署 attempts 全部耗尽仍未上场——实拍落盘
+        // deploy-evidence\（画面真值：目标槽是否被锁/是否有人/是否有浮层），
+        // 事后审计对照（前台 4 号位连败定性）。保存异常不影响主流程。
+        try
+        {
+            var window = await foregroundGuard.WaitUntilForegroundAsync(
+                windowHandle,
+                cancellationToken);
+            var frame = await capture.CaptureAsync(window, cancellationToken);
+            var directory = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "CurrencyWarsSmartRaccoon",
+                "deploy-evidence");
+            Directory.CreateDirectory(directory);
+            var name = $"{DateTime.Now:yyyyMMdd-HHmmssfff}-deploy-failed-" +
+                $"{placement.Lane}{placement.TargetSlot + 1}.png";
+            frame.SavePng(Path.Combine(directory, name));
+        }
+        catch
+        {
+            // 取证保存失败不影响部署。
+        }
+
         return false;
     }
 

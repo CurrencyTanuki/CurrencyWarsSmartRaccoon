@@ -1005,6 +1005,25 @@ public sealed class CommandTestWindow : Window
                 ForceStreamRevive(reason),
             isStreamStale: IsEngineStreamStale);
         var cts = _decisionCts;
+        // 1.2.119 证据留存（用户令"发布版本要留存所有必要证据"）：DECIDE 启动时把
+        // 上一段决策叙述归档为带时间戳文件——result.txt 是滚动覆盖的单文件，通宵
+        // 审计"逐局记录为空"的直接原因即弃局决策叙述随覆盖丢失。归档异常不阻断。
+        try
+        {
+            if (File.Exists(ResultFilePath))
+            {
+                var archivePath = Path.Combine(
+                    AppContext.BaseDirectory,
+                    $"指令测试-result-{DateTimeOffset.Now:yyyyMMdd-HHmmss}.txt");
+                File.Copy(ResultFilePath, archivePath);
+                AppendLog($"上一段决策叙述已归档：{Path.GetFileName(archivePath)}");
+            }
+        }
+        catch (Exception archiveError)
+        {
+            AppendLog($"决策叙述归档失败（不阻断）：{archiveError.Message}");
+        }
+
         _decisionTask = Task.Run(async () =>
         {
             try

@@ -458,7 +458,9 @@ public sealed class CommandTestWindow : Window
 
         // 09-08 通宵实锤：同 ForceStreamRevive——心跳续传但完整分析冻结（无弹框抑制期）
         // 也要判 stale，否则引擎在 M8 在途永远等不到识别恢复（快照不可得弃局根因）。
-        if (!_listener.IsWishDialogOpen && !_listener.IsGalaBondPopupOpen)
+        // 复核 P1：重启后 90 秒豁免（LatestAnalysis 旧 AsOf 在追赶窗口内会误命中）。
+        if ((DateTimeOffset.Now - _lastStreamReviveAt).TotalSeconds >= 90
+            && !_listener.IsWishDialogOpen && !_listener.IsGalaBondPopupOpen)
         {
             var analysisAt = _listener.LatestAnalysis?.Snapshot.AsOf;
             if (analysisAt is not null
@@ -560,7 +562,11 @@ public sealed class CommandTestWindow : Window
             // 活性判据永远不触发，追帧长尾等到地老天荒。补分析年龄判据：无祈愿/盛会
             // 弹框在屏（排除坑50 弹框抑制期的合法分析停走=1.2.118 幻影重启教训）且
             // 最后一次完整分析 >45 秒 → 视为冻结，允许重启。
-            if (!stale && !_listener.IsWishDialogOpen && !_listener.IsGalaBondPopupOpen)
+            // 复核 P1：重启后 90 秒豁免——LatestAnalysis 不随会话重启清空，追赶窗口
+            // （实测首条分析 19-68 秒）内旧 AsOf 仍会命中新判据=复活翻搅自耗。
+            if (!stale
+                && (DateTimeOffset.Now - _lastStreamReviveAt).TotalSeconds >= 90
+                && !_listener.IsWishDialogOpen && !_listener.IsGalaBondPopupOpen)
             {
                 var analysisAt = _listener.LatestAnalysis?.Snapshot.AsOf;
                 stale = analysisAt is not null

@@ -550,19 +550,24 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
 
         if (string.Equals(pageId, GalaBondPopupPageId, StringComparison.OrdinalIgnoreCase))
         {
+            await SaveGuardEvidenceAsync(windowHandle, "gala-before", cancellationToken);
             // 互斥由 DismissGalaBondPopupCoreAsync 内部的类级门统一保证（P2-1 修正：
             // 门下沉到 Core，泵/弃局链/守卫三条路径全部覆盖）。
-            return await DismissGalaBondPopupCoreAsync(
+            var galaResult = await DismissGalaBondPopupCoreAsync(
                 windowHandle,
                 cancellationToken);
+            await SaveGuardEvidenceAsync(windowHandle, $"gala-after-{galaResult}", cancellationToken);
+            return galaResult;
         }
 
         if (string.Equals(pageId, "wish_trial_selection", StringComparison.OrdinalIgnoreCase))
         {
-            return wishTrialHandler is not null
+            var wishResult = wishTrialHandler is not null
                 && await wishTrialHandler.DismissWishTrialPopupIfUpAsync(
                     windowHandle,
                     cancellationToken);
+            await SaveGuardEvidenceAsync(windowHandle, $"wish-after-{wishResult}", cancellationToken);
+            return wishResult;
         }
 
         if (string.Equals(
@@ -717,6 +722,33 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
         catch
         {
             // 取证保存失败不影响弃局。
+        }
+    }
+
+    /// <summary>1.2.119 证据留存：弹框守卫应答前后实拍 guard-evidence\（事后验证
+    /// 应答正确性——审计簇 B"应答后遗留详情框"的教训）。异常不影响守卫。</summary>
+    private async Task SaveGuardEvidenceAsync(
+        nint windowHandle,
+        string tag,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var window = await foregroundGuard.WaitUntilForegroundAsync(
+                windowHandle,
+                cancellationToken);
+            var frame = await capture.CaptureAsync(window, cancellationToken);
+            var directory = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "CurrencyWarsSmartRaccoon",
+                "guard-evidence");
+            Directory.CreateDirectory(directory);
+            frame.SavePng(Path.Combine(directory,
+                $"{DateTime.Now:yyyyMMdd-HHmmssfff}-guard-{tag}.png"));
+        }
+        catch
+        {
+            // 取证保存失败不影响守卫。
         }
     }
 

@@ -2016,6 +2016,27 @@ public sealed partial class PreparationBoardController(
                 "但未连续两帧确认原槽为空；将重新识别原槽后再决定是否重试。");
         }
 
+        // 1.2.119 证据留存：三次直卖全败=卖出异常（游戏拒绝/拖拽被吞）——实拍
+        // 落盘 deploy-evidence\（复用目录，tag 区分），事后审计对照画面真值。
+        try
+        {
+            var evidenceWindow = await foregroundGuard.WaitUntilForegroundAsync(
+                windowHandle,
+                cancellationToken);
+            var evidenceFrame = await capture.CaptureAsync(evidenceWindow, cancellationToken);
+            var evidenceDirectory = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "CurrencyWarsSmartRaccoon",
+                "deploy-evidence");
+            Directory.CreateDirectory(evidenceDirectory);
+            evidenceFrame.SavePng(Path.Combine(evidenceDirectory,
+                $"{DateTime.Now:yyyyMMdd-HHmmssfff}-sale-failed-{candidate.Character.Name}.png"));
+        }
+        catch
+        {
+            // 取证保存失败不影响卖出兜底。
+        }
+
         // 1.2.105：三次直卖全败→搬槽兜底。
         return await SellBenchCharacterViaRelocationAsync(
             windowHandle,

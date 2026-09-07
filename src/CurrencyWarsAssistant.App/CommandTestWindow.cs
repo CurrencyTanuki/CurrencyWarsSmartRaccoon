@@ -158,6 +158,24 @@ public sealed class CommandTestWindow : Window
             AppendLog(
                 $"指令文件：{CommandFilePath}{Environment.NewLine}结果文件：{ResultFilePath}{Environment.NewLine}" +
                 "把指令写进指令文件即可（一行一条）。先「启动识别会话」再发识别类指令。");
+
+            // 1.2.119（用户挂机令）：autodecide 开关——开关文件存在=启动后自动进入
+            // DECIDE 挂机（等价指令下发），随后删除开关防每次启动重复触发。放 Loaded
+            //（UI 完全就绪）而非构造尾部，DECIDE 的回执写入才有稳定落点。
+            try
+            {
+                var autoDecidePath = Path.Combine(AppContext.BaseDirectory, "指令测试-autodecide.txt");
+                if (File.Exists(autoDecidePath))
+                {
+                    _ = ExecuteLineAsync("DECIDE");
+                    try { File.Delete(autoDecidePath); } catch { /* 删除失败下轮再清 */ }
+                    AppendLog("检测到 autodecide 开关——已自动下发 DECIDE（挂机模式）。");
+                }
+            }
+            catch (Exception autoDecideError)
+            {
+                AppendLog($"autodecide 处理失败（不阻断启动）：{autoDecideError.Message}");
+            }
         };
         Closed += (_, _) =>
         {
@@ -185,6 +203,7 @@ public sealed class CommandTestWindow : Window
         _timer.Tick += async (_, _) => await PollCommandFileAsync();
         _timer.Start();
         _ = Task.Run(AbortWatcherLoopAsync);
+
     }
 
     /// <summary>

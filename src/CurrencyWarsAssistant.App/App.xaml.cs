@@ -277,19 +277,27 @@ public partial class App : Application
         services.AddTransient<
             IRewardStageAutomationController,
             RewardStageAutomationController>();
-        // 1.2.119（审查复核对 P2-2 的修正）：closeShopIfOpen 委托注册进容器——三个
-        // 恢复接口均为普通 AddTransient，自动解析该委托（此前工厂只包了
-        // IRejectedOpeningRecovery，而生产弃局路径解析的是 IRunAbandoner，委托恒 null）。
-        services.AddSingleton<Func<nint, CancellationToken, Task<bool>>>(provider =>
+        // 1.2.119 批次二关店委托（1f61037 形状已废弃）：曾注册为 Func 单例工厂，与
+        // "controller → IAbandonSettlementRecovery → recovery → 再注入同一 Func" 构成
+        // DI 解析重入死锁——指令测试台启动线程永久卡死（09-07 13:58~14:10 五实例
+        // jsonl 0 字节；复现测试 DiResolutionCycleRegressionTests 实锤 testhost 挂死
+        // 519 秒 CPU 冻结）。改为逐接口显式工厂：工厂体内先解析 controller 再 new
+        // recovery 注入关店闭包，无重入边；IAbandonSettlementRecovery 保持普通
+        // Transient（无委托=1.2.117 行为，controller 自身直接调用 CloseShopAsync）。
+        // 附带消除：recovery 两个同型可选参数（closeShopIfOpen/selectLeftmostStrategyIfUp）
+        // 被同一 Func 单例静默双注入的备案隐患（handoff 四.4）。
+        services.AddTransient<IRejectedOpeningRecovery>(provider =>
         {
             var rewardStage = provider.GetRequiredService<RewardStageAutomationController>();
-            return (handle, token) =>
-                rewardStage.CloseShopAsync(handle, "preparation_generic", token);
+            return BuildOpeningRecovery(provider, rewardStage);
         });
-        services.AddTransient<IRejectedOpeningRecovery, CurrencyWarsRejectedOpeningRecovery>();
         services.AddTransient<IAbandonSettlementRecovery, CurrencyWarsRejectedOpeningRecovery>();
-        services.AddTransient<IRunAbandoner, CurrencyWarsRejectedOpeningRecovery>();
-        // P1-1（对抗审查 1.2.119 复核）：簇C/E 弹框守卫补 DI 注册——生产引擎路径经
+        services.AddTransient<IRunAbandoner>(provider =>
+        {
+            var rewardStage = provider.GetRequiredService<RewardStageAutomationController>();
+            return BuildOpeningRecovery(provider, rewardStage);
+        });
+        // P1-1（对抗审查 1.2.119 复核）：簇C/E 弹框守卫 DI 注册——生产引擎路径经
         // CommandTestWindow 传入（runAbandoner 同实现），此处注册保证引擎 DI 路径可用。
         services.AddTransient<IModalGuard, CurrencyWarsRejectedOpeningRecovery>();
         // 1.2.119（审计簇 C）：弃局恢复类注入祈愿弹框应答能力（IWishTrialPopupHandler）
@@ -297,9 +305,6 @@ public partial class App : Application
         // WishTrialSelectionAutomation 已单例注册，同一实例实现该接口（P2-7 同实例互斥）。
         services.AddSingleton<IWishTrialPopupHandler>(provider =>
             provider.GetRequiredService<WishTrialSelectionAutomation>());
-        // 09-08 值守班恢复上述两个注册：09-07 的「二分诊断临时撤回」前提已被推翻
-        // （启动静默实锤=实例被以普通模式（无 --command-test）启动，jsonl 首事件
-        // OpeningFilterSelectionsLoaded=MainViewModel 专属签名，与 DI 无关）。
         services.AddSingleton<UiTaskEventSink>();
         services.AddSingleton<ITaskEventSink>(
             provider => provider.GetRequiredService<UiTaskEventSink>());
@@ -486,6 +491,28 @@ public partial class App : Application
                 notice.Show();
             },
             DispatcherPriority.ApplicationIdle);
+    }
+
+    /// <summary>
+    /// 构造弃局/守卫用的 CurrencyWarsRejectedOpeningRecovery（关店闭包注入）。
+    /// 独立成方法：逐接口工厂共用，且保证工厂体内"先解析 controller、再 new recovery"，
+    /// 绝不在 recovery 构造期间重入解析自身（1f61037 死锁教训）。
+    /// </summary>
+    private static CurrencyWarsRejectedOpeningRecovery BuildOpeningRecovery(
+        IServiceProvider provider,
+        RewardStageAutomationController rewardStage)
+    {
+        return new CurrencyWarsRejectedOpeningRecovery(
+            provider.GetRequiredService<ICurrencyWarsOpeningNavigator>(),
+            provider.GetRequiredService<IGameCapture>(),
+            provider.GetRequiredService<IGamePageClassifier>(),
+            provider.GetRequiredService<IInputController>(),
+            provider.GetRequiredService<IGameForegroundGuard>(),
+            provider.GetRequiredService<ITaskEventSink>(),
+            wishTrialHandler: provider.GetRequiredService<IWishTrialPopupHandler>(),
+            closeShopIfOpen: async (handle, token) =>
+                await rewardStage.CloseShopAsync(handle, "preparation_generic", token),
+            selectLeftmostStrategyIfUp: null);
     }
 
     private bool TryAcquireSingleInstance(bool signalExisting = true)

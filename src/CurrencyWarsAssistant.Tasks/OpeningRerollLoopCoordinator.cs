@@ -489,16 +489,21 @@ public sealed class OpeningRerollLoopCoordinator(
             var degradedInvestmentEnvironment =
                 navigation.FinalState == CurrencyWarsNavigationState
                     .InvestmentEnvironmentFallbackSelected;
+            // 1.2.119（审查 P3-A）：簇 H 放行轮（无环境数据）强制未命中评估——
+            // 仅含 Reject/空过滤集时，空快照可能被真实评估器判 Matched（物理在活局
+            // 备战页却按命中继续=回执失真），故与降级路径同款强制未命中重开。
+            var reachedPreparationWithoutData =
+                navigation.FinalState == CurrencyWarsNavigationState.ReachedPreparation;
             Publish(
                 OpeningRerollLoopState.Evaluating,
                 round,
-                degradedInvestmentEnvironment
-                    ? $"第 {round} 轮投资环境识别不完整，已任选一项进入 1-1；" +
+                degradedInvestmentEnvironment || reachedPreparationWithoutData
+                    ? $"第 {round} 轮投资环境识别不完整（{navigation.FinalState}），" +
                       "不调用开局筛选器猜测结果，本轮直接按未命中进入重开。"
                     : $"第 {round} 轮：正在评估 {snapshot.InvestmentEnvironmentIds.Count} 个投资环境、" +
                       $"{snapshot.CompetitorIds.Count} 个敌人阵营和 " +
                       $"{snapshot.EnemyModifierIds.Count} 个负面词条。");
-            var evaluation = degradedInvestmentEnvironment
+            var evaluation = degradedInvestmentEnvironment || reachedPreparationWithoutData
                 ? InvestmentEnvironmentFallbackEvaluation(navigation.Message)
                 : evaluator.Evaluate(snapshot, filters);
             if (evaluation.Matched)

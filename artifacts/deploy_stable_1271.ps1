@@ -35,8 +35,12 @@ Write-Output "robocopy 完成 rc=$rc"
 $natives = @('OpenCvSharpExtern.dll', 'WebView2Loader.dll', 'onnxruntime.dll',
     'onnxruntime_providers_shared.dll', 'opencv_videoio_ffmpeg4100_64.dll')
 foreach ($n in $natives) {
-    if (-not (Test-Path (Join-Path $Dst $n))) {
-        Write-Output "DEPLOY-FAIL: 缺原生库 $n"
+    # 09-08 修正：新版 SDK 原生库布局在 runtimes\win-x64\native\（顶层扁平布局已不再生成），
+    # 两种布局任一存在即通过；真伪由端到端验收的预热事件兜底（预热=OpenCV/ONNX 真实加载）。
+    $topLevel = Test-Path (Join-Path $Dst $n)
+    $ridNative = Test-Path (Join-Path $Dst "runtimes\win-x64\native\$n")
+    if (-not ($topLevel -or $ridNative)) {
+        Write-Output "DEPLOY-FAIL: 缺原生库 $n（顶层与 runtimes 布局均无）"
         exit 5
     }
 }

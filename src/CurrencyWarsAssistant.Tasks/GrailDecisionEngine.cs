@@ -23,11 +23,15 @@ public sealed class GrailDecisionEngine(
     Func<nint, CancellationToken, Task<bool>>? pressInteractKey = null,
     Func<nint, CancellationToken, Task<bool>>? retreatFromBattleView = null,
     Action<string>? requestStreamRevive = null,
-    Func<bool>? isStreamStale = null)
+    Func<bool>? isStreamStale = null,
+    IModalGuard? modalGuard = null)
 {
     private readonly Stopwatch _runClock = Stopwatch.StartNew();
 
     private GrailUserGoal _goal = GrailUserGoal.Single;
+    // 1.2.119（审计簇 E）：最近一次弃局的真实原因——外层弃局回执/事件用它，
+    // 消灭"快照持续不可得"被混标为"R3/失败"的标签污染（审计 10:35 局等）。
+    private string? _lastAbandonReason;
     // 1.2.119（审计簇 D1）：S3 段最后快照的血量缓存——四.13a 判定数据源（M7 时刻
     // 无 I10 可读）。每次快照可用时刷新。
     private int? _lastKnownTeamHealth;
@@ -388,6 +392,51 @@ public sealed class GrailDecisionEngine(
         }
 
         return await m8Task;
+    }
+
+    /// <summary>
+    /// 1.2.119（审计簇 E）：快照持续不可得的恢复终态机——长尾 60s 耗尽后**不再直接
+    /// 弃局**（审计 10:35 局：68 秒识别追赶被误标"R3/失败"弃掉 019 命中局）。本方法
+    /// 总预算 ≈5 分钟：每轮=统一弹框守卫（簇 C，实拍应答可能的阻塞模态）→5s 退避窗
+    /// →60s 追帧长尾。任一轮恢复即返回快照；三轮耗尽返回 null，调用方带真实标签
+    /// （"快照持续不可得"）降级弃局并响亮留痕——**绝不再混标 R3**。
+    /// </summary>
+    private async Task<GrailRunSnapshot?> TryRecoverSnapshotAsync(
+        nint window,
+        CancellationToken ct)
+    {
+        const int maximumRecoveryRounds = 3;
+        for (var round = 1; round <= maximumRecoveryRounds; round++)
+        {
+            emit($"[决策层] 快照恢复第 {round}/{maximumRecoveryRounds} 轮：" +
+                 "先弹框守卫（应答可能的阻塞模态）再重新追帧。");
+            if (modalGuard is not null)
+            {
+                try
+                {
+                    if (await modalGuard.DismissBlockingModalIfUpAsync(window, ct))
+                    {
+                        emit("[决策层] 弹框守卫已应答一个阻塞模态。");
+                    }
+                }
+                catch (Exception guardError) when (guardError is not OperationCanceledException)
+                {
+                    emit($"[决策层] 弹框守卫异常（不阻断恢复）：{guardError.Message}");
+                }
+            }
+
+            var recovered = await SnapshotWithRetryAsync(window, ct)
+                ?? await SnapshotWithRetrySlowTailAsync(window, ct);
+            if (recovered is not null)
+            {
+                emit($"[决策层] 快照在第 {round} 轮恢复——继续原流程。");
+                _lastKnownTeamHealth = recovered.TeamHealth ?? _lastKnownTeamHealth;
+                return recovered;
+            }
+        }
+
+        emit("[决策层] 快照恢复预算（3 轮 ≈5 分钟）耗尽——仍不可得。");
+        return null;
     }
 
     private async Task<GrailPageFact?> PageAsync(nint window, CancellationToken ct)
@@ -1681,8 +1730,17 @@ public sealed class GrailDecisionEngine(
             RunsAbandoned++;
             if (!ct.IsCancellationRequested)
             {
-                emit("[决策层] 本局判定结束（R3/失败）——弃局重开下一局。");
-                await SendAsync("A9", new GrailCommand(GrailCommandKind.A9), window, ct);
+                // 1.2.119（审计簇 E）：弃局标签拆分——真实原因替代混标的"R3/失败"
+                //（审计 10:35 局：快照不可得被标 R3 弃掉命中局）。A9 Payload 携带
+                // 原因，弃局链 RecoveryAbandonStarted 留痕。
+                var abandonReason = _lastAbandonReason ?? "R3:山穷水尽（金<刷新价∧可卖=0）";
+                emit($"[决策层] 本局判定结束（{abandonReason}）——弃局重开下一局。");
+                await SendAsync(
+                    "A9",
+                    new GrailCommand(GrailCommandKind.A9, abandonReason),
+                    window,
+                    ct);
+                _lastAbandonReason = null;
                 await SettleAfterAbandonAsync(window, ct);
             }
         }
@@ -1716,7 +1774,12 @@ public sealed class GrailDecisionEngine(
 
         if (snapshot is null)
         {
-            return PreparationOutcome.Interrupted;
+            snapshot = await TryRecoverSnapshotAsync(window, ct);
+            if (snapshot is null)
+            {
+                _lastAbandonReason = "快照持续不可得（恢复预算耗尽）";
+                return PreparationOutcome.Interrupted;
+            }
         }
 
         var m5Result = await SendAsync("M5", new GrailCommand(GrailCommandKind.M5), window, ct);
@@ -1802,7 +1865,12 @@ public sealed class GrailDecisionEngine(
 
         if (snapshot is null)
         {
-            return PreparationOutcome.Interrupted;
+            snapshot = await TryRecoverSnapshotAsync(window, ct);
+            if (snapshot is null)
+            {
+                _lastAbandonReason = "快照持续不可得（恢复预算耗尽）";
+                return PreparationOutcome.Interrupted;
+            }
         }
 
         // 1.2.66：此快照后无任何操作 → 复用给部署段（省一次背靠背 I10）。
@@ -1926,7 +1994,12 @@ public sealed class GrailDecisionEngine(
                 snapshot = await SnapshotWithRetrySlowTailAsync(window, ct);
                 if (snapshot is null)
                 {
-                    return PreparationOutcome.Interrupted;
+                    snapshot = await TryRecoverSnapshotAsync(window, ct);
+                    if (snapshot is null)
+                    {
+                        _lastAbandonReason = "快照持续不可得（恢复预算耗尽）";
+                        return PreparationOutcome.Interrupted;
+                    }
                 }
             }
         }
@@ -1983,7 +2056,12 @@ public sealed class GrailDecisionEngine(
 
                     if (snapshot is null)
                     {
-                        return PreparationOutcome.Interrupted;
+                        snapshot = await TryRecoverSnapshotAsync(window, ct);
+                        if (snapshot is null)
+                        {
+                            _lastAbandonReason = "快照持续不可得（恢复预算耗尽）";
+                            return PreparationOutcome.Interrupted;
+                        }
                     }
                 }
             }

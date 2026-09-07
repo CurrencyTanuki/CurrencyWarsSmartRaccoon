@@ -144,6 +144,17 @@ public interface IWishTrialPopupHandler
 }
 
 /// <summary>
+/// 1.2.119（审计簇 C/E）：统一模态弹框守卫——快照长尾恢复、M2 开矿前、M1 出战前
+/// 等时点的"弹框在屏先应答"入口（实拍+分类器认页，禁用 I1）。
+/// </summary>
+public interface IModalGuard
+{
+    Task<bool> DismissBlockingModalIfUpAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken);
+}
+
+/// <summary>
 /// 弃局兜底：主动放弃当前对局并回到安全入口页。异常不外泄，失败也继续（四轮 R1-R5）。
 /// 1.2.119（审计簇 A）：追加 reason 留痕参数——所有弃局必须带发起原因
 /// （消灭审计定性的"无留痕弃局"：R3/失败 混用标签导致弃局决策不可审计）。
@@ -194,7 +205,8 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
     IRejectedOpeningRecovery,
     IAbandonSettlementRecovery,
     IRunAbandoner,
-    IGalaBondPopupHandler
+    IGalaBondPopupHandler,
+    IModalGuard
 {
     private const int ReferenceWidth = 1920;
     private const int ReferenceHeight = 1080;

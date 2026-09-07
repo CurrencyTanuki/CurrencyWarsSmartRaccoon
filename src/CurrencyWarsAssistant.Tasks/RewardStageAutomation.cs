@@ -75,7 +75,11 @@ public enum RewardStageAutomationStatus
 
 public sealed record RewardStageAutomationResult(
     RewardStageAutomationStatus Status,
-    string Message)
+    string Message,
+    // 1.2.119（审计簇 D1，FIX_PLAN 八.P1-2）：M7 实际选中的策略 ID（如
+    // investment_strategy_051）——四.13a 判定数据源（goal=All 时引擎据此在
+    // M7 返回即做策略弃局判定，不等快照）。null=未选中/未透传。
+    string? SelectedStrategyId = null)
 {
     public bool Succeeded =>
         Status is RewardStageAutomationStatus.InvestmentStrategySelected or

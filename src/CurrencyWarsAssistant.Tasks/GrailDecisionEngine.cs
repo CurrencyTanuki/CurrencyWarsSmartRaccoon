@@ -28,6 +28,9 @@ public sealed class GrailDecisionEngine(
     private readonly Stopwatch _runClock = Stopwatch.StartNew();
 
     private GrailUserGoal _goal = GrailUserGoal.Single;
+    // 1.2.119（审计簇 D1）：S3 段最后快照的血量缓存——四.13a 判定数据源（M7 时刻
+    // 无 I10 可读）。每次快照可用时刷新。
+    private int? _lastKnownTeamHealth;
 
     /// <summary>P-10（1.2.69）：A9 弃局连续失败计数——退避与清场模式判据。</summary>
     private int _abandonStreak;
@@ -270,6 +273,7 @@ public sealed class GrailDecisionEngine(
             var snapshot = await SnapshotAsync(window, ct);
             if (snapshot is not null)
             {
+                _lastKnownTeamHealth = snapshot.TeamHealth ?? _lastKnownTeamHealth;
                 return snapshot;
             }
         }
@@ -573,6 +577,45 @@ public sealed class GrailDecisionEngine(
                 window, ct);
             if (deploy.Error is not null)
             {
+                // 1.2.119（审计簇 D2，3-1/3-2 实锤，rule 四.5）：4 号位部署失败=
+                // 人口不足的实证信号（局 3：凛 8 连败全在 4 号位，金 16 够买没买）。
+                // 金≥买经验总价（含诅咒涨价）且本局未买过→买经验升人口后重试一次；
+                // 金不足或仍失败=如实交外层对账（绝不无限重试）。
+                if (slot.Value == 3
+                    && !stateHolder.XpBoughtThisRun
+                    && snapshot.Gold >= snapshot.XpPurchaseTotalCost)
+                {
+                    emit($"[决策层] 前台4号位部署失败且金={snapshot.Gold}≥买经验价" +
+                         "——判定人口不足，买经验升人口（rule 四.5）后重试部署。");
+                    var buyXp = await SendAsync(
+                        "A6",
+                        new GrailCommand(GrailCommandKind.A6),
+                        window, ct);
+                    if (buyXp.Error is null)
+                    {
+                        stateHolder.MarkXpBoughtThisRun();
+                        var retry = await SendAsync(
+                            $"A1 {pendingBench} 前台 {slot.Value + 1}",
+                            new GrailCommand(GrailCommandKind.A1,
+                                new GrailDeployArgs(pendingBench, PreparationLane.Front, slot.Value)),
+                            window, ct);
+                        if (retry.Error is null)
+                        {
+                            _frontLedger[pendingBench] = slot.Value;
+                            deployedAny = true;
+                            await EnsureWishAnsweredAsync(window, ct, maxProbes: 8);
+                            snapshot = await SnapshotWithRetryAsync(window, ct);
+                            snapshotFresh = snapshot is not null;
+                            continue;
+                        }
+                        emit("[决策层] 买经验后重试部署仍失败——交外层对账。");
+                    }
+                    else
+                    {
+                        emit("[决策层] 买经验输入失败——交外层对账。");
+                    }
+                }
+
                 snapshotFresh = false;
                 break; // 识别不到该名（识别缺陷）→ 交外层对账，绝不盲拖
             }
@@ -1811,11 +1854,44 @@ public sealed class GrailDecisionEngine(
         executor.AllowGalaxyScholarPurchase = false; // 1.2.102：学者购买仅 1-1
 
         // ---- S4：投资策略（禁选阿哈大悦已内置于 M7）----
-        await SendAsync("M7", new GrailCommand(GrailCommandKind.M7), window, ct);
+        var m7 = await SendAsync("M7", new GrailCommand(GrailCommandKind.M7), window, ct);
         // 1.2.66：M7 回执已含"验离页"（选中+确认+离页验证），500ms 页面稳定余量足够
         //（原固定 2 秒无验证判据支撑）。
         await Task.Delay(TimeSpan.FromMilliseconds(500), ct);
         await EnsureWishAnsweredAsync(window, ct);
+
+        // 1.2.119（审计簇 D1/方案 FIX_PLAN 八.P1-2，rule 四.13a）：策略弃局判定——
+        // 三条件"且"：goal=全员 ∧ 1-2 血≤86（S3 最后快照缓存）∧ 选定策略≠二极管276。
+        // **单人模式永不触发**（rule 四.13a 原文；勘误：审计原判 5 例"该弃未弃"系
+        // 漏核目标模式不变量，单人下不弃=合规）。数据源=M7 回执 SelectedStrategyId
+        //（M7 返回即判，不等快照——消灭审计局 1 的 90 秒白花）；血量 null=F13 防御
+        // 不弃留痕。触发=事件 StrategyAbandonDecided+A9（reason 带血/策略，簇 A 新链）。
+        if (_goal == GrailUserGoal.All
+            && m7.Error is null
+            && m7.Payload is RewardStageAutomationResult m7Result
+            && !string.IsNullOrEmpty(m7Result.SelectedStrategyId)
+            && !string.Equals(
+                m7Result.SelectedStrategyId,
+                GrailInvestmentStrategyDecider.DiodeId,
+                StringComparison.OrdinalIgnoreCase))
+        {
+            var healthAtS3 = _lastKnownTeamHealth;
+            if (healthAtS3 is > 0 and <= 86)
+            {
+                emit($"[决策层] 策略弃局判定成立（goal=全员 血={healthAtS3}≤86 " +
+                     $"策略={m7Result.SelectedStrategyId}≠二极管）——立即弃局重刷。");
+                await SendAsync(
+                    "A9",
+                    new GrailCommand(GrailCommandKind.A9,
+                        $"策略弃局:血{healthAtS3}≤86/策略{m7Result.SelectedStrategyId}"),
+                    window,
+                    ct);
+                return PreparationOutcome.Interrupted; // 走外层弃局重开（不重入 S5）
+            }
+
+            emit($"[决策层] 策略弃局未触发：血量={healthAtS3?.ToString() ?? "未知"}" +
+                 "（>86 或不可知，F13 防御口径不弃，已留痕）。");
+        }
 
         // ---- S4 顺序（用户 2026-09-06 第 4 次重申强制令，最终口径）：
         // 选投资策略 → 游戏强制弹出的商店**必须扫描并购买**（绝不直接关掉不扫）→

@@ -564,7 +564,9 @@ public sealed partial class GrailOperationExecutor(
             // ①命杯成员+星徽携带者=4（人口已到 1-3 上限）：金币>10 → 立即买经验升 5 人口
             //   继续刷第 5 人；金币≤10 → 金币已尽，直接停止刷新收摊（试炼判定/山穷水尽归决策层）；
             // ②成员<4（或已升 5 人口）：一直刷新到金币不足刷新价为止（无保留线）。
-            if (bondMembers >= FourMemberBondCap && !xpBought)
+            // 1.2.119（审查 P2-3）：引擎部署段买经验（人口解锁）后闩锁置位——
+            // 此处再买=同一局双扣 16 金，闩锁互斥。
+            if (bondMembers >= FourMemberBondCap && !xpBought && !stateHolder.XpBoughtThisRun)
             {
                 if (gold <= XpPushGoldThreshold
                     || !await ExecuteBuyXpAsync(windowHandle, cancellationToken))
@@ -574,6 +576,7 @@ public sealed partial class GrailOperationExecutor(
                 }
 
                 xpBought = true;
+                stateHolder.MarkXpBoughtThisRun();
                 gold = Math.Max(0, gold - (GrailRunSnapshot.XpPurchaseGoldCost + (stateHolder.PeekXpSurcharge() ? 1 : 0)));
                 continue; // 人口已到 5：继续商店循环刷第 5 个成员/昔涟
             }

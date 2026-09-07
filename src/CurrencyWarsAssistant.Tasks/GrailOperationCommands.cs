@@ -40,7 +40,7 @@ public sealed class GrailOperationCommands(
             GrailCommandKind.A1 => await DeployAsync(command, context, cancellationToken),
             GrailCommandKind.A3 => await SellBenchAsync(command, context, cancellationToken),
             GrailCommandKind.A6 => await BuyXpAsync(context, cancellationToken),
-            GrailCommandKind.A9 => await AbandonAsync(context, cancellationToken),
+            GrailCommandKind.A9 => await AbandonAsync(command, context, cancellationToken),
             GrailCommandKind.A10 => await SelectStrategyAsync(command, context, cancellationToken),
             GrailCommandKind.A2 => await SellDeployedAsync(command, context, cancellationToken),
             GrailCommandKind.A4 => await AssembleBadgeAsync(command, context, cancellationToken),
@@ -389,6 +389,7 @@ public sealed class GrailOperationCommands(
     }
 
     private async Task<GrailCommandResult> AbandonAsync(
+        GrailCommand command,
         GrailCommandContext context,
         CancellationToken cancellationToken)
     {
@@ -403,7 +404,9 @@ public sealed class GrailOperationCommands(
             abandonTask = runAbandoner.AbandonCurrentRunAsync(
                 context.WindowHandle,
                 cancellationToken,
-                reason: "A9:决策层弃局指令");
+                // 1.2.119（审计簇 A3/D1）：决策层可经 A9 Payload 携带弃局原因
+                //（如四.13a 策略弃局"血X≤86/策略Y"）——无 Payload 时回退字面量。
+                reason: command.Payload as string ?? "A9:决策层弃局指令");
         }
         catch (Exception abandonStartError) when (abandonStartError is not OperationCanceledException)
         {

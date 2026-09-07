@@ -1488,7 +1488,10 @@ public sealed partial class RewardStageAutomationController
                             RewardStageAutomationStatus.InvestmentStrategySelected,
                             // P-21（1.2.70）：原文案"前两层奖励关自动流程完成"是旧生产
                             // 流程遗留，M7/1-3 路径无奖励关段——改为上下文无关事实。
-                            $"已选择投资策略“{displayName}”并确认，页面已稳定离开 investment_strategy。");
+                            $"已选择投资策略“{displayName}”并确认，页面已稳定离开 investment_strategy。",
+                            // 1.2.119（审计簇 D1）：透传实际选中策略 ID——引擎四.13a
+                            // 判定（goal=All 时策略弃局）的数据源。
+                            strategyId);
                     }
                 }
                 else

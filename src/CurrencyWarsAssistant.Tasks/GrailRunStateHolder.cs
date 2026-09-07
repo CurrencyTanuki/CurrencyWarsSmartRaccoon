@@ -28,6 +28,7 @@ public sealed class GrailRunStateHolder
     private int? _miracleCompensationSelectedAtHealth;
     private bool _infiniteCauldronSelected;
     private bool _fiveBondGivenUp;
+    private bool _xpBoughtThisRun;
     private bool _newBondMemberAvailable;
     private bool _refreshSurcharge; // 行为限制/行为禁锢：刷新价格+1
     private bool _xpSurcharge;      // 回路过载/回路超频：购买经验价格+1
@@ -61,10 +62,28 @@ public sealed class GrailRunStateHolder
     /// 调用点=对局边界：生产 GrailRunLoop 每轮 new 持有器天然清零；指令测试台路径由
     /// M8（GrailMacroCommands.RunOpeningAsync）显式调用（1.2.32 起）。
     /// </summary>
+    /// <summary>1.2.119（审计簇 D2）：本局是否已买经验（部署人口解锁用）——
+    /// 引擎部署失败买经验与 N14 商店控件买经验共用此闩锁，防同一局双扣 16 金；
+    /// M8 对局边界 Reset 自然复位。</summary>
+    public bool XpBoughtThisRun
+    {
+        get { lock (_gate) { return _xpBoughtThisRun; } }
+    }
+
+    /// <summary>标记本局已买经验（闩锁置位；与 Reset 同锁）。</summary>
+    public void MarkXpBoughtThisRun()
+    {
+        lock (_gate)
+        {
+            _xpBoughtThisRun = true;
+        }
+    }
+
     public void Reset()
     {
         lock (_gate)
         {
+            _xpBoughtThisRun = false;
             _wishesResponded = 0;
             _lettersObtained = 0;
             _lettersOpened = 0;

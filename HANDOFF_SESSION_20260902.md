@@ -6,7 +6,16 @@
 
 ---
 
-## 〇、09-08 晨班增量（最新事实，覆盖下文过期快照）
+## 〇-2、09-08 通宵班归档（值守成果全清单,交接基准）
+
+- **软件最终态**：修复版已部署上线并验证（DEPLOY-OK+VERIFY-PASS,版本串 1.2.119+9afd5a6=audit 提交,二进制含 5414170 全部修复——构建时序瑕疵致 stamp 指向 audit 提交,内容已经 162 套件验证）。**DECIDE 已停（用户手停 12:11）,软件运行中（指令通道/识别流健康）,游戏停在货币战争主界面**。恢复测试=发 DECIDE 或写 autodecide 后重启。
+- **代码修复全清单（全部已部署）**：①DI 解析死锁（1f61037 Func 单例工厂重入环）→逐接口显式工厂（ef33819,双核验含内存转储）；②识别流"心跳续传但分析冻结"→复活判活补分析年龄判据+重启 90s 豁免（e714d08+4fc13cd）；③**系统级 P1 交换缺陷**（停滞→快照缺失→M5 购买部署默认拖前台 1 号位占用槽→交换→星徽携带者/成员下板凳永不归位,23/33 局中招）→四连修（5414170:占位双读诚实跳过/部署后板凳复核检出交换+被换下成员重部署/M5 收摊后携带者账本扫描重部署(昔涟除外)/S2+S3 M1 前停滞等待 60s——复核 APPROVED）；④autodecide 等窗循环+派发原子复查（d19e34a/5414170）；⑤deploy 脚本原生库 runtimes 布局兼容（b02c5b0）；⑥关店点复核注（坐标正确勿校准）。
+- **审计成果（docs/OVERNIGHT_AUDIT_20260908.md 全文=下一班必读）**：〇-d 值守元审计（时间线/数据通道矩阵/三失职）；〇-c C 盘满事故闭环（归档 7.5GB+截图录像→凌晨满→截图写入失败=分析管线卡死=识别流停滞真根因候选——**C 盘已腾空 25GB,验证实验待做：重启 DECIDE 跑一局若停滞消失=坐实**）；〇-b 预热审计（弃局首 Esc 冗余 40/44、holdMs=0 32/35、重试成功×2、首帧 OCR）；一/二/三 逐局+缺陷+计数器；四 深挖清单 6 项；五 全量 32 局 Ledger（命中 31/环境分布/M7 策略 30 种/结局分布）。
+- **工具与数据**：全夜不变量扫描器 artifacts/sweep_invariants_20260908.py（**被 .gitignore 忽略未入库,需 git add -f 强制入库**——离线跑法:python 直跑,输出 audit-prep/ 三文件；改造为每局边界自动跑的看门狗=制度待办）。视频证据 2 帧+录像抽帧素材已随 12GB 搬迁至 **D:\CurrencyWarsData\sandbox-frames\recording-audit\**（OVERNIGHT_AUDIT 内旧路径 %LOCALAPPDATA%\...\sandbox-frames 已失效,读帧时用 D 盘新路径）。录像两段 3.2GB 亦在 D:\CurrencyWarsData\Recordings\。
+- **环境终态**：软件运行中（PID 2540,DECIDE 停止）；游戏运行中（主界面）；C 盘剩余 25GB（凌晨曾满=通宵停滞/任务异常停止/jsonl 0 字节的统一根因,详见 〇-c）；**磁盘水位每小时检查=新值守制度**（记忆 29 条）。
+- **下一班主任务（用户令）**：**开发帧沙箱 Phase 1 骨架**（用户原话"下一步任务就是开发之前的那一个沙箱"）——按 docs/SANDBOX_FEASIBILITY_20260908.md 设计执行：--frame-sandbox 参数+FileSequenceGameCapture/RecordingInputController/StubWindowService/AlwaysForegroundGuard 四实现+脚本加载/裁判/违规输出+PageReplay 夹具冒烟脚本。待用户拍板：五费聘用书帧来源（a 抽帧/b 合成/c 等真帧）。
+
+### 09-08 上半夜增量（历史记录,最新状态见〇-2 归档）
 
 - **🔴 启动静默已定性=启动模式错误，非代码回归**：09-07 14:33~18:15 全部 7 个"静默"实例（14:33/14:47/14:51/18:03/18:08/18:10/18:15）jsonl 首事件=OpeningFilterSelectionsLoaded=**MainViewModel 专属签名=普通模式（无 --command-test）启动**；普通模式天然不消费指令文件+提权杀不掉+占单实例锁令后续计划任务实例 12 秒自退（jsonl 0 字节）。command-test 签名=首事件 Phase2RecognitionWarmUpCompleted（22:22 健康局与 23:31 实例均如此）。**上一班的 DI 二分撤回前提被推翻，已恢复被撤回的两注册（closeShop Func+IWishTrialPopupHandler）**。
 - **autodecide 挂机补全（09-08 代码）**：23:31 取证证明原实现无窗口时 DECIDE 直接失败返回，"开机开游戏自动继续刷局"不成立——已实现等窗循环（20s 探测，窗口就绪经 UI 线程自动 DECIDE；决策层结束后 10s 重新武装；DECIDE 停止/关窗解除武装）。构建 0/0+涉事测试 161/161。

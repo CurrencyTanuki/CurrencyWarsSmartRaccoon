@@ -124,6 +124,9 @@ public sealed partial class RewardStageAutomationController(
         new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "investment_strategy_280" };
 
     private static readonly StandardPoint ShopTogglePoint =
+        // 09-08 复核注：此点为 1920 参考系,MapStandardPoint ×窗口/1920 缩放后恰命中
+        // 2560 客户区的收起按钮（实测 (2160,1300) 落在按钮 2070-2250×1110-1350 内）。
+        // 通宵"收起点击后 I1 仍=reward_shop"是同秒读数的收起动画滞后,非坐标错误——勿"校准"。
         new(1620, 975);
     // 统一识别流：上次从 feed 取帧的版本号（Transient，每局重置）。
     private long lastFrameVersion;

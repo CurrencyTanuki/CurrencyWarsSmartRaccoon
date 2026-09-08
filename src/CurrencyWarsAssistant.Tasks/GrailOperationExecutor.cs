@@ -638,6 +638,37 @@ public sealed partial class GrailOperationExecutor(
             await rewardStage.CloseShopAsync(windowHandle, expectedPreparationPageId, cancellationToken);
         }
 
+        // 09-08 通宵 P1 兜底扫描（23/33 局"携带者坐板凳"教训）：M5 收摊后复核星徽
+        // 携带者账本——携带者若在板凳=立即重部署到真空位（8.2 清单第 9 条不变量）。
+        // 昔涟除外（买而不上另有 L 系流程管）。失败不阻断（有保护兜底不卖）。
+        try
+        {
+            var benchAfterClose = await preparationBoard.ReadStableBenchCharactersAsync(
+                windowHandle, expectedPreparationPageId, cancellationToken);
+            var carriers = stateHolder.PeekBadgeLedger().CarrierNames;
+            var carrierBench = benchAfterClose?.FirstOrDefault(item =>
+                carriers.Contains(item.Character.Name) &&
+                !string.Equals(item.Character.Name, GrailRunSnapshot.XilianName, StringComparison.Ordinal));
+            if (carrierBench is not null)
+            {
+                PublishTelemetry(
+                    "GrailBadgeCarrierRedeploy",
+                    $"星徽携带者「{carrierBench.Character.Name}」在板凳——重部署到真空位（8.2-9 不变量）。",
+                    TaskEventLevel.Warning);
+                await DeployBoughtToRealEmptySlotAsync(
+                    windowHandle, carrierBench.Character.Name, expectedPreparationPageId,
+                    occupiedFront, occupiedBack, cancellationToken,
+                    isDisplacedRedeploy: true);
+            }
+        }
+        catch (Exception carrierScanError)
+        {
+            PublishTelemetry(
+                "GrailBadgeCarrierRedeployScanFailed",
+                $"携带者重部署扫描失败（不阻断）: {carrierScanError.Message}",
+                TaskEventLevel.Warning);
+        }
+
         // P-16（1.2.70）：单条 M5 一条终态汇总——为什么停、买到谁、跳过谁，复盘不再拼凑。
         endReason ??= "IterationCap";
         var ownedSkipDistinct = skippedOwnedTotal.Distinct(StringComparer.Ordinal).ToArray();
@@ -673,7 +704,8 @@ public sealed partial class GrailOperationExecutor(
         string expectedPreparationPageId,
         HashSet<int> occupiedFront,
         HashSet<int> occupiedBack,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        bool isDisplacedRedeploy = false)
     {
         var bench = await preparationBoard.ReadStableBenchCharactersAsync(
             windowHandle, expectedPreparationPageId, cancellationToken);
@@ -703,18 +735,34 @@ public sealed partial class GrailOperationExecutor(
         // 已部署成员读不出→每次都判 4 号位空闲→凛/闪/Saber 连续互换挤压，羁绊恒 1）：
         // 空槽判定改为部署时实时读前后台槽区（与卖人验证同款槽区识别原语，全天可靠），
         // 陈旧占用表只作兜底对照；前台满则后台，全满诚实跳过（绝不互换挤人）。
+        // 09-08 通宵 P1（用户截图+拖拽日志铁证）：识别流停滞期实时读会拿到陈旧帧
+        //（旧槽位被读成空）→拖上被占槽=游戏判定交换→已上场成员(常为星徽携带者)
+        // 被换下板凳永不归位。修法：①实时读失败→隔 800ms 重读一次,仍失败=诚实跳过
+        // 本次部署（卡留板凳,交对账/下轮处理,绝不盲拖）；②部署后复核板凳,检出交换
+        // 立即把被换下成员重部署到真空位（见下方 swap 检测块）。
         var lane = PreparationLane.Front;
         int? slot = null;
         var liveOccupied = await preparationBoard.ReadLiveSlotOccupancyAsync(
             windowHandle, expectedPreparationPageId, cancellationToken);
-        // 1.2.109 审查 P2-2：并集语义——实时帧半帧读空时陈旧表仍守住已部署槽位
-        //（替换语义会丢本 pass 已部署项）；读帧失败等价全并集=回落修复前行为。
-        var occupiedFrontLive = liveOccupied is null
-            ? occupiedFront
-            : new HashSet<int>(occupiedFront.Concat(liveOccupied.Value.Front));
-        var occupiedBackLive = liveOccupied is null
-            ? occupiedBack
-            : new HashSet<int>(occupiedBack.Concat(liveOccupied.Value.Back));
+        if (liveOccupied is null)
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(800), cancellationToken);
+            liveOccupied = await preparationBoard.ReadLiveSlotOccupancyAsync(
+                windowHandle, expectedPreparationPageId, cancellationToken);
+        }
+
+        if (liveOccupied is null)
+        {
+            PublishTelemetry(
+                "GrailShopDeploySkipped",
+                $"{boughtName} 购买后槽位占用两次实时读均失败（识别流停滞）——诚实跳过本次上场，" +
+                "卡留板凳交对账，绝不盲拖 risking 交换。",
+                TaskEventLevel.Warning);
+            return (false, null);
+        }
+
+        var occupiedFrontLive = new HashSet<int>(occupiedFront.Concat(liveOccupied.Value.Front));
+        var occupiedBackLive = new HashSet<int>(occupiedBack.Concat(liveOccupied.Value.Back));
         for (var i = 0; i < FrontSlotCapacity; i++)
         {
             if (!occupiedFrontLive.Contains(i))
@@ -747,6 +795,31 @@ public sealed partial class GrailOperationExecutor(
         {
             // 1.2.109 审查 P2-2：按 lane 回落登记到正确的陈旧集合。
             (lane == PreparationLane.Front ? occupiedFront : occupiedBack).Add(slot.Value);
+
+            // 09-08 通宵 P1 交换检测：部署后复核板凳——若出现预拖清单之外的新卡
+            //（=拖上了被占槽发生交换,被换下的在场成员——常为星徽携带者——落板凳），
+            // 立即重部署到真空位（一层,防递归）。用户截图冻结局即此形态。
+            await Task.Delay(TimeSpan.FromMilliseconds(600), cancellationToken);
+            var postBench = await preparationBoard.ReadStableBenchCharactersAsync(
+                windowHandle, expectedPreparationPageId, cancellationToken);
+            var preBenchNames = (bench ?? Array.Empty<RecognizedBenchCharacter>())
+                .Select(item => item.Character.Name).ToHashSet(StringComparer.OrdinalIgnoreCase);
+            var displaced = postBench?.FirstOrDefault(item =>
+                !preBenchNames.Contains(item.Character.Name) &&
+                !string.Equals(item.Character.Name, boughtName, StringComparison.OrdinalIgnoreCase));
+            if (displaced is not null && !isDisplacedRedeploy)
+            {
+                PublishTelemetry(
+                    "GrailShopDeploySwapDetected",
+                    $"部署 {boughtName} 后检出交换：板凳出现新卡「{displaced.Character.Name}」" +
+                    "（被换下的在场成员，常为星徽携带者）——立即重部署到真空位。",
+                    TaskEventLevel.Warning);
+                await DeployBoughtToRealEmptySlotAsync(
+                    windowHandle, displaced.Character.Name, expectedPreparationPageId,
+                    occupiedFront, occupiedBack, cancellationToken,
+                    isDisplacedRedeploy: true);
+            }
+
             return (true, lane == PreparationLane.Front ? slot.Value : null);
         }
 

@@ -67,6 +67,51 @@ public sealed class GrailDecisionEngine(
     /// </summary>
     private readonly Dictionary<string, int> _frontLedger = new(StringComparer.Ordinal);
 
+    /// <summary>
+    /// P1-3（09-08 通宵：S2/S3 M1 两败 ×5 实锤）：识别流停滞期禁硬启战斗——战斗
+    /// 状态机依赖帧流观察页面推进，停滞时启动必败。检测到 stale → 请求复活并等
+    /// 至多 60 秒；超时照常尝试（失败走既有弃局路径，不另开失败语义）。
+    /// </summary>
+    private async Task EnsureStreamReadyForBattleAsync(CancellationToken ct)
+    {
+        if (isStreamStale is null || requestStreamRevive is null)
+        {
+            return;
+        }
+
+        var stale = false;
+        try
+        {
+            stale = isStreamStale();
+        }
+        catch
+        {
+            return; // 帧龄探测失败按"流健康"处理（既有口径）
+        }
+
+        if (!stale)
+        {
+            return;
+        }
+
+        requestStreamRevive("M1 前识别流停滞——先复活识别会话再出战。");
+        for (var waited = 0; waited < 60; waited += 5)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(5), ct);
+            try
+            {
+                if (!isStreamStale())
+                {
+                    return;
+                }
+            }
+            catch
+            {
+                // 探测失败继续等（复活后判定恢复即退出）
+            }
+        }
+    }
+
     private async Task<GrailCommandResult> SendAsync(
         string commandText, GrailCommand command, nint window, CancellationToken ct)
     {
@@ -1843,6 +1888,9 @@ public sealed class GrailDecisionEngine(
             return PreparationOutcome.Dead;
         }
 
+        // P1-3（09-08 通宵：S2 M1 两败 ×5 实锤）：识别流停滞期禁硬启战斗——
+        // 战斗状态机依赖帧流观察推进,停滞时启动必败。先复活并等至多 60 秒。
+        await EnsureStreamReadyForBattleAsync(ct);
         var m1 = await SendAsync("M1 preparation_generic reward_shop",
             new GrailCommand(GrailCommandKind.M1,
                 new GrailBattleArgs("preparation_generic", "reward_shop")), window, ct);
@@ -1915,6 +1963,8 @@ public sealed class GrailDecisionEngine(
         // 1-3 开局多得 1 金利息。在部署/弹框应答之后、M1 之前执行（金币已定型）。
         await TopUpInterestGoldBeforeBattleAsync(window, snapshot, ct);
 
+        // P1-3（09-08 通宵）：同 S2——识别流停滞期禁硬启战斗。
+        await EnsureStreamReadyForBattleAsync(ct);
         m1 = await SendAsync("M1 preparation_generic investment_strategy",
             new GrailCommand(GrailCommandKind.M1,
                 new GrailBattleArgs("preparation_generic", "investment_strategy")), window, ct);

@@ -153,35 +153,180 @@
       ]
     },
     {
-      "image": "../PageReplay/preparation_1_1.jpg",
+      "image": "../PageReplay/preparation_1_3_after_shop_2559x1439.png",
+      "maxWaitSeconds": 600,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1785,
+            750
+          ],
+          "tol": 40,
+          "note": "S2 出战（部署拖拽若有=发现轮回填）"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/challenge_success_1_1.jpg",
       "maxWaitSeconds": 150,
       "expect": [
         {
           "op": "click",
           "near": [
-            1537,
-            377
+            960,
+            895
           ],
           "tol": 30,
-          "note": "M2 开晶矿球 A（ops 实测 03:07:23，×3 有界重试）"
+          "note": "1-1 结算推进"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/shop_open_1_2.jpg",
+      "maxWaitSeconds": 150,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1620,
+            975
+          ],
+          "tol": 30,
+          "note": "S3 M5 收摊"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/preparation_1_2.jpg",
+      "maxWaitSeconds": 150,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1785,
+            750
+          ],
+          "tol": 40,
+          "note": "1-2 出战"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/challenge_success_1_1.jpg",
+      "maxWaitSeconds": 150,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            960,
+            895
+          ],
+          "tol": 30,
+          "note": "1-2 结算推进"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/investment_strategy.jpg",
+      "maxWaitSeconds": 150,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            390,
+            850
+          ],
+          "tol": 60,
+          "note": "刷新1"
         },
         {
           "op": "click",
           "near": [
-            1391,
-            319
+            890,
+            850
           ],
-          "tol": 30,
-          "note": "M2 开晶矿球 B（双球双趟检测，ops 实测同上）"
+          "tol": 60,
+          "note": "刷新2"
+        },
+        {
+          "op": "click",
+          "near": [
+            1390,
+            850
+          ],
+          "tol": 60,
+          "note": "刷新3"
+        },
+        {
+          "op": "click",
+          "near": [
+            460,
+            350
+          ],
+          "tol": 60,
+          "note": "选最左"
+        },
+        {
+          "op": "click",
+          "near": [
+            960,
+            985
+          ],
+          "tol": 60,
+          "note": "确认策略"
         }
-      ],
-      "note": "DECIDE 发现轮终局：观察 S2 段（M2 晶矿/部署拖拽/出战）真实操作"
+      ]
     },
     {
-      "image": "../PageReplay/preparation_1_1.jpg",
+      "image": "../PageReplay/reward_shop_after_two_purchases.jpg",
       "maxWaitSeconds": 150,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1620,
+            975
+          ],
+          "tol": 30,
+          "note": "1-3 商店收摊"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/preparation_1_3_after_shop_2559x1439.png",
+      "maxWaitSeconds": 150,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1620,
+            975
+          ],
+          "tol": 30,
+          "note": "M5 循环开店"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/reward_shop_after_two_purchases.jpg",
+      "maxWaitSeconds": 150,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1620,
+            975
+          ],
+          "tol": 30,
+          "note": "M5 循环收摊"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/preparation_1_3_after_shop_2559x1439.png",
       "expect": [],
-      "note": "DECIDE 发现轮终局：观察部署拖拽（A1）与出战（M1）真实操作"
+      "note": "DECIDE 级全链终局"
     }
   ]
 }

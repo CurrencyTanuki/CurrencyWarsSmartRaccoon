@@ -1,0 +1,1 @@
+hire_selection_page.png = 视频2 第119秒帧(1920x1080)。内容:「5费聘用书·请选择1个」选人悬浮窗,4候选=昔涟(试用)/黑天鹅/布洛妮娅/流萤。卡1=昔涟=单人目标命中(确定性点击卡1中心)。来源 D:/CurrencyWarsData/sandbox-frames/wish-frames/wish_119s.png。2026-09-09 白班

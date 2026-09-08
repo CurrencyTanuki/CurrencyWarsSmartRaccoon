@@ -34,6 +34,23 @@ public sealed class GrailRunStateHolder
     private bool _xpSurcharge;      // 回路过载/回路超频：购买经验价格+1
     private bool _openingFormationApplied; // N13/N12/N2 开局动作闩锁（每局一次）
 
+    /// <summary>
+    /// 帧沙箱专用事件态种子（2026-09-09 聘用书专项 E2E）：静态帧世界里首个祈愿
+    /// 无法 Confirmed（确认后的退出探针读不到"非弹框"帧需要脚本切帧，而事件态
+    /// 只有 Confirmed 才推进）→ WishesResponded 恒 0 → F9 首祈愿盲选左恒生效，
+    /// 第二祈愿路由（令咒聘用书侧）永远测不到。按真实场景值注入（视频 2 第 90 秒
+    /// 的令咒决议·行为限制=当局第 2 次祈愿→种子 wishes=1 忠实复刻该局面）。
+    /// 仅测试设施：生产代码零调用；Reset 语义不变（新对局仍归零）。
+    /// </summary>
+    public void SeedEventStateForSandbox(int wishesResponded, int lettersObtained)
+    {
+        lock (_gate)
+        {
+            _wishesResponded = Math.Clamp(wishesResponded, 0, 4);
+            _lettersObtained = Math.Clamp(lettersObtained, 0, 4);
+        }
+    }
+
     /// <summary>本局已在商店买到的角色名（同名只买一次；买完立即记录，跨帧持久，供去重）。</summary>
     private readonly HashSet<string> _purchasedNames = new(StringComparer.OrdinalIgnoreCase);
 

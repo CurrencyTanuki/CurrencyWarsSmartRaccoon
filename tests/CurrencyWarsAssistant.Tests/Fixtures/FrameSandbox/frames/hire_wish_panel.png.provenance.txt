@@ -1,0 +1,1 @@
+hire_wish_panel.png = 视频2《A850 1-3 三星昔涟》第90秒帧(1920x1080,桌面原片 ffmpeg 顺序解码无seek)。内容:祈愿试炼面板 右侧=令咒决议·行为限制(奖励5费聘用书x2,金色选中框) vs 左侧=金色传说(登场3星吉尔伽美什)。聘用书来源试炼在屏实锤;来源 D:/CurrencyWarsData/sandbox-frames/wish-frames/wish_90s.png。2026-09-09 白班

@@ -1,0 +1,1 @@
+hire_bench_books.png = 视频2 第94秒帧(1920x1080,ffmpeg -ss 94 顺序解码)。内容:商店开+备战席持有两枚「开启」聘用书(板3/4位)。作 M3 开书触发步的底层帧(备战席书格点击位 (281,951)=1920缩放,静态帧不承载语义)。来源 D:/CurrencyWarsData/sandbox-frames/hire-letter-96-99s/v2_000.png。2026-09-09 白班

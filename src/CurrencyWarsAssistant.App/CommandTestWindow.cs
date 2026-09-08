@@ -1229,7 +1229,20 @@ public sealed class CommandTestWindow : Window
 
     /// <summary>帧沙箱模式启动横幅（App 在显示窗口前调用）：把沙箱状态写进日志框，
     /// 让值守从窗口即可确认当前实例是沙箱而非实机。</summary>
-    internal void NotifyFrameSandbox(string message) => AppendLog(message);
+    internal void NotifyFrameSandbox(
+        string message,
+        int seedWishesResponded = 0,
+        int seedLettersObtained = 0)
+    {
+        AppendLog(message);
+        if (seedWishesResponded > 0 || seedLettersObtained > 0)
+        {
+            _stateHolder.SeedEventStateForSandbox(seedWishesResponded, seedLettersObtained);
+            AppendLog(
+                $"[沙箱] 事件态种子已注入：WishesResponded={seedWishesResponded}、" +
+                $"LettersObtained={seedLettersObtained}（复刻真实局面，仅本次沙箱生效）。");
+        }
+    }
 
     private void StartCollectionAsync()
     {

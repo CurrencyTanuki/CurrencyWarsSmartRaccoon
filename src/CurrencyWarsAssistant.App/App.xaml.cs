@@ -51,6 +51,7 @@ public partial class App : Application
         // 每步期望操作满足才切帧，偏离最优路径=违规记入沙箱产物。
         FrameSandboxLaunchOptions? frameSandboxLaunch = null;
         FrameSandboxPlayer? frameSandboxPlayer = null;
+        FrameSandboxScript? frameSandboxScript = null;
         StubWindowService? frameSandboxWindowService = null;
         try
         {
@@ -68,6 +69,7 @@ public partial class App : Application
 
                 var sandboxScript = FrameSandboxScriptLoader.Load(
                     frameSandboxLaunch.ScriptPath);
+                frameSandboxScript = sandboxScript;
                 var sandboxOutputDirectory =
                     frameSandboxLaunch.OutputDirectoryOverride ??
                     FrameSandboxLaunchOptions.DefaultOutputDirectory();
@@ -527,10 +529,15 @@ public partial class App : Application
                 // 沙箱产物隔离（可行性案 §五.2）：识别会话 run 目录用 sandbox 前缀，
                 // 不与实局历史混放。
                 testWindow.CollectionRunIdPrefix = "sandbox";
+                // 事件态种子（2026-09-09 聘用书专项）：脚本可声明"当局第 N 次祈愿"
+                // 等真实局面——静态帧世界自身无法推进事件态（确认需要切帧而事件态
+                // 只有 Confirmed 才推进）。种子经窗口的 stateHolder 注入，仅沙箱生效。
                 testWindow.NotifyFrameSandbox(
                     "帧沙箱模式：决策/操作/识别已换装沙箱实现，游戏窗口=脚本帧序列。" +
                     $"当前进度见 {frameSandboxPlayer.OutputDirectory} 下的 " +
-                    "sandbox-ops.jsonl / sandbox-violations.jsonl / sandbox-verdict.txt。");
+                    "sandbox-ops.jsonl / sandbox-violations.jsonl / sandbox-verdict.txt。",
+                    frameSandboxScript?.SeedWishesResponded ?? 0,
+                    frameSandboxScript?.SeedLettersObtained ?? 0);
             }
 
             MainWindow = testWindow;

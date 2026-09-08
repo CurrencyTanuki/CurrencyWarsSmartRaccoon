@@ -47,7 +47,9 @@ public sealed record FrameSandboxStep(
 public sealed record FrameSandboxScript(
     string Name,
     string Directory,
-    IReadOnlyList<FrameSandboxStep> Steps);
+    IReadOnlyList<FrameSandboxStep> Steps,
+    int SeedWishesResponded = 0,
+    int SeedLettersObtained = 0);
 
 /// <summary>
 /// 帧沙箱脚本加载器（JSON，schema 见 docs/SANDBOX_FEASIBILITY_20260908.md §二）。
@@ -166,7 +168,27 @@ public static class FrameSandboxScriptLoader
                 ? Path.GetFileNameWithoutExtension(fullPath)
                 : document.Name!,
             scriptDirectory,
-            steps);
+            steps,
+            ParseSeed(document.SeedWishesResponded, "seedWishesResponded", 4, fullPath),
+            ParseSeed(document.SeedLettersObtained, "seedLettersObtained", 4, fullPath));
+    }
+
+    /// <summary>事件态种子（帧沙箱专用测试设施）：把祈愿计数/聘用书数注入沙箱实例的
+    /// 状态机，复数"当局第 N 次祈愿"等真实局面（静态帧世界无法靠自身推进事件态）。
+    /// 负数拒绝加载；超出上限按上限收敛。</summary>
+    private static int ParseSeed(int? value, string field, int maximum, string fullPath)
+    {
+        if (value is null)
+        {
+            return 0;
+        }
+
+        if (value < 0)
+        {
+            throw new InvalidDataException($"{field} 不能为负：{value}：{fullPath}");
+        }
+
+        return Math.Min(value.Value, maximum);
     }
 
     private static FrameSandboxExpectation ParseExpectation(
@@ -261,6 +283,8 @@ public static class FrameSandboxScriptLoader
     private sealed record ScriptDocument(
         string? Name,
         int? DefaultMaxWaitSeconds,
+        int? SeedWishesResponded,
+        int? SeedLettersObtained,
         IReadOnlyList<StepDocument>? Steps);
 
     private sealed record StepDocument(

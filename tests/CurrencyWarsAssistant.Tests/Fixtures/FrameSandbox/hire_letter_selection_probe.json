@@ -1,0 +1,85 @@
+{
+  "name": "hire_letter_selection_probe",
+  "defaultMaxWaitSeconds": 90,
+  "seedWishesResponded": 1,
+  "seedLettersObtained": 0,
+  "steps": [
+    {
+      "image": "frames/hire_wish_panel.png",
+      "maxWaitSeconds": 120,
+      "expect": [
+        {
+          "op": "click",
+          "near": [1410, 351],
+          "tol": 40,
+          "note": "M3 应答：点选右侧「令咒决议·行为限制」（奖励=5费聘用书x2，RightOption2K 中心 1920 缩放）"
+        },
+        {
+          "op": "click",
+          "near": [1499, 641],
+          "tol": 40,
+          "note": "M3 应答：点「确认选择」（ConfirmButton2K 中心 1920 缩放）"
+        }
+      ]
+    },
+    {
+      "image": "frames/hire_bench_books.png",
+      "maxWaitSeconds": 120,
+      "expect": [
+        {
+          "op": "click",
+          "near": [281, 951],
+          "tol": 30,
+          "note": "F11a 开书：点备战席聘用书格（RecruitSlotCenter2K(375,1267) 1920 缩放）"
+        }
+      ]
+    },
+    {
+      "image": "frames/hire_selection_page.png",
+      "maxWaitSeconds": 120,
+      "expect": [
+        {
+          "op": "click",
+          "near": [623, 272],
+          "tol": 30,
+          "note": "选人：点卡1昔涟（CardBounds2K[0] 中心 1920 缩放；单卡命中时点它，无匹配兜底也点卡1）"
+        }
+      ]
+    },
+    {
+      "image": "frames/hire_bench_books.png",
+      "maxWaitSeconds": 120,
+      "expect": [
+        {
+          "op": "click",
+          "near": [281, 951],
+          "tol": 30,
+          "note": "第二轮开书触发（obtained=2，首轮以 Selected/InputFailed 收束后外层重试）"
+        },
+        {
+          "op": "click",
+          "near": [889, 272],
+          "tol": 30,
+          "note": "兜底点卡2（ops 实测：本帧名字框区域 OCR 误读'45'触发兜底选择第 2 卡——脚本按 ops 回填，坑59 纪律）"
+        }
+      ]
+    },
+    {
+      "image": "frames/hire_selection_page.png",
+      "maxWaitSeconds": 120,
+      "expect": [
+        {
+          "op": "click",
+          "near": [623, 272],
+          "tol": 30,
+          "note": "第二轮选人点击"
+        }
+      ]
+    },
+    {
+      "image": "frames/hire_bench_books.png",
+      "expect": [],
+      "note": "终局帧：开书循环收束（opened>=obtained 或 6 轮耗尽），M3 回执——专项 PASS"
+    }
+  ]
+}

@@ -21,11 +21,34 @@
 CurrencyWarsAssistant.App.exe --frame-sandbox <脚本.json> [--frame-sandbox-out <目录>]
 ```
 
+- **零 UAC 启动（2026-09-09 起，用户常设令：禁止弹 UAC）**：改
+  `C:\Users\zzz81\AppData\Roaming\reasonix\global-workspace\CodexHandoff-20260802\CurrencyWarsSmartRaccoon-CodexHandoff-20260801\artifacts\CurrencyWarsSmartRaccoon-0.2.780-win-x64-portable\launch-target.txt`
+  （第 1 行=目标 exe 绝对路径；第 2 行=参数行，**路径不加引号**）→
+  `schtasks /run /tn CWTLaunchApp`（PowerShell 包裹）。参考实现=
+  `artifacts\launch_hire_letter_e2e.ps1`（含 run 目录存活检查：启动后 60s 内必须出现
+  新 run 目录，否则=启动失败立即报告）。旧 `launch_sandbox_e2e.ps1` 等的
+  `Start-Process -Verb RunAs` 写法已废弃，禁止再用。
 - 产物默认目录：%LOCALAPPDATA%\CurrencyWarsSmartRaccoon\sandbox\run-<时间戳>\
 - 产物：sandbox-ops.jsonl（每次操作+判定结果）/ sandbox-violations.jsonl（违规）/
   sandbox-verdict.txt（终局判定）。文件句柄带 FileShare.ReadWrite，值守可边跑边读。
 - **单实例互斥被沙箱旁路**（与正式实例并存）。但命令通道文件按 BaseDirectory 取，
   **必须从非稳定目录启动**（如 bin\Debug\...），否则与正式实例共写同一组指令测试-*.txt。
+
+## 二-2、脚本 schema：事件态种子（2026-09-09 聘用书专项新增）
+
+```json
+{ "name": "...", "seedWishesResponded": 1, "seedLettersObtained": 0, "steps": [...] }
+```
+
+- **用途**：静态帧世界里事件态无法自然推进——祈愿确认后的退出探针需要脚本切帧
+  提供非弹框帧，而 `WishesResponded` 只有 Confirmed 才 +1，首祈愿（F9 盲选左）
+  因此在沙箱中永远成立，第二祈愿路由（令咒聘用书侧等）永远无法被测。种子把
+  事件态直接置为真实局面值（例：`seedWishesResponded:1` 复刻"当局第 2 次祈愿"，
+  即视频 2 第 90 秒令咒决议·行为限制在屏时的真实状态）。
+- 语义：`seedWishesResponded`（0-4）/`seedLettersObtained`（0-4），缺省 0；负数
+  拒绝加载。注入时机=启动时经 `CommandTestWindow.NotifyFrameSandbox` 写入
+  stateHolder（仅沙箱实例，`Reset` 后归零语义不变；生产代码零调用）。
+- F9 之后的路由（奇迹代偿/令咒聘用书侧/无限之釜/默认选左）由种子解锁可测。
 - exe 要管理员权限：无人值守启动仍走计划任务族方案（或用户在场时直接放行 UAC）。
 
 ## 三、驱动与判定

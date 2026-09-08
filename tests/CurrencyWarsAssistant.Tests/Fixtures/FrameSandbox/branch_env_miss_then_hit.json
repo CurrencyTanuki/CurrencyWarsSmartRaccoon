@@ -1,0 +1,363 @@
+{
+  "name": "branch_env_miss_then_hit",
+  "defaultMaxWaitSeconds": 120,
+  "steps": [
+    {
+      "image": "../PageReplay/normal_hud.jpg",
+      "maxWaitSeconds": 180,
+      "expect": [
+        {
+          "op": "clickwithmodifier",
+          "near": [
+            1598,
+            45
+          ],
+          "modifier": "leftalt",
+          "note": "S1 第一遍导航：打开指南"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/guide_shell.jpg",
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            602,
+            211
+          ],
+          "note": "切货币战争页签"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/guide_currency_wars.jpg",
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1492,
+            878
+          ],
+          "note": "前往参与货币战争"
+        },
+        {
+          "op": "presskey",
+          "key": "f",
+          "note": "F 触发交互 1"
+        },
+        {
+          "op": "presskey",
+          "key": "f",
+          "note": "F 触发交互 2"
+        },
+        {
+          "op": "presskey",
+          "key": "f",
+          "note": "F 触发交互 3"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/update_popup.jpg",
+      "expect": [
+        {
+          "op": "presskey",
+          "key": "escape",
+          "note": "关更新说明"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/score_popup.jpg",
+      "expect": [
+        {
+          "op": "presskey",
+          "key": "escape",
+          "note": "关积分奖励"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/currency_wars_home.jpg",
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1590,
+            976
+          ],
+          "note": "开始货币战争"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/mode_selection.jpg",
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1690,
+            967
+          ],
+          "note": "快速刷开局盲点开始本局"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/rank_difficulty.jpg",
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1690,
+            967
+          ],
+          "note": "盲点连点覆盖职级难度页"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/enemy_overview.jpg",
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1514,
+            985
+          ],
+          "note": "确认敌人概览（敌情识别取消，直接过）"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/investment_environment.jpg",
+      "maxWaitSeconds": 150,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            676,
+            984
+          ],
+          "note": "三环境(量子同频邀请/敌后破坏/白银时代)全未命中白名单：rule四.19 机制刷新一次"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/investment_environment.jpg",
+      "maxWaitSeconds": 150,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            439,
+            530
+          ],
+          "note": "刷新后仍未命中：降级任选第一卡进局（本轮强制按未命中重开，rule四.19/1.2.101 口径）"
+        },
+        {
+          "op": "click",
+          "near": [
+            1083,
+            984
+          ],
+          "note": "确认投资环境→进 1-1（降级进局）"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/preparation_1_1.jpg",
+      "maxWaitSeconds": 120,
+      "expect": [
+        {
+          "op": "presskey",
+          "key": "escape",
+          "note": "降级进局后引擎判本轮强制重开：A9 第一击 Esc 弹退出确认框"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/abandon_settlement_prompt.jpg",
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            750,
+            744
+          ],
+          "note": "点『放弃并结算』（标准几何 750,744）——首版脚本坐标换算错 186px 导致超时（已修正）"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/challenge_failed.jpg",
+      "maxWaitSeconds": 120,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            960,
+            899
+          ],
+          "note": "结算页盲点直通推进位（rule四.22，连点由 Repeat 容差吸收）"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/normal_hud.jpg",
+      "maxWaitSeconds": 180,
+      "expect": [
+        {
+          "op": "clickwithmodifier",
+          "near": [
+            1598,
+            45
+          ],
+          "modifier": "leftalt",
+          "note": "S1 第二遍导航：重开后的对局，重新打开指南"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/guide_shell.jpg",
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            602,
+            211
+          ],
+          "note": "切货币战争页签"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/guide_currency_wars.jpg",
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1492,
+            878
+          ],
+          "note": "前往参与货币战争"
+        },
+        {
+          "op": "presskey",
+          "key": "f",
+          "note": "F 1"
+        },
+        {
+          "op": "presskey",
+          "key": "f",
+          "note": "F 2"
+        },
+        {
+          "op": "presskey",
+          "key": "f",
+          "note": "F 3"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/update_popup.jpg",
+      "expect": [
+        {
+          "op": "presskey",
+          "key": "escape",
+          "note": "关更新说明"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/score_popup.jpg",
+      "expect": [
+        {
+          "op": "presskey",
+          "key": "escape",
+          "note": "关积分奖励"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/currency_wars_home.jpg",
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1590,
+            976
+          ],
+          "note": "开始货币战争"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/mode_selection.jpg",
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1690,
+            967
+          ],
+          "note": "盲点开始本局"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/rank_difficulty.jpg",
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1690,
+            967
+          ],
+          "note": "盲点覆盖职级难度页"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/enemy_overview.jpg",
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1514,
+            985
+          ],
+          "note": "确认敌人概览"
+        }
+      ]
+    },
+    {
+      "image": "frames/investment_environment_hit_019_v2.png",
+      "maxWaitSeconds": 180,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            960,
+            530
+          ],
+          "note": "命中命运圣杯邀请(019)在第2卡：选中（InvestmentOptionPoints[1]）"
+        },
+        {
+          "op": "click",
+          "near": [
+            1083,
+            984
+          ],
+          "note": "确认投资环境"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/preparation_1_1.jpg",
+      "expect": [],
+      "note": "终局帧：未命中重开后命中 019 并进 1-1 备战席=分支验证 PASS"
+    }
+  ]
+}

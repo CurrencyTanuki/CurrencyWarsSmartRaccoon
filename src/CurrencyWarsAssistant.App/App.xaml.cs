@@ -9,6 +9,7 @@ using CurrencyWarsAssistant.Game;
 using CurrencyWarsAssistant.Tasks;
 using CurrencyWarsAssistant.Vision;
 using CurrencyWarsAssistant.Workflow;
+using CurrencyWarsAssistant.App.FrameSandbox;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CurrencyWarsAssistant.App;
@@ -43,11 +44,57 @@ public partial class App : Application
         var datasetCaptureCommand = Phase2DatasetCaptureCommand.Parse(e.Args);
         var headlessCommand = batchCommand is not null ||
                               datasetCaptureCommand is not null;
+        // 帧沙箱模式（docs/SANDBOX_FEASIBILITY_20260908.md Phase 1）：--frame-sandbox <脚本.json>
+        // 与 --command-test 同族的测试台分支：DI 层换 4 个基础设施实现
+        // （FileSequenceGameCapture/RecordingInputController/StubWindowService/
+        // AlwaysForegroundGuard），识别/决策/操作代码零改动——"游戏"换成脚本帧序列，
+        // 每步期望操作满足才切帧，偏离最优路径=违规记入沙箱产物。
+        FrameSandboxLaunchOptions? frameSandboxLaunch = null;
+        FrameSandboxPlayer? frameSandboxPlayer = null;
+        StubWindowService? frameSandboxWindowService = null;
+        try
+        {
+            frameSandboxLaunch = FrameSandboxLaunchOptions.Parse(e.Args);
+            if (frameSandboxLaunch is not null)
+            {
+                if (headlessCommand)
+                {
+                    // P3-3（对抗审查）：批处理/数据集捕获分支直连真实捕获器且先于 DI
+                    // 返回——与沙箱同传时沙箱会被静默忽略，必须显式拒绝。
+                    throw new InvalidOperationException(
+                        "--frame-sandbox 不能与 --phase2-batch / " +
+                        "--phase2-dataset-capture 同时使用。");
+                }
+
+                var sandboxScript = FrameSandboxScriptLoader.Load(
+                    frameSandboxLaunch.ScriptPath);
+                var sandboxOutputDirectory =
+                    frameSandboxLaunch.OutputDirectoryOverride ??
+                    FrameSandboxLaunchOptions.DefaultOutputDirectory();
+                frameSandboxPlayer = new FrameSandboxPlayer(
+                    sandboxScript,
+                    sandboxOutputDirectory);
+                frameSandboxWindowService = new StubWindowService(
+                    $"帧沙箱：{sandboxScript.Name}");
+            }
+        }
+        catch (Exception sandboxLoadError)
+        {
+            MessageBox.Show(
+                $"帧沙箱脚本加载失败：{sandboxLoadError.Message}",
+                "帧沙箱启动失败",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+            Shutdown(1);
+            return;
+        }
+
         // 指令测试台模式（测试包专用）：--command-test 启动，只显示三按钮测试窗口，
         // 一切动作仅由指令文件驱动，启动后不自动做任何事。
         var commandTestMode = Array.Exists(
             e.Args,
-            argument => string.Equals(argument, "--command-test", StringComparison.OrdinalIgnoreCase));
+            argument => string.Equals(argument, "--command-test", StringComparison.OrdinalIgnoreCase)) ||
+            frameSandboxLaunch is not null;
         if (batchCommand is not null)
         {
             WriteBatchStartupProgress(batchCommand, "command-parsed");
@@ -58,7 +105,11 @@ public partial class App : Application
         // 实例、后开实例还可能被残留 exit.txt 静默关掉——全模式统一互斥。测试台撞锁
         // 时先写 exit.txt 请已存测试台实例退出（其空闲时消费并关窗）再短暂重试拿锁；
         // 仍拿不到（普通模式僵尸占锁等）则本实例退出，绝不双开。
-        if (!headlessCommand && !TryAcquireSingleInstance())
+        // 帧沙箱例外：沙箱不消费指令文件不碰真实游戏，允许与正式实例并存
+        // （从不同目录启动，命令通道文件天然隔离）。
+        if (!headlessCommand &&
+            frameSandboxLaunch is null &&
+            !TryAcquireSingleInstance())
         {
             if (!commandTestMode || !TryRetakeSingleInstanceAsCommandTest())
             {
@@ -169,14 +220,30 @@ public partial class App : Application
         services.AddSingleton(loadedConfiguration.GoldDigitTemplates);
         services.AddSingleton(loadedConfiguration.Phase2IconTemplates);
         services.AddSingleton(loadedConfiguration.Community);
-        services.AddSingleton<IGameWindowService, GameWindowService>();
+        // 帧沙箱：4 个基础设施实现换装（决策/操作/识别零改动，见可行性案 §一）。
+        if (frameSandboxWindowService is not null)
+        {
+            services.AddSingleton<IGameWindowService>(frameSandboxWindowService);
+        }
+        else
+        {
+            services.AddSingleton<IGameWindowService, GameWindowService>();
+        }
         // 单例 IGameCapture 由记录器（Phase2LiveCollectionService）与刷开局链路共用。
         // 2026-08-05 曾尝试给记录器配独立实例（"recorder-capture"）避免饿死，但
         // WindowsGraphicsGameCapture 双实例并行对同一窗口不稳定（0.2.829 实测
         // 1-4 战斗页后记录器卡死，checkpoint 无更新）——已回滚。
         // 正确的根治方案是统一识别流（一个捕获器+一个识别器，数据分发），见
         // docs/PENDING_USER_FIXES.md 第 1 项步骤 3/4。
-        services.AddSingleton<IGameCapture, WindowsGraphicsGameCapture>();
+        if (frameSandboxPlayer is not null)
+        {
+            services.AddSingleton<IGameCapture>(new FileSequenceGameCapture(
+                frameSandboxPlayer.AcquireFrame));
+        }
+        else
+        {
+            services.AddSingleton<IGameCapture, WindowsGraphicsGameCapture>();
+        }
         services.AddSingleton<ITemplateMatcher, OpenCvTemplateMatcher>();
         services.AddSingleton<
             ICharacterCardRecognizer>(
@@ -256,9 +323,26 @@ public partial class App : Application
         });
         services.AddSingleton<Phase2RecognitionWarmUpService>();
         services.AddSingleton<IOcrOpeningPageReader, OcrOpeningPageReader>();
-        services.AddSingleton<IGameForegroundGuard, GameForegroundGuard>();
+        if (frameSandboxWindowService is not null)
+        {
+            services.AddSingleton<IGameForegroundGuard>(
+                new AlwaysForegroundGuard(frameSandboxWindowService));
+        }
+        else
+        {
+            services.AddSingleton<IGameForegroundGuard, GameForegroundGuard>();
+        }
+
         services.AddSingleton<IPassiveRecoveryMonitor, PassiveRecoveryMonitor>();
-        services.AddSingleton<IInputController, Win32InputController>();
+        if (frameSandboxPlayer is not null)
+        {
+            services.AddSingleton<IInputController>(
+                new RecordingInputController(frameSandboxPlayer));
+        }
+        else
+        {
+            services.AddSingleton<IInputController, Win32InputController>();
+        }
         services.AddTransient<UnknownPageEscapeRecovery>();
         services.AddSingleton<OpeningFilterEvaluator>();
         services.AddSingleton<InitialRewardFormationPlanner>();
@@ -438,6 +522,17 @@ public partial class App : Application
         if (commandTestMode)
         {
             var testWindow = _services.GetRequiredService<CommandTestWindow>();
+            if (frameSandboxPlayer is not null)
+            {
+                // 沙箱产物隔离（可行性案 §五.2）：识别会话 run 目录用 sandbox 前缀，
+                // 不与实局历史混放。
+                testWindow.CollectionRunIdPrefix = "sandbox";
+                testWindow.NotifyFrameSandbox(
+                    "帧沙箱模式：决策/操作/识别已换装沙箱实现，游戏窗口=脚本帧序列。" +
+                    $"当前进度见 {frameSandboxPlayer.OutputDirectory} 下的 " +
+                    "sandbox-ops.jsonl / sandbox-violations.jsonl / sandbox-verdict.txt。");
+            }
+
             MainWindow = testWindow;
             testWindow.Show();
             StartSingleInstanceActivationListener();

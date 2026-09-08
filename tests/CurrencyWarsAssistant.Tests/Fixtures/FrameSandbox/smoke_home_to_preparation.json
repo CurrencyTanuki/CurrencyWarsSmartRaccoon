@@ -1,0 +1,77 @@
+{
+  "name": "smoke_home_to_preparation",
+  "defaultMaxWaitSeconds": 120,
+  "steps": [
+    {
+      "image": "../PageReplay/normal_hud.jpg",
+      "maxWaitSeconds": 180,
+      "expect": [
+        { "op": "clickwithmodifier", "near": [1598, 45], "modifier": "leftalt", "note": "M8：Alt+点击打开星际和平指南（navigation-flow open_guide）" }
+      ]
+    },
+    {
+      "image": "../PageReplay/guide_shell.jpg",
+      "expect": [
+        { "op": "click", "near": [602, 211], "note": "切换到货币战争页签（select_third_tab）" }
+      ]
+    },
+    {
+      "image": "../PageReplay/guide_currency_wars.jpg",
+      "expect": [
+        { "op": "click", "near": [1492, 878], "note": "前往参与货币战争（participate_currency_wars）" },
+        { "op": "presskey", "key": "f", "note": "按 F 触发交互（第1次）" },
+        { "op": "presskey", "key": "f", "note": "按 F 触发交互（第2次补触发）" },
+        { "op": "presskey", "key": "f", "note": "按 F 触发交互（第3次补触发）" }
+      ]
+    },
+    {
+      "image": "../PageReplay/update_popup.jpg",
+      "expect": [
+        { "op": "presskey", "key": "escape", "note": "关闭更新说明弹框" }
+      ]
+    },
+    {
+      "image": "../PageReplay/score_popup.jpg",
+      "expect": [
+        { "op": "presskey", "key": "escape", "note": "关闭积分奖励弹框" }
+      ]
+    },
+    {
+      "image": "../PageReplay/currency_wars_home.jpg",
+      "expect": [
+        { "op": "click", "near": [1590, 976], "note": "开始货币战争（start_currency_wars）" }
+      ]
+    },
+    {
+      "image": "../PageReplay/mode_selection.jpg",
+      "expect": [
+        { "op": "click", "near": [1690, 967], "note": "快速刷开局：盲点连点开始本局位置（FastStartRunPoint），本帧被盲点击中" }
+      ]
+    },
+    {
+      "image": "../PageReplay/rank_difficulty.jpg",
+      "expect": [
+        { "op": "click", "near": [1690, 967], "note": "快速刷开局盲点连点覆盖职级难度页，同一位置被继续点击" }
+      ]
+    },
+    {
+      "image": "../PageReplay/enemy_overview.jpg",
+      "expect": [
+        { "op": "click", "near": [1514, 985], "note": "确认敌人概览（enemy_overview_next）；随后同位置盲点连点3秒=已满足期望的重复，不算违规" }
+      ]
+    },
+    {
+      "image": "frames/investment_environment_hit_019_1920.png",
+      "maxWaitSeconds": 180,
+      "expect": [
+        { "op": "click", "near": [960, 530], "note": "命中命运圣杯邀请(019)在第2卡：选中该卡（ResolveInvestmentSelectionAction→InvestmentOptionPoints[1]）" },
+        { "op": "click", "near": [1083, 984], "note": "确认投资环境（confirm_investment）" }
+      ]
+    },
+    {
+      "image": "../PageReplay/preparation_1_1.jpg",
+      "expect": [],
+      "note": "终局帧：M8 命中后停靠 1-1 备战席（坑3 停靠点口径）。到达即 PASS，后续操作不再判定"
+    }
+  ]
+}

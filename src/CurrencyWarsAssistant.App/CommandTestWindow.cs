@@ -106,8 +106,12 @@ public sealed class CommandTestWindow : Window
     private CancellationTokenSource? _decisionCts;
     private Task? _decisionTask;
     /// <summary>autodecide 挂机武装标志：置位=游戏窗口就绪即自动下发 DECIDE，
-    /// 且决策层意外结束后自动重新等待；用户显式 DECIDE 停止/关窗时解除。</summary>
+    /// 且决策层意外结束后自动重新等待；用户显式 DECIDE 停止/关窗时解除武装。</summary>
     private bool _autoDecideArmed;
+
+    /// <summary>识别会话 runId 前缀：正式测试台=cmdtest；帧沙箱模式由 App 置为
+    /// sandbox（可行性案 §五.2：沙箱产物与实局历史隔离）。</summary>
+    public string CollectionRunIdPrefix { get; set; } = "cmdtest";
 
     public CommandTestWindow(
         GameDataCatalog gameData,
@@ -1216,6 +1220,10 @@ public sealed class CommandTestWindow : Window
 
     // ---- 识别会话 ----
 
+    /// <summary>帧沙箱模式启动横幅（App 在显示窗口前调用）：把沙箱状态写进日志框，
+    /// 让值守从窗口即可确认当前实例是沙箱而非实机。</summary>
+    internal void NotifyFrameSandbox(string message) => AppendLog(message);
+
     private void StartCollectionAsync()
     {
         if (_collectionTask is not null && !_collectionTask.IsCompleted)
@@ -1234,7 +1242,7 @@ public sealed class CommandTestWindow : Window
         }
 
         _collectionCts = new CancellationTokenSource();
-        var runId = $"cmdtest-{DateTimeOffset.Now:yyyyMMdd-HHmmss}";
+        var runId = $"{CollectionRunIdPrefix}-{DateTimeOffset.Now:yyyyMMdd-HHmmss}";
         _collectionTask = _collectionService.RunAsync(
             window.Handle,
             new AdvisorSelection(AdvisorMode.Auto, "stable", "4.4"),

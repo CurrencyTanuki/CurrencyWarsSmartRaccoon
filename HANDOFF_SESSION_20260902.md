@@ -15,7 +15,16 @@
 - **环境终态**：软件运行中（PID 2540,DECIDE 停止）；游戏运行中（主界面）；C 盘剩余 25GB（凌晨曾满=通宵停滞/任务异常停止/jsonl 0 字节的统一根因,详见 〇-c）；**磁盘水位每小时检查=新值守制度**（记忆 29 条）。
 - **下一班主任务（用户令）**：**开发帧沙箱 Phase 1 骨架**（用户原话"下一步任务就是开发之前的那一个沙箱"）——按 docs/SANDBOX_FEASIBILITY_20260908.md 设计执行：--frame-sandbox 参数+FileSequenceGameCapture/RecordingInputController/StubWindowService/AlwaysForegroundGuard 四实现+脚本加载/裁判/违规输出+PageReplay 夹具冒烟脚本。待用户拍板：五费聘用书帧来源（a 抽帧/b 合成/c 等真帧）。
 
-### 09-08 上半夜增量（历史记录,最新状态见〇-2 归档）
+### 09-08 帧沙箱班增量（本次交接最新状态）
+
+- **帧沙箱 Phase 1 骨架已交付（用户令"开发之前的那一个沙箱"）**：`--frame-sandbox <脚本.json>` 启动分支（与 --command-test 同族）+DI 层换 4 个基础设施实现（Vision: FileSequenceGameCapture 按裁判当前步回 PNG 帧/StubWindowService 假窗口 1920×1080 前台恒真；Automation: RecordingInputController 全操作记录交裁判恒回 Success/AlwaysForegroundGuard 恒放行）+裁判=驱动器 FrameSandboxPlayer（App/FrameSandbox/：期望全满足才切帧/脚本外操作=违规/步超时=FAILED/终局帧到达=PASS；重复操作容差=匹配既往期望但上限 200 破线记违规；产物 sandbox-ops.jsonl/sandbox-violations.jsonl/sandbox-verdict.txt 带 FileShare.ReadWrite 可边跑边读，默认落 %LOCALAPPDATA%\CurrencyWarsSmartRaccoon\sandbox\run-*）。**决策/操作/识别代码零改动**；单实例互斥对沙箱旁路（必须从非稳定目录启动=bin\Debug 天然隔离命令通道）。使用说明+整改记录：docs/SANDBOX_PHASE1_USAGE_20260908.md。
+- **冒烟脚本**：tests/CurrencyWarsAssistant.Tests/Fixtures/FrameSandbox/smoke_home_to_preparation.json——11 步主界面→命中 019→1-1 备战停；帧=PageReplay 1920×1080 夹具 10 张+真实命中环境页帧（视频 2《A850 三星昔涟》第 1 秒，**019 命运圣杯邀请在 slot1**→软件应点 (960,530) 选中+(1083,984) 确认，双验证=分类器 96.9%+OcrOpeningPageReader 三槽 100%）；provenance.txt 记录来源与教训。
+- **测试**：FrameSandbox 30/30（脚本加载负例/裁判语义/四件套/冒烟回放 PASS+偏离判违规/帧级分类器守卫每帧过真分类器）+Grail 短套件 120/120+DI 守卫 7/7+启动识别面 158 过 3 既有 Skip。构建 0 警告 0 错误。
+- **对抗审查闭环（两轮）**：首轮 FAIL（1×P1：命中帧误用备战页截图——"分析 JSON 提到 067"≠"截图是环境页时刻"；3×P2+6×P3）→全部整改（换真帧 019+坐标 960,530+悬空参数报错+重复上限 200+帧级守卫测试+jsonl 中文直读+Dispose 防截断+参数冲突拒绝+单终局步拒绝）→**复核 APPROVED（零 P1/P2 遗留）**。复核遗留 4 条 P3 备案：①帧级守卫只验页面分类未验 OCR 槽位（Phase 2 补槽位断言）；②新帧含水印/字幕（管线验证无害，Phase 2 黄金样本换干净帧）；③**既有死代码备案：CurrencyWarsNavigation.cs:647-657 投资环境快速复点分支条件恒假（id 已被 :1339-1354 重写），"0.05s 复点"加速意图从未生效，Phase 2 修导航时一并处理**；④Dispose 后 ops 静默丢弃（P3-2 合理代价）。
+- **沙箱 E2E 实跑未做（须用户当场授权启动实例）**：跑法=从 bin\Debug\net8.0-windows10.0.19041.0 启动 `--frame-sandbox <脚本>` → 指令文件写 START → 写 DECIDE 开始 → 读 sandbox-verdict.txt。exe 需管理员（计划任务族或用户在场 UAC）。
+- **挂账**：①Phase 2 常规全路径脚本（runs screenshots 拼帧，人工拼帧为主）；②Phase 3 五费聘用书试炼段——**帧来源三选项仍待用户拍板**（可行性案 §三）；③全帧级端到端（真导航器+真识别流跑冒烟脚本）未做——现回放测试为操作流级+帧级分类守卫两层，识别→决策贯通要靠 E2E 实跑；④录像命名陈旧 temp 段名（1.2.113 风险族）让"按文件名推录像时间窗"不可靠（本次考古踩过：`_20260907_201116` 后缀非真实起始）。
+
+### 09-08 上半夜增量（历史记录,最新状态见上方帧沙箱班增量）
 
 - **🔴 启动静默已定性=启动模式错误，非代码回归**：09-07 14:33~18:15 全部 7 个"静默"实例（14:33/14:47/14:51/18:03/18:08/18:10/18:15）jsonl 首事件=OpeningFilterSelectionsLoaded=**MainViewModel 专属签名=普通模式（无 --command-test）启动**；普通模式天然不消费指令文件+提权杀不掉+占单实例锁令后续计划任务实例 12 秒自退（jsonl 0 字节）。command-test 签名=首事件 Phase2RecognitionWarmUpCompleted（22:22 健康局与 23:31 实例均如此）。**上一班的 DI 二分撤回前提被推翻，已恢复被撤回的两注册（closeShop Func+IWishTrialPopupHandler）**。
 - **autodecide 挂机补全（09-08 代码）**：23:31 取证证明原实现无窗口时 DECIDE 直接失败返回，"开机开游戏自动继续刷局"不成立——已实现等窗循环（20s 探测，窗口就绪经 UI 线程自动 DECIDE；决策层结束后 10s 重新武装；DECIDE 停止/关窗解除武装）。构建 0/0+涉事测试 161/161。

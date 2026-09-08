@@ -158,8 +158,23 @@
     },
     {
       "image": "../PageReplay/reward_shop_after_two_purchases.jpg",
-      "expect": [],
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1620,
+            975
+          ],
+          "tol": 30,
+          "note": "M5 循环读货架后收摊：无白名单目标→关店（ops 实测 02:53:53 ×3 有界重试）"
+        }
+      ],
       "note": "发现轮终局：观察循环模式读货架/刷新/收摊的真实操作"
+    },
+    {
+      "image": "../PageReplay/preparation_1_3_after_shop_2559x1439.png",
+      "expect": [],
+      "note": "终局帧：循环收摊回备战页=1-3 备战段主流链 PASS"
     }
   ]
 }

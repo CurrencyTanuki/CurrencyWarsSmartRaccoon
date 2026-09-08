@@ -1,0 +1,135 @@
+{
+  "name": "branch_strategy_leftmost",
+  "defaultMaxWaitSeconds": 120,
+  "steps": [
+    {
+      "image": "../PageReplay/preparation_1_1.jpg",
+      "maxWaitSeconds": 150,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1790,
+            750
+          ],
+          "tol": 150,
+          "note": "1-1 出战（M1 点击出战按钮）"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/challenge_success_1_1.jpg",
+      "maxWaitSeconds": 150,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            960,
+            899
+          ],
+          "note": "1-1 胜利结算推进"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/shop_open_1_2.jpg",
+      "maxWaitSeconds": 150,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1620,
+            975
+          ],
+          "tol": 60,
+          "note": "M5 空店收摊：点收起商店（ops 实测坐标；无货不空转=rule四.9）"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/preparation_1_2.jpg",
+      "maxWaitSeconds": 150,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1790,
+            750
+          ],
+          "tol": 150,
+          "note": "1-2 出战（商店自动弹开无需点开——首版误加开商店期望）"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/challenge_success_1_1.jpg",
+      "maxWaitSeconds": 150,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            960,
+            899
+          ],
+          "note": "1-2 胜利结算推进（复用结算帧）"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/investment_strategy.jpg",
+      "maxWaitSeconds": 180,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            390,
+            850
+          ],
+          "tol": 60,
+          "note": "N11：刷新第 1 张策略卡（树明文'点击刷新之后选最左'）"
+        },
+        {
+          "op": "click",
+          "near": [
+            890,
+            850
+          ],
+          "tol": 60,
+          "note": "刷新第 2 张"
+        },
+        {
+          "op": "click",
+          "near": [
+            1390,
+            850
+          ],
+          "tol": 60,
+          "note": "刷新第 3 张"
+        },
+        {
+          "op": "click",
+          "near": [
+            460,
+            350
+          ],
+          "tol": 60,
+          "note": "刷新后仍全未命中：选最左（空仓）"
+        },
+        {
+          "op": "click",
+          "near": [
+            960,
+            985
+          ],
+          "tol": 60,
+          "note": "确认投资策略"
+        }
+      ]
+    },
+    {
+      "image": "../PageReplay/reward_shop_after_two_purchases.jpg",
+      "expect": [],
+      "note": "终局帧：1-3 选完策略弹商店=选最左分支 PASS"
+    }
+  ]
+}

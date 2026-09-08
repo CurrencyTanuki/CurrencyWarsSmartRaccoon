@@ -1209,7 +1209,8 @@ public sealed class GrailDecisionEngine(
                     new GrailCommand(GrailCommandKind.A2,
                         new GrailPositionArgs(
                             target.IsBack ? PreparationLane.Back : PreparationLane.Front,
-                            target.SlotNumber - 1)),
+                            target.SlotNumber - 1,
+                            target.Name)),
                     window, ct);
             if (sell.Error is not null)
             {
@@ -1231,8 +1232,11 @@ public sealed class GrailDecisionEngine(
 
             if (!VerifySaleApplied(verify, target))
             {
+                var slotDisplay = target.Kind == SellTargetKind.Bench
+                    ? target.SlotNumber + 1  // A3 文本按 1 基显示，复核文案同基防"卖4查3"歧义
+                    : target.SlotNumber;
                 emit($"[决策层] 卖出「{target.Name}」复核未通过（{target.Kind} " +
-                     $"{target.SlotNumber} 号位状态与预期不符）——反证即停，交对账。");
+                     $"{slotDisplay} 号位状态与预期不符，可能为卖出未生效或同名位移）——反证即停，交对账。");
                 break;
             }
 
@@ -1912,7 +1916,19 @@ public sealed class GrailDecisionEngine(
 
         if (m1.Error is not null)
         {
-            _lastAbandonReason = "出战失败:S2 M1 两败（含祈愿应答重试）"; // P2-2 弃局标签真实化
+            // P3-G（2026-09-08 下午批：两败局全程 血=? 对账盲区）：判死前强制读血——
+            // 血量是"还剩多少败北空间"的唯一依据，读不到也要在弃局标签里显式声明盲区。
+            var healthCheck = await SnapshotWithRetryAsync(window, ct);
+            if (healthCheck?.TeamHealth is { } knownHealth)
+            {
+                _lastKnownTeamHealth = knownHealth;
+                _lastAbandonReason = $"出战失败:S2 M1 两败（含祈愿应答重试，判死时血={knownHealth}）";
+            }
+            else
+            {
+                _lastAbandonReason = "出战失败:S2 M1 两败（含祈愿应答重试，判死时血量不可读）";
+            }
+
             return PreparationOutcome.Dead; // 战斗未推进：外层弃局重开
         }
 
@@ -1986,7 +2002,18 @@ public sealed class GrailDecisionEngine(
 
         if (m1.Error is not null)
         {
-            _lastAbandonReason = "出战失败:S3 M1 两败（含祈愿应答重试）"; // P2-2 弃局标签真实化
+            // P3-G（同 S2）：判死前强制读血，血量进弃局标签（对账不再缺失）。
+            var healthCheckS3 = await SnapshotWithRetryAsync(window, ct);
+            if (healthCheckS3?.TeamHealth is { } knownHealthS3)
+            {
+                _lastKnownTeamHealth = knownHealthS3;
+                _lastAbandonReason = $"出战失败:S3 M1 两败（含祈愿应答重试，判死时血={knownHealthS3}）";
+            }
+            else
+            {
+                _lastAbandonReason = "出战失败:S3 M1 两败（含祈愿应答重试，判死时血量不可读）";
+            }
+
             return PreparationOutcome.Dead; // 战斗未推进：外层弃局重开
         }
 

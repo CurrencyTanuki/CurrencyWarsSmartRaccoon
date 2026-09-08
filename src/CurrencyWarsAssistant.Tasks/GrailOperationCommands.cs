@@ -83,20 +83,37 @@ public sealed class GrailOperationCommands(
         }
 
         var label = $"{(args.Lane == PreparationLane.Front ? "前台" : "后台")}{args.SlotIndex + 1}号位角色";
+        // P1-C（2026-09-08 下午批）：期望名进操作层做拖前身份比对（防模型漂移误卖）；
+        // 无期望名（旧调用方）时 GrailDeployedCharacter.Name 保持槽位标签=跳过比对。
+        var expectedName = string.IsNullOrWhiteSpace(args.ExpectedCharacterName)
+            ? label
+            : args.ExpectedCharacterName;
         var outcome = await preparationBoard.GrailSellDeployedCharacterAsync(
             context.WindowHandle,
-            new GrailDeployedCharacter(label, IsBondMember: false, IsFiveCost: false, region, SaleValue: 0),
+            new GrailDeployedCharacter(expectedName, IsBondMember: false, IsFiveCost: false, region, SaleValue: 0),
             context.PreparationPageId,
-            cancellationToken);
+            cancellationToken,
+            backRow: args.Lane == PreparationLane.Back);
         if (outcome.Sold)
         {
             return GrailCommandResult.Ok(command.Kind, $"已出售{label}。");
         }
 
+        if (outcome.IdentityMismatch)
+        {
+            // P1-C：引擎台账与画面身份不符（1-3 试用卡轮换/系统重排致占用模型漂移）——
+            // 拒绝拖拽防误卖；决策层收到失败后应 I10 重对账而非重发同槽。
+            return GrailCommandResult.Fail(command.Kind,
+                $"{label}身份不符：画面该槽位角色与台账「{expectedName}」不一致——" +
+                "疑似占用模型漂移，已拒绝拖拽防误卖；请 I10 重对账后重试。");
+        }
+
         if (outcome.AlreadyGone)
         {
-            // 坑38 批次：槽位已空=此前可能已卖出成功，如实回事实（不算失败，绝不再拖）。
-            return GrailCommandResult.Ok(command.Kind, $"{label}槽位已空（此前可能已卖出成功），未执行拖拽。");
+            // 坑38 批次：槽位已空=此前可能已卖出成功，也可能台账漂移指向了空槽——
+            // 不算失败、绝不再拖，但文案明示"未确认卖出"，交决策层 I10 对账定夺。
+            return GrailCommandResult.Ok(command.Kind,
+                $"{label}槽位已空——未能确认「{expectedName}」此前是否卖出生效，未执行拖拽；请 I10 对账。");
         }
 
         return GrailCommandResult.Fail(command.Kind, $"{label}出售拖放未完成或结果不确定（详见事件日志 GrailDeployedSale*）；请用 I10/截图复核后再决定是否重发。");

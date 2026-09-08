@@ -52,7 +52,9 @@ public sealed record GrailCharacterArgs(string CharacterName);
 
 /// <summary>A2 出售场上角色（位置语义，2026-09-02 用户设计定案）：前台/后台 + 槽位号（1 基）。
 /// 操作层按标准槽位几何直接拖出售区——不依赖识别卡位、不做名称反查。</summary>
-public sealed record GrailPositionArgs(PreparationLane Lane, int SlotIndex);
+/// <summary>ExpectedCharacterName=引擎台账认为该槽位的角色名（2026-09-08 P1-C：
+/// 操作层拖前做卡面身份比对防模型漂移误卖；空=跳过比对维持位置语义）。</summary>
+public sealed record GrailPositionArgs(PreparationLane Lane, int SlotIndex, string? ExpectedCharacterName = null);
 
 /// <summary>A3 出售备战席角色（位置语义）：备战席槽位号（1 基，1-9）。</summary>
 public sealed record GrailBenchSlotArgs(int SlotIndex);

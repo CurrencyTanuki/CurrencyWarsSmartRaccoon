@@ -344,6 +344,11 @@ public sealed class Phase2LiveCollectionService(
                 {
                     // STOP 竞态（等待期间会话被取消）：不发布看门狗错误，直接走正常取消收尾。
                     cancellationToken.ThrowIfCancellationRequested();
+                    WriteStallDiagnostics(
+                        runId,
+                        "frame-flow-freeze",
+                        lastFreshAnalysisAt,
+                        pipeline.CaptureLoopStatistics);
                     if (await ShutdownFrozenPipelineAsync(
                             $"识别流看门狗：{FrameFlowWatchdogTimeout.TotalSeconds:F0} 秒未收到任何帧" +
                             "（含心跳与失败帧），判定识别管线冻结；记录器已暂停，" +
@@ -374,6 +379,16 @@ public sealed class Phase2LiveCollectionService(
                 {
                     var analysisStaleness =
                         DateTimeOffset.UtcNow - lastFreshAnalysisAt;
+                    if (analysisStaleness >= FreshAnalysisWatchdogTimeout)
+                    {
+                        // P1-H：死态取证转储（判停前落快照，区分捕获/分析/会话三层断点）。
+                        WriteStallDiagnostics(
+                            runId,
+                            "fresh-analysis-stall",
+                            lastFreshAnalysisAt,
+                            pipeline.CaptureLoopStatistics);
+                    }
+
                     if (analysisStaleness >= FreshAnalysisWatchdogTimeout &&
                         await ShutdownFrozenPipelineAsync(
                             $"新鲜度看门狗：心跳仍在续传，但已 " +
@@ -1869,6 +1884,53 @@ public sealed class Phase2LiveCollectionService(
         }
 
         Add(events, analysis, eventType, suffix, observation);
+    }
+
+    /// <summary>
+    /// P1-H（2026-09-08 下午批 3 次死态取证）：识别分析挂起/帧流冻结触发时，
+    /// 把捕获层/分析层/会话代际三层计数快照写入 runs\stall-diagnostics-latest.txt
+    /// （固定名覆盖=有界；junction 后落 D 盘；写失败静默容忍——诊断绝不二次伤害主流程）。
+    /// 字段设计目标：一次死态即可区分断点在捕获层（FrameArrivals 停）、
+    /// 分析层（Arrivals 涨而 FreshAnalysis 停）还是会话切换层（Rebuilds 增）。
+    /// </summary>
+    private void WriteStallDiagnostics(
+        string runId,
+        string trigger,
+        DateTimeOffset lastFreshAnalysisAt,
+        CaptureLoopStatsSnapshot? captureStats)
+    {
+        var streamStatsForDiagnostics = capture.StreamStats;
+        try
+        {
+            var dir = Path.Combine(store.RootDirectory, "stall-diagnostics");
+            Directory.CreateDirectory(dir);
+            var path = Path.Combine(dir, "stall-diagnostics-latest.txt");
+            var lines = new[]
+            {
+                $"trigger={trigger}",
+                $"at={DateTimeOffset.UtcNow:O}",
+                $"lastFreshAnalysisAt={lastFreshAnalysisAt:O} (utc)",
+                $"analysisStalenessSec={(DateTimeOffset.UtcNow - lastFreshAnalysisAt).TotalSeconds:F0}",
+                $"capture.Successes={captureStats?.Successes}",
+                $"capture.Failures={captureStats?.Failures}",
+                $"capture.ConsecutiveFailures={captureStats?.ConsecutiveFailures}",
+                $"capture.LastSuccessAt={captureStats?.LastSuccessAt:O}",
+                $"capture.IntervalMs Last/Avg/Max={captureStats?.LastIntervalMs:F0}/{captureStats?.AverageIntervalMs:F0}/{captureStats?.MaxIntervalMs:F0}",
+                // 会话代际（1.2.96 诊断口径）：SessionCreations/Rebuilds 在 IGameCapture.StreamStats（若实现提供）。
+                $"streamStats={streamStatsForDiagnostics?.ToString() ?? "null"}",
+            };
+            File.WriteAllLines(path, lines);
+            Publish(
+                runId,
+                0,
+                null,
+                $"识别管线挂起诊断快照已写入 {path}。",
+                isError: true);
+        }
+        catch
+        {
+            // 诊断写失败绝不二次伤害主流程（P1-H 审查条件：写失败容忍）。
+        }
     }
 
     private void Publish(

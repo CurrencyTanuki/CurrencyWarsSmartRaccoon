@@ -464,7 +464,8 @@ public sealed partial class PreparationBoardController
         nint windowHandle,
         GrailDeployedCharacter candidate,
         string expectedPreparationPageId,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        bool backRow = false)
     {
         if (candidate.CardRegion is not { } region)
         {
@@ -487,7 +488,16 @@ public sealed partial class PreparationBoardController
             // 绝不空拖——2026-09-03 实测"已卖出后仍连拖 6 次"的直接根因。
             // 识别器契约=1920×1080 参考系矩形（审查 P1：CardRegion 相对参考系而非帧像素）。
             var slotReferenceRect = RegionToReferenceRect(region);
-            var slotBefore = recognizer.Recognize(captured.Value.Frame, templates, [slotReferenceRect])[0];
+            // 终审 P2-1：后台槽与快照管线同口径用 BackRow 选项（6px 内缩+lenient 阈值）
+            // ——默认 Standard 在后台能量特效污染下大概率判 Uncertain→比对被跳过→保护失效。
+            var slotOptions = backRow
+                ? CharacterCardRecognitionOptions.Standard with { BackRow = true }
+                : CharacterCardRecognitionOptions.Standard;
+            var slotBefore = recognizer.Recognize(
+                captured.Value.Frame,
+                templates,
+                [slotReferenceRect],
+                slotOptions)[0];
             if (slotBefore.State == CharacterCardSlotState.Empty)
             {
                 await Task.Delay(TimeSpan.FromMilliseconds(250), cancellationToken);
@@ -507,6 +517,41 @@ public sealed partial class PreparationBoardController
                         $"出售“{candidate.Name}”前复核发现目标槽位连续两帧为空（可能此前已卖出成功），按已完成处理，不再拖动。");
                     return new GrailDeployedSaleResult(false, true);
                 }
+            }
+
+            // 坑 34 双源确认落地（2026-09-08 下午批 P1-C：模型漂移误卖实锤——引擎台账说
+            // "F2=黑塔"，实际黑塔在备战席、该槽站着别的卡，位置语义拖拽把无辜卡拖走）：
+            // 拖前把槽位卡面识别读到的名字与决策层传入的期望名比对，不符=拒绝拖拽交对账。
+            // 期望名为空（旧调用方）或识别不可读（Uncertain/无名，四.14：1 费名混淆常态）时
+            // 不因识别抖动卡死流程，维持位置语义放行但留审计事件。
+            if (slotBefore.State == CharacterCardSlotState.SpecialOccupied)
+            {
+                // rule 四.15a：武装箱/聘用书箱=特殊占用位，绝不出售。
+                Publish(
+                    TaskEventLevel.Warning,
+                    "GrailDeployedSaleIdentityMismatch",
+                    $"出售“{candidate.Name}”前复核发现目标槽位是特殊占用位（武装箱/聘用书箱族）" +
+                    "——拒绝拖拽（rule 四.15a）。");
+                return new GrailDeployedSaleResult(false, false, IdentityMismatch: true);
+            }
+
+            // 终审 P2-2：比对门用 State==Recognized（识别器已带 lead-over/lenient 阈值门，
+            // 佩佩 0.472/银狼 0.39 等变费角色判 Recognized 但 conf<0.5——自设 0.5 会让
+            // 这类角色的槽位漂移保护失效）。
+            if (slotBefore.State == CharacterCardSlotState.Recognized &&
+                !string.IsNullOrWhiteSpace(slotBefore.DisplayName) &&
+                !string.IsNullOrWhiteSpace(candidate.Name) &&
+                !candidate.Name.StartsWith("前台", StringComparison.Ordinal) &&
+                !candidate.Name.StartsWith("后台", StringComparison.Ordinal) &&
+                !GrailSaleIdentityMatcher.NameMatches(candidate.Name, slotBefore.DisplayName))
+            {
+                Publish(
+                    TaskEventLevel.Warning,
+                    "GrailDeployedSaleIdentityMismatch",
+                    $"出售“{candidate.Name}”前复核发现目标槽位实际是「{slotBefore.DisplayName}」" +
+                    $"（识别置信 {slotBefore.Confidence:P0}）——引擎占用模型与画面不符，" +
+                    "拒绝拖拽防误卖；请对账重建部署台账后重试。");
+                return new GrailDeployedSaleResult(false, false, IdentityMismatch: true);
             }
 
             // CardRegion 是 0..1 相对窗口客户区的卡牌区域（识别层 ToRelative 回填），
@@ -768,4 +813,26 @@ public sealed record GrailSellResult(int SoldCount, int EstimatedGold, bool Targ
 /// 场上单卡卖出结果（坑38 批次）：Sold=本次确认卖出；AlreadyGone=槽位已空（此前已卖出，
 /// 按已完成处理，调用方不计金不中断）；两者皆否=未卖出/不确定。
 /// </summary>
-public sealed record GrailDeployedSaleResult(bool Sold, bool AlreadyGone);
+/// <summary>IdentityMismatch=拖前槽位卡面识别与引擎台账名字不符（1-3 试用卡轮换/系统重排
+/// 会导致占用模型漂移）——拒绝拖拽防误卖（坑 34 双源确认落地，2026-09-08 下午批 P1-C）。</summary>
+/// <summary>卖出身份比对：中点/空白规范化后全等（忽略大小写）。
+/// 刻意不用前缀包含——「姬子」与「姬子•启行」是不同角色（character_42 vs _01），
+/// 前缀包含会把误卖放行成"相符"。识别名与台账名同源官方数据，全等即足。</summary>
+public static class GrailSaleIdentityMatcher
+{
+    public static bool NameMatches(string expected, string recognized)
+    {
+        static string Norm(string s) => s.Replace(" ", string.Empty)
+            .Replace("·", string.Empty).Replace("•", string.Empty).Trim();
+        var e = Norm(expected);
+        var r = Norm(recognized);
+        if (e.Length == 0 || r.Length == 0)
+        {
+            return true; // 无法比对时不据此拒绝（调用方已保证空名走放行分支）
+        }
+
+        return string.Equals(e, r, StringComparison.OrdinalIgnoreCase);
+    }
+}
+
+public sealed record GrailDeployedSaleResult(bool Sold, bool AlreadyGone, bool IdentityMismatch = false);

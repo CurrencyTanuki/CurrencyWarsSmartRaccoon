@@ -346,6 +346,13 @@ public sealed partial class PreparationBoardController
                                 $"点选模式装配成功——星徽已不在物品栏（第 {attempt}/3 次）。");
                             return true;
                         }
+
+                        // P1-A（2026-09-09 修复批）：点选被拒=拒绝横幅在屏——目标已携带
+                        // 同羁绊星徽，装配目标已达成，立即停止（防后续 attempts 继续重击）。
+                        if (await IsBadgeRejectionBannerUpAsync(afterSelect.Value.Frame, cancellationToken))
+                        {
+                            return true;
+                        }
                     }
                 }
 
@@ -414,6 +421,12 @@ public sealed partial class PreparationBoardController
                         TaskEventLevel.Warning,
                         "GrailBadgeAssemblyRetry",
                         $"拖后星徽仍在物品栏（质心=({remainingCenter.X},{remainingCenter.Y})，模板分 {remainingScore:F2}），第 {attempt}/3 次未装上，重试。");
+                    // P1-A（2026-09-09 修复批）：拒绝横幅在屏=游戏判定目标已携带同羁绊
+                    // 星徽——重试只会继续弹横幅（G15 实锤双横幅），如实上报停止重试。
+                    if (await IsBadgeRejectionBannerUpAsync(check.Value.Frame, cancellationToken))
+                    {
+                        return true;
+                    }
                     break;
                 }
 
@@ -435,6 +448,54 @@ public sealed partial class PreparationBoardController
                 "GrailBadgeAssemblyVerified",
                 "连续两帧未在物品栏定位到星徽，判定装配成功（取证帧已存 badge-evidence）。");
             return true;
+        }
+
+        return false;
+    }
+
+    // P1-A（2026-09-09 修复批）：装配拒绝横幅的 OCR 检测带（1920 参考系，顶部宽幅网扫）。
+    // 注：横幅正样本帧已随审计样本清理，无法做模板/区域精标——宽幅带+词组联合判定
+    // 是诚实上限：未命中时行为同现状不劣化，命中即止损（幂等预查仍是主防线）。
+    private static readonly PixelRect BadgeRejectionBannerRegion = new(360, 100, 1200, 120);
+
+    /// <summary>
+    /// 装配拒绝横幅检测（P1-A）：OCR 顶部横幅带并判「无法穿戴相同羁绊的星徽」词组。
+    /// 命中=目标已携带同羁绊星徽（装配目标已达成）。OCR 不可用/异常=未命中（不阻断）。
+    /// </summary>
+    private async Task<bool> IsBadgeRejectionBannerUpAsync(
+        CaptureFrame frame,
+        CancellationToken cancellationToken)
+    {
+        if (!ocr.IsAvailable)
+        {
+            return false;
+        }
+
+        try
+        {
+            var horizontalScale = frame.Width / (double)1920;
+            var verticalScale = frame.Height / (double)1080;
+            var region = new PixelRect(
+                (int)Math.Round(BadgeRejectionBannerRegion.X * horizontalScale),
+                (int)Math.Round(BadgeRejectionBannerRegion.Y * verticalScale),
+                (int)Math.Round(BadgeRejectionBannerRegion.Width * horizontalScale),
+                (int)Math.Round(BadgeRejectionBannerRegion.Height * verticalScale));
+            var text = await ocr.RecognizeAsync(frame, region, cancellationToken);
+            if (GrailBadgeAssemblyGuard.IsBadgeRejectionBannerText(text.Text))
+            {
+                Publish(
+                    TaskEventLevel.Warning,
+                    "GrailBadgeAssemblyRejected",
+                    $"装配被游戏拒绝（横幅 OCR：「{text.Text.ReplaceLineEndings(" ")}」）——目标已携带同羁绊星徽，停止重试按已携带上报。");
+                return true;
+            }
+        }
+        catch (Exception ocrError) when (ocrError is not OperationCanceledException)
+        {
+            Publish(
+                TaskEventLevel.Warning,
+                "GrailBadgeAssemblyBannerOcrFailed",
+                $"拒绝横幅 OCR 失败（不阻断重试判定）：{ocrError.Message}");
         }
 
         return false;

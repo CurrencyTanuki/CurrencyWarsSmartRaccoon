@@ -633,6 +633,38 @@
       ]
     },
     {
+      "id": "character_detail_popup",
+      "displayName": "角色详情面板（右侧残留框）",
+      "priority": 86,
+      "minimumAnchorMatches": 1,
+      "anchors": [
+        {
+          "id": "character_detail_details_btn",
+          "displayName": "详情按钮（底部操作行左，角色无关）",
+          "file": "templates/1920x1080/pages/character-detail-details-btn.png",
+          "searchRegion": {
+            "x": 0.71,
+            "y": 0.13,
+            "width": 0.28,
+            "height": 0.79
+          },
+          "threshold": 0.85
+        },
+        {
+          "id": "character_detail_equip_btn",
+          "displayName": "装备推荐按钮（角色无关）",
+          "file": "templates/1920x1080/pages/character-detail-equip-btn.png",
+          "searchRegion": {
+            "x": 0.71,
+            "y": 0.13,
+            "width": 0.28,
+            "height": 0.79
+          },
+          "threshold": 0.85
+        }
+      ]
+    },
+    {
       "id": "gala_star_bond_selection",
       "displayName": "盛会之星羁绊升档选择",
       "priority": 85,

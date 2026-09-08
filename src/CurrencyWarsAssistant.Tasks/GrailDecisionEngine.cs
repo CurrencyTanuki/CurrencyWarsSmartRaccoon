@@ -554,6 +554,73 @@ public sealed class GrailDecisionEngine(
         fact.BoughtCharacterNames?.Any(name => !string.Equals(
             name, GrailRunSnapshot.XilianName, StringComparison.Ordinal)) == true;
 
+    /// <summary>M5 买入的非昔涟成员数（P2-F 档位估算用上界：内部上场可能被跳过，
+    /// 高估只多开窗不漏检；DeployedFrontSlots 只记前台，后台兜底上场靠此上界覆盖）。</summary>
+    private static int CountM5BoughtNonXilian(GrailCommandResult? shopResult) =>
+        shopResult?.Payload is GrailShopPassFact fact && fact.BoughtCharacterNames is not null
+            ? fact.BoughtCharacterNames.Count(name => !string.Equals(
+                name, GrailRunSnapshot.XilianName, StringComparison.Ordinal))
+            : 0;
+
+    /// <summary>
+    /// 命运圣杯羁绊档位序（0 起）：2/3/4/5 人各激活一档、每档一次祈愿共 4 次
+    /// （GrailRunSnapshot.WishesResponded 口径）。1 人无档，5 人封顶。
+    /// </summary>
+    internal static int WishTierOf(int bondMemberCount) => bondMemberCount switch
+    {
+        >= 5 => 4,
+        >= 4 => 3,
+        >= 3 => 2,
+        >= 2 => 1,
+        _ => 0
+    };
+
+    /// <summary>
+    /// P2-F（2026-09-09 修复批）：部署/购买/装配后的祈愿 8 次窗门控判定。
+    /// 开窗条件=**当前估算档位 &gt; 已应答档数**（存在已激活未应答的档位→弹框在屏或
+    /// 延迟弹出；1.2.106 的"部署 2 名跨档而探针仅 1 次"病理在此分支下全盖）。
+    /// 估算=基线快照羁绊数 + 基线后的已知增量（部署段 bondDelta + 装配 +1 +
+    /// 可选的 M5 买入数上界）——高估只多开窗不漏检（安全方向）。台账不可信
+    /// （基线缺失/识别异常注记/基线早于最近盘面变异）→ 保守回退开窗。
+    /// <paramref name="applyRecentMutationDoor"/>：P2-2（审查修复）活门只在**外层**
+    /// 门控开启——外层基线与 M5 内部上场之间的变异未逐笔记账（识别滞后时基线
+    /// 帧可能早于 M5 变异而 CapturedAt 墙钟晚于它，双判据防时序恒真绕过）；
+    /// 部署环内的变异=本环 A1 部署本身，已由 bondDelta 逐笔计入，活门会把自己
+    /// 当未知变异恒触发保守窗（门控细化失效），故环内不启用。
+    /// 三兜底（M1 失败应答重试/A9 前应答/opening 泵）不裁撤。
+    /// </summary>
+    private bool IsWishWindowRequired(
+        GrailRunSnapshot? tierBaseline,
+        int bondDeltaSinceBaseline,
+        bool badgeAssembled,
+        bool includeM5Delta,
+        GrailCommandResult? m5Result,
+        bool applyRecentMutationDoor)
+    {
+        if (tierBaseline is null || !string.IsNullOrEmpty(tierBaseline.AnomalyNotes))
+        {
+            return true; // 台账不可信：保守回退 8 次窗
+        }
+
+        // P2-2（2026-09-09 审查修复）：CapturedAt 是组装墙钟非帧时刻，仅时间戳比对
+        // 会被"基线取在变异之后"的时序恒真绕过（识别滞后 19s+ 是本库反复实锤病理）；
+        // 外层叠加"最近 10s 内发生过盘面变异→基线可能拍在变异前"的活门，保守开窗。
+        if (applyRecentMutationDoor
+            && ((tierBaseline.CapturedAt is { } capturedAt
+                    && capturedAt < _lastBoardMutationAt)
+                || DateTimeOffset.Now - _lastBoardMutationAt < TimeSpan.FromSeconds(10)))
+        {
+            return true;
+        }
+
+        var estimated = tierBaseline.BondMemberCount
+            + Math.Max(0, bondDeltaSinceBaseline)
+            + (badgeAssembled ? 1 : 0)
+            + (includeM5Delta ? CountM5BoughtNonXilian(m5Result) : 0);
+        var responded = stateHolder.PeekEventState().WishesResponded;
+        return WishTierOf(estimated) > responded;
+    }
+
     /// <summary>弃局（A9）后的收尾等待（1.2.68 由固定 4-5 秒改为有界轮询）：
     /// A9 回执本身已含"回主页确认"，此处轮询 I1 等结算收尾动画——命中主页
     /// 即早退（常在首次查询即命中，省 3-4 秒）；从未命中也只等有界余量。
@@ -595,10 +662,14 @@ public sealed class GrailDecisionEngine(
     /// 消除背靠背双 I10；②候选穷尽/前台满改 break 而非 return——修复学者补位段
     /// 不可达（原逻辑只有连续部署满 3 名 bond 成员才会走到，补位功能形同虚设）。
     /// </summary>
-    private async Task<(bool DeployedAny, GrailRunSnapshot? LatestSnapshot)> DeployBondMembersAsync(
-        nint window, GrailRunSnapshot? existingSnapshot, CancellationToken ct)
+    private async Task<(bool DeployedAny, int DeployedBondDelta, GrailRunSnapshot? LatestSnapshot)>
+        DeployBondMembersAsync(
+            nint window, GrailRunSnapshot? existingSnapshot, CancellationToken ct)
     {
         var deployedAny = false;
+        // P2-F（2026-09-09 修复批）：本段实际部署的命杯成员数（档位门控增量；
+        // 学者下场/补位、杂兵填充不改羁绊计数，不计入）。
+        var deployedBondDelta = 0;
         // 1.2.89（用户令第 1 问题；审查 P2 加固）：快照早于盘面变异（M5 买到/A1 部署）
         // 即不可用于选槽——陈旧占用表会让新部署拖到已占槽=把刚上场的命杯成员换下
         // （16:57 阮•梅顶掉远坂凛实锤）。CapturedAt 是组装墙钟不是帧时刻，故叠加
@@ -628,6 +699,8 @@ public sealed class GrailDecisionEngine(
         }
         // 快照是否仍代表当前盘面：部署后重读=true；部署指令失败后=false（盘面可能已变）。
         var snapshotFresh = snapshot is not null;
+        // P2-F：档位基线=部署段首份有效快照（null=不可信，环内探针保守开窗）。
+        var tierBaseline = snapshot;
         for (var pass = 0; pass < 3 && snapshot is not null; pass++)
         {
             var bondNames = executor.GrailBondMemberNames;
@@ -713,9 +786,24 @@ public sealed class GrailDecisionEngine(
                         {
                             _frontLedger[pendingBench] = slot.Value;
                             deployedAny = true;
-                            await EnsureWishAnsweredAsync(window, ct, maxProbes: 8);
+                            deployedBondDelta++;
+                            // P2-F：跨档才开 8 次探针窗（基线+已部署数落到新档位）。
+                            var retryCrossed = IsWishWindowRequired(
+                                tierBaseline, deployedBondDelta, false,
+                                includeM5Delta: false, m5Result: null,
+                                applyRecentMutationDoor: false);
+                            await EnsureWishAnsweredAsync(window, ct,
+                                maxProbes: retryCrossed ? 8 : 1,
+                                confirmWithDetector: retryCrossed);
                             snapshot = await SnapshotWithRetryAsync(window, ct);
                             snapshotFresh = snapshot is not null;
+                            if (snapshot is not null)
+                            {
+                                // P3-1（2026-09-09 审查备案采纳）：基线随部署后重读刷新、
+                                // 增量清零——门控保持精确，段内第二名起不再恒走保守窗。
+                                tierBaseline = snapshot;
+                                deployedBondDelta = 0;
+                            }
                             continue;
                         }
                         emit("[决策层] 买经验后重试部署仍失败——交外层对账。");
@@ -732,9 +820,24 @@ public sealed class GrailDecisionEngine(
 
             _frontLedger[pendingBench] = slot.Value;
             deployedAny = true;
-            await EnsureWishAnsweredAsync(window, ct, maxProbes: 8);
+            deployedBondDelta++;
+            // P2-F：跨档才开 8 次探针窗+检测器终判（未跨档=弹框必不来，单查即回，
+            // 1-1 首名部署 0→1 不跨档——原 8 次窗是每名部署 ~12 秒纯等待主源）。
+            var deployCrossed = IsWishWindowRequired(
+                tierBaseline, deployedBondDelta, false,
+                includeM5Delta: false, m5Result: null,
+                applyRecentMutationDoor: false);
+            await EnsureWishAnsweredAsync(window, ct,
+                maxProbes: deployCrossed ? 8 : 1,
+                confirmWithDetector: deployCrossed);
             snapshot = await SnapshotWithRetryAsync(window, ct); // 部署后重读找下一个候选
             snapshotFresh = snapshot is not null;
+            if (snapshot is not null)
+            {
+                // P3-1（2026-09-09 审查备案采纳）：同买经验重试路径——基线刷新+增量清零。
+                tierBaseline = snapshot;
+                deployedBondDelta = 0;
+            }
         }
 
         // 1.2.89 学者规则重写（用户令 2026-09-05，第 1/2 问题）：
@@ -771,11 +874,15 @@ public sealed class GrailDecisionEngine(
                     continue;
                 }
 
+                // A2 期望名贯穿（P1-C 后续批 2026-09-09）：下发点全量传台账认为的
+                // 占用人名——操作层拖前身份比对防模型漂移误卖（坑38 纪律）。
+                var scholarExpectedName = PureName(detail.Split(':')[^1]);
                 emit($"[决策层] 1-3 学者下场：出售场上 {detail}（学者规则：1-3 必下必卖省金币）。");
                 var sell = await SendAsync(
                     $"A2 前台 {frontSlot}",
                     new GrailCommand(GrailCommandKind.A2,
-                        new GrailPositionArgs(PreparationLane.Front, frontSlot - 1)),
+                        new GrailPositionArgs(PreparationLane.Front, frontSlot - 1,
+                            scholarExpectedName)),
                     window, ct);
                 if (sell.Error is not null)
                 {
@@ -808,19 +915,19 @@ public sealed class GrailDecisionEngine(
                 snapshotFresh = snapshot is not null;
                 if (snapshot is null)
                 {
-                    return (deployedAny, null);
+                    return (deployedAny, deployedBondDelta, null);
                 }
             }
         }
 
         if (snapshot is null || snapshot.OccupiedFrontSlots.Count >= 4)
         {
-            return (deployedAny, snapshotFresh ? snapshot : null);
+            return (deployedAny, deployedBondDelta, snapshotFresh ? snapshot : null);
         }
 
         if (_currentNode != "1-1")
         {
-            return (deployedAny, snapshotFresh ? snapshot : null);
+            return (deployedAny, deployedBondDelta, snapshotFresh ? snapshot : null);
         }
 
         // 1.2.90 审查 P2 修正：凑 2 计数=场上学者总数（台账∪识别，星徽携带者不算——
@@ -955,7 +1062,7 @@ public sealed class GrailDecisionEngine(
             }
         }
 
-        return (deployedAny, snapshotFresh ? snapshot : null);
+        return (deployedAny, deployedBondDelta, snapshotFresh ? snapshot : null);
     }
 
     /// <summary>1.2.90：槽位空闲判定=识别占用∪台账占用都不含该槽（识别∪账本并集）。</summary>
@@ -1026,9 +1133,15 @@ public sealed class GrailDecisionEngine(
         var i7 = await SendAsync("I7", new GrailCommand(GrailCommandKind.I7), window, ct);
         if (i7.Payload is GrailBadgeFact badge && badge.Uncarried > 0)
         {
-            var a4 = await SendAsync("A4 前台 1",
+            // A4 期望名贯穿+幂等预查输入（2026-09-09 P1-A）：前台 1 号位的台账占用人名
+            // 传给操作层——A4 预查用它与实时读佐证"该槽已带徽"，杜绝 G15 实锤的
+            // 带徽重拖（游戏拒绝横幅"无法穿戴相同羁绊的星徽"）。
+            var front1Occupant = _frontLedger.FirstOrDefault(kv => kv.Value == 0).Key;
+            var a4 = await SendAsync(
+                string.IsNullOrEmpty(front1Occupant) ? "A4 前台 1" : $"A4 前台 1 {front1Occupant}",
                 new GrailCommand(GrailCommandKind.A4,
-                    new GrailPositionArgs(PreparationLane.Front, 0)), window, ct);
+                    new GrailPositionArgs(PreparationLane.Front, 0, front1Occupant)),
+                window, ct);
             return a4.Error is null;
         }
 
@@ -1130,7 +1243,9 @@ public sealed class GrailDecisionEngine(
                         var a2 = await SendAsync(
                             $"A2 前台 {slot + 1}（台账对账：{occupant}）",
                             new GrailCommand(GrailCommandKind.A2,
-                                new GrailPositionArgs(PreparationLane.Front, slot)), window, ct);
+                                // A2 期望名贯穿（2026-09-09）：实时读到的占用人名=最强佐证。
+                                new GrailPositionArgs(PreparationLane.Front, slot, occupant)),
+                            window, ct);
                         if (a2.Error is not null)
                         {
                             emit($"[决策层] 台账对账卖出「{occupant}」回执失败：{a2.Error}——跳过该槽。");
@@ -1828,6 +1943,24 @@ public sealed class GrailDecisionEngine(
     private async Task<PreparationOutcome> RunPreparationCycleAsync(
         nint window, bool hit067, CancellationToken ct)
     {
+        // P1-B（2026-09-09 修复批）：备战段入口先过统一弹框守卫——G15 局实锤角色详情
+        // 残留框挂 90% 局时长且快照可得（恢复终态机永不触发），入口守卫是唯一清扫点；
+        // 守卫自带认页（无模态零点击），异常不阻断备战段。
+        if (modalGuard is not null)
+        {
+            try
+            {
+                if (await modalGuard.DismissBlockingModalIfUpAsync(window, ct))
+                {
+                    emit("[决策层] 备战段入口：弹框守卫清扫了一个残留弹框/面板。");
+                }
+            }
+            catch (Exception guardError) when (guardError is not OperationCanceledException)
+            {
+                emit($"[决策层] 备战段入口弹框守卫异常（不阻断）：{guardError.Message}");
+            }
+        }
+
         // ---- S2：1-1（人口 3；067 局禁 A4）----
         await SendAsync("M2", new GrailCommand(GrailCommandKind.M2), window, ct);
         // P1-3（1.2.73 实测根因修复）：M8 刚用导航器实时分类确认到达备战页，但识别流
@@ -1850,15 +1983,23 @@ public sealed class GrailDecisionEngine(
             }
         }
 
+        // P2-F（2026-09-09 修复批）：S2 祈愿档位基线=本快照（M5 之前），M5 买入的
+        // 内部上场在基线之后发生——下方门控按"基线羁绊数+已知增量"估算跨档。
+        var s2TierBaseline = snapshot;
+
         var m5Result = await SendAsync("M5", new GrailCommand(GrailCommandKind.M5), window, ct);
         // 1.2.66：M5 可能买了角色（盘面已变）→ 部署段须现读快照（传 null）。
-        var (deployed, _) = await DeployBondMembersAsync(window, null, ct);
+        var (deployed, deployedBondDelta, _) = await DeployBondMembersAsync(window, null, ct);
         var assembled = await AssembleBadgeIfAvailableAsync(window, ct, hit067);
-        // 1.2.106（16:53 局实弹：部署 2 名命杯成员触发祈愿弹框，探针仅 1 次且 I1 把
-        // 弹框报成底层 preparation_generic→漏检→带弹框出战 M1 失败→误弃命中局）：
-        // 部署/买到成员后弹框必出（rule 四.7）→探针窗 8 次（≈12 秒，与 1.2.94 M5 路径
-        // 对齐）+M3 检测器终判兜底；其余轮次维持单查。
-        var wishExpected = deployed || BoughtNonXilianMember(m5Result);
+        // P2-F（2026-09-09 修复批，细化 1.2.106 门控）：8 次窗+检测器终判只在
+        // "羁绊档位已激活但尚未应答"时开启（祈愿=每档一次共 4 档，rule 四.7）——
+        // 未激活档位必无弹框，12 秒窗全数浪费（16a 决策速度）；基线快照缺失/
+        // 异常注记/陈旧=台账不可信，保守回退 8 次窗。1.2.106 的漏检病理（部署
+        // 2 名成员跨档而探针仅 1 次）在"跨档→开窗"分支下仍然全盖。
+        var wishExpected = IsWishWindowRequired(
+            s2TierBaseline, deployedBondDelta, assembled,
+            includeM5Delta: true, m5Result,
+            applyRecentMutationDoor: true);
         await EnsureWishAnsweredAsync(window, ct,
             maxProbes: wishExpected ? 8 : 1,
             confirmWithDetector: wishExpected);
@@ -1878,7 +2019,7 @@ public sealed class GrailDecisionEngine(
             if (deathReread is not null && deathReread.BenchCharacterDetails.Count > 0)
             {
                 emit("[决策层] 判死前重读发现备战席有单位（此前为漏读帧）——补跑一次部署段。");
-                var (redeployed, _) = await DeployBondMembersAsync(window, deathReread, ct);
+                var (redeployed, _, _) = await DeployBondMembersAsync(window, deathReread, ct);
                 frontCheck = await EnsureFrontHasUnitAsync(
                     window, deathReread, redeployed, ct);
             }
@@ -1959,10 +2100,15 @@ public sealed class GrailDecisionEngine(
         }
 
         // 1.2.66：此快照后无任何操作 → 复用给部署段（省一次背靠背 I10）。
-        (deployed, _) = await DeployBondMembersAsync(window, snapshot, ct);
+        // P2-F：S3 档位基线=本快照（M5 之后取），M5 增量已含在基线内不再计入。
+        int deployedBondDeltaS3 = 0;
+        (deployed, deployedBondDeltaS3, _) = await DeployBondMembersAsync(window, snapshot, ct);
         assembled = await AssembleBadgeIfAvailableAsync(window, ct, hit067); // 1-2 新得徽补装（审查 P3）
-        // 1.2.106：与 S2 同款——部署/买到成员后弹框必出，8 次探针+检测器终判。
-        var wishExpectedS3 = deployed || BoughtNonXilianMember(m5Result);
+        // P2-F（2026-09-09 修复批）：与 S2 同款跨档门控（基线含 M5 效果）。
+        var wishExpectedS3 = IsWishWindowRequired(
+            snapshot, deployedBondDeltaS3, assembled,
+            includeM5Delta: false, m5Result: null,
+            applyRecentMutationDoor: true);
         await EnsureWishAnsweredAsync(window, ct,
             maxProbes: wishExpectedS3 ? 8 : 1,
             confirmWithDetector: wishExpectedS3);
@@ -2181,10 +2327,20 @@ public sealed class GrailDecisionEngine(
             // 其余轮次单查——原无差别 6×3s 轮询是每轮 ~20 秒纯等待的主源。
             // 1.2.68：部署段带回的最新快照直接覆盖 snapshot——S7 终局判定/卖人立即
             // 反映部署结果，不再晚一轮（命中收工时曾多跑一整轮 M5）。
-            var (deployedInLoop, latestFromDeploy) = await DeployBondMembersAsync(window, snapshot, ct);
+            // P2-F（2026-09-09 修复批）：跨档门控与本环部署前快照（M5 之后取，M5 增量
+            // 已在内）+部署段成员数联判——存在已激活未应答档位才开 8 次窗（延迟弹出的
+            // 升档框仍被"档位>已应答"条件覆盖），其余单查。
+            var s5TierBaseline = snapshot;
+            var (_, loopBondDelta, latestFromDeploy) =
+                await DeployBondMembersAsync(window, snapshot, ct);
             snapshot = latestFromDeploy ?? snapshot;
+            var loopWishWindow = IsWishWindowRequired(
+                s5TierBaseline, loopBondDelta, badgeAssembled: false,
+                includeM5Delta: false, m5Result: null,
+                applyRecentMutationDoor: true);
             await EnsureWishAnsweredAsync(window, ct,
-                maxProbes: BoughtNonXilianMember(shopResult) && !deployedInLoop ? 4 : 1);
+                maxProbes: loopWishWindow ? 8 : 1,
+                confirmWithDetector: loopWishWindow);
 
             // ---- S7 终局判定（按目标模式分流，审查 P2：不得用单人口径判全员）----
             var (_, _, _, miracle, miracleAtHealth, cauldron, _, _) = stateHolder.PeekEventState();

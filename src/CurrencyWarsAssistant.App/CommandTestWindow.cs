@@ -836,7 +836,12 @@ public sealed class CommandTestWindow : Window
 
     // ---- 指令解析 ----
 
-    private static bool TryParseCommand(string[] tokens, out GrailCommand? command, out string? error)
+    /// <summary>A2/A4 第 4 段起的可选期望角色名（2026-09-09 修复批）：`A2 前台 2 黑塔`
+    /// ——期望名进操作层做拖前身份比对/幂等佐证；省略=null（与旧语法完全兼容）。</summary>
+    private static string? JoinOptionalExpectedName(string[] tokens) =>
+        tokens.Length >= 4 ? string.Join(" ", tokens[3..]).Trim() : null;
+
+    internal static bool TryParseCommand(string[] tokens, out GrailCommand? command, out string? error)
     {
         command = null;
         error = null;
@@ -864,7 +869,7 @@ public sealed class CommandTestWindow : Window
                     || a4Slot < 1
                     || a4Slot > (tokens[1].StartsWith("前", StringComparison.Ordinal) ? 4 : 6))
                 {
-                    error = "用法：A4 前台|后台 槽位号(前台1-4/后台1-6)——位置语义（角色名形式已废除，2026-09-03 定稿）。";
+                    error = "用法：A4 前台|后台 槽位号(前台1-4/后台1-6) [期望角色名]——位置语义（角色名形式已废除，2026-09-03 定稿；期望名=可选幂等预查佐证）。";
                     return false;
                 }
 
@@ -872,7 +877,8 @@ public sealed class CommandTestWindow : Window
                     tokens[1].StartsWith("前", StringComparison.Ordinal)
                         ? PreparationLane.Front
                         : PreparationLane.Back,
-                    a4Slot - 1));
+                    a4Slot - 1,
+                    JoinOptionalExpectedName(tokens)));
                 return true;
             case GrailCommandKind.A2:
                 if (tokens.Length < 3
@@ -880,7 +886,7 @@ public sealed class CommandTestWindow : Window
                     || a2Slot < 1
                     || a2Slot > (tokens[1].StartsWith("前", StringComparison.Ordinal) ? 4 : 6))
                 {
-                    error = "用法：A2 前台|后台 槽位号(前台1-4/后台1-6)。";
+                    error = "用法：A2 前台|后台 槽位号(前台1-4/后台1-6) [期望角色名]——期望名=可选拖前身份比对佐证（防误卖）。";
                     return false;
                 }
 
@@ -888,7 +894,8 @@ public sealed class CommandTestWindow : Window
                     tokens[1].StartsWith("前", StringComparison.Ordinal)
                         ? PreparationLane.Front
                         : PreparationLane.Back,
-                    a2Slot - 1));
+                    a2Slot - 1,
+                    JoinOptionalExpectedName(tokens)));
                 return true;
             case GrailCommandKind.A3:
                 if (tokens.Length >= 2 && int.TryParse(tokens[1], out var a3Slot) && a3Slot is >= 1 and <= 9)

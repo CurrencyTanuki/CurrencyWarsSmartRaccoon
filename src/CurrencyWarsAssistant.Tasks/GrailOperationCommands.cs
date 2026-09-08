@@ -120,7 +120,11 @@ public sealed class GrailOperationCommands(
     }
 
     /// <summary>A4 星徽装配（N2，2026-09-03 位置语义定稿）：把物品栏星徽拖到指定前台/后台槽位角色；
-    /// 角色名形式废除（名称解析依赖部署明细识别，本局识别两次把已上场角色读丢导致误拒——教训同 1.2.18 拖角色改造）。</summary>
+    /// 角色名形式废除（名称解析依赖部署明细识别，本局识别两次把已上场角色读丢导致误拒——教训同 1.2.18 拖角色改造）。
+    /// P1-A（2026-09-09 修复批）：拖拽前幂等预查（星徽账本按名携带者∪挂起槽位双查）——
+    /// 目标已带徽=幂等成功不拖不记；挂起槽位按名佐证=提升记账不拖；无佐证=不拖不记
+    /// 诚实失败（G15 教训：带徽重拖触发游戏拒绝横幅「无法穿戴相同羁绊的星徽」）。
+    /// ExpectedCharacterName=引擎台账期望名（可选弱佐证，实时画面读数优先）。</summary>
     private async Task<GrailCommandResult> AssembleBadgeAsync(
         GrailCommand command,
         GrailCommandContext context,
@@ -141,20 +145,51 @@ public sealed class GrailOperationCommands(
                 $"槽位号越界：{(target.Lane == PreparationLane.Front ? "前台" : "后台")} 1-{maxSlot}。");
         }
 
+        var slotLabel = (target.Lane == PreparationLane.Front ? "前台" : "后台") + (target.SlotIndex + 1) + "号位";
+        var zone = target.Lane == PreparationLane.Front ? FormationZone.Front : FormationZone.Back;
+        var slotKey = GrailSnapshotAssembler.BadgeLedgerSlotKey(zone, target.SlotIndex);
+
+        // ---- P1-A 幂等预查（拖拽前；名字佐证优先用实时画面读数）----
+        string? liveOccupant = null;
+        if (target.Lane == PreparationLane.Front)
+        {
+            // 后台槽无单槽实时读原语（A4 后台路径仅 5 人口兜底场景），挂起键双查仍生效。
+            liveOccupant = await executor.PeekFrontSlotCharacterAsync(
+                context.WindowHandle, target.SlotIndex, context.PreparationPageId, cancellationToken);
+        }
+
+        var (precheck, corroborated) = GrailBadgeAssemblyGuard.Decide(
+            executor.PeekBadgeCarrierNames(),
+            executor.PeekBadgePendingSlotKeys(),
+            slotKey,
+            liveOccupant,
+            target.ExpectedCharacterName);
+        switch (precheck)
+        {
+            case GrailBadgeAssemblyPrecheckOutcome.AlreadyCarries:
+                // 幂等路径禁再记账：账本已有该名，重复记录无意义且污染审计。
+                return GrailCommandResult.Ok(GrailCommandKind.A4,
+                    $"{slotLabel}已携带星徽（按名佐证：「{corroborated}」）——幂等成功，未拖拽未重复记账。");
+            case GrailBadgeAssemblyPrecheckOutcome.PromotePendingSlot:
+                executor.PromoteBadgeCarrier(slotKey, corroborated!);
+                return GrailCommandResult.Ok(GrailCommandKind.A4,
+                    $"{slotLabel}挂起徽账经名字佐证提升为「{corroborated}」携带——幂等成功，未拖拽。");
+            case GrailBadgeAssemblyPrecheckOutcome.UncertainNoDrag:
+                return GrailCommandResult.Fail(GrailCommandKind.A4,
+                    $"{slotLabel}账本有挂起徽但画面/台账均无法按名佐证——不盲拖（防拒绝横幅），请 I10 复核后再发。");
+        }
+
         var assembled = await executor.ExecuteBadgeAssemblyToSlotAsync(
             context.WindowHandle,
             target.Lane,
             target.SlotIndex,
             context.PreparationPageId,
             cancellationToken);
-        var slotLabel = (target.Lane == PreparationLane.Front ? "前台" : "后台") + (target.SlotIndex + 1) + "号位";
         if (assembled)
         {
             // 星徽账本记账（2026-09-03 用户拍板）：装上即本局恒携带，角色装备识别漏读
             // 由账本兜底（组装器并集合并），决策层无需重复确认识别。
-            executor.RecordBadgeEquippedAtSlot(GrailSnapshotAssembler.BadgeLedgerSlotKey(
-                target.Lane == PreparationLane.Front ? FormationZone.Front : FormationZone.Back,
-                target.SlotIndex));
+            executor.RecordBadgeEquippedAtSlot(slotKey);
             return GrailCommandResult.Ok(GrailCommandKind.A4, $"星徽已装配到{slotLabel}角色（拖后物品栏探测自证通过）。");
         }
 

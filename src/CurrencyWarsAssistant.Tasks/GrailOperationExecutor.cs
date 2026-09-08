@@ -42,6 +42,12 @@ public sealed partial class GrailOperationExecutor(
         _frontDeployCount = 0;
         // 跨局归零同时清空购买账本（账本=本局 M5 实际买到过的角色，防识别漏名导致的重复购买）
         _grailPurchaseLedger.Clear();
+        // P2-1（2026-09-09 审查修复）：金币本地账三字段一并复位——执行器跨局复用，
+        // 上局 LastShopPassGold 若在新局持有器首次读数（I10 economy 帧可能 Unknown）
+        // 前播种，会把上局余额串进本局预算（审查实锤的跨局泄漏向量）。
+        LastShopPassGold = -1;
+        LastShopPassGoldAt = DateTimeOffset.MinValue;
+        goldAccountBrokenLastPass = false;
     }
 
     /// <summary>
@@ -74,6 +80,11 @@ public sealed partial class GrailOperationExecutor(
     /// <summary>当前星徽账本按名携带者（S1A 卖人过滤用：账本明知是携带者的角色绝不入卖人候选）。</summary>
     public IReadOnlySet<string> PeekBadgeCarrierNames() =>
         stateHolder.PeekBadgeLedger().CarrierNames;
+
+    /// <summary>挂起槽位提升为按名记账（P1-A，2026-09-09：A4 幂等预查的名字佐证提升；
+    /// 解析既有账而非新记账——同一枚徽不产生第二条账目）。</summary>
+    public void PromoteBadgeCarrier(string slotKey, string characterName) =>
+        stateHolder.PromoteBadgeCarrier(slotKey, characterName);
 
     /// <summary>星徽账本挂起槽位键（front:{n}，1.2.109 审查 P2-1：对账卖出须排除——
     /// 占用者识别不可见时挂起槽位无法提升名字，可能正是星徽载体）。</summary>
@@ -116,6 +127,14 @@ public sealed partial class GrailOperationExecutor(
 
     /// <summary>最近一次商店 pass 结束时的本地记账金币（1.2.24 修上报口径：持有器缓存滞后于刷新扣款）。</summary>
     public int LastShopPassGold { get; private set; } = -1;
+
+    /// <summary>LastShopPassGold 的落账时刻（P2-E，2026-09-09：播种延续账的时效判据——
+    /// 持有器金币读数比它新=识别已在备战页刷新余额，本地账让位）。</summary>
+    private DateTimeOffset LastShopPassGoldAt { get; set; } = DateTimeOffset.MinValue;
+
+    /// <summary>上一条 M5 金币本地账是否被判坏账（P2-E：CostUnknown 后本地账作废，
+    /// 绝不让坏账播种下一条指令的余额）。</summary>
+    private bool goldAccountBrokenLastPass { get; set; }
 
     /// <summary>当前局面快照（由编排层在每次识别更新后刷新，供 select 委托内决策使用）。</summary>
     public GrailRunSnapshot? LatestSnapshot { get; set; }
@@ -400,7 +419,19 @@ public sealed partial class GrailOperationExecutor(
         var passDeployedFrontSlotsN14 = new Dictionary<string, int>(StringComparer.Ordinal);
         // 金币本地账（2026-09-03 用户拍板：刷到金币不足刷新为止，无保留线）：
         // 入口守卫已保证金币读数非空；买成/刷新/买经验各扣实价。
-        var gold = stateHolder.PeekGold().Value ?? 0;
+        // P2-E（2026-09-09 修复批）：播种改"本地账延续优先"——持有器金币只在备战页
+        // 识别更新，商店页刷新/购买扣款不回写；连续 M5（1-3 逛店）若每次都从持有器
+        // 播种，第二条指令会拿陈旧高余额继续挥霍（下午批实锤）。本地账仅在持有器读数
+        // 不比它新时延续（回备战页后识别刷新金币=持有器读数更新，自动交还主导权）；
+        // 账目曾被判定坏账（CostUnknown）时丢弃本地账。
+        var holderGold = stateHolder.PeekGold();
+        var gold =
+            LastShopPassGold >= 0
+            && !goldAccountBrokenLastPass
+            && (holderGold.CapturedAt is not { } holderAt || LastShopPassGoldAt >= holderAt)
+                ? LastShopPassGold
+                : holderGold.Value ?? 0;
+        var goldAccountBroken = false;
         // 成员账（含星徽携带者，与快照 BondMemberCount 同口径）+升 5 标记。
         var bondMembers = snapshot.BondMemberCount;
         var xpBought = false;
@@ -482,7 +513,23 @@ public sealed partial class GrailOperationExecutor(
                 _grailPurchaseLedger.Add(pass.BoughtCharacterName); // 记账：跨指令防重买
                 stateHolder.RecordPurchased(pass.BoughtCharacterName); // 持久已购（跨识别帧去重，1.2.31）
                 boughtNames.Add(pass.BoughtCharacterName);
-                gold = Math.Max(0, gold - GetCharacterCost(pass.BoughtCharacterName));
+                // P2-E（2026-09-09 修复批）：官方数据查无费用（识别误名/数据缺口）时
+                // 金币账无法延续——按 0 扣账会虚高余额继续挥霍（下午批实锤 G06）。
+                // 处置=立即收摊（关店停循环，角色留板凳交决策层部署/复核），本地账
+                // 标记坏账不再延续到下一条 M5，余额交决策层 I10 对账。
+                var boughtCost = TryGetCharacterCost(pass.BoughtCharacterName);
+                if (boughtCost is not { } knownCost)
+                {
+                    goldAccountBroken = true;
+                    endReason = "CostUnknown";
+                    rewardStage.PublishGrailTelemetry(
+                        "GrailShopCostUnknown",
+                        $"{pass.BoughtCharacterName} 官方数据查无费用——金币账无法延续，立即收摊（角色留板凳交决策层复核）。",
+                        TaskEventLevel.Warning);
+                    break;
+                }
+
+                gold = Math.Max(0, gold - knownCost);
                 rewardStage.PublishGrailTelemetry(
                     "GrailShopBought",
                     $"已购买 {pass.BoughtCharacterName}，扣费后金={gold}。");
@@ -687,7 +734,9 @@ public sealed partial class GrailOperationExecutor(
 
         LastShopPassBoughtNames = boughtNames;
         LastShopPassDeployedFrontSlots = passDeployedFrontSlotsN14;
-        LastShopPassGold = gold; // 实时本地账（1.2.24：持有器缓存滞后，回执须报刷新后的真实余额）
+        LastShopPassGold = goldAccountBroken ? -1 : gold; // 实时本地账（1.2.24：持有器缓存滞后，回执须报刷新后的真实余额）；P2-E：坏账作废不播种下一条指令
+        LastShopPassGoldAt = goldAccountBroken ? DateTimeOffset.MinValue : DateTimeOffset.Now;
+        goldAccountBrokenLastPass = goldAccountBroken;
         return boughtAny;
     }
 
@@ -826,12 +875,14 @@ public sealed partial class GrailOperationExecutor(
         return (false, null);
     }
 
-    /// <summary>官方数据角色费用（费用集最小值；银狼等多费用角色按最小计，与卖价口径一致）。</summary>
-    private int GetCharacterCost(string name) =>
+    /// <summary>官方数据角色费用（P2-E 改靶 2026-09-09：查无角色或费用集空=null——
+    /// null 不再伪装成 0 费，调用方收摊交对账；0 是"免费"不是"未知"）。</summary>
+    private int? TryGetCharacterCost(string name) =>
         gameData.CurrencyWarsCharacters
             .Where(item => string.Equals(item.Name, name, StringComparison.OrdinalIgnoreCase))
             .Select(item => (item.Costs ?? Array.Empty<int>()).DefaultIfEmpty(0).Min())
-            .FirstOrDefault();
+            .Cast<int?>()
+            .FirstOrDefault(cost => cost is > 0);
 
     /// <summary>
     /// A4 星徽装配（1.2.25 位置语义定稿）：把物品栏星徽拖到指定前台/后台槽位角色。

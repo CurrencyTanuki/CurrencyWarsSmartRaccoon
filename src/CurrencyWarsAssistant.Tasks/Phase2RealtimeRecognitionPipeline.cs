@@ -426,6 +426,9 @@ public sealed class Phase2FastPageClassifier : IPhase2FastPageClassifier
             // 坑50（1.2.114）：盛会之星升档框进 fast 集——弹框浮在备战页上时
             // fast 层必须能报出它，否则"未知"覆盖全量结论（坑48 同型病理）。
             "gala_star_bond_selection",
+            // P1-B（2026-09-09 修复批）：角色详情残留框同样浮在备战页上——
+            // fast 层不认它就会把全量识别的命中覆盖成"未知"（坑48 纪律）。
+            "character_detail_popup",
             "companion_selection",
             "enemy_overview"
         };

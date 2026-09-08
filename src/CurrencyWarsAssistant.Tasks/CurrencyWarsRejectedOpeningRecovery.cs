@@ -225,6 +225,14 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
     // ---- 盛会之星羁绊升档选择框（坑50，1.2.114）----
     // 页面 ID 与识别表/AutomationPageIds/FastPageIds 三处同步（坑48 纪律）。
     public const string GalaBondPopupPageId = "gala_star_bond_selection";
+    // P1-B（2026-09-09 修复批）：角色详情面板（右侧残留框）。G15 局实锤：面板残留
+    // 90% 局时长的槽位识别污染（右侧后台槽/备战席右段被遮）。同坑48 三处同步。
+    public const string CharacterDetailPopupPageId = "character_detail_popup";
+    // 残留框关闭点击点（1920 参考系）：前台卡行与后台槽行之间的空白带——(700,525)
+    // 不落任何卡槽/按钮（FrontSlots y≤469 / BackSlots y≥600 之间），且在面板矩形
+    // x≥1392 之外=框外点击。未用 Esc——备战页 Esc 语义=打开弃局结算菜单（四.22
+    // 链路），详情框若不吞 Esc 会误开菜单。
+    private static readonly StandardPoint CharacterDetailDismissPoint = new(700, 525);
     // 卡片行候选点位（1920 参考系，stall_end.png 实拍标定 2026-09-06 深夜）：
     // 卡片间距 248、行中心 x≈1075，候选覆盖 1~4 卡布局；点间隙无害（无选中，
     // 确认钮置灰），复查不过换下一候选。全部点位都在弹框矩形内（模态吞输入，
@@ -533,12 +541,72 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
     }
 
     /// <summary>
+    /// 角色详情残留框关闭核心（P1-B，2026-09-09 修复批）：框外空白点击 → 复查认页。
+    /// 每次点击前先认页（坑39：详情框未退出时 (700,525) 是备战页空白带，误点虽无害
+    /// 但无意义；框已退出立即收手）。两击耗尽仍不退出=如实失败，绝不升级为盲点连点。
+    /// 面板非模态（不吞输入），关闭失败只污染识别不妨碍输入——失败不阻断调用方流程。
+    /// </summary>
+    private async Task<bool> DismissCharacterDetailPopupCoreAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        for (var attempt = 1; attempt <= 2; attempt++)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (!await IsCharacterDetailPopupOnScreenAsync(windowHandle, cancellationToken))
+            {
+                Publish(
+                    "RecoveryDetailPopupDismissed",
+                    "角色详情面板已不在屏（点击前认页）——视为已关闭。");
+                return true;
+            }
+
+            var click = await ClickStandardPointAsync(
+                windowHandle,
+                $"detail_popup_dismiss_{attempt}",
+                "角色详情面板：框外空白点击关闭",
+                CharacterDetailDismissPoint,
+                new ActionPolicy { AfterActionDelay = TimeSpan.FromMilliseconds(600) },
+                cancellationToken);
+            if (!click.Succeeded)
+            {
+                continue;
+            }
+        }
+
+        var stillUp = await IsCharacterDetailPopupOnScreenAsync(windowHandle, cancellationToken);
+        if (stillUp)
+        {
+            Publish(
+                "RecoveryDetailPopupDismissFailed",
+                "角色详情面板两次框外点击后仍在屏——如实失败（不盲点；识别污染交由快照复核吸收）。",
+                TaskEventLevel.Warning);
+        }
+        return !stillUp;
+    }
+
+    private async Task<bool> IsCharacterDetailPopupOnScreenAsync(
+        nint windowHandle,
+        CancellationToken cancellationToken)
+    {
+        var window = await foregroundGuard.WaitUntilForegroundAsync(
+            windowHandle,
+            cancellationToken);
+        var frame = await capture.CaptureAsync(window, cancellationToken);
+        return string.Equals(
+            classifier.Classify(frame)?.PageId,
+            CharacterDetailPopupPageId,
+            StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
     /// 1.2.119（审计簇 C）：统一模态弹框守卫——按需单帧实拍+分类器认页，在屏即应答。
     /// **禁用 I1 作为验页源**（I1 读识别流 LatestAnalysis：盛会弹框期按设计抑制 1.2.114、
-    /// 流异常期陈旧——审计 4-1/6-7-3 的弹框场景下 I1 恒失效）。覆盖四大模态：盛会
+    /// 流异常期陈旧——审计 4-1/6-7-3 的弹框场景下 I1 恒失效）。覆盖五大模态：盛会
     /// 升档框（自答）/祈愿试炼框（注入的 IWishTrialPopupHandler）/出战人数不足提示
-    /// （点确认）/列车同行伙伴选择框（识别表内 companion_selection，任选点击点位
-    /// 未标定——本版仅报告不点击，待标定后接入）。返回 true=检测到模态并已处理。
+    /// （点确认）/角色详情残留框（P1-B，点空白关闭）/列车同行伙伴选择框（识别表内
+    /// companion_selection，任选点击点位未标定——本版仅报告不点击，待标定后接入）。
+    /// 返回 true=检测到模态并已处理。
     /// </summary>
     public async Task<bool> DismissBlockingModalIfUpAsync(
         nint windowHandle,
@@ -558,6 +626,16 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                 cancellationToken);
             await SaveGuardEvidenceAsync(windowHandle, $"gala-after-{galaResult}", cancellationToken);
             return galaResult;
+        }
+
+        if (string.Equals(pageId, CharacterDetailPopupPageId, StringComparison.OrdinalIgnoreCase))
+        {
+            await SaveGuardEvidenceAsync(windowHandle, "detail-before", cancellationToken);
+            var detailResult = await DismissCharacterDetailPopupCoreAsync(
+                windowHandle,
+                cancellationToken);
+            await SaveGuardEvidenceAsync(windowHandle, $"detail-after-{detailResult}", cancellationToken);
+            return detailResult;
         }
 
         if (string.Equals(pageId, "wish_trial_selection", StringComparison.OrdinalIgnoreCase))

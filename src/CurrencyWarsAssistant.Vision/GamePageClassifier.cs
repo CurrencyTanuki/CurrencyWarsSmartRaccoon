@@ -56,6 +56,9 @@ public static class AutomationPageIds
         "wish_trial_selection",
         // 坑50（1.2.114）：盛会之星羁绊升档选择框——弃局链/循环泵按页 ID 应答消除。
         "gala_star_bond_selection",
+        // P1-B（2026-09-09 修复批）：角色详情面板（右侧残留框，G15 局 90% 时长实锤）
+        // ——弹框守卫按页 ID 认页后点击空白关闭（坑39 先认页再点）。
+        "character_detail_popup",
         "companion_selection",
     };
 

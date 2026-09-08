@@ -17,6 +17,9 @@
 
 ### 09-08 帧沙箱班增量（本次交接最新状态）
 
+- **🔴 1.2.120 已发布上线（用户令"发布你最新的修改版本,我放到游戏里去测试"）**：DEPLOY-OK+VERIFY-PASS（14:04,版本串 1.2.120+043b3c0=帧沙箱 Phase 1 内容, Directory.Build.props 同步升版）,新实例 PID 54656 运行中（指令通道健康,DECIDE 未发）。**用户将实机测试 1.2.120**。
+- **🔴 昨晚记录数据已删（用户令,前提核实后执行）**：前提=素材审查完成（OVERNIGHT_AUDIT 全量定稿）+代码修改完成（通宵修复全提交+部署）,均核实成立。删除共 **5.01GB**：Recordings 两段 decide 录像 3.28GB+GrailRecordingTemp 1.1GB+runs 通宵局 91 目录 281MB+badge/battle/mine/deploy-evidence 300MB+abandon/guard-evidence 旧文件 107MB+logs 审计定稿前旧日志 52MB。
+- **🔴 待办（用户令）：用户实机测试完成后,删除 D:\CurrencyWarsData\sandbox-frames 全部保留文件**（recording-audit 4 文件+video1-1728+video2-1920+video2-focus114-135=五费聘用书页素材在 video2-focus 里）——**用户测试完成一说一声就删,别再问**;用户存储空间紧张。另 runs-archive-20260907（09-07 历史归档,非昨晚数据,本次未删）是否同删等用户届时指示。
 - **帧沙箱 Phase 1 骨架已交付（用户令"开发之前的那一个沙箱"）**：`--frame-sandbox <脚本.json>` 启动分支（与 --command-test 同族）+DI 层换 4 个基础设施实现（Vision: FileSequenceGameCapture 按裁判当前步回 PNG 帧/StubWindowService 假窗口 1920×1080 前台恒真；Automation: RecordingInputController 全操作记录交裁判恒回 Success/AlwaysForegroundGuard 恒放行）+裁判=驱动器 FrameSandboxPlayer（App/FrameSandbox/：期望全满足才切帧/脚本外操作=违规/步超时=FAILED/终局帧到达=PASS；重复操作容差=匹配既往期望但上限 200 破线记违规；产物 sandbox-ops.jsonl/sandbox-violations.jsonl/sandbox-verdict.txt 带 FileShare.ReadWrite 可边跑边读，默认落 %LOCALAPPDATA%\CurrencyWarsSmartRaccoon\sandbox\run-*）。**决策/操作/识别代码零改动**；单实例互斥对沙箱旁路（必须从非稳定目录启动=bin\Debug 天然隔离命令通道）。使用说明+整改记录：docs/SANDBOX_PHASE1_USAGE_20260908.md。
 - **冒烟脚本**：tests/CurrencyWarsAssistant.Tests/Fixtures/FrameSandbox/smoke_home_to_preparation.json——11 步主界面→命中 019→1-1 备战停；帧=PageReplay 1920×1080 夹具 10 张+真实命中环境页帧（视频 2《A850 三星昔涟》第 1 秒，**019 命运圣杯邀请在 slot1**→软件应点 (960,530) 选中+(1083,984) 确认，双验证=分类器 96.9%+OcrOpeningPageReader 三槽 100%）；provenance.txt 记录来源与教训。
 - **测试**：FrameSandbox 30/30（脚本加载负例/裁判语义/四件套/冒烟回放 PASS+偏离判违规/帧级分类器守卫每帧过真分类器）+Grail 短套件 120/120+DI 守卫 7/7+启动识别面 158 过 3 既有 Skip。构建 0 警告 0 错误。

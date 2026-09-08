@@ -1,0 +1,18 @@
+{
+  "name": "wish_answer_probe",
+  "defaultMaxWaitSeconds": 90,
+  "steps": [
+    {
+      "image": "frames/wish_probe_panel.png",
+      "maxWaitSeconds": 90,
+      "expect": [
+        { "op": "click", "near": [1050, 400], "tol": 500, "note": "M3 应答：点选试炼卡或确认按钮（面板区域内任意点击即满足；精确点位事后从 ops 审计）" }
+      ]
+    },
+    {
+      "image": "../PageReplay/preparation_1_1.jpg",
+      "expect": [],
+      "note": "终局帧：M3 应答后弹框退出回备战页=专项 PASS"
+    }
+  ]
+}

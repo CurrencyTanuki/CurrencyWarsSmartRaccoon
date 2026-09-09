@@ -336,15 +336,7 @@ public sealed class RewardShopRecognitionAccumulator(
                 continue;
             }
 
-            if (_stable[slot.Slot]?.Character is { } stableCharacter &&
-                !string.Equals(
-                    stableCharacter.Id,
-                    id,
-                    StringComparison.OrdinalIgnoreCase))
-            {
-                _stable[slot.Slot] = null;
-            }
-
+            // 连续计数：同名递增；异名清零（未识别的容忍见上方 miss 分支）。
             if (string.Equals(
                     _previousIds[slot.Slot],
                     id,
@@ -359,6 +351,19 @@ public sealed class RewardShopRecognitionAccumulator(
             }
 
             _awaitingConfirmation[slot.Slot] = _consecutiveCounts[slot.Slot] == 1;
+
+            // 审查 P2-1：既有稳定读数只能被"连续两帧的挑战者"推翻——单帧错名 OCR
+            //（C6 幽灵货架家族）不得一票否决两帧共识。货架只在自身刷新时变化，
+            // 而刷新发生在本 Pass 决策之后，Pass 内挑战者单帧=噪声（保留稳定读数）。
+            if (_stable[slot.Slot]?.Character is { } stableCharacter &&
+                !string.Equals(
+                    stableCharacter.Id,
+                    id,
+                    StringComparison.OrdinalIgnoreCase) &&
+                _consecutiveCounts[slot.Slot] < 2)
+            {
+                continue;
+            }
 
             if (_consecutiveCounts[slot.Slot] >= 2)
             {

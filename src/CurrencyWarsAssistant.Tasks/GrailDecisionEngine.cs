@@ -2386,8 +2386,18 @@ public sealed class GrailDecisionEngine(
 
                     if (snapshot.Gold < snapshot.RefreshGoldCost && sold == 0)
                     {
-                        emit("[决策层] R3：金币耗尽且无可卖——弃局重开。");
-                        return PreparationOutcome.Dead;
+                        if (freshBeforeSurrender is null)
+                        {
+                            // 审查 P2-2（09-10 夜审）：判死前复核帧不可得（识别流滞后/
+                            // 帧龄门拦截）时，snapshot.Gold 可能是滞后读数——误弃不可
+                            // 逆，本轮防御跳过判死，运营循环下一轮重查（有界 30 轮兜底）。
+                            emit("[决策层] R3 候选但判死前复核帧不可得（识别滞后）——本轮防御跳过判死。");
+                        }
+                        else
+                        {
+                            emit("[决策层] R3：金币耗尽且无可卖——弃局重开。");
+                            return PreparationOutcome.Dead;
+                        }
                     }
                 }
             }

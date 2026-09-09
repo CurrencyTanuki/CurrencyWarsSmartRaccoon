@@ -542,7 +542,7 @@ public sealed partial class RewardStageAutomationController
         CancellationToken cancellationToken,
         TimeSpan? initialSettleDelay = null)
     {
-        // 1.2.29 提速：650→500（页面门禁仍在，误读由双帧稳定判据兜底）。
+        // 1.2.29 提速：650→500（页面门禁仍在，误读由多帧(≤3)稳定判据兜底）。
         // 1.2.68：已开店热路径（商店页本就稳定/刷新动画等待刚过）由调用方传入更短前置。
         await Task.Delay(
             initialSettleDelay ?? TimeSpan.FromMilliseconds(500),
@@ -598,7 +598,7 @@ public sealed partial class RewardStageAutomationController
         {
             Publish(
                 "ShopRecognitionEmptySnapshotAccepted",
-                "两帧批处理快照中没有稳定角色；空槽属于合法结果，" +
+                "批处理快照(≤3帧)中没有稳定角色；空槽属于合法结果，" +
                 "本轮规划为空并继续奖励关，不追加识别轮次。",
                 TaskEventLevel.Warning);
         }

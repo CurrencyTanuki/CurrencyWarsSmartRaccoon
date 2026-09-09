@@ -313,7 +313,7 @@ public sealed partial class PreparationBoardController
                     // 250ms 按压不再足够吸附——按压 450ms+按下前悬停 300ms+时长 850ms。
                     // 09-10 夜审（1.2.121 会话）：450ms 档在 15:58-17:09 负载时段仍 18 连
                     // 败"拖后仍在"（C4/C7/C9 各 6 试 0 成，17:31 后全成=时段性吸附劣化）
-                    // ——按压 450→700ms+时长 850→1100ms（移动窗口不变）。
+                    // ——按压 450→700ms+时长 850→1100ms（插值节奏不变，总时长随按压延长）。
                     PointerSettleDelay = TimeSpan.FromMilliseconds(300),
                     MouseButtonHoldDelay = TimeSpan.FromMilliseconds(700),
                     AfterActionDelay = TimeSpan.FromMilliseconds(50)

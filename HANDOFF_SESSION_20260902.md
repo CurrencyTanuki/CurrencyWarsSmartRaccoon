@@ -15,6 +15,14 @@
 - **环境终态**：软件运行中（PID 2540,DECIDE 停止）；游戏运行中（主界面）；C 盘剩余 25GB（凌晨曾满=通宵停滞/任务异常停止/jsonl 0 字节的统一根因,详见 〇-c）；**磁盘水位每小时检查=新值守制度**（记忆 29 条）。
 - **下一班主任务（用户令）**：**开发帧沙箱 Phase 1 骨架**（用户原话"下一步任务就是开发之前的那一个沙箱"）——按 docs/SANDBOX_FEASIBILITY_20260908.md 设计执行：--frame-sandbox 参数+FileSequenceGameCapture/RecordingInputController/StubWindowService/AlwaysForegroundGuard 四实现+脚本加载/裁判/违规输出+PageReplay 夹具冒烟脚本。待用户拍板：五费聘用书帧来源（a 抽帧/b 合成/c 等真帧）。
 
+## 〇-13、09-10 深夜：二轮审查 F1/F3 处置 + 1.2.122 发布上线（用户令"全部修完+子代理审查通过后发布"）
+
+- **二轮对抗审查**（覆盖 9f3df27/1254b16/80d9c2e）：APPROVED_AFTER_FIXES（0×P1，2×P2，5×P3）。F1 必修=**I7/I9/I10 组装点（决策引擎快照唯一来源）漏传 analysisAsOf**——已补 `analysisAsOf: frame.Snapshot.AsOf`（ca0cdfb）。F3 顺手修=R3 判死改用手头新鲜复核帧金币裁决（滞后 snapshot.Gold 不持反证新鲜帧判死；新鲜金仍足则不判 R3 继续运营）+健康分支同款 AsOf。
+- **发布**：**1.2.122+ca0cdfb** DEPLOY-OK+VERIFY-PASS（23:48），实例运行中+autodecide 待命；launch-target 指向稳定目录（PowerShell UTF8）；三通道证据落 D 盘核验（日志+runs/录像 junction+GrailRecordingTemp 9 段）。
+- **验证**：构建 0/0；330/330（Shop/Reward/Grail/FrameSandbox/DragHold）；审查员独立复跑 62/62+45/45。
+- **挂账（如实）**：①决策层关键 emit 落 jsonl（事件分类设计，单独批——R3 判死 emit 目前只进 UI 日志）；②18:14:28 金=13 卖卡芙卡违规存疑（需 UI 日志定性）；③84 秒空窗前段 t≈10850–11005 前扩抽帧；④M5 循环"在场即重试"徽章兜底（增强非缺陷）；⑤P3 备案：[X,X,miss,Y] 门级用例/ReadMeter TOCTOU/80d9c2e 提交措辞。**实机验收观察点**：商店每轮识别与画面一致率、祈愿全应答≤3s、徽章装配成功率（700ms 档）、无金币账本跳变。
+- **前批挂账更正**：wall_01–47 前半场子代理未归（超时失联概率高）——其覆盖段（C1–C9 画面）已由通道 B+锚点帧+后半场墙图间接覆盖，不再等。
+
 ## 〇-12、09-10 深夜：逐帧排查三根因一并修复（e35e689+9f3df27，**对抗审查 APPROVED_AFTER_FIXES 已处置，未发布**）
 
 - **①商店识别稳定门**（9540c51，详见〇-11）：观测上限 2→3+单帧 miss 容忍——帧1 动画乱码不再丢弃帧2 正确读数（吉尔伽美什+Saber 实锤修复）。回归测试 5 例。

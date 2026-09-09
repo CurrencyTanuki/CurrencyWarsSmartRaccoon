@@ -500,7 +500,18 @@ public sealed class WishTrialSelectionAutomation(
 
         foreach (var conditional in ConditionalTrialNames)
             if (ContainsFuzzy(trialName, conditional, allowLongWindow: true))
+            {
+                // 09-10 表征测试实锤：四费聘用书与五费聘用书编辑距离 1，上面的模糊
+                // 匹配会把四费误判成可达成——决策层口径（GrailTrialResponseDecider
+                // 的 FourCostLetterKeyword）显式排除四费，默认路径必须对齐。
+                if (!string.IsNullOrEmpty(rewardName)
+                    && rewardName.Contains("四费聘用书", StringComparison.Ordinal))
+                {
+                    return false;
+                }
+
                 return ContainsFuzzy(rewardName, TargetRewardName, allowLongWindow: true);
+            }
 
         return false;
     }

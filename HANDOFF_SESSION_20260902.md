@@ -15,6 +15,13 @@
 - **环境终态**：软件运行中（PID 2540,DECIDE 停止）；游戏运行中（主界面）；C 盘剩余 25GB（凌晨曾满=通宵停滞/任务异常停止/jsonl 0 字节的统一根因,详见 〇-c）；**磁盘水位每小时检查=新值守制度**（记忆 29 条）。
 - **下一班主任务（用户令）**：**开发帧沙箱 Phase 1 骨架**（用户原话"下一步任务就是开发之前的那一个沙箱"）——按 docs/SANDBOX_FEASIBILITY_20260908.md 设计执行：--frame-sandbox 参数+FileSequenceGameCapture/RecordingInputController/StubWindowService/AlwaysForegroundGuard 四实现+脚本加载/裁判/违规输出+PageReplay 夹具冒烟脚本。待用户拍板：五费聘用书帧来源（a 抽帧/b 合成/c 等真帧）。
 
+## 〇-8、09-10 晨班续：盲区测试落地+沙箱回归 PASS+C1/C11 定案+素材清理（4.4GB 已释放）
+
+- **测试盲区补齐（审查员清单的可落地部分）**：①`DragHoldDelayArchitectureGuardTests`——Tasks 全仓 `input.DragAsync` 静态扫描，ActionPolicy 无 MouseButtonHoldDelay 即红（豁免=导航配置驱动路径，注明理由）；②`WishTrialSidePickTests` 6 例表征测试——**当场抓到真问题并已修**：默认路径模糊匹配把"四费聘用书"误判成五费（编辑距离 1），与决策层 FourCostLetterKeyword 排除口径相悖，已在 IsWinningTrial 补四费排除；③**挂账**：NotPurchased 执行器契约测试需抽 IRewardStage 接口（RewardStageAutomationController sealed 不可注入），重构另批；导航暂停页分支单测同理待导航测试基建。
+- **沙箱回归 PASS（P1-A 端到端验证）**：`wish_fallback_probe.json`（C4 死锁帧固化为 frames/wish_fallback_popup.png+provenance）——2/2 步零违规 32 秒，ops 实录 click(684,351) 选左卡→click(1499,641) 确认→弹框退出；修复前同路径 NoWinningSide 直接返回。启动=artifacts/launch_wish_fallback_probe.ps1（零 UAC，CWTLaunchApp）。沙箱实例已干净退出，exit.txt 已清。
+- **C1 定案（f_00021）**：第 4 轮选中 019 后进的是 07:17 前的**未结算旧局（1-2）**——备战页被判 Unknown→Esc×3 打在备战页→超时弃局。续局守卫盲区变体（开局页出现过→守卫不触发）+备战页 1-2 态识别缺口→**新挂账**。**C11 定案（burst c_230）**：盲选左执行正确（左卡金色选中态实锤）；"池子里全是红A"=机制效果型试炼（Archer 靠商店刷出非直送）→机制盲区待拍板，非缺陷。
+- **素材清理（用户令，固化后执行）**：已删 842 提取帧+71 墙图+331 burst+2.5GB 源录像≈**4.4GB**；保留 `D:\CurrencyWarsData\audit-redo-20260910\keep\` 9 张语义命名关键帧（15MB）+parse/make 脚本+逐局文本链；沙箱夹具帧已入 git。GrailRecordingTemp 剩 03:xx 段约 650MB（用户澄清非夜班所开）**未动待示下**。
+
 ## 〇-7、09-10 晨班：夜审缺陷修复批落地（用户令"修完 bug 按开发规矩做，尤其子代理排查"；**未发布，等用户下令**）
 
 - **修复清单（5 项，对抗审查 APPROVED 零 P1/P2，构建 0/0+涉事测试 157/157+240/240 两轮全绿）**：

@@ -81,6 +81,15 @@
 7. **P3-A 难度不一致观察**：开局 HP 60/80 并存，建议在 M8 盲点后加一次职级页识别确认（或拍板接受随机难度）。
 8. **P3-B C1 进局超时**与 **C11 Archer 去向**两处留观，素材已在 D:\CurrencyWarsData\audit-redo-20260910\frames\ 可随时回放。
 
+## 八、附录：09-10 续作（留观定案+修复验证+素材清理）
+
+1. **C1 定案（f_00021 实拍）**：第 4 轮选中 019 后进入的是 **07:17 之前的未结算旧局（1-2 进行中）**——备战页被识别 Unknown→Esc×3 打在备战页→超时弃局。续局守卫的盲区变体：开局页出现过→守卫不触发；备战页在节点>1-1 且商店按钮高亮态下被判 Unknown（识别表覆盖问题）。→新挂账。
+2. **C11 定案（burst 突发帧 c_230 实拍）**：祈愿左卡（池子里全是红A！/Archer）**金色选中态，盲选左执行正确**；"池子里全是红A"为**机制效果型试炼**（卡面注"【远坂凛】在场时，刷新20次"——Archer 靠商店刷出而非直送），后续货架未见满池红A 属机制细节，按方法论 §六.3 标**机制盲区待拍板**，非软件缺陷。
+3. **P1-A 修复的沙箱回归验证 PASS**：新增 `wish_fallback_probe.json`（C4 死锁帧入库存为 frames/wish_fallback_popup.png）——沙箱实例 2/2 步零违规 32 秒，ops 实录 click(684,351) 选左卡→click(1499,641) 确认→弹框退出；修复前同路径在 NoWinningSide 直接返回不点击。启动方式=artifacts/launch_wish_fallback_probe.ps1（零 UAC）。
+4. **新增测试**：DragHoldDelayArchitectureGuardTests（Tasks 全仓 DragAsync 静态扫描必须带 MouseButtonHoldDelay，豁免清单=导航配置驱动路径）+ WishTrialSidePickTests 6 例（关键试炼命中口径表征，**当场抓到真问题**：模糊匹配把"四费聘用书"误判成五费——已修，默认路径对齐决策层 FourCostLetterKeyword 排除口径）。
+5. **NotPurchased 执行器契约测试挂账**：RewardStageAutomationController 为 sealed 具体类，需抽 IRewardStage 接口才可注入假件——重构另批。
+6. **素材清理（用户令，保守条件满足后执行）**：提取帧 842+墙图 71+burst 331+源录像 2.5GB 共约 **4.4GB 已删除**；保留 keep/ 9 张语义命名关键帧（15MB）+ parse/make 脚本与逐局文本证据链；沙箱夹具帧已固化入 git。GrailRecordingTemp 剩余 03:xx 段（约 650MB，用户澄清非夜班所开）未动待示下。
+
 ## 六、通道覆盖度声明与抽样透明
 
 - 全部 20 周期走了日志通道（8860 事件逐条解析，无抽样）；拖拽诊断 219 条全量统计。

@@ -390,7 +390,8 @@ public sealed class GrailRunLoop(
             stateHolder,
             goal,
             DateTimeOffset.Now,
-            staleAfter: TimeSpan.FromSeconds(15));
+            staleAfter: TimeSpan.FromSeconds(15),
+            analysisAsOf: analysis.Snapshot.AsOf);
     }
 
     /// <summary>构造可接受的开局过滤器（只收 067 英雄登场 / 019 命运圣杯邀请；018 已剔除）。</summary>

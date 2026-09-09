@@ -133,6 +133,33 @@ public sealed class GrailSnapshotAssemblerTests
     }
 
     [Fact]
+    public void GoldCapture_UsesAnalysisFrameAsOf_NotAssemblyWallClock()
+    {
+        // 09-10 夜审（终态金 1→32→1 幻想）：滞后缓存帧的读数必须以帧自身时刻
+        // （AsOf）落账——组装墙钟会让滞后帧伪装新鲜压过本地账。
+        var frameAsOf = Now - TimeSpan.FromSeconds(20);
+        var economyFrame = new RunSnapshot
+        {
+            RunId = "stale-frame",
+            AsOf = frameAsOf,
+            Economy = Observation<int>.Known(36, 0.9),
+        };
+        var holder = new GrailRunStateHolder();
+        holder.CaptureGold(1, Now); // 本地账：真金 1（比滞后帧新）
+
+        GrailSnapshotAssembler.Assemble(
+            State(formation: null), economyFrame, GameData, holder,
+            GrailUserGoal.Single, Now, StaleAfter,
+            analysisAsOf: frameAsOf);
+
+        // 滞后帧如实落账：值=36、时间戳=帧自身时刻（非组装墙钟 Now）——
+        // 下游 FreshOrUnknown 据此判陈旧走防御，而非伪装新鲜压过本地账。
+        var (gold, goldAt) = holder.PeekGold();
+        Assert.Equal(36, gold);
+        Assert.Equal(frameAsOf, goldAt);
+    }
+
+    [Fact]
     public void FiveCostAndXilian_CountBenchToo()
     {
         var holder = new GrailRunStateHolder();

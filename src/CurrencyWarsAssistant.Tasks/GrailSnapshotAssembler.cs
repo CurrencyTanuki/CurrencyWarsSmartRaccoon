@@ -89,31 +89,33 @@ public static class GrailSnapshotAssembler
         GrailRunStateHolder holder,
         GrailUserGoal goal,
         DateTimeOffset now,
-        TimeSpan staleAfter)
+        TimeSpan staleAfter,
+        DateTimeOffset? analysisAsOf = null)
     {
         ArgumentNullException.ThrowIfNull(state);
         ArgumentNullException.ThrowIfNull(gameData);
         ArgumentNullException.ThrowIfNull(holder);
 
         // ---- 识别值捕获 + 陈旧度取值 ----
+        // 09-10 夜审（审查 P2-3 补齐）：识别值可能来自滞后缓存帧——捕获时间戳一律用
+        // 帧自身时刻（analysisAsOf，调用方传 Snapshot.AsOf），墙钟仅作兜底；否则滞后
+        // 帧以"新钟"伪装新鲜压过本地账（终态金 1→32→1 幻想实锤）。陈旧度仍按真实
+        // now 判（滞后帧超 15s 自然滑入 Stale 防御）。
+        var captureClock = analysisAsOf ?? now;
         if (state.Health.Status == ObservationStatus.Known)
         {
-            holder.CaptureHealth(state.Health.Value, now);
+            holder.CaptureHealth(state.Health.Value, captureClock);
         }
 
         if (state.Population.Status == ObservationStatus.Known)
         {
-            holder.CapturePopulation(state.Population.Value, now);
+            holder.CapturePopulation(state.Population.Value, captureClock);
         }
 
         var economy = economySnapshot?.Economy;
         if (economy is { Status: ObservationStatus.Known })
         {
-            // 09-10 夜审（终态金 1→32→1 幻想实锤）：economy 读数来自识别管线缓存帧，
-            // 可能滞后真实盘面数十秒——CapturedAt 必须用帧自身时刻（AsOf）而非组装
-            // 墙钟，否则滞后帧会以"新钟"伪装新鲜压过本地账（I1 已修同族，此处对齐）。
-            var goldAsOf = economySnapshot?.AsOf ?? now;
-            holder.CaptureGold(economy.Value, goldAsOf);
+            holder.CaptureGold(economy.Value, captureClock);
         }
 
         var health = FreshOrUnknown(holder.PeekHealth(), now, staleAfter);

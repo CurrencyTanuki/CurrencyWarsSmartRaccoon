@@ -265,7 +265,8 @@ public sealed class GrailRecognitionCommands(
             stateHolder,
             context.Goal,
             DateTimeOffset.Now,
-            StaleAfter);
+            StaleAfter,
+            analysisAsOf: frame.Snapshot.AsOf);
         return kind switch
         {
             GrailCommandKind.I7 => GrailCommandResult.Ok(kind,

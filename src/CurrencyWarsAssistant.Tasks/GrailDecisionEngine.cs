@@ -2395,8 +2395,16 @@ public sealed class GrailDecisionEngine(
                         }
                         else
                         {
-                            emit("[决策层] R3：金币耗尽且无可卖——弃局重开。");
-                            return PreparationOutcome.Dead;
+                            // 审查 F3：手头有新鲜复核帧时以其金币为准（snapshot 可能是
+                            // 2368 行回填的滞后快照，判死依据不持反证新鲜帧）。
+                            var goldForVerdict = freshBeforeSurrender.Gold;
+                            if (goldForVerdict < snapshot.RefreshGoldCost && sold == 0)
+                            {
+                                emit("[决策层] R3：金币耗尽且无可卖（新鲜复核帧裁定）——弃局重开。");
+                                return PreparationOutcome.Dead;
+                            }
+
+                            emit("[决策层] 新鲜复核帧显示金币仍足（金=" + goldForVerdict + "）——不判 R3，继续运营。");
                         }
                     }
                 }

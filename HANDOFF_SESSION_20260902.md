@@ -32,7 +32,7 @@
 
 ## 〇-3、挂账与待查（按优先级，全部未完成）
 
-1. **P0 金尽空转循环**（1.2.123 实测两局各 ~10 分钟）：清场卖出被 reward_shop 页阻断（PreparationBenchSalePageMismatch）后安全停止且永不重试→清场残漏→R3 被"可卖>0"阻塞→空转等 30 轮上限。修法=卖出前查页，reward_shop→先收摊（1620,975@1920，页面已验证后点）再卖。
+1. **P0 金尽空转循环 → ✅已修（09-10 03:2x 本班，详见〇-7，构建 0/0+Grail 145/145+Preparation 95 过+对抗审查 APPROVED、P2 已当场修、发布待用户令）**（1.2.123 实测两局各 ~10 分钟）：清场卖出被 reward_shop 页阻断（PreparationBenchSalePageMismatch）后安全停止且永不重试→清场残漏→R3 被"可卖>0"阻塞→空转等 30 轮上限。修法=卖出前查页，reward_shop→先收摊（1620,975@1920，页面已验证后点）再卖。
 2. **P0 金币读数幻值**（时间戳已诚实但数值仍错：真 9 报 27、真 3 报 1、真 4 报 1）：识别 OCR 或滞后帧值问题——需识别回归语料库（下条）定量化。防御已闭环（R3 判死需新鲜读数+塌缩跳过），实害=运营低效非误弃。
 3. **P1 分析页对齐（重开调查）**：实机识别管线健康（75/86 分析 PageId 正常），**前班"沙箱 PageId 永非 preparation_*"结论系探针键名大小写错误假象**（JSON 为 camelCase：snapshot/pageId）——沙箱会话 0 个 analysis JSON 落盘才是真差异（沙箱模式管线不写产物或未运行到产出）。重开步骤：起长会话沙箱验证管线是否运行→按结果修。
 4. **P1 主界面 transition 误标（间歇）**：3D 主界面高运动时段全帧被判 transition_animation→M8 等不到稳定页（01:19 实锤，01:24 自愈）。修法候选=fast 分类器命中已知页时豁免 transition 标记（fast 集已含 currency_wars_home）。
@@ -58,6 +58,12 @@
 ## 〇-6、交接提示词
 
 交接提示词已独立成节，见文末"九、下一班交接提示词（复制即用）"。
+
+## 〇-7、09-10 深夜班修改记录（03:00 起本班）
+
+1. **P0#1 金尽空转修复（PreparationFormation.cs CaptureVerifiedPreparationAsync）**：页面门内新增 reward_shop 收摊救援分支——页面分类=reward_shop 时（收摊尝试上限 2，独立于 Esc 预算 3 与 8 次总循环）发布 PreparationRewardShopCloseAttempt，调同类现成 GrailClickReferencePointAsync 点收摊开关 (1620,975)@1920（页面身份验证后才点，1.2.64 决策层救援同款坐标），点击后 250ms×20 步进轮询确认页面已离开 reward_shop 才交回门禁（未确认发 PreparationRewardShopCloseUnconfirmed 留痕）。**对抗审查 APPROVED；P2 当场修**：初版固定睡 1500ms 有"双向开关二次点击重开店"风险（审查员指出），改步进轮询后消除；两 P3（收摊后 Esc 分支理论暴露/重复前台守卫）记录不修。调用点影响面：审查员逐一核对 21 处调用，确认不存在"商店页合法开启时调用本门"的场景（M5 两条路径上场动作均在 CloseShopAsync 之后）。验证：构建 0 警 0 错 + Grail 145/145 + Preparation 95 过/4 跳既有 Skip。**未发布未实测，等用户令**。
+2. **值守环境整理**：monitor_cycle.py 曾有 4 个重复实例（共享 state.json 竞态），清到 1 个（PID 56144）；watchdog daemon 双实例清到 1 个（keeper 拉起的 32172）；watch_duty_123.ps1 沿用上班的（PID 53840）。watchdog keeper+daemon 在岗（keeper 日志显示 daemon 高 I/O 下反复卡死被 keeper 正常复活，属设计内行为）。
+3. **1.2.123 运行观察（01:18-03:16）**：刷局循环健康（22+ 轮弃局全闭环、每轮 40-90s、卡壳自愈）；P0 两条挂账实机复现取证（金尽空转 12min+10min 各一段、02:07-02:12 出现 PurchaseNotConfirmed 循环 11 条——金 9-10 反复购买未生效，与金币幻值同族）；02:47 识别流看门狗挂起报错→恢复链闭环（RecoveryCompleted 02:52:51）。
 
 ## 五、Windows 操作强制标准
 

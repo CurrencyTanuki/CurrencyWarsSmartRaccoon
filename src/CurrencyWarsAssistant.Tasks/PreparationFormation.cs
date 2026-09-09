@@ -2286,6 +2286,11 @@ public sealed partial class PreparationBoardController(
     {
         const int maximumEscapeAttempts = 3;
         var escapeAttempts = 0;
+        // P0（HANDOFF 〇-3.1 金尽空转，2026-09-10）：1-3 金尽后收摊商店页残留时，
+        // 本门把清场卖出"安全停止"且永不重试 → 清场残漏 → R3 被"可卖>0"阻塞 →
+        // 空转 10-12 分钟等 30 轮上限。补 1.2.64 决策层同款收摊救援（页面验证后点）。
+        const int maximumShopCloseAttempts = 2;
+        var shopCloseAttempts = 0;
         (GameWindowInfo Window, CaptureFrame Frame)? latest = null;
         for (var attempt = 1; attempt <= 8; attempt++)
         {
@@ -2296,6 +2301,61 @@ public sealed partial class PreparationBoardController(
                 window,
                 cancellationToken);
             var page = pageClassifier.Classify(frame);
+            if (page?.PageId is "reward_shop" &&
+                shopCloseAttempts < maximumShopCloseAttempts)
+            {
+                shopCloseAttempts++;
+                Publish(
+                    TaskEventLevel.Warning,
+                    "PreparationRewardShopCloseAttempt",
+                    $"备战操作前页面为收摊商店页（reward_shop），执行第 " +
+                    $"{shopCloseAttempts}/{maximumShopCloseAttempts} 次收摊救援：" +
+                    "点击收起商店开关后等待过渡。");
+                if (!await GrailClickReferencePointAsync(
+                        windowHandle,
+                        1620,
+                        975,
+                        cancellationToken))
+                {
+                    Publish(
+                        TaskEventLevel.Warning,
+                        "PreparationRewardShopCloseClickFailed",
+                        "收摊点击未发送成功（前台守卫/窗口瞬态）；继续重试识别。");
+                }
+
+                // P2（对抗审查 09-10）：收摊开关是双向的——固定延时后若收起动画
+                // 未落定仍读到 reward_shop，下一次救援点击会把已收起的店重新打开
+                // （救援自我抵消；RewardStageAutomation.cs ShopTogglePoint 实测注：
+                // 收起后同秒读数仍=reward_shop 是动画滞后）。步进轮询至多 ~5 秒，
+                // 确认已离开 reward_shop 才交回页面门；仍停留则由事件留痕。
+                var closeConfirmed = false;
+                for (var settle = 0; settle < 20; settle++)
+                {
+                    await Task.Delay(
+                        TimeSpan.FromMilliseconds(250),
+                        cancellationToken);
+                    var settleFrame = await capture.CaptureAsync(
+                        window,
+                        cancellationToken);
+                    var settlePage = pageClassifier.Classify(settleFrame);
+                    if (settlePage?.PageId is not "reward_shop")
+                    {
+                        closeConfirmed = true;
+                        break;
+                    }
+                }
+
+                if (!closeConfirmed)
+                {
+                    Publish(
+                        TaskEventLevel.Warning,
+                        "PreparationRewardShopCloseUnconfirmed",
+                        $"收摊点击后 5 秒页面仍为收摊商店页（第 {shopCloseAttempts} " +
+                        "次救援未生效）；若预算未耗尽将重试。");
+                }
+
+                continue;
+            }
             if (string.Equals(
                     page?.PageId,
                     PreparationCompanionSelectionPolicy.PageId,

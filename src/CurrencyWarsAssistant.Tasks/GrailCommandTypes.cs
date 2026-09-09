@@ -109,13 +109,17 @@ public sealed record GrailWishOutcomeFact(
     bool CauldronSelected);
 
 /// <summary>M5 商店 Pass 事实（含货架全名单，供决策层核对购买判定）。
-/// 1.2.90：DeployedFrontSlots=执行器自动上场的单位→前台槽位（0 基），供上场台账登记。</summary>
+/// 1.2.90：DeployedFrontSlots=执行器自动上场的单位→前台槽位（0 基），供上场台账登记。
+/// 09-10 深夜班：LiveLedgerGold=执行器实时本地账（1.2.24 口径：刷新扣款实时反映；
+/// 坏账/未跑=null 不兜底）——区别于 GoldAfter 的"本地账无效时兜底持有器值"混合语义，
+/// 供 R3 判死作行为级金尽证据（OCR 幻值时唯一可信源）。</summary>
 public sealed record GrailShopPassFact(
     bool BoughtCharacter,
     int? GoldAfter,
     IReadOnlyList<string>? ShelfCharacterNames = null,
     IReadOnlyList<string>? BoughtCharacterNames = null,
-    IReadOnlyDictionary<string, int>? DeployedFrontSlots = null);
+    IReadOnlyDictionary<string, int>? DeployedFrontSlots = null,
+    int? LiveLedgerGold = null);
 
 /// <summary>M8 开局重刷事实（停靠点=1-1 备战席入口，2026-09-02 用户拍板）。</summary>
 public sealed record GrailOpeningFact(

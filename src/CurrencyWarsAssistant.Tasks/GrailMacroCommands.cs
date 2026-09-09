@@ -166,9 +166,16 @@ public sealed class GrailMacroCommands(
         var (holderGold, _) = stateHolder.PeekGold();
         var gold = executor.LastShopPassGold >= 0 ? executor.LastShopPassGold : holderGold ?? 0;
         var shelf = executor.LastShopPassShelfNames;
+        // 09-10 深夜班（R3 结构防御）：本地账有效才给 LiveLedgerGold——坏账/未跑
+        // 一律 null，绝不兜底持有器值（GoldAfter 的兜底语义留给指令回执显示用）。
+        // 仅 loop 模式填充：非 loop M5（S4 弹出店等）不落本条账，携带上一条 loop
+        // 指令的余账是语义地雷（审查 P3）。
+        var liveLedgerGold = grailLoopMode && executor.LastShopPassGold >= 0
+            ? executor.LastShopPassGold
+            : (int?)null;
         return GrailCommandResult.Ok(
             GrailCommandKind.M5,
-            new GrailShopPassFact(bought, gold, shelf, executor.LastShopPassBoughtNames, executor.LastShopPassDeployedFrontSlots));
+            new GrailShopPassFact(bought, gold, shelf, executor.LastShopPassBoughtNames, executor.LastShopPassDeployedFrontSlots, liveLedgerGold));
     }
 
     private async Task<GrailCommandResult> SelectStrategyAsync(

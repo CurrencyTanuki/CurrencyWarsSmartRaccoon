@@ -2284,6 +2284,8 @@ public sealed class GrailDecisionEngine(
         await SellRedundantsAsync(window, snapshot, ct);
 
         // ---- S5/S7：运营循环 ----
+        // 谱系连击计数器（R3 二审 P1）：账本连续报破的轮数，与循环同生命周期=同局。
+        var ledgerBrokeStreak = 0;
         for (var opsRound = 0; opsRound < 30 && !ct.IsCancellationRequested; opsRound++)
         {
             var shopResult = await SendAsync("M5 圣杯",
@@ -2380,11 +2382,29 @@ public sealed class GrailDecisionEngine(
             }
 
             // R3 候选：金不足刷新价 且 卖光冗余后仍不足（审查 P3：用动态刷新价）
-            if (snapshot.Gold < snapshot.RefreshGoldCost)
+            // 09-10 深夜班（R3 结构防御）：M5 实时本地账 LiveLedgerGold（随本轮指令
+            // 返回，非 null=刷新扣款实跑落账）也构成候选/判死证据。1.2.123 实测 OCR
+            // 金幻值（真 9 报 27、真 3 报 1）把 snapshot.Gold 抬高——全会话
+            // R3GoldExhausted=0，金尽空转 10-12 分钟全靠 30 轮上限"运营轮上限（异常
+            // 兜底）"逃生。刚实跑刷新即失败=行为级金尽证据，强于单帧 OCR 幻值。
+            var liveLedgerGold = shopResult.Error is null
+                && shopResult.Payload is GrailShopPassFact r3PassFact
+                    ? r3PassFact.LiveLedgerGold
+                    : null;
+            var ledgerSaysBroke = liveLedgerGold is { } r3LedgerGold
+                && r3LedgerGold < snapshot.RefreshGoldCost;
+            // 谱系连击（R3 二审 P1）：幻值双向——持续性高幻值态（=事故态本身）下
+            // 新鲜复核帧取自同一条幻值流，会轮轮"反证"账本；而压低幻值种出的假账本
+            // 只在单轮存在（下一轮持有器播种正确高值即洗掉）。连击 ≥2 轮=账本独立
+            // 推翻帧反证（真事故 2 轮即杀；假账本第 2 轮前必然回升清零）。
+            ledgerBrokeStreak = ledgerSaysBroke ? ledgerBrokeStreak + 1 : 0;
+            if (snapshot.Gold < snapshot.RefreshGoldCost || ledgerSaysBroke)
             {
                 var sold = await SellRedundantsAsync(window, snapshot, ct);
                 snapshot = await SnapshotWithRetryAsync(window, ct) ?? snapshot;
-                if (snapshot.Gold < snapshot.RefreshGoldCost && sold == 0)
+                // 清场卖出是本轮唯一加金途径（rule 八.2.5 可卖推演）：sold==0 保证
+                // liveLedgerGold 读数在此刻仍然有效，可作判死依据。
+                if ((snapshot.Gold < snapshot.RefreshGoldCost || ledgerSaysBroke) && sold == 0)
                 {
                     // 1.2.89（用户令第 5 问题 R3 口径）：真山穷水尽=可卖单位为零。
                     // 快照仍报有可卖（身份异常拒卖等）时绝不判死——复核后再卖一轮；
@@ -2400,6 +2420,42 @@ public sealed class GrailDecisionEngine(
                         var retried = await SellRedundantsAsync(window, freshBeforeSurrender, ct);
                         snapshot = await SnapshotWithRetryAsync(window, ct) ?? freshBeforeSurrender;
                         sold = retried;
+                    }
+
+                    if (ledgerSaysBroke && sold == 0 &&
+                        (freshBeforeSurrender is null ||
+                         freshBeforeSurrender.Gold < snapshot.RefreshGoldCost ||
+                         ledgerBrokeStreak >= 2))
+                    {
+                        // 09-10 深夜班：本地账行为证据参与判死——它随本轮 M5 指令返回
+                        //（非滞后帧）、坏账已作废为 null（非塌缩值）。三道闸门：
+                        // ①sold==0（复核重卖 retried 计入 sold，重卖成功=加金成立，
+                        //   绝不判死——R3 一审 P1）；
+                        // ②F3 新鲜帧金币反证（压低幻值假账本被新鲜帧拦下——R3 一审 P2）；
+                        // ③连击 ≥2 豁免反证（持续高幻值事故态下帧与账本同源，帧反证
+                        //   无效——R3 二审 P1，谱系连续性区分真事故与假账本）。
+                        // freshBeforeSurrender null（复核帧不可得）时账本证据独立成立。
+                        emit("[决策层] R3：M5 实时本地账金=" + liveLedgerGold +
+                            "<刷新价" + snapshot.RefreshGoldCost + " 且可卖=0（行为证据；OCR 金=" +
+                            snapshot.Gold + " 幻值嫌疑；连击=" + ledgerBrokeStreak + "）——弃局重开。");
+                        publishEvent?.Invoke(
+                            "R3GoldExhausted",
+                            "本地账金=" + liveLedgerGold + "<刷新价 且可卖=0（OCR 金=" +
+                            snapshot.Gold + "；连击=" + ledgerBrokeStreak + "）——弃局重开");
+                        return PreparationOutcome.Dead;
+                    }
+
+                    if (ledgerSaysBroke && snapshot.Gold >= snapshot.RefreshGoldCost &&
+                        freshBeforeSurrender is not null &&
+                        freshBeforeSurrender.Gold >= snapshot.RefreshGoldCost)
+                    {
+                        // R3 二审 P3：账本连破被新鲜帧否决时必须留痕——事故复盘正是
+                        // 靠 R3GoldExhausted=0 反推的，否决无痕=下一个审计盲区。
+                        publishEvent?.Invoke(
+                            "R3LedgerBrokeVetoed",
+                            "账本金=" + liveLedgerGold + "连破×" + ledgerBrokeStreak +
+                            "轮被新鲜帧反证（帧金=" + freshBeforeSurrender.Gold +
+                            "，OCR 金=" + snapshot.Gold + "）——未判死，继续运营");
                     }
 
                     if (snapshot.Gold < snapshot.RefreshGoldCost && sold == 0)

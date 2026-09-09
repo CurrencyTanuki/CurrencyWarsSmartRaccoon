@@ -83,4 +83,8 @@ public interface IGameWindowService
 
     bool IsForeground(GameWindowInfo window);
     bool BringToForeground(GameWindowInfo window);
+
+    /// <summary>游戏进程是否存活（2026-09-10 关游戏卡死修复配套）。默认 true=实现方
+    /// 无进程探测能力时保守处理（绝不把"最小化/窗口暂时不可见"误判为进程退出）。</summary>
+    bool IsGameProcessAlive() => true;
 }

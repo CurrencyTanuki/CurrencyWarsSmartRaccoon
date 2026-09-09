@@ -389,7 +389,24 @@ public sealed class CommandTestWindow : Window
             || DateTimeOffset.Now - lastPulseAt.Value > TimeSpan.FromSeconds(45);
         // 焦点豁免（1.2.118）：失焦=分析自动暂停（设计行为，等待不是卡死）——
         // 暂停期脉冲停走是预期，stale 不成立；dead（采集任务退出）不受豁免。
-        if (stale && !IsGameForegroundWithResumeGrace())
+        // P1（2026-09-10 关游戏卡死）：**窗口消失≠失焦**——游戏进程退出后
+        // FindGameWindow 为 null，IsGameForegroundWithResumeGrace 的"检测失败走
+        // 失焦豁免"分支会把冻结吞掉，而 dead 判据又被冻结打破（任务永不完成）
+        // →旧逻辑永不 revive 零痕迹（04:37 进程级冻结的静默面）。窗口找不到了
+        // 就不豁免：revive 会 START 失败并响亮留痕，而不是静默死。
+        // P2-1（对抗审查）：windowMissing 需进程级复核——FindGameWindow 把
+        // 最小化窗口也过滤为 null，不能区分"最小化"与"进程退出"；仅进程退出
+        // 才取消豁免，最小化仍走失焦豁免（不拆活会话）。
+        var windowMissing = FindGameWindow() is null &&
+                            !_gameWindowService.IsGameProcessAlive();
+        if (windowMissing)
+        {
+            // P3-3（对抗审查）：窗口缺失期持续刷新非前台戳，游戏重开切回前台时
+            // 60s 恢复缓冲不被误判"已过"（防幻影 revive）。
+            _lastNonForegroundAt = DateTimeOffset.Now;
+        }
+
+        if (stale && !windowMissing && !IsGameForegroundWithResumeGrace())
         {
             stale = false;
         }

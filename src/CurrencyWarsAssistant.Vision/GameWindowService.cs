@@ -146,6 +146,24 @@ public sealed class GameWindowService : IGameWindowService
         window.IsValid &&
         NativeWindowMethods.ForceForegroundWindow(window.Handle);
 
+    /// <summary>
+    /// 游戏进程是否仍在运行（2026-09-10 关游戏卡死修复配套）：按已知进程名探测，
+    /// 不看窗口状态——FindCandidates 会把最小化窗口过滤为 null，无法区分
+    /// "窗口最小化"与"进程已退出"；看门狗的"窗口消失"硬判据需要后者。
+    /// </summary>
+    public bool IsGameProcessAlive()
+    {
+        foreach (var name in KnownProcessNames)
+        {
+            if (Process.GetProcessesByName(name).Length > 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private static GameWindowInfo? ReadWindow(nint handle)
     {
         if (handle == 0 ||

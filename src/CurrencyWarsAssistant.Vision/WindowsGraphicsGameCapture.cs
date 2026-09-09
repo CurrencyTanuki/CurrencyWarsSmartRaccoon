@@ -39,6 +39,17 @@ public sealed class WindowsGraphicsGameCapture : IGameCapture, IDisposable
     private GraphicsCaptureSession? _session;
     private TaskCompletionSource<Direct3D11CaptureFrame>? _pendingFrame;
     private bool _disposed;
+    // P1（2026-09-10 关游戏卡死修复）：捕获目标销毁快路径——Closed 事件置位后
+    // CaptureAsync 入口毫秒级失败，不再让 3s 等帧超时+对半死目标 ResetSession 的
+    // 同步 Dispose 走到 WinRT 楔死窗口（该楔死曾致进程级冻结，根因诊断见
+    // docs/AUDIT_20260910_123_WATCH.md 关联 handoff 〇-7.12）。
+    private int _targetClosed;
+    // 会话代际（对抗审查 P1-1）：每次 EnsureSession 新建 +1；Closed 回调闭包捕获
+    // 自己的代际，迟发/孤儿回调凭代际失配被忽略，绝不给重建后的新会话下毒。
+    private int _generation;
+    // 供 ResetSession 尽力退订的最近一次 Closed 订阅（WinRT 事件要求具体委托类型）。
+    private Windows.Foundation.TypedEventHandler<GraphicsCaptureItem, object>?
+        _closedHandler;
     // 1.2.96 识别流冻结根因诊断（纯观测）：捕获层计数——与管线层截图循环统计对照，
     // 区分"WGC/游戏不产帧""等帧超时""会话反复重建"三种病理。
     private long _frameArrivals;
@@ -68,6 +79,15 @@ public sealed class WindowsGraphicsGameCapture : IGameCapture, IDisposable
         CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
+        // P1-1（对抗审查）：快失败仅对"请求窗口==当前会话目标"生效——游戏重启后
+        // 新 HWND 放行进入 EnsureSession→ResetSession 清标志重建，捕获不再永久锁死。
+        if (Volatile.Read(ref _targetClosed) == 1 &&
+            Interlocked.CompareExchange(ref _activeWindow, 0, 0) == window.Handle)
+        {
+            throw new InvalidOperationException(
+                "游戏窗口已关闭，捕获目标不再存在。");
+        }
+
         if (window.ClientArea.IsEmpty)
         {
             throw new InvalidOperationException("游戏客户区尺寸无效。");
@@ -174,6 +194,7 @@ public sealed class WindowsGraphicsGameCapture : IGameCapture, IDisposable
         }
 
         ResetSession();
+        var generation = Interlocked.Increment(ref _generation);
         var item = CreateItemForWindow(windowHandle);
         var size = item.Size;
         if (size.Width <= 0 || size.Height <= 0)
@@ -181,27 +202,43 @@ public sealed class WindowsGraphicsGameCapture : IGameCapture, IDisposable
             throw new InvalidOperationException("窗口捕获返回了无效尺寸。");
         }
 
-        var framePool = Direct3D11CaptureFramePool.CreateFreeThreaded(
-            _device.Value,
-            DirectXPixelFormat.B8G8R8A8UIntNormalized,
-            2,
-            size);
-        var session = framePool.CreateCaptureSession(item);
-        session.IsCursorCaptureEnabled = false;
-        // Keep one capture session alive for the whole automation run. On
-        // systems that require the yellow capture border this makes it steady
-        // instead of recreating and flashing it for every recognition step.
-
-        framePool.FrameArrived += OnFrameArrived;
+        // P1（2026-09-10）：订阅目标销毁事件——窗口关闭即刻置快路径标志并唤醒
+        // 在途等待，采集循环不再对死目标走"3s 超时→ResetSession"的楔死窗口。
+        // 闭包捕获代际：迟发/孤儿 Closed 回调凭代际失配被忽略，不下毒新会话
+        // （对抗审查 P1-1 竞态变体）。handler 存字段供 ResetSession 尽力退订。
+        Windows.Foundation.TypedEventHandler<GraphicsCaptureItem, object> handler =
+            (_, _) => OnCaptureItemClosed(generation);
+        item.Closed += handler;
+        _closedHandler = handler;
+        Direct3D11CaptureFramePool? framePool = null;
+        GraphicsCaptureSession? session = null;
         try
         {
+            framePool = Direct3D11CaptureFramePool.CreateFreeThreaded(
+                _device.Value,
+                DirectXPixelFormat.B8G8R8A8UIntNormalized,
+                2,
+                size);
+            session = framePool.CreateCaptureSession(item);
+            session.IsCursorCaptureEnabled = false;
+            // Keep one capture session alive for the whole automation run. On
+            // systems that require the yellow capture border this makes it steady
+            // instead of recreating and flashing it for every recognition step.
+
+            framePool.FrameArrived += OnFrameArrived;
             session.StartCapture();
         }
         catch
         {
-            framePool.FrameArrived -= OnFrameArrived;
-            session.Dispose();
-            framePool.Dispose();
+            // P2-2/P3-1（对抗审查）：创建段任何一步失败——退订+后台释放，
+            // 绝不在调用线程同步 Dispose（与根因同型楔死窗口）。
+            if (framePool is not null)
+            {
+                framePool.FrameArrived -= OnFrameArrived;
+            }
+
+            item.Closed -= handler;
+            BackgroundDispose(framePool, session);
             throw;
         }
 
@@ -221,23 +258,55 @@ public sealed class WindowsGraphicsGameCapture : IGameCapture, IDisposable
         Direct3D11CaptureFramePool sender,
         object arguments)
     {
-        Interlocked.Increment(ref _frameArrivals);
-        Volatile.Write(ref _lastFrameArrivedTicks, Environment.TickCount64);
-        var frame = sender.TryGetNextFrame();
+        // P3-2（对抗审查）：free-threaded 回调与后台 Dispose 并发是设计内状态，
+        // TryGetNextFrame 撞上并发销毁会在 WinRT 回调内抛出→fail-fast 风险。
+        // 帧已丢由上层 3s 超时/快路径兜底，此处必须吞异常。
+        try
+        {
+            Interlocked.Increment(ref _frameArrivals);
+            Volatile.Write(ref _lastFrameArrivedTicks, Environment.TickCount64);
+            var frame = sender.TryGetNextFrame();
+            TaskCompletionSource<Direct3D11CaptureFrame>? completion;
+            lock (_frameSync)
+            {
+                completion = _pendingFrame;
+                if (completion is not null)
+                {
+                    _pendingFrame = null;
+                }
+            }
+
+            if (completion is null || !completion.TrySetResult(frame))
+            {
+                frame.Dispose();
+            }
+        }
+        catch
+        {
+        }
+    }
+
+    private void OnCaptureItemClosed(int generation)
+    {
+        // 代际门控（对抗审查 P1-1 竞态变体）：迟发/孤儿回调不属于当前会话代际时
+        // 直接忽略——绝不给重建后的健康新会话下毒。
+        if (generation != Volatile.Read(ref _generation))
+        {
+            return;
+        }
+
+        Volatile.Write(ref _targetClosed, 1);
         TaskCompletionSource<Direct3D11CaptureFrame>? completion;
         lock (_frameSync)
         {
             completion = _pendingFrame;
-            if (completion is not null)
-            {
-                _pendingFrame = null;
-            }
+            _pendingFrame = null;
         }
 
-        if (completion is null || !completion.TrySetResult(frame))
-        {
-            frame.Dispose();
-        }
+        // 立刻唤醒在途等帧：让 CaptureWindowAsync 的 await 处毫秒级失败，
+        // 不再消耗 3s 超时（超时路径会触发对半死目标的 ResetSession）。
+        completion?.TrySetException(new InvalidOperationException(
+            "游戏窗口已关闭，捕获目标不再存在。"));
     }
 
     private void ResetSession()
@@ -252,23 +321,73 @@ public sealed class WindowsGraphicsGameCapture : IGameCapture, IDisposable
         pending?.TrySetException(
             new InvalidOperationException("游戏窗口截图会话已重新建立。"));
 
-        if (_framePool is not null)
-        {
-            _framePool.FrameArrived -= OnFrameArrived;
-        }
+        // P1-1（对抗审查）：复位点必须在 ResetSession——入口快失败只对
+        // "请求窗口==当前会话目标"生效（见 CaptureAsync），新 HWND 放行后经此
+        // 自然清标志重建，游戏重启后捕获不再永久锁死。
+        Volatile.Write(ref _targetClosed, 0);
 
-        // 释放了活会话=下一次 EnsureSession 的创建是"重建"（1.2.96 诊断计数）。
-        if (_session is not null)
-        {
-            Volatile.Write(ref _rebuildMarker, 1);
-        }
-
-        _session?.Dispose();
-        _framePool?.Dispose();
+        var item = _captureItem;
+        var session = _session;
+        var framePool = _framePool;
+        var handler = _closedHandler;
+        _closedHandler = null;
         _session = null;
         _framePool = null;
         _captureItem = null;
         _activeWindow = 0;
+
+        if (item is not null && handler is not null)
+        {
+            try
+            {
+                item.Closed -= handler;
+            }
+            catch
+            {
+                // 目标已销毁时退订可能失败——忽略（代际门控兜底迟发回调）。
+            }
+        }
+
+        // 释放了活会话=下一次 EnsureSession 的创建是"重建"（1.2.96 诊断计数）。
+        if (session is not null)
+        {
+            Volatile.Write(ref _rebuildMarker, 1);
+        }
+
+        // P1（2026-09-10 关游戏卡死根因修复）：**绝不在调用线程同步 Dispose**——
+        // 对"目标已销毁"的 WGC 会话/帧池同步 Dispose 会等待在途 WinRT 回调而楔死
+        // 持有 _captureLock 的生产者线程（进程级冻结，OS AppHangB1 04:37:07 实锤）。
+        // 改为后台 Dispose 一次性放弃：楔死时泄漏一个后台线程+WinRT 对象
+        // （有界、优于挂死）；正常路径后台 Dispose 照常完成。
+        BackgroundDispose(framePool, session);
+    }
+
+    private void BackgroundDispose(
+        Direct3D11CaptureFramePool? framePool,
+        GraphicsCaptureSession? session)
+    {
+        if (framePool is null && session is null)
+        {
+            return;
+        }
+
+        if (framePool is not null)
+        {
+            framePool.FrameArrived -= OnFrameArrived;
+        }
+
+        _ = Task.Run(() =>
+        {
+            try
+            {
+                framePool?.Dispose();
+                session?.Dispose();
+            }
+            catch
+            {
+                // 后台释放失败无可恢复动作；不再向采集线程抛。
+            }
+        });
     }
 
     public void Dispose()

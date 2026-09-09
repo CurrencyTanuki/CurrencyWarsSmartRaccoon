@@ -2413,6 +2413,9 @@ public sealed class GrailDecisionEngine(
                         if (freshBeforeSurrender is null || !ledgerFresh)
                         {
                             emit("[决策层] R3 候选但判死依据不新鲜/复核帧不可得——本轮防御跳过判死。");
+                            publishEvent?.Invoke(
+                                "R3DefensiveSkip",
+                                "判死依据不新鲜/复核帧不可得（金读数塌缩风险）——本轮防御跳过判死");
                         }
                         else
                         {
@@ -2422,6 +2425,9 @@ public sealed class GrailDecisionEngine(
                             if (goldForVerdict < snapshot.RefreshGoldCost && sold == 0)
                             {
                                 emit("[决策层] R3：金币耗尽且无可卖（新鲜复核帧裁定）——弃局重开。");
+                                publishEvent?.Invoke(
+                                    "R3GoldExhausted",
+                                    $"金={goldForVerdict}<{snapshot.RefreshGoldCost} 且可卖=0——弃局重开");
                                 return PreparationOutcome.Dead;
                             }
 

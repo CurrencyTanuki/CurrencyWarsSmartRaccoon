@@ -25,7 +25,8 @@ public sealed class GrailDecisionEngine(
     Action<string>? requestStreamRevive = null,
     Func<bool>? isStreamStale = null,
     IModalGuard? modalGuard = null,
-    Action<string, string>? publishEvent = null)
+    Action<string, string>? publishEvent = null,
+    Func<string, CancellationToken, Task>? onGameBoundary = null)
 {
     private readonly Stopwatch _runClock = Stopwatch.StartNew();
 
@@ -1800,6 +1801,23 @@ public sealed class GrailDecisionEngine(
                     executor.AllowGalaxyScholarPurchase = true; // 1.2.102：学者购买仅 1-1
                     _frontLedger.Clear();
                     _lastBoardMutationAt = DateTimeOffset.MinValue;
+
+                    if (onGameBoundary is not null)
+                    {
+                        // 09-10 用户令（录像逐局落盘）：M8 到达=新局边界——上层把上一局
+                        // 录像封箱落盘（ffmpeg 收 EOF 写 moov）并开启下一段录制。
+                        // 回调失败绝不阻断刷局（录像损失 < 刷局中断）。
+                        try
+                        {
+                            await onGameBoundary(
+                                $"game-{DateTimeOffset.Now:yyyyMMdd-HHmmss}",
+                                ct);
+                        }
+                        catch (Exception boundaryError)
+                        {
+                            emit($"[决策层] 局边界录像落盘回调失败（不阻断刷局）：{boundaryError.Message}");
+                        }
+                    }
                 }
                 else if (m8.Error is not null)
                 {

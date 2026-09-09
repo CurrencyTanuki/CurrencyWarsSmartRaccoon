@@ -1096,7 +1096,12 @@ public sealed class CommandTestWindow : Window
                     DateTimeOffset.Now,
                     TaskEventLevel.Information,
                     code,
-                    detail)));
+                    detail)),
+            // 09-10 用户令（录像逐局落盘）：每局边界封箱上一局录像到 Recordings
+            // 并开新段——引用字段而非局部变量（DECIDE 多轮次下始终取当前录制器）。
+            onGameBoundary: (roundId, token) =>
+                _decideRecorder?.RotateAsync(roundId, DecideRecordingDirectory, token)
+                ?? Task.CompletedTask);
         var cts = _decisionCts;
         // 1.2.119 证据留存（用户令"发布版本要留存所有必要证据"）：DECIDE 启动时把
         // 上一段决策叙述归档为带时间戳文件——result.txt 是滚动覆盖的单文件，通宵

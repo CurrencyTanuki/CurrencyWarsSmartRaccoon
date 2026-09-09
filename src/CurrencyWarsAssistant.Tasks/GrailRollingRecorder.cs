@@ -120,6 +120,31 @@ public sealed class GrailRollingRecorder :
         }
     }
 
+    /// <summary>
+    /// 局边界旋转（09-10 用户令"每局结束先落盘上一局，再开始下一盘录制"）：
+    /// 当前段正常封箱（ffmpeg 收到 stdin EOF 后写 moov，会话被杀也不产生
+    /// 无 moov 的不可读段——F6 根治）并移动到保留目录，随后以新 roundId
+    /// 开启下一段。未在录制时等价于 StartAsync。
+    /// </summary>
+    public async Task RotateAsync(
+        string newRoundId,
+        string outputDirectory,
+        CancellationToken cancellationToken = default)
+    {
+        _gate.Wait(cancellationToken);
+        try
+        {
+            await StopInternalAsync(success: true, outputDirectory, cancellationToken)
+                .ConfigureAwait(false);
+        }
+        finally
+        {
+            _gate.Release();
+        }
+
+        await StartAsync(newRoundId, cancellationToken).ConfigureAwait(false);
+    }
+
     private async Task StopInternalAsync(
         bool success,
         string? outputDirectory,

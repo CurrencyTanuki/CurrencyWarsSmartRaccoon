@@ -161,6 +161,7 @@ public sealed class GrailRollingRecorder :
         _cts = null;
 
         // 关闭 ffmpeg stdin（发 EOF）并等待其写盘完成。
+        var killed = false;
         if (_ffmpeg is not null)
         {
             try { _ffmpeg.StandardInput.Close(); } catch { }
@@ -169,6 +170,10 @@ public sealed class GrailRollingRecorder :
                 if (!_ffmpeg.WaitForExit(5000))
                 {
                     _ffmpeg.Kill();
+                    killed = true;
+                    // 审查 P2-1：等句柄释放再动文件（Kill 后进程未必立即退出，
+                    // 紧接 File.Move 可能 IOException）。
+                    _ffmpeg.WaitForExit(3000);
                 }
             }
             catch (Exception) { }
@@ -179,7 +184,27 @@ public sealed class GrailRollingRecorder :
         // 处理临时文件。
         if (_tempFile is not null && File.Exists(_tempFile))
         {
-            if (success && !string.IsNullOrWhiteSpace(outputDirectory))
+            if (killed)
+            {
+                // 审查 P2-1：Kill=ffmpeg 未收 EOF、moov 从未写出=不可读段。
+                // 不得以合法命名进入 Recordings 冒充正常封箱段（rule §九 视为
+                // 可信源）——移入 damaged 子目录隔离，审计时明确可疑。
+                try
+                {
+                    var damagedDir = Path.Combine(
+                        Path.GetDirectoryName(_tempFile) ?? ".", "damaged");
+                    Directory.CreateDirectory(damagedDir);
+                    File.Move(
+                        _tempFile,
+                        Path.Combine(damagedDir, Path.GetFileName(_tempFile)),
+                        overwrite: true);
+                }
+                catch (Exception)
+                {
+                    try { File.Delete(_tempFile); } catch (Exception) { }
+                }
+            }
+            else if (success && !string.IsNullOrWhiteSpace(outputDirectory))
             {
                 Directory.CreateDirectory(outputDirectory);
                 var safeName = Path.GetFileName(_tempFile);

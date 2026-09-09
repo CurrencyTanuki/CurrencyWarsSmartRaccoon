@@ -2404,12 +2404,15 @@ public sealed class GrailDecisionEngine(
 
                     if (snapshot.Gold < snapshot.RefreshGoldCost && sold == 0)
                     {
-                        if (freshBeforeSurrender is null)
+                        // 审查 P2-2：裁决金必须来自"新鲜的真实读数"。持有器最后一次
+                        // 金捕获超 15s=期间 economy 持续 OCR miss，snapshot.Gold 是
+                        // 塌缩值（FreshOrUnknown ?? 0）——不得据此判死（误弃不可逆）。
+                        var ledgerGoldAt = stateHolder.PeekGold().CapturedAt;
+                        var ledgerFresh = ledgerGoldAt is { } ga
+                            && DateTimeOffset.Now - ga <= TimeSpan.FromSeconds(15);
+                        if (freshBeforeSurrender is null || !ledgerFresh)
                         {
-                            // 审查 P2-2（09-10 夜审）：判死前复核帧不可得（识别流滞后/
-                            // 帧龄门拦截）时，snapshot.Gold 可能是滞后读数——误弃不可
-                            // 逆，本轮防御跳过判死，运营循环下一轮重查（有界 30 轮兜底）。
-                            emit("[决策层] R3 候选但判死前复核帧不可得（识别滞后）——本轮防御跳过判死。");
+                            emit("[决策层] R3 候选但判死依据不新鲜/复核帧不可得——本轮防御跳过判死。");
                         }
                         else
                         {

@@ -153,8 +153,45 @@
       ]
     },
     {
-      "image": "../PageReplay/preparation_1_3_after_shop_2559x1439.png",
-      "maxWaitSeconds": 600,
+      "image": "../PageReplay/preparation_1_1.jpg",
+      "maxWaitSeconds": 240,
+      "expect": [
+        {
+          "op": "click",
+          "near": [
+            1537,
+            377
+          ],
+          "tol": 30,
+          "note": "M2 开晶矿球 A（D1/D2 实测）"
+        },
+        {
+          "op": "click",
+          "near": [
+            1391,
+            319
+          ],
+          "tol": 30,
+          "note": "M2 开晶矿球 B"
+        },
+        {
+          "op": "drag",
+          "near": [
+            440,
+            912
+          ],
+          "to": [
+            745,
+            399
+          ],
+          "tol": 40,
+          "note": "A1 部署：备战席1号位三月七→前台1号位（D7 ops 实测：原生帧槽1=三月七）"
+        }
+      ]
+    },
+    {
+      "image": "frames/stage_s2_prep_deployed.png",
+      "maxWaitSeconds": 180,
       "expect": [
         {
           "op": "click",
@@ -163,7 +200,7 @@
             750
           ],
           "tol": 40,
-          "note": "S2 出战（部署拖拽若有=发现轮回填）"
+          "note": "M1 出战（部署后帧）"
         }
       ]
     },
@@ -199,7 +236,7 @@
     },
     {
       "image": "../PageReplay/preparation_1_2.jpg",
-      "maxWaitSeconds": 150,
+      "maxWaitSeconds": 180,
       "expect": [
         {
           "op": "click",
@@ -229,7 +266,7 @@
     },
     {
       "image": "../PageReplay/investment_strategy.jpg",
-      "maxWaitSeconds": 150,
+      "maxWaitSeconds": 180,
       "expect": [
         {
           "op": "click",
@@ -295,38 +332,8 @@
     },
     {
       "image": "../PageReplay/preparation_1_3_after_shop_2559x1439.png",
-      "maxWaitSeconds": 150,
-      "expect": [
-        {
-          "op": "click",
-          "near": [
-            1620,
-            975
-          ],
-          "tol": 30,
-          "note": "M5 循环开店"
-        }
-      ]
-    },
-    {
-      "image": "../PageReplay/reward_shop_after_two_purchases.jpg",
-      "maxWaitSeconds": 150,
-      "expect": [
-        {
-          "op": "click",
-          "near": [
-            1620,
-            975
-          ],
-          "tol": 30,
-          "note": "M5 循环收摊"
-        }
-      ]
-    },
-    {
-      "image": "../PageReplay/preparation_1_3_after_shop_2559x1439.png",
       "expect": [],
-      "note": "DECIDE 级全链终局"
+      "note": "DECIDE 级全链终局（S4/S5 深度=发现轮下一迭代）"
     }
   ]
 }

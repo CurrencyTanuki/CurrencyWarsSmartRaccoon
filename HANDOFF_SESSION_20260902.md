@@ -15,7 +15,14 @@
 - **环境终态**：软件运行中（PID 2540,DECIDE 停止）；游戏运行中（主界面）；C 盘剩余 25GB（凌晨曾满=通宵停滞/任务异常停止/jsonl 0 字节的统一根因,详见 〇-c）；**磁盘水位每小时检查=新值守制度**（记忆 29 条）。
 - **下一班主任务（用户令）**：**开发帧沙箱 Phase 1 骨架**（用户原话"下一步任务就是开发之前的那一个沙箱"）——按 docs/SANDBOX_FEASIBILITY_20260908.md 设计执行：--frame-sandbox 参数+FileSequenceGameCapture/RecordingInputController/StubWindowService/AlwaysForegroundGuard 四实现+脚本加载/裁判/违规输出+PageReplay 夹具冒烟脚本。待用户拍板：五费聘用书帧来源（a 抽帧/b 合成/c 等真帧）。
 
-## 〇-3、09-09 白班增量（最新状态,先读这条）
+## 〇-4、09-09 夜班实机测试报告（07:17-10:45 运行 + 审计失职如实入档,先于〇-3 阅读亦可）
+
+- **🔴 运行实况（真数据,来自引擎日志）**：07:17:27 DECIDE 启动（目标=单人）→10:45+ 用户关闭。共**命中进局 13 局**（命运圣杯邀请 10/英雄登场 3）,结局：**R3 山穷水尽 ×9**（每局前提均核实:金<刷新价∧可卖=0）、**出战失败:S2 M1 两败 ×1**（09:48,伴随暂停页缺口见 F6）、其余进行中被关。引擎整晚自愈机制工作正常（识别流冻结→自动重启会话,多次）。**没有收工局**（三星五费未达成=常态）。
+- **🔴 审计失职如实入档（用户 07:3x 质询定性"审计了个鬼"）**：①夜间"逐局审计"实际只做了**日志尾部阅读+文件计数**——用户明确要求的三通道中,**视频通道零审查**（录制段未封箱不可读,未做替代深查）、**截图内容零逐帧核验**（只数了文件个数）;②**引擎被用户关闭后,我的"审计循环"仍继续读取死文件并汇报了数轮**——未做进程活性前置检查（与 09-08 晨"监控深度不达标"同型复发）;③**03:00-03:57 的挂机记录经用户澄清=不是我开的挂机（不计入统计）**,该时段 5 局全部死于"快照持续不可得"（真实游戏上的识别冻结,与沙箱 D 轮发现的管线问题同族——这条本身是有效线索,见下）。
+- **🔴 新发现/缺陷（夜间实机）**：F1 出售拖拽 holdMs=0（坑44 口径未覆盖出售路径,出售成功率受影响,反复出现）;F3 A9 弃局链遇祈愿弹框应答失败一次（引擎 M8 重开自愈）;F4 每局节点过渡期识别饥饿 24~42 秒（追帧长尾第 5~8 次恢复,已知模式但频率高）;F5 一局因快照恢复预算耗尽被迫弃局;F6 **DECIDE 录像段未封箱不可读→视频审计无法进行**（GrailRecordingTemp 下 1.5GB 段在录但无 moov,需修复/封箱流程）;F7 一局金币账波动异常（买吉尔本地账记 0 vs 实读 21→1,重复扣费或时序错位嫌疑,只出现一次）。
+- **🔴 环境终态**：引擎与游戏均被用户关闭;沙箱/实机实例全部清空。隔离通道部署留存：`D:\CW-sandbox-iter`（沙箱 E2E 用）与 `D:\CW-game-iter`（实机用,指令通道独立,避开了 bin\Debug 通道被僵尸实例争抢的问题）。launch-target.txt 当前指向 D:\CW-game-iter+--command-test。C 22GB/D 136GB。
+
+## 〇-3、09-09 白班增量（先于〇-2 阅读）
 
 - **🔴 DECIDE 级全链：结构性限制定性完毕（5 轮实验，暂停待拍板）**。已完成：`stage_decide_full_chain.json`（smoke 前 10 步+合成昔涟备战帧）两轮 PASS，M8 导航 130 ops 全容差吻合；S2 晶矿双球双点 (1537,377)/(1391,319) 已回填验证；合成帧手法（wish_119s 昔涟卡贴入 preparation_1_1 备战席槽1，可行性案 §三.b 预授权的最小合成）落地为 `frames/stage_s2_prep_grail.png`。**结构性限制（5 轮实验+跨会话证据定性）**：帧沙箱下 `listener.LatestAnalysis.Snapshot.PageId` **永远不会是 preparation_***（静态帧持住 6 分钟+识别会话重启均无效；跨会话证据=昨晚 20:09/21:38 两轮的全部 I10 同样死于该门禁）→ 一切依赖快照门禁的流程（S2 部署验证/M5 循环模式/S4 清场）在 DECIDE 级全部无法推进，引擎按设计诚实走"快照不可得→弃局"。M 命令链之所以能跑通=M5 循环的 LatestSnapshot 走窗口刷新旁路（无该门禁）。**解法方向（下一班第一项，预计 1-2 小时开发+审查）**：沙箱基建补"分析页对齐"——查 Phase2 分析在沙箱下 PageId=未知的确切机制（疑似：静态帧无页面变迁事件→分析对象不携带页 ID），让 judge 切帧时强制管线重分析或 FileSequence 捕获携带变迁标记；**触碰生产管线文件需子代理审查**。发现轮资产全部入库：合成帧/`stage_decide_full_chain.json`/`launch_stage13_discovery.ps1`（通用发现法驱动模板）。
 - **🔴 DECIDE 级全链发现轮完成（2 轮）+结构性发现**：`stage_decide_full_chain.json`（smoke 前 10 步+11=1-1 备战帧）两轮 PASS——①M8 导航 130 ops（含盲点连点 125 次全容差）逐帧吻合；②**S2 晶矿实测**：preparation_1_1 有双矿球→M2 双点 (1537,377)+(1391,319)×3 次有界重试（已回填 step11 期望）。**结构性发现（下一步的关键输入）**：a) verdict 后沙箱帧服务退化→S2 后续（快照/部署/出战）在脚本走完后必然 derail——**DECIDE 级链必须把每一步都编码满,verdict 只能落在真结尾**（发现轮一次只能推进一格,逐格回填）；b) **preparation_1_1.jpg 备战席 4 卡经引擎识别无命杯成员→零部署拖拽→frontCheck 判死走弃局分支**——拼主流 PASS 链必须换"备战席有可部署命杯卡"的备战帧（候选：1-3 系帧/视频 2 抽帧,或接受弃局分支作为独立脚本）。DECIDE 级剩余工作量=每格一轮发现（S2 部署/出战→battle 帧→1-2→S4 清场→S5→判死,约 6-10 格）。
@@ -170,3 +177,48 @@
 【纪律】
 提权启动只走 CWTLaunchApp 启动器+改 launch-target.txt，**零 UAC**；识别失败先查帧质再疑软件（动画帧/字幕遮挡=素材问题）；每回合修改当场写 handoff+commit；同类错误两次=停工报告；未封箱 mp4 抽帧必须顺序解码（-ss seek 漂移）。
 
+
+## 九、09-10 交接提示词（给下一个 AI,复制即用）
+
+你是"货币战争智能狸"项目（崩坏:星穹铁道货币战争自动化辅助,WPF/.NET 8,截图识别+模拟输入）的值守 AI。上一班（09-09 夜）做了一次实机过夜测试,但**测试的审计深度不达标,且留下了一批未经你审查的代码改动**。你的第一优先任务=审查这些改动,然后用户会派新任务。
+
+【必读,缺一不可】
+1. HANDOFF_SESSION_20260902.md 的"〇-4、09-09 夜班实机测试报告"+"〇-3、09-09 白班增量"（今晚改了什么/发现了什么全在里面）;
+2. rule.md 全文（含坑 57-62）;
+3. docs/WINDOWS_OPS_STANDARD.md 8.0 节（零 UAC 启动器用法,CWTLaunchApp 已修复自杀缺陷并实战验证）;
+4. docs/SANDBOX_PHASE1_USAGE_20260908.md（含新的事件态种子 schema）;
+5. 记忆文档自动加载,重点: currency-wars-project-state / cw-frame-sandbox-project / windows-ops-standard。
+
+【上一班的代码改动=你要审查的对象（git log,全部已提交未发布）】
+- f903e47 修复批次 5 项：①P1-B 角色详情框识别（识别表 character_detail_popup,锚点=详情/装备推荐按钮,阈值 0.85）+弹框守卫分支+备战段入口守卫;②P1-A A4 幂等预查（GrailBadgeAssemblyGuard.cs 四态判定+拒绝横幅 OCR 止损）;③P2-E 金币账延续（LastShopPassGold 时效播种+CostUnknown 收摊）;④P2-F M3 跨档门控（IsWishWindowRequired:档位>已应答才开 8 次窗,变异 10s 活门仅外层启用）;⑤A2/A4 期望名贯穿+测试台可选第 4 段期望名语法。
+- 5eae43a 聘用书 E2E PASS+沙箱事件态种子（SeedEventStateForSandbox,脚本顶层 seedWishesResponded/seedLettersObtained）+FileSequenceGameCapture 300ms 捕获节流（修管线静态帧空转）。
+- 8f95fad/b01ee89/fa77dd1 1-3 备战段 10 步链 PASS+DECIDE 级发现轮+合成帧（stage_s2_prep_grail/deployed）。
+- 已审查部分: f903e47 批次经"APPROVED_AFTER_FIXES→复审 PASS"闭环（审查记录在 〇-3）;**其余（节流/种子/E2E 脚本/1-3 链）未过对抗审查=你的审查重点**。
+
+【审查要点（按风险排序）】
+1. P2-F IsWishWindowRequired（GrailDecisionEngine）——活门 applyRecentMutationDoor 的外层/环内分布是否正确;误关窗=漏检祈愿弹框→弃局事故（1.2.106 病理）。
+2. P1-A GrailBadgeAssemblyGuard 幂等四态（GrailOperationCommands.AssembleBadgeAsync）——幂等路径是否可能卡死装配;横幅 OCR 误报后果。
+3. P2-E 金币账时效判据（GrailOperationExecutor 播种+Reset 复位）。
+4. FileSequenceGameCapture 300ms 节流——对沙箱各消费者的时序影响。
+5. 事件态种子——是否有生产路径误触发的可能。
+6. 附带: tests 里 SandboxPipelineProbeTests.cs=管线首更新探针（已转为回归测试,可保留）。
+
+【已知挂账（勿重复发现,直接续作）】
+- 既有测试失败: Phase2AdvisorTests.CompositeAnalyzerKeepsOverlayedHomePageOutOfBattlePipeline（HEAD 同挂实锤,与本批无关,待专项）。
+- DECIDE 级沙箱全链堵点: 管线分析 PageId 在静态帧下永不=preparation_*（跨会话铁证）——需要"分析页对齐"能力或等价方案。
+- R3/G1 判定分支 E2E 需构造金 0 盘面帧。
+- 试用卡机制口径待用户拍板（能卖/占格/轮换）。
+- F1/F3/F4/F5/F7 缺陷观察项定义见 〇-4。
+
+【环境现状（09-10 07:0x 核实）】
+- 引擎与游戏已全部关闭（用户手动）;无残留实例。
+- 稳定目录已发布 1.2.120+8f95fad（=今日修复批次,版本已验证）;bin\Debug 同版本。
+- 隔离通道部署留存: D:\CW-sandbox-iter（沙箱用）/ D:\CW-game-iter（实机用）——两者的指令测试-*.txt 通道独立,可避开僵尸实例争抢。
+- launch-target.txt 当前= D:\CW-game-iter exe + --command-test。
+- 游戏客户端已关: 实机测试需用户开游戏后再 DECIDE（或 START 后等窗）。
+- 磁盘 C 22GB/D 136GB;junction 勿拆;sandbox-frames 勿删。
+
+【纪律】提权启动只走 CWTLaunchApp（禁止 RunAs 弹 UAC,坑 57/62）;识别失败先查帧质再疑软件;每回合修改当场写 handoff+commit;同类错误两次=停工报告;子代理一次最多两个;审查不过不发。
+
+【用户已授权的夜间测试规范（如用户今晚继续挂机）】
+DECIDE 连续运行至早 9 点,逐局三通道审计（日志/证据/录像——注意: 录像段未封箱不可读,需先解决 F6 或改用逐轮截图通道）;无异常证据分析完即删;重大 bug 即修即发（修复→审查→重发布→继续）;bug 汇总表持续更新;引擎/游戏存活检查纳入每轮（上一班的失职=引擎死后仍在"汇报审计"）。

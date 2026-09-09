@@ -288,6 +288,9 @@ public sealed class RewardShopRecognitionAccumulator(
     private readonly RewardShopSlot?[] _best = new RewardShopSlot?[slotCount];
     private readonly string?[] _previousIds = new string?[slotCount];
     private readonly int[] _consecutiveCounts = new int[slotCount];
+    // 09-10 夜审（吉尔伽美什+Saber 被刷新实锤）：单帧正确读数后紧跟一次 OCR 未识别
+    // 时，不立即清零连续计数——下一次同名读数即达稳定门；连续第二次未识别才判槽变。
+    private readonly bool[] _awaitingConfirmation = new bool[slotCount];
 
     public bool IsComplete => Enumerable.Range(0, _stable.Length).All(
         index => ignoredSlots?.Contains(index) == true ||
@@ -319,8 +322,17 @@ public sealed class RewardShopRecognitionAccumulator(
             var id = slot.Character?.Id;
             if (id is null)
             {
+                if (_consecutiveCounts[slot.Slot] == 1 && _awaitingConfirmation[slot.Slot])
+                {
+                    // 09-10 夜审 P1-A：一次正确读数后紧跟一次 OCR 未识别（动画期/识别抖动）
+                    // ——不清零，等待下一帧同名读数确认；连续第二次未识别才按槽变清零。
+                    _awaitingConfirmation[slot.Slot] = false;
+                    continue;
+                }
+
                 _previousIds[slot.Slot] = null;
                 _consecutiveCounts[slot.Slot] = 0;
+                _awaitingConfirmation[slot.Slot] = false;
                 continue;
             }
 
@@ -345,6 +357,8 @@ public sealed class RewardShopRecognitionAccumulator(
                 _previousIds[slot.Slot] = id;
                 _consecutiveCounts[slot.Slot] = 1;
             }
+
+            _awaitingConfirmation[slot.Slot] = _consecutiveCounts[slot.Slot] == 1;
 
             if (_consecutiveCounts[slot.Slot] >= 2)
             {

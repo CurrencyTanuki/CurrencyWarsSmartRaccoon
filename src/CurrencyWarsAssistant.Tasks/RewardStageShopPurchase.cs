@@ -210,7 +210,11 @@ public static class RewardShopBatchTransitionPolicy
 
 public static class RewardShopBatchSnapshotPolicy
 {
-    public const int MaximumObservations = 2;
+    // 09-10 夜审（吉尔伽美什+Saber 被刷新实锤）：两帧观测里帧1 常落在货架刷新动画期
+    //（名字乱码），帧2 已正确读出名字却被"连续 2 帧"AND 门整槽丢弃——观测上限 2→3，
+    // 配合 Accumulator 的"单帧未识别容忍"（RewardStageRecognition.cs），乱码-正确-正确
+    // 序列可在第 3 帧达成稳定。1.2.68 的快速节奏保持不变。
+    public const int MaximumObservations = 3;
 }
 
 public static class RewardShopPurchaseContextPolicy

@@ -10,9 +10,12 @@ namespace CurrencyWarsAssistant.Tests;
 public sealed class RewardPageReaderTests
 {
     [Fact]
-    public void BatchSnapshotUsesAtMostTwoFramesAndAcceptsEmptySlots()
+    public void BatchSnapshotUsesAtMostThreeFramesAndAcceptsEmptySlots()
     {
-        Assert.Equal(2, RewardShopBatchSnapshotPolicy.MaximumObservations);
+        // 09-10 夜审：观测上限 2→3（帧1 常落货架动画期乱码，帧2 已正确读出却被
+        // AND 门丢弃——吉尔伽美什+Saber 被刷新实锤）。第三帧给"乱码-正确-正确"
+        // 序列达成稳定的机会。
+        Assert.Equal(3, RewardShopBatchSnapshotPolicy.MaximumObservations);
         var character = Character("known", "known", "bond");
         var accumulator = new RewardShopRecognitionAccumulator(slotCount: 3);
         var frame = new[]
@@ -29,6 +32,86 @@ public sealed class RewardPageReaderTests
         Assert.Equal(character.Id, snapshot[0].Character?.Id);
         Assert.Null(snapshot[1].Character);
         Assert.Null(snapshot[2].Character);
+    }
+
+    [Fact]
+    public void GarbledThenCorrectFrames_StabilizeOnThirdObservation()
+    {
+        // 09-09 夜 C16 实锤回归：帧1 动画期全乱码、帧2 正确读出全部名字（含
+        // 吉尔伽美什+Saber）——旧 AND 门整槽丢弃后刷新刷掉真目标。新语义下
+        // 第 3 帧同名读数必须达成稳定。
+        var accumulator = new RewardShopRecognitionAccumulator(slotCount: 5);
+        var garbled = Enumerable.Range(0, 5)
+            .Select(i => new RewardShopSlot(i, null, "", 0))
+            .ToArray();
+        var saber = Character("currency_wars_character_saber", "Saber", "命运圣杯");
+        var gil = Character("currency_wars_character_gilgamesh", "吉尔伽美什", "命运圣杯");
+        var correct = new[]
+        {
+            new RewardShopSlot(0, Character("c1", "阿格莱雅", "星间旅人"), "阿格莱雅", 0.9),
+            new RewardShopSlot(1, Character("c2", "飞霄", "狼狩"), "飞霄", 0.9),
+            new RewardShopSlot(2, Character("c3", "艾丝妲", "银河学者"), "艾丝妲", 0.9),
+            new RewardShopSlot(3, saber, "Saber", 0.9),
+            new RewardShopSlot(4, gil, "吉尔伽美什", 0.9),
+        };
+
+        accumulator.Observe(garbled);
+        accumulator.Observe(correct);
+        var afterTwo = accumulator.Snapshot();
+        Assert.Null(afterTwo[3].Character); // 帧1 乱码时旧 AND 门在此丢弃（旧行为锚）
+
+        accumulator.Observe(correct);
+        var snapshot = accumulator.Snapshot();
+        Assert.Equal("currency_wars_character_saber", snapshot[3].Character?.Id);
+        Assert.Equal("currency_wars_character_gilgamesh", snapshot[4].Character?.Id);
+        Assert.All(snapshot, slot => Assert.NotNull(slot.Character));
+    }
+
+    [Fact]
+    public void SingleReadThenMissThenSameRead_Stabilizes()
+    {
+        // 单次读数+一次 OCR 未识别：不清零，第三帧同名读数达成稳定。
+        var accumulator = new RewardShopRecognitionAccumulator(slotCount: 1);
+        var character = Character("known", "known", "bond");
+        var read = new[] { new RewardShopSlot(0, character, character.Name, 0.95) };
+        var miss = new[] { new RewardShopSlot(0, null, "", 0) };
+
+        accumulator.Observe(read);
+        accumulator.Observe(miss);
+        accumulator.Observe(read);
+
+        Assert.Equal(character.Id, accumulator.Snapshot()[0].Character?.Id);
+    }
+
+    [Fact]
+    public void SingleReadThenTwoMisses_NotStable()
+    {
+        // 诚实丢弃：一次读数后连续两次未识别=槽真的变了/读不可靠，不得虚报稳定。
+        var accumulator = new RewardShopRecognitionAccumulator(slotCount: 1);
+        var character = Character("known", "known", "bond");
+        var read = new[] { new RewardShopSlot(0, character, character.Name, 0.95) };
+        var miss = new[] { new RewardShopSlot(0, null, "", 0) };
+
+        accumulator.Observe(read);
+        accumulator.Observe(miss);
+        accumulator.Observe(miss);
+
+        Assert.Null(accumulator.Snapshot()[0].Character);
+    }
+
+    [Fact]
+    public void GenuineCardChange_ResetsStability()
+    {
+        // 换卡语义保持：同名连读稳定后出现不同角色 → 稳定作废，须重新连读。
+        var accumulator = new RewardShopRecognitionAccumulator(slotCount: 1);
+        var a = Character("char_a", "A", "bond");
+        var b = Character("char_b", "B", "bond");
+
+        accumulator.Observe(new[] { new RewardShopSlot(0, a, "A", 0.95) });
+        accumulator.Observe(new[] { new RewardShopSlot(0, a, "A", 0.95) });
+        accumulator.Observe(new[] { new RewardShopSlot(0, b, "B", 0.95) });
+
+        Assert.Null(accumulator.Snapshot()[0].Character);
     }
 
     [Theory]

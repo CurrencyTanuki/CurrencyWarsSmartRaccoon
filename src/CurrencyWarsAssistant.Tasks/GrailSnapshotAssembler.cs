@@ -109,7 +109,11 @@ public static class GrailSnapshotAssembler
         var economy = economySnapshot?.Economy;
         if (economy is { Status: ObservationStatus.Known })
         {
-            holder.CaptureGold(economy.Value, now);
+            // 09-10 夜审（终态金 1→32→1 幻想实锤）：economy 读数来自识别管线缓存帧，
+            // 可能滞后真实盘面数十秒——CapturedAt 必须用帧自身时刻（AsOf）而非组装
+            // 墙钟，否则滞后帧会以"新钟"伪装新鲜压过本地账（I1 已修同族，此处对齐）。
+            var goldAsOf = economySnapshot?.AsOf ?? now;
+            holder.CaptureGold(economy.Value, goldAsOf);
         }
 
         var health = FreshOrUnknown(holder.PeekHealth(), now, staleAfter);

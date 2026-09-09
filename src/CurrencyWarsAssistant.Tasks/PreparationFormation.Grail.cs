@@ -304,16 +304,18 @@ public sealed partial class PreparationBoardController
                     window,
                     BoundsAround(window, sourcePoint)),
                 targetPoint,
-                TimeSpan.FromMilliseconds(850),
+                TimeSpan.FromMilliseconds(1100),
                 new ActionPolicy
                 {
                     // 星徽=物品栏图标抓取：按下后需停留一拍让游戏把物品吸附到光标
                     //（2026-09-02 实测两次即时拖拽均未带走星徽；角色卡拖拽不受影响）。
                     // 1.2.103（019 局实弹 6 连败"拖后仍在"）：机器/游戏整体变慢日，
-                    // 250ms 按压不再足够吸附——按压 450ms+按下前悬停 300ms（触发
-                    // 物品栏图标就绪）+拖拽时长 850ms。
+                    // 250ms 按压不再足够吸附——按压 450ms+按下前悬停 300ms+时长 850ms。
+                    // 09-10 夜审（1.2.121 会话）：450ms 档在 15:58-17:09 负载时段仍 18 连
+                    // 败"拖后仍在"（C4/C7/C9 各 6 试 0 成，17:31 后全成=时段性吸附劣化）
+                    // ——按压 450→700ms+时长 850→1100ms（移动窗口不变）。
                     PointerSettleDelay = TimeSpan.FromMilliseconds(300),
-                    MouseButtonHoldDelay = TimeSpan.FromMilliseconds(450),
+                    MouseButtonHoldDelay = TimeSpan.FromMilliseconds(700),
                     AfterActionDelay = TimeSpan.FromMilliseconds(50)
                 },
                 cancellationToken);

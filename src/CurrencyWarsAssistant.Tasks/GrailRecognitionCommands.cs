@@ -198,13 +198,17 @@ public sealed class GrailRecognitionCommands(
     private GrailCommandResult ReadMeter(bool isHealth)
     {
         var now = DateTimeOffset.Now;
+        // 09-10 夜审（终态金 1→32→1 幻想实锤）：LatestAnalysis 是管线缓存帧，可能
+        // 滞后真实盘面数十秒——捕获与回执时间戳一律用帧自身时刻（AsOf，与 I1 同
+        // 口径），墙钟仅在无帧时兜底；否则滞后帧以"新钟"伪装新鲜污染持有器。
+        var asOf = listener.LatestAnalysis?.Snapshot.AsOf ?? now;
         if (isHealth)
         {
             var state = listener.LatestAnalysis?.OperationalState;
             if (state is not null && state.Health.Status == ObservationStatus.Known)
             {
-                stateHolder.CaptureHealth(state.Health.Value, now);
-                return GrailCommandResult.Ok(GrailCommandKind.I5, new GrailMeterFact(state.Health.Value, now));
+                stateHolder.CaptureHealth(state.Health.Value, asOf);
+                return GrailCommandResult.Ok(GrailCommandKind.I5, new GrailMeterFact(state.Health.Value, asOf));
             }
 
             var (health, healthAt) = stateHolder.PeekHealth();
@@ -214,8 +218,8 @@ public sealed class GrailRecognitionCommands(
         var economy = listener.LatestAnalysis?.Snapshot.Economy;
         if (economy is { Status: ObservationStatus.Known })
         {
-            stateHolder.CaptureGold(economy.Value, now);
-            return GrailCommandResult.Ok(GrailCommandKind.I6, new GrailMeterFact(economy.Value, now));
+            stateHolder.CaptureGold(economy.Value, asOf);
+            return GrailCommandResult.Ok(GrailCommandKind.I6, new GrailMeterFact(economy.Value, asOf));
         }
 
         var (gold, goldAt) = stateHolder.PeekGold();

@@ -61,16 +61,21 @@
 
 ## 〇-7、09-10 深夜班修改记录（03:00 起本班）
 
-1. **P0#1 金尽空转修复（PreparationFormation.cs CaptureVerifiedPreparationAsync）**：页面门内新增 reward_shop 收摊救援分支——页面分类=reward_shop 时（收摊尝试上限 2，独立于 Esc 预算 3 与 8 次总循环）发布 PreparationRewardShopCloseAttempt，调同类现成 GrailClickReferencePointAsync 点收摊开关 (1620,975)@1920（页面身份验证后才点，1.2.64 决策层救援同款坐标），点击后 250ms×20 步进轮询确认页面已离开 reward_shop 才交回门禁（未确认发 PreparationRewardShopCloseUnconfirmed 留痕）。**对抗审查 APPROVED；P2 当场修**：初版固定睡 1500ms 有"双向开关二次点击重开店"风险（审查员指出），改步进轮询后消除；两 P3（收摊后 Esc 分支理论暴露/重复前台守卫）记录不修。调用点影响面：审查员逐一核对 21 处调用，确认不存在"商店页合法开启时调用本门"的场景（M5 两条路径上场动作均在 CloseShopAsync 之后）。验证：构建 0 警 0 错 + Grail 145/145 + Preparation 95 过/4 跳既有 Skip。**未发布未实测，等用户令**。
-2. **值守环境整理**：monitor_cycle.py 曾有 4 个重复实例（共享 state.json 竞态），清到 1 个（PID 56144）；watchdog daemon 双实例清到 1 个（keeper 拉起的 32172）；watch_duty_123.ps1 沿用上班的（PID 53840）。watchdog keeper+daemon 在岗（keeper 日志显示 daemon 高 I/O 下反复卡死被 keeper 正常复活，属设计内行为）。
-3. **1.2.123 运行观察（01:18-03:36）**：刷局循环健康（22+ 轮弃局全闭环、每轮 40-90s、卡壳自愈）；P0 两条挂账实机复现取证（金尽空转 12min+10min 各一段、02:07-02:12 出现 PurchaseNotConfirmed 循环 11 条——金 9-10 反复购买未生效，与金币幻值同族）；02:47 识别流看门狗挂起报错→恢复链闭环（RecoveryCompleted 02:52:51）。
-4. **新发现（P1）弃局活锁（03:15-03:19 实锤，已修待发布见〇-7.5）**：刷开局快速弃局路径 RecoverAsync 的 Esc×2 后确认框（abandon_settlement_prompt）识别滞后（4s 验证窗两次没确认到，页面读 Unknown/低置信 43.7% 备战页）→ 双败 Failed 交外层 → 外层重开时人还在局内 → 导航"直接到达 1-1"判未命中 → 再弃局 → 活锁每轮 ~2.5 分钟，第 3 轮靠 NavigationFailed→决策层 A9 完整链概率逃生。
-5. **重大定性（P0 链合并）：金尽空转的驱动者=金币幻值（P0#2）**——全会话（01:18-03:30）R3GoldExhausted=0、R3DefensiveSkip=0，R3 判死链一次都没进：OCR 幻金抬高 snapshot.Gold ≥RefreshGoldCost，R3 候选永假；金尽逃逸全靠 30 轮上限"运营轮上限（异常兜底）"（01:43/02:02 两次各 ~12 分钟）。而 M5 执行器实时本地账（1.2.24 口径）准确——行为级金尽证据（刚实跑刷新即失败）被弃用。已修：R3 结构防御（见〇-7.6）。
-6. **星徽装配失败本会话持续**（03:24 一局 3 试全败，质心 (2483,684) 分毫未动——与 1.2.121 审计发现 1 同族：700ms 档在负载时段仍被拒收）；金尽后 M5"开店→秒关店"循环（03:27 段）属 P0 链第二分支（无货可卖时反复开店），R3 结构防御修后第一轮循环即判死，此分支一并治。
-8. **新发现（P2）PurchaseNotConfirmed 的定性修正（02:07 段录像+日志交叉，墙图 frames_g3/wall_03）**：吉尔伽美什（5 费）在架被正确识别→购买输入发送成功（SendInput ok+光标到位 (647,233)）→两次尝试后置帧均"原槽识别=吉尔伽美什"=卡未消失。画面金 10-11 与账本 9 基本一致=**非金不够**；指向 reward_shop 紧凑布局的购买落点 (647,233)（16x16 识别区中心）可能不在可点击区/对该卡面无效——购买交互问题非幻值问题。审计报告"本轮未再出现"需更正：1.2.123 会话 02:07-02:12 段 11 条循环即此。待专项：落点与 RewardShopCharacterSlots192 紧凑布局的点击区核对。
-7. **本班值守设施操作记录**：monitor_cycle.py 4 实例→1（竞态共享 state.json）；watchdog daemon 双实例→1（保 keeper 拉起的）；审计脚本 artifacts/session_stats_123.py+session_timeline_123.py（全量扫 jsonl 用）。
-5. **弃局活锁修复（CurrencyWarsRejectedOpeningRecovery.cs RecoverAsync，未 commit 待审查结论）**：Esc 双败分流段新增①确认框在屏分支（稳定读=abandon_settlement_prompt 或 3s 重探命中→直接走 CompleteFromAbandonSettlementPromptCoreAsync 统一结算返回）②preparation_* 分支补按一次 Esc（P-12 口径"多数失败几秒后重按即成功"），仍无效才 Failed。Unknown 禁点/主界面即停/盛会应答/盲点直通全部未动。构建 0/0+Grail 145/145。
-6. **R3 结构防御（GrailCommandTypes+GrailMacroCommands+GrailDecisionEngine，未 commit 待审查结论）**：GrailShopPassFact 加 LiveLedgerGold（仅本地账有效时非 null，绝不兜底持有器值）；R3 候选与判死纳入 ledgerSaysBroke（本轮 M5 刚实跑刷新失败=行为级金尽证据，强于 OCR 幻值单帧）；sold==0 硬条件保持（清场卖出是轮内唯一加金途径→账未过时）；OCR-only 路径的 P2-2 新鲜帧防御原样保留。构建 0/0+Grail 145/145+Decision/R3 6 过。
+**修改（全部未发布未实测，等用户令）：**
+
+1. **P0#1 金尽空转收摊救援（已 commit 46e1250，PreparationFormation.cs CaptureVerifiedPreparationAsync）**：页面门内新增 reward_shop 收摊救援分支——页面分类=reward_shop 时（收摊尝试上限 2，独立于 Esc 预算 3 与 8 次总循环）发布 PreparationRewardShopCloseAttempt，调同类现成 GrailClickReferencePointAsync 点收摊开关 (1620,975)@1920（页面身份验证后才点，1.2.64 决策层救援同款坐标），点击后 250ms×20 步进轮询确认页面已离开 reward_shop 才交回门禁（未确认发 PreparationRewardShopCloseUnconfirmed 留痕）。**对抗审查 APPROVED；P2 当场修**（固定睡 1500ms 的"双向开关二次点击重开店"风险→改步进轮询，复核 APPROVED）；两 P3 记录不修。审查员核对 21 处调用点：不存在"商店页合法开启时调本门"场景。构建 0/0+Grail 145/145+Preparation 95 过/4 跳既有 Skip。
+2. **弃局活锁修复（已 commit 93d3277，CurrencyWarsRejectedOpeningRecovery.cs RecoverAsync）**：病理=Esc 双败后确认框识别滞后（见观察 6），双败 Failed 交外层→外层重开时人还在局内→活锁每轮 ~2.5 分钟。修法=Esc 双败分流段①确认框在屏分支（稳定读=abandon_settlement_prompt 或 3s 重探命中→直接走统一结算返回）②preparation_* 分支补按一次 Esc（P-12 口径），仍无效才 Failed。Unknown 禁点/主界面即停/盛会应答/盲点直通红线全部未动。**对抗审查 APPROVED+P2 当场修**：补 3 个契约用例（StagedClassifier 夹具扩 PromptAfterEscapes/PromptDelayAfterEscape 仅 EA≥2 启用/FallbackPreparation 三开关），22/22 过。构建 0/0。
+3. **R3 结构防御（已 commit 2f27915；GrailCommandTypes+GrailMacroCommands+GrailDecisionEngine）**：定性依据见观察 7。GrailShopPassFact 加 LiveLedgerGold（仅 grailLoopMode 且本地账有效时非 null，绝不兜底持有器值）；R3 候选与判死纳入 ledgerSaysBroke（本轮 M5 刚实跑刷新失败=行为级金尽证据）+谱系连击 ledgerBrokeStreak≥2 豁免新鲜帧反证（持续高幻值事故态下帧与账本同源；一审 FAIL 后二审 FAIL 各修一轮：一审 P1 复核重卖后不判死 sold==0 闸门、一审 P2 帧反证门、二审 P1 连击豁免）+R3LedgerBrokeVetoed 否决留痕事件；sold==0 硬条件与 OCR-only 路径 P2-2 新鲜帧防御原样保留。构建 0/0+Grail 145/145+Decision/R3 6 过；终审 APPROVED（事故态 2 轮判死/假账本单轮拦截自愈/事件互斥无双发，187/187 独立复跑）。P3 备忘：①执行器回带 M5 终态 endReason/种子来源元数据（后续收紧到首次被拒刷新+封闭停摆窗口）；②XP 拒买角卡死族不覆盖（30 轮上限仍为逃生）。
+4. **值守环境整理**：monitor_cycle.py 4 重复实例（共享 state.json 竞态）→1（PID 56144）；watchdog daemon 双实例→1（保 keeper 拉起的）；watch_duty_123.ps1 沿用上班的（PID 53840）；watchdog keeper+daemon 在岗（daemon 高 I/O 下反复卡死被 keeper 正常复活=设计内行为）；审计脚本 artifacts/session_stats_123.py+session_timeline_123.py（全量扫 jsonl 用）。
+
+**运行观察与定性（录像+日志双通道，墙图在 D:\CurrencyWarsData\audit-123-watch\frames_*）：**
+
+5. **1.2.123 运行观察（01:18-04:06）**：刷局循环健康（22+ 轮弃局全闭环、每轮 40-90s、卡壳自愈）；P0 挂账实机复现取证（金尽空转 12min+10min 各一段）；02:47 识别流看门狗挂起报错→恢复链闭环（RecoveryCompleted 02:52:51）；04:06:30 DECIDE 正常结束待机。
+6. **新发现（P1）弃局活锁（03:15-03:19 实锤，已修见修改 2）**：快速弃局 RecoverAsync 的 Esc×2 后确认框（abandon_settlement_prompt）识别滞后（4s 验证窗两次未确认，页面读 Unknown/43.7% 低置信备战页）→双败 Failed 交外层→外层重开时人还在局内→导航"直接到达 1-1"判未命中→再弃局；第 3 轮靠 NavigationFailed→决策层 A9 完整链概率逃生。
+7. **重大定性（P0 链合并）：金尽空转的驱动者=金币幻值（P0#2）**——全会话（01:18-03:30）R3GoldExhausted=0、R3DefensiveSkip=0，R3 判死链一次都没进：OCR 幻金抬高 snapshot.Gold ≥RefreshGoldCost，R3 候选永假；金尽逃逸全靠 30 轮上限"运营轮上限（异常兜底）"（01:43/02:02 两次各 ~12 分钟）。M5 执行器实时本地账（1.2.24 口径）准确——行为级金尽证据（刚实跑刷新即失败）被弃用。已修：R3 结构防御（修改 3）。
+8. **星徽装配失败本会话持续**（03:24 一局 3 试全败，质心 (2483,684) 分毫未动——与 1.2.121 审计发现 1 同族：700ms 档在负载时段仍被拒收）；金尽后 M5"开店→秒关店"循环（03:27 段）属 P0 链第二分支（无货可卖时反复开店），R3 结构防御修后第一轮循环即判死，一并治。
+9. **新发现（P2）PurchaseNotConfirmed 定性修正（02:07 段录像+日志交叉，frames_g3/wall_03+wall_05）**：吉尔伽美什（5 费）在架识别正确→购买输入到位（SendInput ok+光标 (647,233)）→两次尝试后原槽卡均在；wall_05 画面定死金 10-11 足够、目标卡可见、反复开关店无成交=**reward_shop 紧凑布局购买落点 (647,233)（16x16 识别区中心）不在可点击区/对该卡面无效——购买交互问题非幻值非金不够**。审计报告"本轮未再出现"需更正（02:07-02:12 段 11 条循环即此）。待专项：落点与 RewardShopCharacterSlots192 点击区核对（注意 5 费卡面尺寸）。
+10. **DECIDE 收尾状态（04:06:30 已结束，OK）**：末帧画面（frames_g4/tail06）停在弃局确认框（进度 1-1/血 80/画面金 3）——下轮 DECIDE 入口会遇到（已知页，NavigationFailed→A9 兜底，代价约 1 分钟，非事故）；画面金 3 vs 同段账本 1=压低幻值又一例。**逐局录像 6 段全部封箱 Recordings、damaged 空=验收观察点 1 通过**。P1#4 transition 误标已降级（见〇-3.4）。
 
 ## 五、Windows 操作强制标准
 
@@ -94,13 +99,13 @@
 4. docs/WINDOWS_OPS_STANDARD.md（启动/停止/部署/进程诊断）；
 5. 记忆文档自动加载，重点：currency-wars-project-state / frame-by-frame-audit-procedure / no-sleep-idling-in-watch-shifts。
 
-【环境现状（09-10 深夜交接）】
-1.2.123+7836ae3 已发布运行，autodecide 已武装（游戏窗口出现即自动 DECIDE 刷局）。三通道证据持续落 D 盘（日志 jsonl/runs 分析/每局录像）。D 盘余 137GB。
+【环境现状（09-10 04:3x 交接）】
+1.2.123+7836ae3 已发布运行中，但 **DECIDE 已于 04:06:30 正常结束（OK），引擎待机、autodecide 已消费**——继续刷局需用户令或重写 autodecide.txt；注意游戏画面停在弃局确认框（观察 10，入口有兜底）。**本班三修复已 commit 未发布（46e1250 收摊救援+93d3277 弃局活锁+2f27915 R3 结构防御，全部对抗审查通过）**——下班第一优先=用户授权后发布+实机验收（观察点见〇-4）。三通道证据持续落 D 盘；录像 6 段已封箱 Recordings。D 盘余约 135GB。
 
 【任务按序】
-1. 值守监测：运行 artifacts\watch_duty_123.ps1（60s 快照+sleep 检测）+ 定期跑 D:\CurrencyWarsData\audit-123-watch\monitor_cycle.py 读增量异常；
-2. 处理 〇-3 挂账清单（按优先级）；
-3. 修复需走完整流程：根因定位→修→构建 0/0+涉事测试→子代理对抗审查→commit→用户授权后发布；
+1. 值守监测：artifacts\watch_duty_123.ps1 与 D:\CurrencyWarsData\audit-123-watch\monitor_cycle.py 若在跑沿用（本班各清到单例）；没在跑再启动；
+2. 发布本班三修复（需用户明确授权）：deploy 前先 dotnet build（发布脚本不构建），版本号进 Directory.Build.props 同步；实机验收对照〇-4 观察点+rule 第九节逐帧审计；
+3. 处理 〇-3 挂账（P2 购买落点专项/识别语料库/分析页对齐沙箱重开——分析页需起沙箱长会话）；
 4. 会话结束/用户停 → 按 rule.md 第九节做录屏逐帧复盘。
 
 【纪律】

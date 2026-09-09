@@ -913,6 +913,40 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                 windowHandle,
                 cancellationToken);
             var fallbackPageId = fallbackPage?.PageId ?? string.Empty;
+
+            // 09-10 深夜班（弃局活锁实锤 03:15-03:19）：Esc 双败后确认框可能
+            // 已在屏但 4s 验证窗内识别滞后未确认——稳定读即 abandon_settlement_prompt
+            // 或再等 3s 重探命中，都直接走统一结算返回流程。此前两种情况都会落到
+            // Failed 交外层，而外层重开时人还在局内，形成"重开→判未命中→再弃局"
+            // 活锁（每轮 ~2.5 分钟，靠 NavigationFailed→决策层 A9 完整链概率逃生）。
+            if (string.Equals(
+                    fallbackPageId,
+                    "abandon_settlement_prompt",
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                Publish(
+                    "RecoveryPromptConfirmed",
+                    "Esc 双败后稳定读已确认放弃结算提示页——直接走统一结算返回流程。");
+                return await CompleteFromAbandonSettlementPromptCoreAsync(
+                    windowHandle,
+                    cancellationToken);
+            }
+
+            var reprompt = await WaitForPageAsync(
+                windowHandle,
+                "abandon_settlement_prompt",
+                TimeSpan.FromSeconds(3),
+                cancellationToken);
+            if (reprompt is not null)
+            {
+                Publish(
+                    "RecoveryPromptConfirmed",
+                    "Esc 双败后重探命中放弃结算提示页（识别滞后）——走统一结算返回流程。");
+                return await CompleteFromAbandonSettlementPromptCoreAsync(
+                    windowHandle,
+                    cancellationToken);
+            }
+
             // 坑50（1.2.114，审查 P2-3）：与 AbandonCurrentRunAsync 对称——本路径
             //（开局不合格弃局）遇盛会升档弹框同样先应答，否则 (960,899)×3 落在
             // 弹框上仅靠模态吞输入免祸，动画窗内则真实落在出战键附近。
@@ -933,12 +967,32 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
                     "preparation_",
                     StringComparison.OrdinalIgnoreCase))
             {
+                // 09-10 深夜班：P-12 口径补按（完整链同款："多数失败几秒后重按即
+                // 成功"）——Esc 双败后页面仍为备战页=Esc 未生效（或确认框被关闭），
+                // 补发一次 Esc 再等确认框；仍无效才如实失败交外层。
+                // 红线不动：此处依旧绝不点击出战区 (960,899)。
                 Publish(
                     "RecoverySkipPreparationClick",
                     $"当前为备战页（{fallbackPageId}），禁止点击出战区；" +
-                    "本路径无法弃局，交由外层重试。",
+                    "补按一次 Esc 重试后再判定。",
                     TaskEventLevel.Warning);
-                return Failed("备战页 Esc 无法弃局且禁止点击出战区；已停止兜底点击。");
+                await Task.Delay(TimeSpan.FromSeconds(1.5), cancellationToken);
+                var retryPrompt = await PressKeyUntilPageAsync(
+                    windowHandle,
+                    InputKey.Escape,
+                    "使用 Esc 退出当前对局（备战页补按）",
+                    "abandon_settlement_prompt",
+                    TimeSpan.FromSeconds(4),
+                    1,
+                    cancellationToken);
+                if (retryPrompt is not null)
+                {
+                    return await CompleteFromAbandonSettlementPromptCoreAsync(
+                        windowHandle,
+                        cancellationToken);
+                }
+
+                return Failed("备战页 Esc 无法弃局且禁止点击出战区；补按一次仍无效，交外层重试。");
             }
 
             if (fallbackPageId is "normal_hud" or "currency_wars_home")

@@ -33,9 +33,9 @@
 ## 〇-3、挂账与待查（按优先级，全部未完成）
 
 1. **P0 金尽空转循环 → ✅已修（09-10 03:2x 本班，详见〇-7，构建 0/0+Grail 145/145+Preparation 95 过+对抗审查 APPROVED、P2 已当场修、发布待用户令）**（1.2.123 实测两局各 ~10 分钟）：清场卖出被 reward_shop 页阻断（PreparationBenchSalePageMismatch）后安全停止且永不重试→清场残漏→R3 被"可卖>0"阻塞→空转等 30 轮上限。修法=卖出前查页，reward_shop→先收摊（1620,975@1920，页面已验证后点）再卖。
-2. **P0 金币读数幻值**（时间戳已诚实但数值仍错：真 9 报 27、真 3 报 1、真 4 报 1）：识别 OCR 或滞后帧值问题——需识别回归语料库（下条）定量化。防御已闭环（R3 判死需新鲜读数+塌缩跳过），实害=运营低效非误弃。
+2. **P0 金币读数幻值 →定性拆分（09-10 本班录像+日志交叉）**：02:07 段实锤**购买失效≠幻值**——吉尔伽美什识别正确、输入到位、画面金 10-11 与账本 9 一致，两次购买后原槽卡均在=reward_shop 紧凑布局购买落点问题（见〇-7.8）；幻值本体（真 9 报 27/真 3 报 1）仍是 OCR/帧源问题，其"抬高快照金→R3 永不触发"危害已由 R3 结构防御（〇-7.6）结构化兜住；识别回归语料库（下条）仍需建，用于幻值定量。防御已闭环（R3 判死需新鲜读数+塌缩跳过），实害=运营低效非误弃。
 3. **P1 分析页对齐（重开调查）**：实机识别管线健康（75/86 分析 PageId 正常），**前班"沙箱 PageId 永非 preparation_*"结论系探针键名大小写错误假象**（JSON 为 camelCase：snapshot/pageId）——沙箱会话 0 个 analysis JSON 落盘才是真差异（沙箱模式管线不写产物或未运行到产出）。重开步骤：起长会话沙箱验证管线是否运行→按结果修。
-4. **P1 主界面 transition 误标（间歇）**：3D 主界面高运动时段全帧被判 transition_animation→M8 等不到稳定页（01:19 实锤，01:24 自愈）。修法候选=fast 分类器命中已知页时豁免 transition 标记（fast 集已含 currency_wars_home）。
+4. **P1 主界面 transition 误标 →降级 P3 观察项（09-10 本班重定性）**：引擎事件流 01:19-01:26 只有**一次 12 秒** Unknown→Esc→主界面恢复（01:20:01-03），"5 分钟卡死"在引擎侧不存在；画面取证（frames_d1/wall_01 帧 3）显示该时刻有一个**白色系统提示弹框**（"继续并锁存/稍后再说"——识别表外）在屏=Unknown 真因，Esc 已兜住。fast 豁免方案搁置（改动识别管线核心，收益/风险不匹配）；若该弹框高频复发再入识别表+自动应答。03:1x 的 Unknown 段已由弃局活锁修复（〇-7.5）覆盖。
 5. **P2 识别回归语料库**：ShopRecognized 时存货架裁剪+识别名单（有界环），OCR/识别改动有真帧对照。
 6. **P2 三星五费黄金剧本**：分析页对齐修完后，用真帧（奇迹代偿/昔涟货架/聘用书帧已有）编全流程沙箱剧本。
 7. **待查**：18:14:28 金=13 卖卡是否违反凑息规则（需 UI 日志）；84s 空窗前段 t≈10850-11005 前扩抽帧；四.13a 模式盲区（对弈/单人无法从证据确证）。
@@ -63,7 +63,14 @@
 
 1. **P0#1 金尽空转修复（PreparationFormation.cs CaptureVerifiedPreparationAsync）**：页面门内新增 reward_shop 收摊救援分支——页面分类=reward_shop 时（收摊尝试上限 2，独立于 Esc 预算 3 与 8 次总循环）发布 PreparationRewardShopCloseAttempt，调同类现成 GrailClickReferencePointAsync 点收摊开关 (1620,975)@1920（页面身份验证后才点，1.2.64 决策层救援同款坐标），点击后 250ms×20 步进轮询确认页面已离开 reward_shop 才交回门禁（未确认发 PreparationRewardShopCloseUnconfirmed 留痕）。**对抗审查 APPROVED；P2 当场修**：初版固定睡 1500ms 有"双向开关二次点击重开店"风险（审查员指出），改步进轮询后消除；两 P3（收摊后 Esc 分支理论暴露/重复前台守卫）记录不修。调用点影响面：审查员逐一核对 21 处调用，确认不存在"商店页合法开启时调用本门"的场景（M5 两条路径上场动作均在 CloseShopAsync 之后）。验证：构建 0 警 0 错 + Grail 145/145 + Preparation 95 过/4 跳既有 Skip。**未发布未实测，等用户令**。
 2. **值守环境整理**：monitor_cycle.py 曾有 4 个重复实例（共享 state.json 竞态），清到 1 个（PID 56144）；watchdog daemon 双实例清到 1 个（keeper 拉起的 32172）；watch_duty_123.ps1 沿用上班的（PID 53840）。watchdog keeper+daemon 在岗（keeper 日志显示 daemon 高 I/O 下反复卡死被 keeper 正常复活，属设计内行为）。
-3. **1.2.123 运行观察（01:18-03:16）**：刷局循环健康（22+ 轮弃局全闭环、每轮 40-90s、卡壳自愈）；P0 两条挂账实机复现取证（金尽空转 12min+10min 各一段、02:07-02:12 出现 PurchaseNotConfirmed 循环 11 条——金 9-10 反复购买未生效，与金币幻值同族）；02:47 识别流看门狗挂起报错→恢复链闭环（RecoveryCompleted 02:52:51）。
+3. **1.2.123 运行观察（01:18-03:36）**：刷局循环健康（22+ 轮弃局全闭环、每轮 40-90s、卡壳自愈）；P0 两条挂账实机复现取证（金尽空转 12min+10min 各一段、02:07-02:12 出现 PurchaseNotConfirmed 循环 11 条——金 9-10 反复购买未生效，与金币幻值同族）；02:47 识别流看门狗挂起报错→恢复链闭环（RecoveryCompleted 02:52:51）。
+4. **新发现（P1）弃局活锁（03:15-03:19 实锤，已修待发布见〇-7.5）**：刷开局快速弃局路径 RecoverAsync 的 Esc×2 后确认框（abandon_settlement_prompt）识别滞后（4s 验证窗两次没确认到，页面读 Unknown/低置信 43.7% 备战页）→ 双败 Failed 交外层 → 外层重开时人还在局内 → 导航"直接到达 1-1"判未命中 → 再弃局 → 活锁每轮 ~2.5 分钟，第 3 轮靠 NavigationFailed→决策层 A9 完整链概率逃生。
+5. **重大定性（P0 链合并）：金尽空转的驱动者=金币幻值（P0#2）**——全会话（01:18-03:30）R3GoldExhausted=0、R3DefensiveSkip=0，R3 判死链一次都没进：OCR 幻金抬高 snapshot.Gold ≥RefreshGoldCost，R3 候选永假；金尽逃逸全靠 30 轮上限"运营轮上限（异常兜底）"（01:43/02:02 两次各 ~12 分钟）。而 M5 执行器实时本地账（1.2.24 口径）准确——行为级金尽证据（刚实跑刷新即失败）被弃用。已修：R3 结构防御（见〇-7.6）。
+6. **星徽装配失败本会话持续**（03:24 一局 3 试全败，质心 (2483,684) 分毫未动——与 1.2.121 审计发现 1 同族：700ms 档在负载时段仍被拒收）；金尽后 M5"开店→秒关店"循环（03:27 段）属 P0 链第二分支（无货可卖时反复开店），R3 结构防御修后第一轮循环即判死，此分支一并治。
+8. **新发现（P2）PurchaseNotConfirmed 的定性修正（02:07 段录像+日志交叉，墙图 frames_g3/wall_03）**：吉尔伽美什（5 费）在架被正确识别→购买输入发送成功（SendInput ok+光标到位 (647,233)）→两次尝试后置帧均"原槽识别=吉尔伽美什"=卡未消失。画面金 10-11 与账本 9 基本一致=**非金不够**；指向 reward_shop 紧凑布局的购买落点 (647,233)（16x16 识别区中心）可能不在可点击区/对该卡面无效——购买交互问题非幻值问题。审计报告"本轮未再出现"需更正：1.2.123 会话 02:07-02:12 段 11 条循环即此。待专项：落点与 RewardShopCharacterSlots192 紧凑布局的点击区核对。
+7. **本班值守设施操作记录**：monitor_cycle.py 4 实例→1（竞态共享 state.json）；watchdog daemon 双实例→1（保 keeper 拉起的）；审计脚本 artifacts/session_stats_123.py+session_timeline_123.py（全量扫 jsonl 用）。
+5. **弃局活锁修复（CurrencyWarsRejectedOpeningRecovery.cs RecoverAsync，未 commit 待审查结论）**：Esc 双败分流段新增①确认框在屏分支（稳定读=abandon_settlement_prompt 或 3s 重探命中→直接走 CompleteFromAbandonSettlementPromptCoreAsync 统一结算返回）②preparation_* 分支补按一次 Esc（P-12 口径"多数失败几秒后重按即成功"），仍无效才 Failed。Unknown 禁点/主界面即停/盛会应答/盲点直通全部未动。构建 0/0+Grail 145/145。
+6. **R3 结构防御（GrailCommandTypes+GrailMacroCommands+GrailDecisionEngine，未 commit 待审查结论）**：GrailShopPassFact 加 LiveLedgerGold（仅本地账有效时非 null，绝不兜底持有器值）；R3 候选与判死纳入 ledgerSaysBroke（本轮 M5 刚实跑刷新失败=行为级金尽证据，强于 OCR 幻值单帧）；sold==0 硬条件保持（清场卖出是轮内唯一加金途径→账未过时）；OCR-only 路径的 P2-2 新鲜帧防御原样保留。构建 0/0+Grail 145/145+Decision/R3 6 过。
 
 ## 五、Windows 操作强制标准
 

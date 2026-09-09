@@ -41,6 +41,106 @@ public sealed class RejectedOpeningRecoveryRetryTests
     }
 
     [Fact]
+    public async Task EscDoubleMissThenRepromptReselected_CompletesWithoutThirdEscape()
+    {
+        // 09-10 弃局活锁修复（审查 P2-1 用例①）：Esc 验证窗内确认框识别滞后
+        //（03:15-03:19 实锤：4s×2 两次未确认→双败）——Esc 双败后分流读命中
+        // abandon_settlement_prompt 时必须直接走统一结算返回，且不发第 3 次 Esc。
+        // 时间轴（相对第 2 次 Esc 的绝对时长，deadline 结构不随机器速度漂移）：
+        // press#2 验证窗 [0,4] 与稳定读窗 [4,7] 均 <8s 保持不可见（双败成立），
+        // 8s 阈值在重探窗 [7,10] 内命中；EA=1 的 grace 窗由"仅 EA≥2 启用"排除。
+        var input = new StagedInputController
+        {
+            PromptAfterEscapes = 99,
+            PromptDelayAfterEscape = TimeSpan.FromSeconds(8)
+        };
+        var window = Window();
+        var sink = new RecordingEventSink();
+        var recovery = new CurrencyWarsRejectedOpeningRecovery(
+            new PreparationNavigator(),
+            new StaticCapture(),
+            new StagedClassifier(input),
+            input,
+            new ImmediateForegroundGuard(window),
+            sink);
+
+        var result = await recovery.RecoverAsync(
+            window.Handle,
+            new OpeningSnapshot([], [], []),
+            new OpeningFilterEvaluation(false, ["reject"], [], []),
+            CancellationToken.None);
+
+        Assert.Equal(RejectedOpeningRecoveryStatus.Recovered, result.Status);
+        Assert.Equal(2, input.EscapeAttempts);
+        Assert.Equal(0, input.BlindAdvanceClicks);
+        Assert.Equal(0, input.AbandonExitNextClicks);
+        Assert.Contains("RecoveryPromptConfirmed", sink.EventNames);
+    }
+
+    [Fact]
+    public async Task EscDoubleMissOnPreparationPage_ThirdEscapeSucceeds()
+    {
+        // 09-10 弃局活锁修复（审查 P2-1 用例②）：Esc 双败后页面仍为备战页——
+        // 补按一次 Esc（P-12 口径）命中确认框即完成弃局；全程零出战区点击。
+        var input = new StagedInputController
+        {
+            PromptAfterEscapes = 3,
+            FallbackPreparation = true
+        };
+        var window = Window();
+        var sink = new RecordingEventSink();
+        var recovery = new CurrencyWarsRejectedOpeningRecovery(
+            new PreparationNavigator(),
+            new StaticCapture(),
+            new StagedClassifier(input),
+            input,
+            new ImmediateForegroundGuard(window),
+            sink);
+
+        var result = await recovery.RecoverAsync(
+            window.Handle,
+            new OpeningSnapshot([], [], []),
+            new OpeningFilterEvaluation(false, ["reject"], [], []),
+            CancellationToken.None);
+
+        Assert.Equal(RejectedOpeningRecoveryStatus.Recovered, result.Status);
+        Assert.Equal(3, input.EscapeAttempts);
+        Assert.Equal(0, input.AbandonExitNextClicks);
+        Assert.Equal(0, input.BlindAdvanceClicks);
+    }
+
+    [Fact]
+    public async Task EscTripleMissOnPreparationPage_FailsBoundedlyWithoutBlindAdvance()
+    {
+        // 09-10 弃局活锁修复（审查 P2-1 用例③）：补按一次仍无效——有界 Failed
+        // 交外层，绝不烧盲点直通（备战页禁止兜底点击红线）。
+        var input = new StagedInputController
+        {
+            PromptAfterEscapes = 99,
+            FallbackPreparation = true
+        };
+        var window = Window();
+        var recovery = new CurrencyWarsRejectedOpeningRecovery(
+            new PreparationNavigator(),
+            new StaticCapture(),
+            new StagedClassifier(input),
+            input,
+            new ImmediateForegroundGuard(window),
+            new NullTaskEventSink());
+
+        var result = await recovery.RecoverAsync(
+            window.Handle,
+            new OpeningSnapshot([], [], []),
+            new OpeningFilterEvaluation(false, ["reject"], [], []),
+            CancellationToken.None);
+
+        Assert.Equal(RejectedOpeningRecoveryStatus.Failed, result.Status);
+        Assert.Equal(3, input.EscapeAttempts);
+        Assert.Equal(0, input.BlindAdvanceClicks);
+        Assert.Equal(0, input.AbandonExitNextClicks);
+    }
+
+    [Fact]
     public async Task SharedSettlementRecoveryRejectsWrongPageBeforeClicking()
     {
         var input = new StagedInputController();
@@ -676,9 +776,21 @@ public sealed class RejectedOpeningRecoveryRetryTests
 
             var pageId = input.Stage switch
             {
+                // 09-10 弃局活锁夹具：时间维度仅在 EA≥2 时启用（EA=1 的 grace 重探窗
+                // 必须保持 prompt 不可见，否则走单败路径测不到双败分流）——组合
+                // PromptAfterEscapes=99 禁用数值通道，prompt 只在"第 2 次 Esc 后满
+                // 延迟时长"的分流读阶段出现。
+                InputStage.Exit when input.PromptDelayAfterEscape is not null &&
+                    input.EscapeAttempts >= 2 =>
+                    input.ElapsedSinceEscape is { } escDelay &&
+                    escDelay >= input.PromptDelayAfterEscape.Value
+                        ? "abandon_settlement_prompt"
+                        : input.FallbackPreparation ? "preparation_1_1" : null,
                 InputStage.Exit when
-                    input.EscapeAttempts >= 1 || input.ExitAttempts >= 2 =>
+                    input.EscapeAttempts >= input.PromptAfterEscapes ||
+                    input.ExitAttempts >= 2 =>
                     "abandon_settlement_prompt",
+                InputStage.Exit when input.FallbackPreparation => "preparation_1_1",
                 InputStage.Abandon => "challenge_failed",
                 InputStage.Settlement when input.HomeTransitionDelay is not null &&
                     input.ElapsedSinceSettlement < input.HomeTransitionDelay => null,
@@ -767,6 +879,17 @@ public sealed class RejectedOpeningRecoveryRetryTests
         public int GalaPortraitClicks { get; private set; }
         public int GalaConfirmClicks { get; private set; }
         public int AbandonExitNextClicks { get; private set; }
+        // 09-10 弃局活锁夹具（审查 P2-1）：Esc 验证窗内 prompt 识别滞后的两个维度——
+        // PromptAfterEscapes=第 N 次 Esc 后才可识别（数值维度）；
+        // PromptDelayAfterEscape=最后一次 Esc 后满该时长才可识别（时间维度，
+        // 模拟"4s 验证窗内识别滞后、双败后分流读时确认框其实在屏"的实测病理）；
+        // FallbackPreparation=无 prompt 时返回备战页（驱动 preparation_* 补按分支）。
+        public int PromptAfterEscapes { get; init; } = 1;
+        public TimeSpan? PromptDelayAfterEscape { get; init; }
+        public bool FallbackPreparation { get; init; }
+        private DateTimeOffset? _lastEscapeAt;
+        public TimeSpan? ElapsedSinceEscape =>
+            _lastEscapeAt is null ? null : DateTimeOffset.UtcNow - _lastEscapeAt;
         public TimeSpan ElapsedSinceSettlement => _settlementStartedAt is null
             ? TimeSpan.Zero
             : DateTimeOffset.UtcNow - _settlementStartedAt.Value;
@@ -850,6 +973,8 @@ public sealed class RejectedOpeningRecoveryRetryTests
             Assert.Equal(InputKey.Escape, key);
             Stage = InputStage.Exit;
             EscapeAttempts++;
+            // 09-10 弃局活锁夹具：识别滞后时间维度（PromptDelayAfterEscape）的锚点。
+            _lastEscapeAt = DateTimeOffset.UtcNow;
             return Task.FromResult(ActionResult.Success("Esc"));
         }
 

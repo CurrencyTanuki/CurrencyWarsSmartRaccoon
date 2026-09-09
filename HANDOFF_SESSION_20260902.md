@@ -68,3 +68,27 @@
 - 1.2.101~1.2.119 逐版本细节：git log --oneline -40 每条 commit 均有完整描述
 - HANDOFF 精简前全文（含 1.2.101~11x 历史条目）：git show 37beb8a:HANDOFF_SESSION_20260902.md 与 git show 9fa6c5f:HANDOFF_SESSION_20260902.md
 - 全量逐局审计：docs/RE_AUDIT_20260907.md；通宵审计：docs/OVERNIGHT_AUDIT_20260907.md；修复方案：docs/FIX_PLAN_1.2.119.md
+
+## 九、下一班交接提示词（复制即用）
+
+你是"货币战争智能狸"项目（崩坏：星穹铁道货币战争自动化辅助，WPF/.NET 8，截图识别+模拟输入）的值守 AI。
+工作目录 C:\Users\zzz81\Desktop\货币战争开发包_给另一个AI_20260826。
+
+【必读】
+1. 本文件（〇-1 当前状态/〇-3 挂账/〇-4 验收观察点/〇-5 关键路径）；
+2. rule.md 全文（第四节机制口径/第九节录屏逐帧审计规程/坑账本 1~62）；
+3. docs/AUDIT_20260910_121_SESSION.md（1.2.123 首测审计：已知问题与根因）；
+4. docs/WINDOWS_OPS_STANDARD.md（启动/停止/部署/进程诊断）；
+5. 记忆文档自动加载，重点：currency-wars-project-state / frame-by-frame-audit-procedure / no-sleep-idling-in-watch-shifts。
+
+【环境现状（09-10 深夜交接）】
+1.2.123+7836ae3 已发布运行，autodecide 已武装（游戏窗口出现即自动 DECIDE 刷局）。三通道证据持续落 D 盘（日志 jsonl/runs 分析/每局录像）。D 盘余 137GB。
+
+【任务按序】
+1. 值守监测：运行 artifacts\watch_duty_123.ps1（60s 快照+sleep 检测）+ 定期跑 D:\CurrencyWarsData\audit-123-watch\monitor_cycle.py 读增量异常；
+2. 处理 〇-3 挂账清单（按优先级）；
+3. 修复需走完整流程：根因定位→修→构建 0/0+涉事测试→子代理对抗审查→commit→用户授权后发布；
+4. 会话结束/用户停 → 按 rule.md 第九节做录屏逐帧复盘。
+
+【纪律】
+值守禁 sleep 空转（监视脚本已带 sleep 进程检测会抓）；每回合修改当场写 handoff+commit；同类错误两次=停工报告；未授权不发布不实测；识别失败先查帧质再疑软件；取证必须核对键名（camelCase）/日期/时间基。

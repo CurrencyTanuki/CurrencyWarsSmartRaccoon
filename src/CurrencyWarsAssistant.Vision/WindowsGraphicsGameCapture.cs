@@ -81,8 +81,11 @@ public sealed class WindowsGraphicsGameCapture : IGameCapture, IDisposable
         cancellationToken.ThrowIfCancellationRequested();
         // P1-1（对抗审查）：快失败仅对"请求窗口==当前会话目标"生效——游戏重启后
         // 新 HWND 放行进入 EnsureSession→ResetSession 清标志重建，捕获不再永久锁死。
+        // P3-A（复审）：追加 IsWindow——同值 HWND 被系统回收复用给新窗口时，活窗
+        // 即证明旧 Closed 是陈旧信号，放行后经死会话超时→ResetSession 自愈。
         if (Volatile.Read(ref _targetClosed) == 1 &&
-            Interlocked.CompareExchange(ref _activeWindow, 0, 0) == window.Handle)
+            Interlocked.CompareExchange(ref _activeWindow, 0, 0) == window.Handle &&
+            !NativeWindowMethods.IsWindow(window.Handle))
         {
             throw new InvalidOperationException(
                 "游戏窗口已关闭，捕获目标不再存在。");
@@ -232,12 +235,16 @@ public sealed class WindowsGraphicsGameCapture : IGameCapture, IDisposable
         {
             // P2-2/P3-1（对抗审查）：创建段任何一步失败——退订+后台释放，
             // 绝不在调用线程同步 Dispose（与根因同型楔死窗口）。
-            if (framePool is not null)
+            // P3-B/P3-C（复审）：退订包 try-catch（抛出会跳过 BackgroundDispose
+            // 造成泄漏并掩盖原异常）；FrameArrived 退订由 BackgroundDispose 统一做。
+            try
             {
-                framePool.FrameArrived -= OnFrameArrived;
+                item.Closed -= handler;
+            }
+            catch
+            {
             }
 
-            item.Closed -= handler;
             BackgroundDispose(framePool, session);
             throw;
         }

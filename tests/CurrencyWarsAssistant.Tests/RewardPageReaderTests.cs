@@ -68,6 +68,20 @@ public sealed class RewardPageReaderTests
     }
 
     [Fact]
+    public void EstablishedStable_SurvivesSingleFrameChallenger()
+    {
+        // 审查 P2-1 锚：既有稳定读数（连续两帧 X）不被第三帧单次错名 Y 击穿
+        //（单帧错名 OCR= C6 幽灵货架家族；挑战者需连续两帧才可推翻）。
+        var x = Character("char_x", "X", "bond");
+        var y = Character("char_y", "Y", "bond");
+        var accumulator = new RewardShopRecognitionAccumulator(slotCount: 1);
+        accumulator.Observe(new[] { new RewardShopSlot(0, x, "X", 0.9) });
+        accumulator.Observe(new[] { new RewardShopSlot(0, x, "X", 0.9) });
+        accumulator.Observe(new[] { new RewardShopSlot(0, y, "Y", 0.9) });
+        Assert.Equal("char_x", accumulator.Snapshot()[0].Character?.Id);
+    }
+
+    [Fact]
     public void SingleReadThenMissThenSameRead_Stabilizes()
     {
         // 单次读数+一次 OCR 未识别：不清零，第三帧同名读数达成稳定。
@@ -100,9 +114,10 @@ public sealed class RewardPageReaderTests
     }
 
     [Fact]
-    public void GenuineCardChange_ResetsStability()
+    public void GenuineCardChange_SingleChallengerKept_TwoConsecutiveReplace()
     {
-        // 换卡语义保持：同名连读稳定后出现不同角色 → 稳定作废，须重新连读。
+        // 审查 P2-1 新语义：换卡=连续两帧挑战者才完成；单帧挑战者（OCR 噪声/动画帧）
+        // 不得击穿既有稳定读数——与 [X,X,Y] 锚测试同一条门槛的两面。
         var accumulator = new RewardShopRecognitionAccumulator(slotCount: 1);
         var a = Character("char_a", "A", "bond");
         var b = Character("char_b", "B", "bond");
@@ -110,8 +125,10 @@ public sealed class RewardPageReaderTests
         accumulator.Observe(new[] { new RewardShopSlot(0, a, "A", 0.95) });
         accumulator.Observe(new[] { new RewardShopSlot(0, a, "A", 0.95) });
         accumulator.Observe(new[] { new RewardShopSlot(0, b, "B", 0.95) });
+        Assert.Equal("char_a", accumulator.Snapshot()[0].Character?.Id);
 
-        Assert.Null(accumulator.Snapshot()[0].Character);
+        accumulator.Observe(new[] { new RewardShopSlot(0, b, "B", 0.95) });
+        Assert.Equal("char_b", accumulator.Snapshot()[0].Character?.Id);
     }
 
     [Theory]

@@ -190,12 +190,14 @@ public sealed class WishTrialSelectionAutomation(
 
         if (leftName is null && rightName is null)
         {
+            // 09-10 夜审 P1-A 同族：双名 OCR 全空时此前"仅记录不点击"同样会让强制
+            // 二选一弹框永久卡死。F9 盲选左本就是用户拍板的合法动作（不识别直接选左），
+            // 此处按盲选左继续走选卡+确认，事件降级记录。
             eventSink.Publish(new TaskEvent(
                 DateTimeOffset.Now,
                 TaskEventLevel.Warning,
                 "WishTrialNameRecognitionFailed",
-                "两个试炼名称均未能通过 OCR 读出；本轮仅记录不点击，避免误选。"));
-            return WishTrialSelectionStatus.RecognitionFailed;
+                "两个试炼名称均未能通过 OCR 读出；按 F9 盲选左继续（弹框强制二选一，不点=卡死；本事件保持 Warning 级留痕，行为降级发生在 NoWinningSide 侧）。"));
         }
 
         // 选择策略：
@@ -224,13 +226,16 @@ public sealed class WishTrialSelectionAutomation(
             side = PickWinningSide(leftName, leftReward, rightName, rightReward);
             if (side is null)
             {
+                // 09-10 夜审 P1-A（C4 实锤）：无关键试炼时此前"不点击"会让强制二选一
+                // 弹框永久卡死（带活局等死 4 分 34 秒实拍）。rule 四.7 用户拍板 M3 优先级
+                // 链末端="一般选左"——任何弹框都必须给出一个侧，此处回落选左+确认。
+                side = 0;
                 eventSink.Publish(new TaskEvent(
                     DateTimeOffset.Now,
-                    TaskEventLevel.Warning,
+                    TaskEventLevel.Information,
                     "WishTrialNoWinningSide",
                     $"未命中可达成目标的祈愿试炼（左=[{leftName ?? "未读出"}]/奖励=[{leftReward ?? "未读出"}]，" +
-                    $"右=[{rightName ?? "未读出"}]/奖励=[{rightReward ?? "未读出"}]）；不点击，避免误选。"));
-                return WishTrialSelectionStatus.RecognitionFailed;
+                    $"右=[{rightName ?? "未读出"}]/奖励=[{rightReward ?? "未读出"}]）；按 rule 四.7 兜底选左+确认（不再空等）。"));
             }
         }
 

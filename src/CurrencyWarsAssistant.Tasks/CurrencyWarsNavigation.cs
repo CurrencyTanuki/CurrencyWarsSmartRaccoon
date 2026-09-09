@@ -395,6 +395,7 @@ public sealed class CurrencyWarsNavigationTask(
                 "在安全等待时间内未能稳定识别当前页面；未执行任何点击。");
         }
 
+        var battlePauseEscapes = 0;
         while (ActiveUtcNow < deadline)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -415,6 +416,72 @@ public sealed class CurrencyWarsNavigationTask(
                     CurrencyWarsNavigationState.Acting,
                     current.PageId,
                     "检测到已有进行中的对局；用户已关闭已有对局自动停，选择继续自动执行刷开局。");
+            }
+
+            // 09-10 夜审 P2-B（C12→C13/C14 实锤）：超时撤退失败后会停在"战斗暂停/关卡
+            // 信息"页（reward_battle_pause），M8 对它无步骤→连续 NavigationFailed 空转。
+            // 按 C15 实证的恢复路径处置：Esc（恢复/退出当前对局）后重新识别，有界 3 次，
+            // 超界仍按 UnsupportedPage 交上层恢复链（不再原地多轮空转）。
+            if (string.Equals(
+                    current.PageId,
+                    "reward_battle_pause",
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                battlePauseEscapes++;
+                if (battlePauseEscapes > 3)
+                {
+                    return Result(
+                        CurrencyWarsNavigationState.UnsupportedPage,
+                        current.PageId,
+                        $"已识别“{current.DisplayName}”且 Esc 恢复 3 次未离开；交上层恢复链处理。");
+                }
+
+                Publish(
+                    CurrencyWarsNavigationState.Acting,
+                    current.PageId,
+                    $"识别到战斗暂停/关卡信息页（第 {battlePauseEscapes}/3 次）——发送 Esc 恢复后重新识别。");
+                var escapeWindow = windowService.Refresh(windowHandle) ?? _lastKnownWindow;
+                if (escapeWindow is null)
+                {
+                    return Result(
+                        CurrencyWarsNavigationState.WindowUnavailable,
+                        current.PageId,
+                        "游戏窗口不存在、已最小化或客户区无效。");
+                }
+
+                var escapeResult = await input.PressKeyAsync(
+                    escapeWindow,
+                    InputKey.Escape,
+                    new ActionPolicy
+                    {
+                        VerifyPointerArrivalBeforeClick = false,
+                        PointerSettleDelay = TimeSpan.Zero,
+                        AfterActionDelay = TimeSpan.FromMilliseconds(800)
+                    },
+                    cancellationToken);
+                if (!escapeResult.Succeeded)
+                {
+                    // 审查 P3-5：Esc 发送失败不留痕会静默烧掉恢复预算，如实记录。
+                    Publish(
+                        CurrencyWarsNavigationState.Acting,
+                        current.PageId,
+                        $"第 {battlePauseEscapes}/3 次 Esc 发送失败：{escapeResult.Message}");
+                }
+                current = await WaitForStablePageWithRecoveryAsync(
+                    windowHandle,
+                    expectedPageIds: null,
+                    TimeSpan.FromMilliseconds(config.InitialPageTimeoutMilliseconds),
+                    options.EnableUnknownPageEscapeRecovery,
+                    cancellationToken);
+                if (current is null)
+                {
+                    return Result(
+                        CurrencyWarsNavigationState.UnknownPage,
+                        null,
+                        "Esc 恢复后未能在安全等待时间内稳定识别当前页面；未执行任何点击。");
+                }
+
+                continue;
             }
 
             if (!_steps.TryGetValue(current.PageId, out var step))

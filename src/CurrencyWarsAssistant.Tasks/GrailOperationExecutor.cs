@@ -508,6 +508,20 @@ public sealed partial class GrailOperationExecutor(
                     break;
                 }
 
+                if (pass.PurchaseCheck == RewardStageAutomationController.GrailShopPurchaseCheck.NotPurchased)
+                {
+                    // 09-10 夜审 P1-C（C6 幽灵购买实锤）：验证帧判 NotPurchased=货架原卡仍在
+                    // （金币不足/点击无效/识别幻觉）——此前只特判了 Uncertain，NotPurchased 落进
+                    // "已购买"分支扣账+污染已购集合，后续真目标被"跳过已拥有"。此处如实按
+                    // 未购买处置：不记账不扣费不入 owned，本 Pass 停止购买交决策层对账。
+                    endReason = "PurchaseNotConfirmed";
+                    rewardStage.PublishGrailTelemetry(
+                        "GrailShopPurchaseNotConfirmed",
+                        $"{pass.BoughtCharacterName} 购买验证判 NotPurchased（货架原卡仍在）——不计购买不扣账，本 Pass 停止购买。",
+                        TaskEventLevel.Warning);
+                    break;
+                }
+
                 boughtAny = true;
                 owned.Add(pass.BoughtCharacterName);
                 _grailPurchaseLedger.Add(pass.BoughtCharacterName); // 记账：跨指令防重买

@@ -1980,9 +1980,9 @@ public sealed partial class PreparationBoardController(
                 TimeSpan.FromMilliseconds(attempt >= 2 ? 1300 : 650),
                 new ActionPolicy
                 {
-                    MouseButtonHoldDelay = attempt >= 2
-                        ? TimeSpan.FromMilliseconds(300)
-                        : TimeSpan.Zero,
+                    // 09-10 夜审 P1-B：首试也曾 holdMs=0（60 次实 diagnostics），与重试的
+                    // 300ms 统一——同参数拖拽一成一败即坑44 本尊，首试不该用 0 按压。
+                    MouseButtonHoldDelay = TimeSpan.FromMilliseconds(300),
                     AfterActionDelay = TimeSpan.FromMilliseconds(50)
                 },
                 cancellationToken);
@@ -2659,6 +2659,10 @@ public sealed partial class PreparationBoardController(
                 TimeSpan.FromMilliseconds(650),
                 new ActionPolicy
                 {
+                    // 09-10 夜审 P1-B（137 次部署拖拽 holdMs=0 实证）：1.2.62 坑44 的
+                    // 250ms 按压只接到了 extreme/fast/fast_shop 三条路径，主部署路径
+                    // 漏接——C5/C8/C19 命杯成员"拖动未产生画面变化"数连败皆源于此。
+                    MouseButtonHoldDelay = TimeSpan.FromMilliseconds(250),
                     AfterActionDelay = TimeSpan.FromMilliseconds(50)
                 },
                 cancellationToken);

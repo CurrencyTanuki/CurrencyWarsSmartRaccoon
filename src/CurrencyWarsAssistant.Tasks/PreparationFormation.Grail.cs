@@ -102,6 +102,8 @@ public sealed partial class PreparationBoardController
                 TimeSpan.FromMilliseconds(650),
                 new ActionPolicy
                 {
+                    // 09-10 夜审 P1-B：N12 拖拽同样漏接坑44 按压，统一 250ms。
+                    MouseButtonHoldDelay = TimeSpan.FromMilliseconds(250),
                     AfterActionDelay = TimeSpan.FromMilliseconds(50)
                 },
                 cancellationToken);
@@ -282,82 +284,14 @@ public sealed partial class PreparationBoardController
                 $"物品栏星徽探测命中（模板分 {badgeScore:F2}），质心=({badgeCenter.X},{badgeCenter.Y}) 客户区坐标。");
             var targetPoint = MapReferencePoint(window, targetReference.Center);
 
-            // 1.2.104（019 局实弹 9 连败取证）：同目标点角色卡拖拽成功而星徽拖拽
-            // 不吸附（450ms 按压+300ms 悬停均无效）——物品栏图标的交互与备战席卡牌
-            // 不同。策略=奇数次拖拽、偶数次改用"点选装备"（点星徽选中→点目标角色），
-            // 两种模式交替，拖后自证共用。
-            if (attempt % 2 == 0)
-            {
-                Publish(
-                    TaskEventLevel.Information,
-                    "GrailBadgeAssemblyAttempt",
-                    $"N2 点选装备：点击物品栏星徽选中（第 {attempt}/3 次，点选模式）。");
-                var selectBadge = await input.ClickAsync(
-                    new ClickTarget(
-                        $"grail_badge_select_{targetId}",
-                        $"选中物品栏星徽（点选模式）",
-                        window,
-                        BoundsAround(window, sourcePoint)),
-                    new ActionPolicy
-                    {
-                        AfterActionDelay = TimeSpan.FromMilliseconds(350)
-                    },
-                    cancellationToken);
-                if (selectBadge.Succeeded)
-                {
-                    Publish(
-                        TaskEventLevel.Information,
-                        "GrailBadgeAssemblyAttempt",
-                        $"N2 点选装备：点击{targetLabel}完成装备（点选模式）。");
-                    var equipTarget = await input.ClickAsync(
-                        new ClickTarget(
-                            $"grail_badge_equip_{targetId}",
-                            $"点选装备到{targetLabel}",
-                            window,
-                            BoundsAround(window, targetPoint)),
-                        new ActionPolicy
-                        {
-                            AfterActionDelay = TimeSpan.FromMilliseconds(50)
-                        },
-                        cancellationToken);
-                    if (!equipTarget.Succeeded)
-                    {
-                        Publish(
-                            TaskEventLevel.Warning,
-                            "GrailBadgeAssemblyInputRejected",
-                            $"N2 点选装备第 {attempt}/3 次输入未发送成功：" + equipTarget.Message);
-                        continue;
-                    }
-
-                    await Task.Delay(TimeSpan.FromMilliseconds(500), cancellationToken);
-                    var afterSelect = await CaptureVerifiedPreparationAsync(
-                        windowHandle,
-                        expectedPreparationPageId,
-                        allowEscapeRecovery: false,
-                        cancellationToken);
-                    if (afterSelect is not null)
-                    {
-                        SaveBadgeEvidence(afterSelect.Value.Frame, $"badge-clickselect-a{attempt}");
-                        if (!StarBadgeLocator.TryLocate(afterSelect.Value.Frame, out _, out _))
-                        {
-                            Publish(
-                                TaskEventLevel.Information,
-                                "GrailBadgeAssemblySelected",
-                                $"点选模式装配成功——星徽已不在物品栏（第 {attempt}/3 次）。");
-                            return true;
-                        }
-
-                        // P1-A（2026-09-09 修复批）：点选被拒=拒绝横幅在屏——目标已携带
-                        // 同羁绊星徽，装配目标已达成，立即停止（防后续 attempts 继续重击）。
-                        if (await IsBadgeRejectionBannerUpAsync(afterSelect.Value.Frame, cancellationToken))
-                        {
-                            return true;
-                        }
-                    }
-                }
-
-                continue;
-            }
+            // 1.2.104（019 局实弹 9 连败取证）：物品栏图标的拖拽吸附交互与备战席卡牌
+            // 不同，曾为此引入"奇数拖拽/偶数点选"交替模式（审查 P3-3：旧策略陈述已删，
+            // 取证事实保留）。
+            // 09-10 夜审 P2-A：1.2.104 的"奇数拖拽/偶数点选"交替模式退役——09-09 夜班
+            // 实测点选模式 4/4 次点开角色详情弹框（character_detail_popup）且 0 次装上
+            //（C8/C11/C18/C19，徽章整局留在物品栏；墙图 f_00360/f_00750/f_00807 实拍），
+            // 而拖拽模式（450ms 按压+300ms 悬停）同晚 6+ 次全部成功。3 次尝试全部走
+            // 拖拽；拒绝横幅检测在拖拽路径内已有（P1-A），点选分支的横幅检查不流失。
 
             Publish(
                 TaskEventLevel.Information,
@@ -639,6 +573,9 @@ public sealed partial class PreparationBoardController
                 TimeSpan.FromMilliseconds(650),
                 new ActionPolicy
                 {
+                    // 09-10 夜审 P1-B：场上出售首试 holdMs=0 同属坑44 漏接（差分 0.1
+                    // 判"未卖出"重试的家系），与部署路径统一 250ms 按压。
+                    MouseButtonHoldDelay = TimeSpan.FromMilliseconds(250),
                     AfterActionDelay = TimeSpan.FromMilliseconds(50)
                 },
                 cancellationToken);

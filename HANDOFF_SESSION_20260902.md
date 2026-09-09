@@ -15,6 +15,18 @@
 - **环境终态**：软件运行中（PID 2540,DECIDE 停止）；游戏运行中（主界面）；C 盘剩余 25GB（凌晨曾满=通宵停滞/任务异常停止/jsonl 0 字节的统一根因,详见 〇-c）；**磁盘水位每小时检查=新值守制度**（记忆 29 条）。
 - **下一班主任务（用户令）**：**开发帧沙箱 Phase 1 骨架**（用户原话"下一步任务就是开发之前的那一个沙箱"）——按 docs/SANDBOX_FEASIBILITY_20260908.md 设计执行：--frame-sandbox 参数+FileSequenceGameCapture/RecordingInputController/StubWindowService/AlwaysForegroundGuard 四实现+脚本加载/裁判/违规输出+PageReplay 夹具冒烟脚本。待用户拍板：五费聘用书帧来源（a 抽帧/b 合成/c 等真帧）。
 
+## 〇-7、09-10 晨班：夜审缺陷修复批落地（用户令"修完 bug 按开发规矩做，尤其子代理排查"；**未发布，等用户下令**）
+
+- **修复清单（5 项，对抗审查 APPROVED 零 P1/P2，构建 0/0+涉事测试 157/157+240/240 两轮全绿）**：
+  1. **P1-A 祈愿兜底**（WishTrialSelectionAutomation.cs）：默认路径（模态守卫 DismissWishTrialPopupIfUpAsync/A9 弃局链所走，注意两处"泵"实际走 select 路径）在 PickWinningSide 无命中/双名 OCR 全空时回落**选左+确认**（rule 四.7 链末端），C4 型强制二选一卡死闭环；决策层 F2/F10 弃权语义保留不动，由守卫路径兜底。
+  2. **P1-B 拖拽按压补齐**（4 处）：主部署 PreparationFormation.cs:2652→250ms、备战席出售首试：1973→300ms（与重试统一）、场上出售 Grail.cs:567→250ms、N12 最左 Grail.cs:95→250ms。审查员确认全仓 DragAsync 现已全部带 hold（唯一例外=导航配置 drag 动作，当前 0 条休眠）。
+  3. **P1-C 幽灵购买**（GrailOperationExecutor.cs）：PurchaseCheck=NotPurchased 此前落进"已购买"分支（只特判了 Uncertain）→扣账+污染已购集合。现在如实不记账不扣费不入 owned，endReason=PurchaseNotConfirmed，本 Pass 停止购买。
+  4. **P2-A 点选装配退役**（PreparationFormation.Grail.cs）：1.2.104 奇偶交替模式删除（实测点选 4/4 开详情框 0 装上、拖拽 6+ 全成），3 次全走拖拽；拒绝横幅检测保留在拖拽路径。
+  5. **P2-B 暂停页恢复**（CurrencyWarsNavigation.cs）：reward_battle_pause→Esc+重识别有界 3 次（C15 实证路径），超界 UnsupportedPage 交上层（该态经协调器判不可重试直接交恢复链，不再空转两轮）。
+- **审查 P3 处置**：P3-3/4/5（注释矛盾/措辞/Esc 结果留痕）当场已修；P3-1 措辞已按修正口径写入本条；**备案**：P3-2 默认路径对奇迹代偿无 F15a 血量门（决策层能力下沉缺失，留观）；P3-6 NotPurchased 若系验证帧陈旧假阴性→金账漂移由决策层 I10 对账吸收（与 P2-C 识别帧源专项边界正确）。
+- **审查员测试盲区清单（待补单测，未写码）**：祈愿默认路径 5 例/NotPurchased 执行器契约/暂停页分支 3 例/装配退役守卫/holdMs 静态架构守卫（源码扫描型，坑44 已三次漏接最宜钉死）。
+- **验证边界**：构建 0/0+定向两轮全绿；**实机/沙箱验证未做（等用户授权）**；未发布。
+
 ## 〇-6、09-10 晨班：夜班实机测试重审计完成（用户令"完全违反了规→重新审查"，三通道全量，审计未改任何代码）
 
 - **审计对象与方法**：09-09 07:17–10:45 实机刷局测试。按 AUDIT_METHODOLOGY_20260908 双通道全量重做：①录屏（GrailRecordingTemp 2.54GB 未封箱段）**顺序解码** 15s/帧抽 842 帧+71 张墙图（两子代理逐张目视+本体校准），存 D:\CurrencyWarsData\audit-redo-20260910\；②日志 test-session-20260909-071555.jsonl 8860 事件逐条+input-diagnostics 219 条拖拽诊断全量；③run 截图目录定位（cmdtest-071558 起 21 个+run-*-reset 33 个两族并存，**无数据丢失**，夜班"run 目录缺失"系只认 run-* 前缀）。报告=docs/AUDIT_20260909_NIGHT_REDO.md。

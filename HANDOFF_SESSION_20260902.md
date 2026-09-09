@@ -15,6 +15,13 @@
 - **环境终态**：软件运行中（PID 2540,DECIDE 停止）；游戏运行中（主界面）；C 盘剩余 25GB（凌晨曾满=通宵停滞/任务异常停止/jsonl 0 字节的统一根因,详见 〇-c）；**磁盘水位每小时检查=新值守制度**（记忆 29 条）。
 - **下一班主任务（用户令）**：**开发帧沙箱 Phase 1 骨架**（用户原话"下一步任务就是开发之前的那一个沙箱"）——按 docs/SANDBOX_FEASIBILITY_20260908.md 设计执行：--frame-sandbox 参数+FileSequenceGameCapture/RecordingInputController/StubWindowService/AlwaysForegroundGuard 四实现+脚本加载/裁判/违规输出+PageReplay 夹具冒烟脚本。待用户拍板：五费聘用书帧来源（a 抽帧/b 合成/c 等真帧）。
 
+## 〇-9、09-10 午间：1.2.121 发布上线（用户令"发布最新修复版，可能挂机"→发布后停工待命）
+
+- **发布**：DEPLOY-OK+VERIFY-PASS，版本串 **1.2.121+29eaecd**（含修复批 5 项+四费聘用书误判修复+全部测试/沙箱资产），26 文件覆盖，端到端 STATUS 验收通过。Directory.Build.props 已同步 1.2.121。
+- **实例状态**：稳定目录实例运行中（部署脚本 STATUS 验收拉起），jsonl 首事件=Phase2RecognitionWarmUpCompleted（command-test 签名 ✓）；**autodecide.txt 已写入待命**（游戏窗口出现即自动 DECIDE 开刷；用户开游戏挂机即生效）。launch-target.txt 已恢复指向稳定目录 exe+--command-test（此前沙箱探针指向 bin\Debug，已用 PowerShell UTF8 重写——路径含中文，必须走 Set-Content UTF8 与启动器 File.ReadAllLines 编码对齐）。
+- **三通道证据保留（用户令，已核验）**：①日志+run 截图→junction D:\CurrencyWarsData\AppUserData（logs/+runs/）；②DECIDE 录像→GrailRecordingTemp（D 盘 junction；未封箱段为滚动段常态，正常停止会封箱）；③全部落 D 盘，D 剩 138GB 充足。
+- **挂账提醒（下一班）**：NotPurchased 契约测试需 IRewardStage 抽象；C1 续局守卫盲区（开局页出现后仍可能续旧局+备战页 1-2 态 Unknown）待修；"池子里全是红A"机制口径待用户拍板；实机验收三观察点=祈愿全应答≤30s/拖拽 holdMs≥250/无异常"跳过已拥有"计数。
+
 ## 〇-8、09-10 晨班续：盲区测试落地+沙箱回归 PASS+C1/C11 定案+素材清理（4.4GB 已释放）
 
 - **测试盲区补齐（审查员清单的可落地部分）**：①`DragHoldDelayArchitectureGuardTests`——Tasks 全仓 `input.DragAsync` 静态扫描，ActionPolicy 无 MouseButtonHoldDelay 即红（豁免=导航配置驱动路径，注明理由）；②`WishTrialSidePickTests` 6 例表征测试——**当场抓到真问题并已修**：默认路径模糊匹配把"四费聘用书"误判成五费（编辑距离 1），与决策层 FourCostLetterKeyword 排除口径相悖，已在 IsWinningTrial 补四费排除；③**挂账**：NotPurchased 执行器契约测试需抽 IRewardStage 接口（RewardStageAutomationController sealed 不可注入），重构另批；导航暂停页分支单测同理待导航测试基建。

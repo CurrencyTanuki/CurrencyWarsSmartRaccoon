@@ -15,6 +15,23 @@
 - **环境终态**：软件运行中（PID 2540,DECIDE 停止）；游戏运行中（主界面）；C 盘剩余 25GB（凌晨曾满=通宵停滞/任务异常停止/jsonl 0 字节的统一根因,详见 〇-c）；**磁盘水位每小时检查=新值守制度**（记忆 29 条）。
 - **下一班主任务（用户令）**：**开发帧沙箱 Phase 1 骨架**（用户原话"下一步任务就是开发之前的那一个沙箱"）——按 docs/SANDBOX_FEASIBILITY_20260908.md 设计执行：--frame-sandbox 参数+FileSequenceGameCapture/RecordingInputController/StubWindowService/AlwaysForegroundGuard 四实现+脚本加载/裁判/违规输出+PageReplay 夹具冒烟脚本。待用户拍板：五费聘用书帧来源（a 抽帧/b 合成/c 等真帧）。
 
+## 〇-5、09-10 晨班：夜班遗留未审代码改动审查完成（本轮唯一任务，审查=只交发现清单未施工）
+
+- **审查范围**：f903e47 之外的未审提交——5eae43a（事件态种子+聘用书 E2E+坑 62 启动器修复）/b01ee89+fa77dd1（1-3 备战段链）/21147ee+8f95fad（DECIDE 级发现轮+合成帧）/b8e40ce 内的代码部分（FileSequenceGameCapture 300ms 节流+SandboxPipelineProbeTests）。f903e47 批次已有对抗审查闭环，本轮按令对 P2-F/P1-A/P2-E 复核。
+- **结论：全部 PASS，无 P1/P2。逐项**：
+  - **P2-F 活门分布正确**：外层 3 处（S2 GrailDecisionEngine.cs:1999 / S3:2108 / M5 环:2337）true、部署环内 2 处（791/826）false——环内变异=本环 A1 已逐笔记账，活门会恒触发保守窗使门控失效；环内入口另有独立陈旧快照活门（DeployBondMembersAsync:677-683 同款双腿判定）+3s 部署动画等待。漏检防护三层：环内精确门（主，基线当时精确）→外层活门保守窗（网）→M1 失败应答兜底（底，未裁撤）。
+  - **审查备注（非缺陷）**：P3-1 的部署后基线刷新会把 `DeployBondMembersAsync` 的返回增量清成残差（正常路径≈0，三处 return 均返回局部计数器）——外层估算因此结构性依赖活门双腿，这是外层必须保持 true 的自洽理由；外层在"刚部署过"时实际恒走保守窗=与 P2-F 前旧行为同价，安全方向（只多等不漏检），延迟弹出残余由 M1 失败兜底接住。
+  - **P1-A 幂等四态干净**：AlreadyCarries/PromotePendingSlot 不重复记账（Promote=解析既有账）；UncertainNoDrag 诚实 Fail 不卡死（决策层按未装配继续，无重试死循环）；ProceedToDrag 拖后正常记账。横幅 OCR 误报后果=保守向（多等/保护性记账，同已备案 P3-4），词组三联合判定无误报放大路径。
+  - **P2-E 全实**：时效判据方向正确（持有器 CapturedAt 不比落账时刻新才延续本地账，持有器更新即交还主导权）；坏账三处作废（LastShopPassGold=-1/At=MinValue/broken 标志 GrailOperationExecutor.cs:737-739）；Reset 三字段复位且两个对局边界都调用（引擎:1663+M8 宏:252）；TryGetCharacterCost 无名/空费用=null≠0（:880-885）。
+  - **300ms 节流合格**：仅沙箱 DI 分支注册（App.xaml.cs:242，else 分支仍是 WGC）；帧每步只解码一次有缓存（FrameSandboxPlayer._frameCache），节流即主节奏；CapturedAt 在延迟之后取=新鲜度准确；300ms 远小于一切看门狗阈值（帧龄 15s/冻结 90s）；消费者（识别管线/M8 导航直捕/弃局恢复）各付各的 0.3s，无共享状态无死锁；D3-D5 发现轮实跑验证。
+  - **事件态种子生产误触发不可能**：调用点全库唯一（App.xaml.cs:535）且在 `frameSandboxPlayer is not null` 分支内；加载器负数拒绝+Holder 端双重 Clamp(0,4)；Reset 归零语义不变。**注意点（使用说明已含）**：种子启动时注入，DECIDE 级脚本若经 M8 会在对局边界被 Reset 清零——祈愿类 DECIDE 脚本须 M3 直发式（聘用书 probe 即此形态）或等"分析页对齐"能力。
+  - **脚本/素材**：三个脚本全在 tests/ 夹具区零生产影响，期望坐标全部 ops 实测口径（坑 59）；stage_decide_full_chain 19 步含 S2 双矿点回填，终局步空 expect；hire probe 6 步含 seedWishesResponded:1。
+- **发现清单（P3×3，本轮只审查未施工，等用户派活）**：
+  1. **合成帧缺 provenance**：frames/stage_s2_prep_grail.png 与 stage_s2_prep_deployed.png 无 .provenance.txt（目录内其余帧全有）；合成方法只在 〇-3 一句带过。建议补两份（源帧/合成手法/§三.b 预授权依据/日期）。
+  2. **探针测试生命周期失实**：SandboxPipelineProbeTests.cs 自述"临时诊断探针用完即删"但已入库且仍在套件里跑——WishFrameScanTool 同型（本次无害：依赖仓库夹具不红）。建议二选一：删除，或改注释定性为管线回归守卫。
+  3. **文案级**：A4 横幅止损路径（PreparationFormation.Grail.cs:426-428 return true）走到的 Ok 回执写"拖后物品栏探测自证通过"与事实不符（真相在 GrailBadgeAssemblyRejected 事件里）——审计读回执会被误导，改措辞即可。
+- **挂账不变（本轮未触碰）**：既有失败 CompositeAnalyzer*、DECIDE 级"分析页对齐"堵点、R3/G1 金 0 帧、试用卡口径待用户、夜间观察项 F1/F3/F4/F5/F7。
+
 ## 〇-4、09-09 夜班实机测试报告（07:17-10:45 运行 + 审计失职如实入档,先于〇-3 阅读亦可）
 
 - **🔴 运行实况（真数据,来自引擎日志）**：07:17:27 DECIDE 启动（目标=单人）→10:45+ 用户关闭。共**命中进局 13 局**（命运圣杯邀请 10/英雄登场 3）,结局：**R3 山穷水尽 ×9**（每局前提均核实:金<刷新价∧可卖=0）、**出战失败:S2 M1 两败 ×1**（09:48,伴随暂停页缺口见 F6）、其余进行中被关。引擎整晚自愈机制工作正常（识别流冻结→自动重启会话,多次）。**没有收工局**（三星五费未达成=常态）。

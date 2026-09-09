@@ -19,8 +19,9 @@
 
 - **目标**：修掉 DECIDE 级堵点——沙箱下 listener.LatestAnalysis.Snapshot.PageId 永非 preparation_*，解锁三星五费端到端剧本。
 - **已定位机制**（Phase2RealtimeRecognitionPipeline.cs）：①Phase2TransitionFramePolicy.MarkIfApplicable（:48-108）：新帧与上帧差异大（SceneTransition/RegionalChange/低信息帧）且无可靠业务页证据→PageId 被标 "transition_animation" 排除出业务态；②管线对静止帧（Unchanged 阈 0.035）每 2s 全量重分析（:605-622），理论上会自愈——**矛盾=既然重分析，为何沙箱实测 PageId 永非 preparation_\***（跨会话铁证）。
-- **待验证假设**：a) 全量分析对沙箱 preparation 夹具帧分类失败（模板分辨率/特征不匹配，需看 analysis JSON 的分类得分与诊断）；b) 每轮重分析都重新被判 transition（静止帧 IsLowInformationTransition 误判？）；c) fast 分类器 FastPageIds 对夹具帧的命中情况。
-- **下一断点（精确）**：①13:50 wish_fallback_probe 会话只跑了 32 秒仅剩 checkpoint 无 analysis JSON——**需重起沙箱会话（single preparation 帧）跑 2-3 分钟让管线写出 analysis JSON**（D:\CurrencyWarsData\AppUserDatauns\sandbox-*nalysis-*.json），读 PageId+OperationalState.Diagnostics 定性；②若分类得分低→帧质/模板问题；若 transition_animation→MarkIfApplicable 在沙箱的误判路径；③定性后实现"分析页对齐"修复（候选：FileSequence 捕获携带帧切换标记让管线豁免 transition 标记/或 Accumulator 同款容忍）。
+- **【09-10 深夜重大更正】"沙箱下 PageId 永非 preparation_*"的前提存疑**：①实机 1.2.123 会话 86 个 analysis 用**正确键名**（JSON 为 camelCase：snapshot/pageId，非 Snapshot/PageId）重查=75 个 Known（含 preparation_generic conf 0.44-0.52）——实机识别管线健康，此前"PageId=None"读数系**键名大小写错误**的探针假象；②沙箱会话（135009/071307/200819）**零 analysis JSON 落盘**（只有 checkpoint 生命周期元数据）——真正的差异点="沙箱模式下识别管线不写 analysis 产物或从未运行到产出"，此前"铁证"大概率同源键名错误；③**分析页对齐调查须重开**：先验证沙箱模式下 Phase2 识别管线是否运行（起长会话+查 sandbox 产物目录与 pipeline 日志），而非假设"运行但不识别"。④方法论新增：读 analysis JSON 一律 utf-8-sig + camelCase 键（snapshot.pageId.value）。
+- **下一断点（精确）**：①13:50 wish_fallback_probe 会话只跑了 32 秒仅剩 checkpoint 无 analysis JSON——**需重起沙箱会话（single preparation 帧）跑 2-3 分钟让管线写出 analysis JSON**（D:\CurrencyWarsData\AppUserData
+uns\sandbox-*nalysis-*.json），读 PageId+OperationalState.Diagnostics 定性；②若分类得分低→帧质/模板问题；若 transition_animation→MarkIfApplicable 在沙箱的误判路径；③定性后实现"分析页对齐"修复（候选：FileSequence 捕获携带帧切换标记让管线豁免 transition 标记/或 Accumulator 同款容忍）。
 - **沙箱启动**：改 launch-target.txt（PowerShell UTF8）+schtasks /run /tn CWTLaunchApp+写 START；参考 artifacts/launch_wish_fallback_probe.ps1。**注意：1.2.122 实例正在运行（autodecide 待命）——沙箱从 bin\Debug 启动可并存，但 CPU 双实例需用户知情**。
 
 ## 〇-13、09-10 深夜：二轮审查 F1/F3 处置 + 1.2.122 发布上线（用户令"全部修完+子代理审查通过后发布"）

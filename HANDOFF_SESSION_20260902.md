@@ -15,6 +15,14 @@
 - **环境终态**：软件运行中（PID 2540,DECIDE 停止）；游戏运行中（主界面）；C 盘剩余 25GB（凌晨曾满=通宵停滞/任务异常停止/jsonl 0 字节的统一根因,详见 〇-c）；**磁盘水位每小时检查=新值守制度**（记忆 29 条）。
 - **下一班主任务（用户令）**：**开发帧沙箱 Phase 1 骨架**（用户原话"下一步任务就是开发之前的那一个沙箱"）——按 docs/SANDBOX_FEASIBILITY_20260908.md 设计执行：--frame-sandbox 参数+FileSequenceGameCapture/RecordingInputController/StubWindowService/AlwaysForegroundGuard 四实现+脚本加载/裁判/违规输出+PageReplay 夹具冒烟脚本。待用户拍板：五费聘用书帧来源（a 抽帧/b 合成/c 等真帧）。
 
+## 〇-13a、沙箱"分析页对齐"调查进行中（上下文交接检查点，未完成）
+
+- **目标**：修掉 DECIDE 级堵点——沙箱下 listener.LatestAnalysis.Snapshot.PageId 永非 preparation_*，解锁三星五费端到端剧本。
+- **已定位机制**（Phase2RealtimeRecognitionPipeline.cs）：①Phase2TransitionFramePolicy.MarkIfApplicable（:48-108）：新帧与上帧差异大（SceneTransition/RegionalChange/低信息帧）且无可靠业务页证据→PageId 被标 "transition_animation" 排除出业务态；②管线对静止帧（Unchanged 阈 0.035）每 2s 全量重分析（:605-622），理论上会自愈——**矛盾=既然重分析，为何沙箱实测 PageId 永非 preparation_\***（跨会话铁证）。
+- **待验证假设**：a) 全量分析对沙箱 preparation 夹具帧分类失败（模板分辨率/特征不匹配，需看 analysis JSON 的分类得分与诊断）；b) 每轮重分析都重新被判 transition（静止帧 IsLowInformationTransition 误判？）；c) fast 分类器 FastPageIds 对夹具帧的命中情况。
+- **下一断点（精确）**：①13:50 wish_fallback_probe 会话只跑了 32 秒仅剩 checkpoint 无 analysis JSON——**需重起沙箱会话（single preparation 帧）跑 2-3 分钟让管线写出 analysis JSON**（D:\CurrencyWarsData\AppUserDatauns\sandbox-*nalysis-*.json），读 PageId+OperationalState.Diagnostics 定性；②若分类得分低→帧质/模板问题；若 transition_animation→MarkIfApplicable 在沙箱的误判路径；③定性后实现"分析页对齐"修复（候选：FileSequence 捕获携带帧切换标记让管线豁免 transition 标记/或 Accumulator 同款容忍）。
+- **沙箱启动**：改 launch-target.txt（PowerShell UTF8）+schtasks /run /tn CWTLaunchApp+写 START；参考 artifacts/launch_wish_fallback_probe.ps1。**注意：1.2.122 实例正在运行（autodecide 待命）——沙箱从 bin\Debug 启动可并存，但 CPU 双实例需用户知情**。
+
 ## 〇-13、09-10 深夜：二轮审查 F1/F3 处置 + 1.2.122 发布上线（用户令"全部修完+子代理审查通过后发布"）
 
 - **二轮对抗审查**（覆盖 9f3df27/1254b16/80d9c2e）：APPROVED_AFTER_FIXES（0×P1，2×P2，5×P3）。F1 必修=**I7/I9/I10 组装点（决策引擎快照唯一来源）漏传 analysisAsOf**——已补 `analysisAsOf: frame.Snapshot.AsOf`（ca0cdfb）。F3 顺手修=R3 判死改用手头新鲜复核帧金币裁决（滞后 snapshot.Gold 不持反证新鲜帧判死；新鲜金仍足则不判 R3 继续运营）+健康分支同款 AsOf。

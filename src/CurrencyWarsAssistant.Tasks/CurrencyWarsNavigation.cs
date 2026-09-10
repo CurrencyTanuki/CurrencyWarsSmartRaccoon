@@ -2032,6 +2032,19 @@ private async Task<PageClassificationResult?> FastWaitForPageAsync(
             cancellationToken);
         if (upgradeWindow is not null)
         {
+            // 终审 P2（09-11）：无 zh-Hans OCR 包的机器 RecognizeAsync 会抛
+            // InvalidOperationException（OfflineOcr.cs:138）——IsAvailable=false
+            // 时优雅降级为"确认不了就不点"（与门控安全方向一致）。
+            if (!offlineOcr.IsAvailable)
+            {
+                Publish(
+                    CurrencyWarsNavigationState.WaitingForPage,
+                    null,
+                    "升级放弃：离线 OCR 不可用，无法确认指南窗在场——不加点击。",
+                    TaskEventLevel.Warning);
+                return null;
+            }
+
             var guideFrame = await capture.CaptureAsync(upgradeWindow, cancellationToken);
             var shellText = await offlineOcr.RecognizeAsync(
                 guideFrame,

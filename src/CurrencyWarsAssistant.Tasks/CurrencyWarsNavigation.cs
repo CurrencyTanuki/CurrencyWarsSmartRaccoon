@@ -2017,17 +2017,44 @@ private async Task<PageClassificationResult?> FastWaitForPageAsync(
         // =吃 Esc 的页面（赛季刷新后指南窗口默认落"每日实训"页，Esc 被吞）——
         // 升级动作：点指南窗口右上 ✕ 关闭后再识别一轮；仍无已知页才返回 null。
         // 历史：本循环曾原样重试 2 小时（08:07-10:16，81 次 TimedOut）。
+        // P1 勘误（复审 09-11）：✕ 实际位于 StandardPoint(1862,66)（四帧像素级
+        // 一致取证）；初稿 (1449,55) 映射 (1932,73)@2560 为空背景，距真 ✕ 550px。
+        // P2 门控（复审）：(1862,66) 与 currency_wars_home 右上角的模式退出 ✕
+        // 几乎重合——必须先 OCR 确认指南窗壳标题在场才点，否则会在分类器瞬时
+        // 失明+主界面在场时点掉货币战争模式。
         Publish(
             CurrencyWarsNavigationState.WaitingForPage,
             null,
-            "连续 3 次 Esc 恢复无效（疑似吃 Esc 的页面）——升级：点击指南窗口关闭钮后重试识别。",
+            "连续 3 次 Esc 恢复无效（疑似吃 Esc 的页面）——升级：确认指南窗在场后点击其关闭钮。",
             TaskEventLevel.Warning);
         var upgradeWindow = await foregroundGuard.WaitUntilForegroundAsync(
             windowHandle,
             cancellationToken);
         if (upgradeWindow is not null)
         {
-            var closePoint = MapStandardPoint(upgradeWindow, new StandardPoint(1449, 55));
+            var guideFrame = await capture.CaptureAsync(upgradeWindow, cancellationToken);
+            var shellText = await offlineOcr.RecognizeAsync(
+                guideFrame,
+                ScaleReferenceRegion(
+                    GuideShellTitleRegion,
+                    guideFrame.Width,
+                    guideFrame.Height),
+                cancellationToken);
+            var guideShellConfidence = BestOcrTextConfidence(
+                shellText,
+                "星际和平指南");
+            if (guideShellConfidence < 0.72)
+            {
+                Publish(
+                    CurrencyWarsNavigationState.WaitingForPage,
+                    null,
+                    $"升级放弃：指南窗未确认在场（壳标题 OCR 置信 {guideShellConfidence:F2}——" +
+                    "✕ 位置与模式退出钮近重合，无指南在场证据不点击）。",
+                    TaskEventLevel.Warning);
+                return null;
+            }
+
+            var closePoint = MapStandardPoint(upgradeWindow, new StandardPoint(1862, 66));
             await input.ClickAsync(
                 new ClickTarget(
                     "guide_close_x_escape_upgrade",

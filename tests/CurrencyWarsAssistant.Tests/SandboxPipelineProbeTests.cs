@@ -85,6 +85,104 @@ public sealed class SandboxPipelineProbeTests
         Assert.True(has, "管线枚举已结束且无更新");
     }
 
+    /// <summary>T1 诊断（2026-09-11）：静态 prep 帧下管线持续产出时，
+    /// PageId 是否为 preparation_*（GrailRunLoop.AssembleLatest 门禁口径）。</summary>
+    [Fact]
+    public async Task Pipeline_PageId_OnStaticPrepFrame_BecomesPreparation()
+    {
+        var root = RepositoryRoot;
+        var config = GamePageRecognitionConfig.Load(Path.Combine(
+            root, "config", "page-recognition.1920x1080.json"));
+        var catalog = GameDataCatalogLoader.Load(DataDirectory);
+        using var matcher = new OpenCvTemplateMatcher();
+        var pageClassifier = new TemplateGamePageClassifier(matcher, config.Pages);
+        var fast = new Phase2FastPageClassifier(matcher, config.Pages);
+
+        var windowService = new StubWindowService("probe");
+        var prepFrame = Path.Combine(root,
+            "tests", "CurrencyWarsAssistant.Tests",
+            "Fixtures", "PageReplay", "preparation_1_3_after_shop_2559x1439.png");
+        var capture = new FileSequenceGameCapture(
+            () => CaptureFrameLoader.LoadFile(prepFrame));
+
+        using var characterRecognizer = new OpenCvCharacterCardRecognizer();
+        var characterTemplates = LoadCharacterTemplates(catalog);
+        using var iconRecognizer = new OpenCvPhase2IconRecognizer();
+        var iconTemplates = Phase2IconTemplateCatalog.Load(DataDirectory);
+        var ocr = new WindowsOfflineOcr();
+        using var goldRecognizer = new OpenCvGoldDigitRecognizer();
+        var operational = new Phase2OperationalScreenshotAnalyzer(
+            characterRecognizer,
+            characterTemplates,
+            iconRecognizer,
+            iconTemplates,
+            ocr,
+            catalog,
+            new WindowsOfflineOcr("en-US"),
+            pageClassifier: pageClassifier,
+            enableRobustFallback: false);
+        var analyzer = new CurrencyWarsSituationScreenshotAnalyzer(
+            pageClassifier,
+            characterRecognizer,
+            characterTemplates,
+            goldRecognizer,
+            LoadGoldDigitTemplates(),
+            new OcrOpeningPageReader(ocr, catalog),
+            new RewardShopReader(ocr, catalog),
+            ocr,
+            catalog,
+            new GuideRepository(),
+            new AdvisorEngine(),
+            GuideDirectory,
+            operational,
+            new WindowsOfflineOcr("en-US"),
+            Phase2IconTemplateCatalog.Load(DataDirectory));
+
+        var pipeline = new Phase2RealtimeRecognitionPipeline(
+            windowService,
+            capture,
+            analyzer,
+            fast);
+
+        var selection = new AdvisorSelection(AdvisorMode.Auto, "stable", "4.4");
+        var pageIds = new List<string?>();
+        await using var enumerator = pipeline.RunAsync(
+            StubWindowService.SandboxWindowHandle,
+            selection,
+            () => "probe",
+            CancellationToken.None).GetAsyncEnumerator();
+        var deadline = DateTime.UtcNow.AddSeconds(14);
+        while (DateTime.UtcNow < deadline)
+        {
+            var moveNext = enumerator.MoveNextAsync().AsTask();
+            var completed = await Task.WhenAny(
+                moveNext, Task.Delay(TimeSpan.FromSeconds(20)));
+            if (completed != moveNext)
+            {
+                break;
+            }
+
+            if (!await moveNext)
+            {
+                break;
+            }
+
+            var pageId = enumerator.Current.Analysis?.Snapshot.PageId;
+            if (pageId is { } observation)
+            {
+                pageIds.Add(
+                    $"{observation.Status}:{observation.Value}" +
+                    (enumerator.Current.IsHeartbeat ? " (heartbeat)" : ""));
+            }
+        }
+
+        var summary = string.Join(Environment.NewLine, pageIds.Distinct());
+        Assert.True(
+            pageIds.Any(id => id?.Contains("preparation_") == true),
+            "14 秒内没有任何一帧分析产出 preparation_* PageId。" +
+            $"实际产出：{Environment.NewLine}{summary}");
+    }
+
     private static IReadOnlyList<CharacterCardTemplateDefinition> LoadCharacterTemplates(
         GameDataCatalog catalog)
     {

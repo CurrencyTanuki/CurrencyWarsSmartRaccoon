@@ -1,4 +1,4 @@
-using CurrencyWarsAssistant.Advisor;
+﻿using CurrencyWarsAssistant.Advisor;
 using CurrencyWarsAssistant.Automation;
 using CurrencyWarsAssistant.Core;
 using CurrencyWarsAssistant.Vision;
@@ -276,7 +276,20 @@ public sealed partial class PreparationBoardController
                 return false;
             }
 
-            var sourcePoint = badgeCenter;
+            // 指南风暴班星徽专项（09-10）：1.2.126 会话装配失败时拖拽诊断与成功例
+            // 字节级零差异（同 700ms/1100ms/同落点/同页面 preparation）——121 审计
+            // "字段零差异不可定案"在 700ms 时代依旧。既定对策（121 审计建议）实施：
+            // 重试时源点 ±30px 横移换抓取点（同一星徽内换像素位置按下），对抗
+            // 拖拽吸附的间歇性拒收。attempt1=质心原点，attempt2=+30，attempt3=-30。
+            var grabOffset = attempt switch
+            {
+                2 => 30,
+                3 => -30,
+                _ => 0
+            };
+            var sourcePoint = new PixelPoint(
+                badgeCenter.X + grabOffset,
+                badgeCenter.Y);
             SaveBadgeEvidence(captured.Value.Frame, $"badge-before-a{attempt}");
             Publish(
                 TaskEventLevel.Information,

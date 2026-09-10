@@ -2013,6 +2013,45 @@ private async Task<PageClassificationResult?> FastWaitForPageAsync(
             }
         }
 
+        // F3（指南风暴修复 09-10，docs/GUIDE_STORM_TEST_REPORT.md）：Esc×3 无效
+        // =吃 Esc 的页面（赛季刷新后指南窗口默认落"每日实训"页，Esc 被吞）——
+        // 升级动作：点指南窗口右上 ✕ 关闭后再识别一轮；仍无已知页才返回 null。
+        // 历史：本循环曾原样重试 2 小时（08:07-10:16，81 次 TimedOut）。
+        Publish(
+            CurrencyWarsNavigationState.WaitingForPage,
+            null,
+            "连续 3 次 Esc 恢复无效（疑似吃 Esc 的页面）——升级：点击指南窗口关闭钮后重试识别。",
+            TaskEventLevel.Warning);
+        var upgradeWindow = await foregroundGuard.WaitUntilForegroundAsync(
+            windowHandle,
+            cancellationToken);
+        if (upgradeWindow is not null)
+        {
+            var closePoint = MapStandardPoint(upgradeWindow, new StandardPoint(1449, 55));
+            await input.ClickAsync(
+                new ClickTarget(
+                    "guide_close_x_escape_upgrade",
+                    "星际和平指南窗口关闭钮（Esc 升级）",
+                    upgradeWindow,
+                    BoundsAround(upgradeWindow, closePoint)),
+                new ActionPolicy { AfterActionDelay = TimeSpan.FromMilliseconds(600) },
+                cancellationToken);
+            detected = await WaitForStablePageAsync(
+                windowHandle,
+                expectedPageIds: null,
+                TimeSpan.FromSeconds(5),
+                cancellationToken);
+            if (detected is not null)
+            {
+                Publish(
+                    CurrencyWarsNavigationState.WaitingForPage,
+                    detected.PageId,
+                    $"升级关闭后重新识别到：{detected.DisplayName} " +
+                    $"（{detected.Confidence:P1}）。");
+                return detected;
+            }
+        }
+
         return null;
     }
 

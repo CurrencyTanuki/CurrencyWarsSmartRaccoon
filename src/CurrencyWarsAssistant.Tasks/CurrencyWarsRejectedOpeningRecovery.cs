@@ -1112,11 +1112,19 @@ public sealed class CurrencyWarsRejectedOpeningRecovery(
             if (probePage?.PageId is "currency_wars_home" or "normal_hud"
                 || (probePage is null && CurrencyWarsHomeEvidence.IsMatch(probeFrame)))
             {
+                // F5（指南风暴 09-10，缺陷 C 落点观测）：落 normal_hud=盲点直通把
+                // 货币战争模式整个退掉了（落在游戏大厅而非货币战争主界面）——
+                // 1.2.126 后 M8 指南链可自动导回，此处响亮留痕供审计区分两种落点。
+                var landedOnGameHome = string.Equals(
+                    probePage?.PageId,
+                    "normal_hud",
+                    StringComparison.OrdinalIgnoreCase);
                 Publish(
                     "RecoveryBlindAdvanceHomeConfirmed",
                     probePage is not null
-                        ? $"盲点推进确认回到货币战争主界面（{probePage.PageId}，{probePage.Confidence:P1}）。"
-                        : "盲点推进确认回到货币战争主界面（强证据兜底）。");
+                        ? $"盲点推进确认回到{(landedOnGameHome ? "游戏主界面（normal_hud——货币战争模式已被退出，M8 指南链将自动导回）" : "货币战争主界面")}（{probePage.PageId}，{probePage.Confidence:P1}）。"
+                        : "盲点推进确认回到货币战争主界面（强证据兜底）。",
+                    landedOnGameHome ? TaskEventLevel.Warning : TaskEventLevel.Information);
                 return true;
             }
 

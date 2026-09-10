@@ -91,7 +91,7 @@
     - **T2 部署后帧编码=已在位**：stage_decide_full_chain step11 部署三月七 drag→step12 stage_s2_prep_deployed.png 出战链路工作（两轮 E2E 全部 SatisfiesPending）。
     - **DECIDE 级 E2E 验收 PASS（run-20260911-001934）**：stage_decide_full_chain 19/19 步 0 违规，从 M8 进局到 1-3 商店循环全程引擎未误走弃局=快照门禁（GrailRunLoop.AssembleLatest preparation_* 前缀）沙箱下畅通。**首跑 12 条违规归因=剧本期望缺失（坑 59 同型，非软件缺陷）**：step15（preparation_1_2）引擎合法动作 M2 晶矿三点位×3 轮（静态帧矿球不消失→rule 四.4 重试）+A4 星徽换抓取点×3（476baf0；静态帧金簇自证必败=沙箱已知局限）未写进 expect——ops 实测坐标回填后重跑 PASS（d408555）。
     - **T3 指南风暴探针（37b074a）**：guide_storm_probe.json（normal_hud→默认落每日实训→切第三页签 605,229→进货币战争→进局 11 帧全链）+GuideStormProbeTests 2/2 绿；帧级守卫证实 2560×1440 风暴实况帧被正确分类（guide_daily_training/guide_currency_wars）=bc56a6e 修复在实况分辨率下有效。
-    - **T4 收尾**：沙箱套件 34/34 绿+Grail 145/145 绿；沙箱使用说明第七节新增（SANDBOX_PHASE1_USAGE_20260908.md：DECIDE 全链/分析页对齐定案/坑 59 剧本期望纪律/testhost 残留锁处置）。
+    - **T4 收尾**：沙箱套件 34/34 绿+Grail 145/145 绿+**全量测试 1191 过/1 失败/22 跳过**（唯一失败=CompositeAnalyzerKeepsOverlayedHomePageOutOfBattlePipeline，既有潜伏失败允许存在——本班零生产代码改动非回归；交接提示词明示口径）；沙箱使用说明第七节新增（SANDBOX_PHASE1_USAGE_20260908.md：DECIDE 全链/分析页对齐定案/坑 59 剧本期望纪律/testhost 残留锁处置）。
     - **运维注意**：decide_chain_e2e.ps1 结尾不杀实例——E2E 后实例残留提权进程（CWTLaunchApp 子进程非提权杀不掉，PID 1532 实锤 Stop-Process 拒绝访问），正确收尾=写 `D:\CW-sandbox-iter\指令测试-exit.txt`（沙箱 BaseDirectory，与生产稳定目录隔离）请求自退，实测 15 秒内退出；**绝不碰生产实例的 exit.txt**。另：dotnet test 异常中断会残留 testhost 锁 dll（MSB3027），先 `Get-Process testhost | Stop-Process -Force`。
 
 ## 五、Windows 操作强制标准

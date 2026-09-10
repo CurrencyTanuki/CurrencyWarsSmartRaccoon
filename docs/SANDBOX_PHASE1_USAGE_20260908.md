@@ -114,3 +114,8 @@ tests/CurrencyWarsAssistant.Tests/Fixtures/FrameSandbox/smoke_home_to_preparatio
   （guide_daily_training/guide_currency_wars，bc56a6e 修复在实况分辨率下有效）。
 - **testhost 残留锁注意**：dotnet test 异常中断会留 testhost 进程锁
   Tests.dll/Vision.dll，后续构建 MSB3027——先 `Get-Process testhost | Stop-Process -Force`。
+- **E2E 实例自动收尾（2026-09-11）**：decide_chain_e2e.ps1 已内置 verdict 后自动收尾
+  ——残留实例是 CWTLaunchApp（提权）子进程，Stop-Process 拒绝访问；脚本改为写
+  `D:\CW-sandbox-iter\指令测试-exit.txt`（沙箱 BaseDirectory，与生产稳定目录隔离，
+  **绝不碰生产实例的 exit.txt**）请求自退并轮询 60 秒。实战验证 exited。
+  人工收尾同款：写该 exit.txt 等 15 秒。

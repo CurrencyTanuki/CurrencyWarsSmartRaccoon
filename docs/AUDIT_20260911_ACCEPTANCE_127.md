@@ -6,6 +6,8 @@
 
 ## 一、运行概况（增量）
 
+**班内聚合（04:41:52 DECIDE → 05:12，866 事件）**：导航 17 轮（弃局重刷机）/干净弃局 14/命中 1（命运圣杯邀请）/ShopRecognized 22/购买 1（吉尔伽美什）/LoopSummary 4/祈愿退出 1；**零 RecoveryFailed/零 NavigationFailed/零 TimedOut（F4 指南风暴红旗 0）/零 PurchaseNotConfirmed**；徽章 6 试 0 成（P1 在案）；R3GoldExhausted 0（见观察点 6 裁定）。
+
 | 时刻 | 事件 | 判定 |
 |---|---|---|
 | 04:41:52 | DECIDE OK，M8 复位，导航 | 正常 |

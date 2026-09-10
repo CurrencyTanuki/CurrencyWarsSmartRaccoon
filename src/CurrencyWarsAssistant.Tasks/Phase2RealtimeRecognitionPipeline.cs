@@ -430,7 +430,12 @@ public sealed class Phase2FastPageClassifier : IPhase2FastPageClassifier
             // fast 层不认它就会把全量识别的命中覆盖成"未知"（坑48 纪律）。
             "character_detail_popup",
             "companion_selection",
-            "enemy_overview"
+            "enemy_overview",
+            // 指南风暴修复（09-10）：赛季刷新后指南默认落每日实训页（不在 fast 集
+            // 时 fast 层"未知"覆盖全量结论，坑48 同型），三个指南页一并补齐。
+            "guide_shell",
+            "guide_currency_wars",
+            "guide_daily_training"
         };
     private readonly TemplateGamePageClassifier classifier;
 

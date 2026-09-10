@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using CurrencyWarsAssistant.Core;
 using CurrencyWarsAssistant.Tasks;
 using CurrencyWarsAssistant.Vision;
@@ -69,8 +69,31 @@ public sealed class GamePageClassifierTests
             ("investment_strategy.jpg", "investment_strategy"),
             ("companion_selection_single_unselected_2048x1152.png", "companion_selection"),
             ("companion_selection_dual_selected_2048x1152.png", "companion_selection"),
-            ("companion_selection_post_preparation_2048x1152.png", "preparation_generic")
+            ("companion_selection_post_preparation_2048x1152.png", "preparation_generic"),
+            // 指南风暴修复（09-10）：赛季刷新后指南默认落每日实训页——三页守卫
+            // （含 priority 35/30 抢占的永久性负守卫：每日实训帧不得被判为旷宇纷争）。
+            ("guide_daily_training_2560x1440.png", "guide_daily_training"),
+            ("guide_currency_wars_storm_2560x1440.png", "guide_currency_wars"),
+            ("guide_currency_wars.jpg", "guide_currency_wars"),
+            ("guide_shell.jpg", "guide_shell")
         ];
+
+    [Fact]
+    public void AutomationPageIds_AllPresentInRecognitionConfig()
+    {
+        // P3-3（指南风暴审查 09-10）：AutomationPageIds 曾反向漏配（guide 两页
+        // 不在子集）——本守卫钉死"子集 ⊆ 识别表"，防坑48 ③型漏配复发。
+        var config = GamePageRecognitionConfig.Load(
+            Path.Combine(RepositoryRoot, "config", "page-recognition.1920x1080.json"));
+        var configIds = config.Pages.Select(page => page.Id).ToHashSet();
+        var missing = AutomationPageIds.Ids
+            .Where(id => !configIds.Contains(id))
+            .OrderBy(id => id)
+            .ToArray();
+        Assert.True(
+            missing.Length == 0,
+            "AutomationPageIds 含识别表未定义的页 ID: " + string.Join(", ", missing));
+    }
 
     [Fact]
     public void ClassifierRecognizesAllPrivacySafeReplayFrames()

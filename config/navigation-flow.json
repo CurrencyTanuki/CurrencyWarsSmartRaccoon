@@ -20,7 +20,8 @@
           },
           "expectedPageIds": [
             "guide_shell",
-            "guide_currency_wars"
+            "guide_currency_wars",
+            "guide_daily_training"
           ]
         }
       ]
@@ -35,6 +36,23 @@
           "point": {
             "x": 602,
             "y": 211
+          },
+          "expectedPageIds": [
+            "guide_currency_wars"
+          ]
+        }
+      ]
+    },
+    {
+      "pageId": "guide_daily_training",
+      "actions": [
+        {
+          "id": "select_third_tab_from_daily",
+          "displayName": "从每日实训页切换到货币战争页签",
+          "kind": "click",
+          "point": {
+            "x": 605,
+            "y": 229
           },
           "expectedPageIds": [
             "guide_currency_wars"

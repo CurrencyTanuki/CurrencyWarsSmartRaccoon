@@ -695,6 +695,25 @@
           "threshold": 0.8
         }
       ]
+    },
+    {
+      "id": "guide_daily_training",
+      "displayName": "星际和平指南-每日实训",
+      "priority": 35,
+      "anchors": [
+        {
+          "id": "guide_daily_training_tab",
+          "displayName": "每日实训页签选中态",
+          "file": "templates/1920x1080/pages/guide-daily-training-tab.png",
+          "searchRegion": {
+            "x": 0.1458,
+            "y": 0.1759,
+            "width": 0.0938,
+            "height": 0.0926
+          },
+          "threshold": 0.85
+        }
+      ]
     }
   ]
 }

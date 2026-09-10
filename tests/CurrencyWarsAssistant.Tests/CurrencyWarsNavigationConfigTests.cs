@@ -13,8 +13,10 @@ public sealed class CurrencyWarsNavigationConfigTests
 
         Assert.Equal(1920, config.ReferenceWidth);
         Assert.Equal(1080, config.ReferenceHeight);
-        Assert.Equal(17, config.Steps.Count);
+        // 指南风暴修复（09-10）：+guide_daily_training 节点（每日实训页切页签自愈）。
+        Assert.Equal(18, config.Steps.Count);
         Assert.Contains(config.Steps, step => step.PageId == "normal_hud");
+        Assert.Contains(config.Steps, step => step.PageId == "guide_daily_training");
         var preparation = Assert.Single(
             config.Steps,
             step => step.PageId == "preparation_generic" &&

@@ -60,6 +60,11 @@ public static class AutomationPageIds
         // ——弹框守卫按页 ID 认页后点击空白关闭（坑39 先认页再点）。
         "character_detail_popup",
         "companion_selection",
+        // 指南风暴修复（09-10）：赛季刷新后指南默认落在每日实训页——该页曾不在
+        // 识别表/本集合，导航验证判 Unknown 致 2 小时死循环（坑48 三处同步①②③）。
+        "guide_shell",
+        "guide_currency_wars",
+        "guide_daily_training",
     };
 
     /// <summary>从全量页面定义中筛出自动化子集并构造分类器。</summary>

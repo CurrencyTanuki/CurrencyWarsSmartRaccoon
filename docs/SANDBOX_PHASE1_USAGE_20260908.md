@@ -89,3 +89,28 @@ tests/CurrencyWarsAssistant.Tests/Fixtures/FrameSandbox/smoke_home_to_preparatio
 - **P3-4 备案（未改码）**：沙箱与正式实例并存的前提=不同 BaseDirectory 启动
   （命令通道/Recordings 按安装目录隔离）；日志 test-session-*.jsonl 同秒双实例
   会碰撞（CreateNew）——同秒双开属操作错误，规避即可。
+
+## 七、DECIDE 级全链与分析页对齐（2026-09-11 班）
+
+- **分析页对齐（HANDOFF 〇-3.3 挂账）已定案关闭，零生产代码改动**：
+  "沙箱 PageId 永非 preparation_*"系前班探针键名大小写错误假象；300ms 捕获节流
+  （FileSequenceGameCapture.CaptureCadence，2026-09-09）修复后，管线对静态帧
+  持续产出与真实游戏一致的 PageId——回归探针=
+  `SandboxPipelineProbeTests.Pipeline_PageId_OnStaticPrepFrame`（静态 prep 帧
+  14 秒收集，断言产出 preparation_* PageId）。
+- **DECIDE 级全链剧本**=stage_decide_full_chain.json（19 步：M8 导航→1-1 部署
+  三月七→M1 出战→结算→1-2 收摊→晶矿/星徽/出战→结算→1-3 策略→商店收摊→终局）。
+  E2E 驱动=artifacts\decide_chain_e2e.ps1（部署 D:\CW-sandbox-iter →
+  CWTLaunchApp 启动 → START+DECIDE → 轮询 verdict，约 10-20 分钟）。
+- **剧本期望必须覆盖引擎的全部合法中间动作**（坑 59 纪律）：静态帧世界里
+  M2 晶矿点击后矿球不消失→引擎按 rule 四.4 重试（多点位×多轮）；A4 星徽装配
+  靠"重扫面板金簇骤降"自证→静态帧必然判失败→按 476baf0 换抓取点重试 3 次。
+  这些操作如未写进剧本 expect 即判 unexpected-op 违规（第一轮 E2E 12 条违规
+  全部源于此，引擎行为符合 rule 四.2 流程口径）。修法=把 ops 实测坐标回填进
+  剧本期望；重试自动落 Repeat 容差。
+- **指南风暴探针**=guide_storm_probe.json + GuideStormProbeTests（2026-09-11）：
+  normal_hud→打开指南→默认落每日实训页（切第三页签 605,229）→进货币战争→
+  进局，11 帧全链；帧级守卫证实 2560×1440 风暴实况帧被正确分类
+  （guide_daily_training/guide_currency_wars，bc56a6e 修复在实况分辨率下有效）。
+- **testhost 残留锁注意**：dotnet test 异常中断会留 testhost 进程锁
+  Tests.dll/Vision.dll，后续构建 MSB3027——先 `Get-Process testhost | Stop-Process -Force`。

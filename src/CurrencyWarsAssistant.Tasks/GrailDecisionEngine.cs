@@ -2291,6 +2291,9 @@ public sealed class GrailDecisionEngine(
             var shopResult = await SendAsync("M5 圣杯",
                 new GrailCommand(GrailCommandKind.M5,
                     new GrailShopPassArgs(GrailLoopMode: true)), window, ct);
+            // R3 提速（审查 P1 修正）：上一轮备战快照在下一行就被覆盖，提前收摊的
+            // 刷新价基准必须取覆盖前的值。
+            var prevSnapBeforeM5 = snapshot;
             snapshot = await SnapshotWithRetryAsync(window, ct);
             if (snapshot is null)
             {
@@ -2305,6 +2308,33 @@ public sealed class GrailDecisionEngine(
                             new GrailShopPassArgs(GrailLoopMode: true)), window, ct);
                 }
 
+                // R3 提速提前收摊（09-11 05:4x，双局实锤 04:58/05:39）：M5 金尽（本地账
+                // <刷新价）时面板通常仍停在 reward_shop——I10 门禁整段拒绝备战族外页面，
+                // 快照预算 ~4 分钟烧完才落到下方收摊救援，R3 判定全程饿死（
+                // R3GoldExhausted 连续两局 0 次，弃局改经"快照持续不可得→Interrupted"
+                // 到达）。账本报金尽即提前收摊（页面门控同 1.2.64：仅证实 reward_shop
+                // 才点收店开关），快照秒级可得，R3 判定当轮到达。
+                var earlyLedgerGold = shopResult.Error is null
+                    && shopResult.Payload is GrailShopPassFact earlyFact
+                        ? earlyFact.LiveLedgerGold
+                        : null;
+                // 审查 P2 加固：收店开关是双向的（二次点击=重开店）——本轮已提前
+                // 收摊过则跳过下方 1.2.63 救援的二次点击（陈旧页读可能仍报 reward_shop）。
+                var earlyCloseClicked = false;
+                if (earlyLedgerGold is { } earlyGold
+                    && prevSnapBeforeM5 is { } prevSnap
+                    && earlyGold < prevSnap.RefreshGoldCost)
+                {
+                    emit("[决策层] 本地账金=" + earlyGold + "<刷新价——提前收摊让 R3 判定拿到备战快照。");
+                    var pageEarlyClose = await PageAsync(window, ct);
+                    if (pageEarlyClose?.PageId is "reward_shop" && genericClick is not null
+                        && await genericClick(window, 1620, 975, ct))
+                    {
+                        emit("[决策层] 已发送提前收起商店点击。");
+                        earlyCloseClicked = true;
+                    }
+                }
+
                 snapshot = await SnapshotWithRetryAsync(window, ct);
                 if (snapshot is null)
                 {
@@ -2313,7 +2343,7 @@ public sealed class GrailDecisionEngine(
                     // 弃局前先点一次收店开关 (1620,975)@1920 解除面板，再最后重读。
                     emit("[决策层] 快照仍失败——尝试收起商店面板后做最后一次快照。");
                     var pageBeforeRescue = await PageAsync(window, ct);
-                    if (pageBeforeRescue?.PageId is "reward_shop")
+                    if (pageBeforeRescue?.PageId is "reward_shop" && !earlyCloseClicked)
                     {
                         // 1.2.64（补审 P1-1）：只有证实面板还开着（reward_shop）才点
                         // 收店开关——页面身份未验证时 (1620,975) 是盲点（铁律：新增

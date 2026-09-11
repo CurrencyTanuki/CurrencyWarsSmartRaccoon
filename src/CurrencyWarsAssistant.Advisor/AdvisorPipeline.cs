@@ -49,8 +49,9 @@ public static class AdvisorPipeline
         var match = GuideMatcher.Match(snapshot, playable);
 
         // guideId → 文件名（MatcherV2 的 necessity 键空间=文件名）
-        var idToFile = library.Where(x => x.LoadError is null)
-            .ToDictionary(x => x.Playbook.GuideId, x => x.FileName, StringComparer.Ordinal);
+        var idToFile = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var x in library.Where(x => x.LoadError is null))
+            idToFile.TryAdd(x.Playbook.GuideId, x.FileName); // 重复 guideId 保首个（容错加载哲学）
         var sims = new Dictionary<string, double>(StringComparer.Ordinal);
         foreach (var m in match.Matches)
         {
@@ -58,7 +59,9 @@ public static class AdvisorPipeline
             sims[key] = m.Similarity;
         }
 
-        // 信源置信度启发映射：sourceRefs.title 含 source_confidence 精确源名 → 该系数。
+        // 信源置信度启发映射：sourceRefs.title 含 source_confidence 精确源名（子串）→ 该系数。
+        // P2（终审）修复：KnownSourceNames 读静态缓存，必须先 EnsureLoaded，否则首次运行全空。
+        MatcherV2.EnsureLoaded(dataRoot);
         var sourceConf = new Dictionary<string, double>(StringComparer.Ordinal);
         foreach (var entry in library.Where(x => x.LoadError is null))
         {

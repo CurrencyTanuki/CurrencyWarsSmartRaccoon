@@ -256,6 +256,13 @@ namespace CurrencyWarsAdvisor.GuidePlaybooks
             return null;
         }
 
+        /// <summary>测试入口：供回归测试直调分支门控（prod 走 EvaluatePhase）。</summary>
+        public static string? EvaluateBranchGateForTest(GuidePlaybook pb, string actionId, RunContext ctx)
+        {
+            var action = pb.FindAction(actionId) ?? new Action { ActionId = actionId };
+            return EvaluateBranchGate(action, ctx, pb.Branches);
+        }
+
         /// <summary>P2-5：分支按 priority 升序、首个 when 全满足者胜（schema 语义）；全不满足才输出最高优先级分支的差距。
         /// P1（审计 09-11）修复：①referenced 同时认 then 与 otherwise 引用（原来 otherwise 引用的动作完全绕过门控）；
         /// ②方向修正——选中分支的 otherwise 动作应被压制（then/else 语义：条件成立走 then），旧实现反而放行；
@@ -268,6 +275,7 @@ namespace CurrencyWarsAdvisor.GuidePlaybooks
             if (!referenced) return null; // 动作不在任何分支里：不受分支门控
             Branch? selected = null;
             string? topGap = null; // 全不满足时最高优先级分支的差距
+            var unknownHit = false; // P2（终审）：条件未知≠条件为假——未知存在时禁止 otherwise 放行（fail-closed）
             foreach (var br in branches.OrderBy(b => b.Priority))
             {
                 bool ok = true;
@@ -275,19 +283,24 @@ namespace CurrencyWarsAdvisor.GuidePlaybooks
                 foreach (var w in br.When)
                 {
                     var stub = ToStub(w);
-                    if (stub is null) { ok = false; gap ??= "分支条件未接入"; continue; }
+                    if (stub is null) { ok = false; gap ??= "分支条件未接入"; unknownHit = true; continue; }
                     var g = EvalCondition(stub, ctx);
-                    if (g is not null) { ok = false; gap ??= g; }
+                    if (g is not null)
+                    {
+                        ok = false; gap ??= g;
+                        if (g.Contains("未接入") || g.Contains("未观测")) unknownHit = true;
+                    }
                 }
                 if (ok) { selected = br; break; } // 首个匹配分支胜出，低优先级分支不再评估
                 topGap ??= gap;
             }
             if (selected is null)
             {
-                // 全部 when 不满足：then 动作被门控；otherwise 动作按 else 语义可做。
-                return branches.Any(b => b.ThenActionIds.Contains(a.ActionId))
-                    ? (topGap ?? "等待分支条件") + "（分支）"
-                    : null;
+                // 全部 when 不满足：then 动作被门控。otherwise 动作按 else 语义可做——
+                // 但分支条件存在"未知/未观测"时无法确证 when 为假，otherwise 一律门控（fail-closed）。
+                if (branches.Any(b => b.ThenActionIds.Contains(a.ActionId)))
+                    return (topGap ?? "等待分支条件") + "（分支）";
+                return unknownHit ? (topGap ?? "分支条件未接入") + "（分支·条件未知）" : null;
             }
             if (selected.ThenActionIds.Contains(a.ActionId)) return null; // 选中分支的 then：可做
             return $"分支 {selected.BranchId} 优先命中（otherwise 抑制）（分支）"; // 选中分支压制 otherwise 与未选中分支动作

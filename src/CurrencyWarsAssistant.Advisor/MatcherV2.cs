@@ -95,15 +95,22 @@ public static class MatcherV2
                 _shopOdds[lv.Name] = arr.ToArray();
             }
         }
-        // 专家门控需要"中文名→id"、费用门控需要"id→cost"：两表都出自 dataRoot/currency-wars-characters.json。
+        // 专家门控需要"中文名→id"、费用门控需要"id→cost"：两表都出自
+        // dataRoot 内的 currency-wars-characters.json（P1 修复：原路径错找上级目录、
+        // 根形制错认 Array——实际为 Object{metadata, characters[...], bond_catalog}，审查员实测）。
         _charNameToId = new(StringComparer.Ordinal);
         _charCost = new(StringComparer.Ordinal);
-        var charsFile = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(dataRoot))!, "currency-wars-characters.json");
+        var charsFile = Path.Combine(Path.GetFullPath(dataRoot), "currency-wars-characters.json");
         if (File.Exists(charsFile))
         {
             using var cdoc = JsonDocument.Parse(File.ReadAllText(charsFile));
-            if (cdoc.RootElement.ValueKind == JsonValueKind.Array)
-                foreach (var c in cdoc.RootElement.EnumerateArray())
+            JsonElement? chars = null;
+            if (cdoc.RootElement.ValueKind == JsonValueKind.Array) chars = cdoc.RootElement.Clone();
+            else if (cdoc.RootElement.ValueKind == JsonValueKind.Object
+                && cdoc.RootElement.TryGetProperty("characters", out var carr)
+                && carr.ValueKind == JsonValueKind.Array) chars = carr.Clone();
+            if (chars is { } carr2)
+                foreach (var c in carr2.EnumerateArray())
                 {
                     var id = c.TryGetProperty("id", out var i) ? i.GetString() : null;
                     var name = c.TryGetProperty("name", out var nm) ? nm.GetString() : null;
@@ -121,6 +128,12 @@ public static class MatcherV2
                         _expertIds.Add(eid);
         }
         _loadedFrom = Path.GetFullPath(dataRoot);
+    }
+
+    /// <summary>1.2.131：显式确保数据已加载（组合层在读取 KnownSourceNames 等查询前调用）。</summary>
+    public static void EnsureLoaded(string dataRoot)
+    {
+        if (_necessity is null || _loadedFrom != Path.GetFullPath(dataRoot)) Load(dataRoot);
     }
 
     /// <summary>C 实装（v2.2 前置）：已加载的 source_confidence 精确源名清单（启发映射用）。</summary>
@@ -235,13 +248,15 @@ public static class MatcherV2
                 : guideSourceNames is not null && guideSourceNames.TryGetValue(guideFile, out var sn)
                     ? SourceConfidenceFor(sn)
                     : MatcherV2Tuning.DefaultSourceConfidence;
+            var (roundBuys, roundGated) = GuideBuys(guideFile, tiers, fieldNorm, guideShort, !n0OnField, sim, sourceConf, odds, board.Level);
+            gated.AddRange(roundGated);
             if (!n0OnField)
             {
-                gated.AddRange(GuideBuys(guideFile, tiers, fieldNorm, guideShort, false, sim, sourceConf, odds, board.Level));
+                gated.AddRange(roundBuys); // 未激活攻略的候选整体转转型候选，不进购买栏
                 continue;
             }
             activated.Add(guideShort);
-            buys.AddRange(GuideBuys(guideFile, tiers, fieldNorm, guideShort, true, sim, sourceConf, odds, board.Level));
+            buys.AddRange(roundBuys);
         }
         buys.Sort((a, b) => b.Score.CompareTo(a.Score));
 
@@ -274,10 +289,14 @@ public static class MatcherV2
         return report;
     }
 
-    private static IEnumerable<V2BuyRec> GuideBuys(
+    private static (List<V2BuyRec> Buys, List<V2BuyRec> Gated) GuideBuys(
         string guideFile, JsonElement tiers, HashSet<string> fieldNorm, string guideShort, bool activated, double sim,
         double sourceConf, int[]? oddsAtLevel, int level)
     {
+        // P1（终审）修复：门控命中（费用不可达/专家）必须真的进 gated 列表，不允许
+        // 只改注释仍留在购买栏（旧实现 gateNote 只拼字符串、去向由 n0OnField 决定=失效）。
+        var buys = new List<V2BuyRec>();
+        var gated = new List<V2BuyRec>();
         foreach (var cidProp in tiers.EnumerateObject())
         {
             var cid = NormId(cidProp.Name);
@@ -285,23 +304,24 @@ public static class MatcherV2
             var tier = cidProp.Value.TryGetProperty("tier", out var t) ? t.GetString() ?? "N3" : "N3";
             var confTier = cidProp.Value.TryGetProperty("confidence", out var cf) ? cf.GetString() ?? "medium" : "medium";
             // D 实装（1.2.131）：费用可达门控——当前等级概率档为 0 的费用进 gated（不进购买栏）。
+            // 表长短于费用档位=低等级高费用 0%（如 Lv1 只有 [100]）→ 同样判不可达。
             var cost = _charCost.TryGetValue(cid, out var cc) ? cc : -1;
-            var costNote = cost > 0 && oddsAtLevel is { Length: 5 }
-                ? cost <= oddsAtLevel.Length
-                    ? oddsAtLevel[cost - 1] <= 0 ? $"费用不可达（Lv{level} 无 {cost} 费）" : null
-                    : $"费用 {cost} 超出概率表范围"
-                : null;
-            // D 实装：专家门控——is_expert 名单不通过常规刷新出现（T1 机制库 L145），购买推荐挂门控。
+            string? costNote = null;
+            if (cost > 0 && oddsAtLevel is { } odds)
+                costNote = cost <= odds.Length
+                    ? odds[cost - 1] <= 0 ? $"费用不可达（Lv{level} 无 {cost} 费）" : null
+                    : $"费用不可达（Lv{level} 概率表无 {cost} 费）";
+            // D 实装：专家门控——is_expert 名单不通过常规刷新出现（T1 机制库 L145）。
             var expertNote = _expertIds is { Count: > 0 } && _expertIds.Contains(cid) ? "专家（不常规刷新）" : null;
             var gateNote = costNote ?? expertNote;
             var w = TierWeight(tier) * sim
                     * confTier switch { "high" => 1.0, "medium" => 0.8, _ => 0.6 }
                     * sourceConf; // C 实装（v2.2）：推荐度=匹配度×必要性×置信度×信源置信度
             var note = (activated ? "已激活" : "转型候选") + $"/{guideShort}/{tier}";
-            if (gateNote is not null)
-                yield return new V2BuyRec(cid, Math.Round(w, 4), tier, note + "/" + gateNote);
-            else
-                yield return new V2BuyRec(cid, Math.Round(w, 4), tier, note);
+            var rec = new V2BuyRec(cid, Math.Round(w, 4), tier,
+                gateNote is not null ? note + "/" + gateNote : note);
+            if (gateNote is not null) gated.Add(rec); else buys.Add(rec);
         }
+        return (buys, gated);
     }
 }

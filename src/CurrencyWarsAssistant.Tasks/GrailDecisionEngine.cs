@@ -2291,15 +2291,67 @@ public sealed class GrailDecisionEngine(
             var shopResult = await SendAsync("M5 圣杯",
                 new GrailCommand(GrailCommandKind.M5,
                     new GrailShopPassArgs(GrailLoopMode: true)), window, ct);
-            // R3 提速（审查 P1 修正）：上一轮备战快照在下一行就被覆盖，提前收摊的
-            // 刷新价基准必须取覆盖前的值。
+            // 上一轮备战快照在下方才被覆盖，刷新价基准先取覆盖前的值。
             var prevSnapBeforeM5 = snapshot;
-            snapshot = await SnapshotWithRetryAsync(window, ct);
-            if (snapshot is null)
+            // 1.2.129 金尽快速通道（09-11 用户令"不可能成功的重试一律去除"）：
+            // 金尽轮按语境直接收摊——审查 P3-1 勘误：M5 loop 结束本就主动收摊，
+            // "面板仍是 reward_shop"是收摊失败态而非不变式；本点击=失败态修正，
+            // 常态轮落在备战页金币角死区（无注册按钮，PreparationFormation.cs:894
+            // 实证）无副作用。点击后页面验证补点一次（防双向开关漏点）。
+            var earlyFactGold = shopResult.Error is null
+                && shopResult.Payload is GrailShopPassFact fastFact
+                    ? fastFact.LiveLedgerGold
+                    : null;
+            // -1=无本地账（与执行器 LastShopPassGold 哨兵口径一致）；0 是合法金尽值。
+            var fastGold = earlyFactGold ?? -1;
+            var goldBrokeByLedger = fastGold >= 0
+                && prevSnapBeforeM5 is { } prevSnap
+                && fastGold < prevSnap.RefreshGoldCost;
+            if (goldBrokeByLedger && genericClick is not null)
             {
-                // 1.2.58：M5 失败（收店失败等）不再直接弃局——4 命杯好局曾因此被
-                // 连带放弃（14:4x 局实况）。先重试一轮 M5 让商店状态自恢复，
-                // 快照仍失败才判 Interrupted。
+                emit("[决策层] 本地账金=" + fastGold + "<刷新价——金尽快速通道：先收摊再快照。");
+                if (await genericClick(window, 1620, 975, ct))
+                {
+                    emit("[决策层] 已发送收起商店点击。");
+                }
+                await Task.Delay(TimeSpan.FromSeconds(2), ct);
+                if (await PageAsync(window, ct) is { } pageFastClose
+                    && pageFastClose.PageId is "reward_shop")
+                {
+                    emit("[决策层] 页面仍为商店——补点一次收摊。");
+                    if (await genericClick(window, 1620, 975, ct))
+                    {
+                        await Task.Delay(TimeSpan.FromSeconds(2), ct);
+                    }
+                }
+            }
+            snapshot = await SnapshotWithRetryAsync(window, ct);
+            if (snapshot is null && goldBrokeByLedger)
+            {
+                // 金尽语境死因已知（商店面板+静帧楔死）：只做一次"重启识别会话+追帧"，
+                // 不进入 3 轮≈5 分钟的通用恢复预算；再败即弃局（结果与旧路径一致，
+                // 时间从 ~4 分钟压到 ~40 秒）。
+                emit("[决策层] 收摊后快照仍失败——重启识别会话做最后追帧。");
+                try
+                {
+                    requestStreamRevive?.Invoke("金尽快速通道");
+                }
+                catch
+                {
+                    // 救援失败不阻断最后追帧。
+                }
+                await Task.Delay(TimeSpan.FromSeconds(3), ct);
+                snapshot = await SnapshotWithRetryAsync(window, ct);
+                if (snapshot is null)
+                {
+                    _lastAbandonReason = "金尽收摊后快照仍不可得（快速通道预算耗尽）";
+                    return PreparationOutcome.Interrupted;
+                }
+            }
+            else if (snapshot is null)
+            {
+                // 非金尽语境：保留原有完整恢复预算（M5 失败重试→1.2.63 收店救援→
+                // 3 轮通用恢复），这些场景死因未定性，预算仍有价值。
                 if (shopResult.Error is not null)
                 {
                     emit("[决策层] M5 失败（" + shopResult.Error + "）——重试一轮再判定。");
@@ -2308,66 +2360,35 @@ public sealed class GrailDecisionEngine(
                             new GrailShopPassArgs(GrailLoopMode: true)), window, ct);
                 }
 
-                // R3 提速提前收摊（09-11 05:4x，双局实锤 04:58/05:39）：M5 金尽（本地账
-                // <刷新价）时面板通常仍停在 reward_shop——I10 门禁整段拒绝备战族外页面，
-                // 快照预算 ~4 分钟烧完才落到下方收摊救援，R3 判定全程饿死（
-                // R3GoldExhausted 连续两局 0 次，弃局改经"快照持续不可得→Interrupted"
-                // 到达）。账本报金尽即提前收摊（页面门控同 1.2.64：仅证实 reward_shop
-                // 才点收店开关），快照秒级可得，R3 判定当轮到达。
-                var earlyLedgerGold = shopResult.Error is null
-                    && shopResult.Payload is GrailShopPassFact earlyFact
-                        ? earlyFact.LiveLedgerGold
-                        : null;
-                // 审查 P2 加固：收店开关是双向的（二次点击=重开店）——本轮已提前
-                // 收摊过则跳过下方 1.2.63 救援的二次点击（陈旧页读可能仍报 reward_shop）。
-                var earlyCloseClicked = false;
-                if (earlyLedgerGold is { } earlyGold
-                    && prevSnapBeforeM5 is { } prevSnap
-                    && earlyGold < prevSnap.RefreshGoldCost)
+                // 1.2.63（实机 19:49 局）：快照失败的最常见原因=M5 收店失败后
+                // 面板仍开着（reward_shop 不在 I10 门禁的备战族内，死锁）。
+                // 弃局前先点一次收店开关 (1620,975)@1920 解除面板，再最后重读。
+                emit("[决策层] 快照仍失败——尝试收起商店面板后做最后一次快照。");
+                var pageBeforeRescue = await PageAsync(window, ct);
+                if (pageBeforeRescue?.PageId is "reward_shop")
                 {
-                    emit("[决策层] 本地账金=" + earlyGold + "<刷新价——提前收摊让 R3 判定拿到备战快照。");
-                    var pageEarlyClose = await PageAsync(window, ct);
-                    if (pageEarlyClose?.PageId is "reward_shop" && genericClick is not null
-                        && await genericClick(window, 1620, 975, ct))
+                    // 1.2.64（补审 P1-1）：只有证实面板还开着（reward_shop）才点
+                    // 收店开关——页面身份未验证时 (1620,975) 是盲点（铁律：新增
+                    // 兜底点击必须页面身份分流）。
+                    if (genericClick is null)
                     {
-                        emit("[决策层] 已发送提前收起商店点击。");
-                        earlyCloseClicked = true;
+                        emit("[决策层] 未注入通用点击能力——无法收店，放弃最后重试。");
                     }
+                    else if (await genericClick(window, 1620, 975, ct))
+                    {
+                        emit("[决策层] 已发送收起商店点击。");
+                    }
+
+                    snapshot = await SnapshotWithRetryAsync(window, ct);
                 }
 
-                snapshot = await SnapshotWithRetryAsync(window, ct);
                 if (snapshot is null)
                 {
-                    // 1.2.63（实机 19:49 局）：快照失败的最常见原因=M5 收店失败后
-                    // 面板仍开着（reward_shop 不在 I10 门禁的备战族内，死锁）。
-                    // 弃局前先点一次收店开关 (1620,975)@1920 解除面板，再最后重读。
-                    emit("[决策层] 快照仍失败——尝试收起商店面板后做最后一次快照。");
-                    var pageBeforeRescue = await PageAsync(window, ct);
-                    if (pageBeforeRescue?.PageId is "reward_shop" && !earlyCloseClicked)
-                    {
-                        // 1.2.64（补审 P1-1）：只有证实面板还开着（reward_shop）才点
-                        // 收店开关——页面身份未验证时 (1620,975) 是盲点（铁律：新增
-                        // 兜底点击必须页面身份分流）。
-                        if (genericClick is null)
-                        {
-                            emit("[决策层] 未注入通用点击能力——无法收店，放弃最后重试。");
-                        }
-                        else if (await genericClick(window, 1620, 975, ct))
-                        {
-                            emit("[决策层] 已发送收起商店点击。");
-                        }
-
-                        snapshot = await SnapshotWithRetryAsync(window, ct);
-                    }
-
+                    snapshot = await TryRecoverSnapshotAsync(window, ct);
                     if (snapshot is null)
                     {
-                        snapshot = await TryRecoverSnapshotAsync(window, ct);
-                        if (snapshot is null)
-                        {
-                            _lastAbandonReason = "快照持续不可得（恢复预算耗尽）";
-                            return PreparationOutcome.Interrupted;
-                        }
+                        _lastAbandonReason = "快照持续不可得（恢复预算耗尽）";
+                        return PreparationOutcome.Interrupted;
                     }
                 }
             }

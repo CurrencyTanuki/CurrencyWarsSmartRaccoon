@@ -141,3 +141,5 @@
 27d. **1.2.131 发布（09-11 下午，用户令：修完 ABCD→发布→推 GitHub）**：ABCD 全部落地（2b16d12+终审修复 b6ef4e0+新回归测试 4 项），版本 1.2.131，部署 VERIFY-PASS。**GitHub 推送受阻**：仓库无 remote 配置、gh CLI 未安装——需用户提供仓库地址与认证（PAT/SSH）后补推。M4 force 模式实测事故（误购经验）已在 1.2.130/131 修复链中根治（点击硬校验=下一批）；用户的 3-7 局未受软件进一步影响。
 
 27e. **GitHub 推送完成（09-11，用户令）**：远端 github.com/CurrencyTanuki/CurrencyWarsSmartRaccoon 实为**另一条历史线**（0.2.815 旧正式版+MIT→CC BY-NC-SA 许可 6 提交，与本地 1.2.x 线无共同祖先）。网络经本地代理 127.0.0.1:7897 通（GitHub 直连超时，git 仓库级 http.proxy 已配）。推送落位：**本地 main → 远端新分支 release/1.2.131**（无损，未覆盖远端 main 旧历史——其中含许可/README 提交）。**待用户一句话**：确认覆盖远端 main 为 1.2.131 最新源码（force push，旧 0.2.815+许可历史将从远端消失）则执行 git push --force origin main；或保留双分支现状。注意：推送需代理 7897 在线。
+
+27f. **main 覆盖完成+双重身份澄清（09-11 上午用户质询后定谳）**：无共同祖先的原因=这是两个各自 git init 的仓库——远端=0.2.815 时代发布的旧正式版库（冻结至今），本地=08-26"给另一个AI"交付包单独建库的 1.x 开发线（根提交 17086c3 基线快照）。已执行：LICENSE(CC BY-NC-SA 4.0)/README/THIRD_PARTY_NOTICES 移植进新线（本地本有同内容 README/NOTICES，覆盖零损失；LICENSE 为新增）→ 96da955 → **git push --force-with-lease 覆盖远端 main 成功**。远端现状=1.2.131 最新源码+许可三件。后续推送依赖本地 7897 代理在线（仓库级 http.proxy）。

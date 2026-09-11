@@ -800,26 +800,12 @@ public sealed class CommandTestWindow : Window
                         return;
                     }
 
-                    var analysisNow = _listener.LatestAnalysis;
-                    var pageNow = analysisNow?.Snapshot.PageId.Value;
-                    var pageFresh = analysisNow?.Snapshot.AsOf is { } at
-                        && DateTimeOffset.Now - at <= TimeSpan.FromSeconds(15);
-                    var healthyPreparation = pageFresh
-                        && pageNow is not null
-                        && pageNow.StartsWith("preparation_", StringComparison.OrdinalIgnoreCase);
-                    if (!healthyPreparation)
-                    {
-                        AppendLog("⚠ 连续 2 次同一指令失败且页面不在健康备战态——检测到操作不动，果断弃局退出。");
-                        var abandon = await _dispatcher.DispatchAsync(
-                            new GrailCommand(GrailCommandKind.A9), context, commandCts.Token);
-                        var abandonSummary = abandon.Error is null
-                            ? FormatPayload(abandon.Payload)
-                            : abandon.Error;
-                        AppendResult("AUTO-A9", ok: abandon.Error is null,
-                            summary: $"果断弃局（连续失败触发）：{abandonSummary}");
-                        _flightRecorder.Record("AUTO-A9", abandon.Error is null,
-                            abandonSummary ?? string.Empty, 0, "auto_exit");
-                    }
+                    // 1.2.130（09-11 用户令）：单步指令模式"只听操作，不自动接管"——
+                    // 连续失败只响铃告警，绝不自动弃局。实测事故：用户手动局挂机旁观时，
+                    // 两次只读 I10 失败（静帧饥饿）即武装 AUTO-A9 差点弃掉 3-7 结尾局。
+                    // 2026-09-03"操作不动就果断退出"拍板针对自动跑批场景，单步模式不适用。
+                    AppendLog("⚠ 连续 2 次同一指令失败且页面不健康——单步模式不自动接管（AUTO-A9 已按 09-11 用户令停用），请人工处理。");
+                    return;
                 }
             }
             else

@@ -117,7 +117,9 @@ public sealed class GrailMacroCommands(
         CancellationToken cancellationToken)
     {
         // 逐本打开聘用书（含按 F 回对局与兜底选人公理，全在执行器内部）。
-        await executor.OpenLettersAsync(context.WindowHandle, context.Goal, cancellationToken);
+        // 1.2.130：单步指令模式下用户显式发 M4 即要求开书——忽略计数门（手动局
+        // 没有获得事件，obtained=0 会空转），6 次尝试上限照旧兜底。
+        await executor.OpenLettersAsync(context.WindowHandle, context.Goal, cancellationToken, ignoreBookCounters: true);
         var (_, obtained, opened, _, _, _, _, _) = stateHolder.PeekEventState();
         return GrailCommandResult.Ok(GrailCommandKind.M4, new GrailLettersFact(obtained, opened));
     }

@@ -1009,7 +1009,7 @@ public sealed partial class GrailOperationExecutor(
         return true;
     }
 
-    internal async Task OpenLettersAsync(nint windowHandle, GrailUserGoal goal, CancellationToken cancellationToken)
+    internal async Task OpenLettersAsync(nint windowHandle, GrailUserGoal goal, CancellationToken cancellationToken, bool ignoreBookCounters = false)
     {
         // 目标集：全员优先昔涟（判定必需）；单人=昔涟/Archer（组件唯一命中才点，歧义保守不点）
         var targets = goal == GrailUserGoal.All
@@ -1023,7 +1023,10 @@ public sealed partial class GrailOperationExecutor(
         for (var attempt = 0; attempt < 6; attempt++)
         {
             var (_, obtained, opened, _, _, _, _, _) = stateHolder.PeekEventState();
-            if (opened >= obtained)
+            // ignoreBookCounters（1.2.130，单步指令模式）：用户手动玩出的书引擎没有
+            // 获得事件（obtained=0），按计数门会空转——显式发 M4 即用户要求开书，
+            // 跳过计数门，靠 6 次尝试上限与招募组件 NotDetected 兜底收束。
+            if (!ignoreBookCounters && opened >= obtained)
             {
                 return;
             }

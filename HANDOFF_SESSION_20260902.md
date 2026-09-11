@@ -143,3 +143,5 @@
 27e. **GitHub 推送完成（09-11，用户令）**：远端 github.com/CurrencyTanuki/CurrencyWarsSmartRaccoon 实为**另一条历史线**（0.2.815 旧正式版+MIT→CC BY-NC-SA 许可 6 提交，与本地 1.2.x 线无共同祖先）。网络经本地代理 127.0.0.1:7897 通（GitHub 直连超时，git 仓库级 http.proxy 已配）。推送落位：**本地 main → 远端新分支 release/1.2.131**（无损，未覆盖远端 main 旧历史——其中含许可/README 提交）。**待用户一句话**：确认覆盖远端 main 为 1.2.131 最新源码（force push，旧 0.2.815+许可历史将从远端消失）则执行 git push --force origin main；或保留双分支现状。注意：推送需代理 7897 在线。
 
 27f. **main 覆盖完成+双重身份澄清（09-11 上午用户质询后定谳）**：无共同祖先的原因=这是两个各自 git init 的仓库——远端=0.2.815 时代发布的旧正式版库（冻结至今），本地=08-26"给另一个AI"交付包单独建库的 1.x 开发线（根提交 17086c3 基线快照）。已执行：LICENSE(CC BY-NC-SA 4.0)/README/THIRD_PARTY_NOTICES 移植进新线（本地本有同内容 README/NOTICES，覆盖零损失；LICENSE 为新增）→ 96da955 → **git push --force-with-lease 覆盖远端 main 成功**。远端现状=1.2.131 最新源码+许可三件。后续推送依赖本地 7897 代理在线（仓库级 http.proxy）。
+
+27g. **安装包转向便携 zip（09-11 深夜）**：WiX MSI 两次独立安装均在 46 文件/0 文件处挂死（msiexec CPU 冻结、verbose log 未写出）——msiexec 已杀、半装残留已清；根因未定（MSI 深水区，挂后续）。**已交付=CurrencyWarsAssistant-1.2.131-portable.zip（111.7MB，1351 条目，完整性验证通过）**：解压即用，附使用说明（.NET 8 Desktop Runtime 为前置、启动方式、16:9 客户区、许可）。发布布局已验证自足（data 57MB 含 matcher_v2+27 攻略册、config 模板、runtimes 原生库、Advisor DLL）。

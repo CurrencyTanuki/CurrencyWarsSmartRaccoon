@@ -1,0 +1,884 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-truth-pursuit",
+ "title": "4.4 真理医生追击流：花火叠轴+五/七追击质变（这看缘吧 BV1yQ9dBYEJB，4.2 期+4.4 框架沿用）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-truth-pursuit",
+ "archetypeName": "真理医生追击流（战技触发追击=拉条拐刚需，花火均匀叠轴吃满刻律复制，五/七追击质变）",
+ "goalIds": [
+  "stable",
+  "a850-capable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_44",
+   "currency_wars_character_54"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_08",
+   "currency_wars_character_16",
+   "currency_wars_character_20",
+   "currency_wars_character_23",
+   "currency_wars_character_29",
+   "currency_wars_character_36",
+   "currency_wars_character_43",
+   "currency_wars_character_52",
+   "currency_wars_character_55",
+   "currency_wars_character_60"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_083",
+   "currency_wars_equipment_066",
+   "currency_wars_equipment_077",
+   "currency_wars_equipment_055",
+   "currency_wars_equipment_071"
+  ],
+  "bondIds": [
+   "currency_wars_bond_21",
+   "currency_wars_bond_22"
+  ],
+  "investmentEnvironmentIds": [],
+  "investmentStrategyIds": []
+ },
+ "sourceRefs": [
+  {
+   "platform": "bilibili",
+   "refId": "BV1yQ9dBYEJB",
+   "url": "https://www.bilibili.com/video/BV1yQ9dBYEJB",
+   "title": "总伤破兆的究极轮椅真理医生（这看缘吧，2026-05-03，85.8万播放，4.2 期）"
+  },
+  {
+   "platform": "bilibili",
+   "refId": "BV1Kibe6mEEi",
+   "url": "https://www.bilibili.com/video/BV1Kibe6mEEi",
+   "title": "4.4 学者真理轮椅（同 UP 框架沿用互证：三追击+双拉条+老杨）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.2",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "4.4",
+    "area": "货币战争-追击/真理",
+    "change": "4.4 增量：银河学者阮•梅 2 星拐/追击附加恒 300%（4.2 翻倍延续）；不死途前台四围系 4.2 实装本体特性（非 4.4 增量：§17 时间线不死途 4.2 实装+4.4 公告无不死途机制条目，2026-09-10 勘正版本归属）",
+    "impact": "本表框架（花火叠轴+拉条拐刚需+老杨插件）被 4.4 学者真理攻略（BV1Kibe6mEEi）沿用并叠加银河学者加强——框架可继承，数值按 4.4 复核",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+      "claimId": "44-framework-carried"
+     }
+    ]
+   },
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+    "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+    "evidenceRefs": []
+   }
+  ],
+  "supersededBy": null,
+  "notes": [
+   "与 guide-v44-feixiao-pursuit（飞霄追击）同羁绊轴不同主C：飞霄 2 星上 9、真理追三真理本体。",
+   "与 guide-v44-truth-scholar-wheelchair（学者真理）同主C 不同副轴： scholar 线=三追击+银河学者免伤，本线=追击羁绊本体强度+五/七追击。"
+  ]
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+      "claimId": "source-metadata"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "early-no-weakphase",
+   "title": "前期：无弱势期，一件风暴潮开三追击即爽",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ],
+    "nodeRanges": [
+     {
+      "planeId": 1,
+      "fromNodeIndex": 1,
+      "toNodeIndex": 9
+     }
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_54"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_44"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_44",
+       "priority": 1,
+       "note": "真理医生主C"
+      },
+      {
+       "characterId": "currency_wars_character_54",
+       "priority": 1,
+       "note": "花火：最优拉条拐（叠轴论证见动作卡）"
+      },
+      {
+       "characterId": "currency_wars_character_43",
+       "priority": 2,
+       "note": "刻律德菈：复制战技=拐力×2 的另一半"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_21"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_44",
+     "currency_wars_character_54"
+    ],
+    "costFocus": [
+     3
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "一件风暴潮合出且三追击开启"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+      "claimId": "operation-timeline-truth"
+     }
+    ],
+    "notes": [
+     "真理基本无弱势期，极难因伤害不够断连胜。"
+    ]
+   },
+   "actionIds": [
+    "huohuo-stack-theory",
+    "truth-equipment"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+     "claimId": "source-metadata"
+    }
+   ],
+   "notes": [
+    "词条依据引用借用了 4.4 演化注的 locator（本视频无独立证据集，转写稿+notes 为一级源：transcripts/BV1yQ9dBYEJB.txt+notes-BV1yQ9dBYEJB.md）——证据集化留下一批。"
+   ]
+  },
+  {
+   "phaseId": "level7-chase-star",
+   "title": "七人口：追三真理关键节点",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     1,
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": 50,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 7,
+     "max": 8,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_54",
+      "currency_wars_character_08"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_44",
+      "currency_wars_character_55",
+      "currency_wars_character_36",
+      "currency_wars_character_23"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_44": 3
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_44",
+       "priority": 1,
+       "targetStars": 3
+      },
+      {
+       "characterId": "currency_wars_character_29",
+       "priority": 2,
+       "note": "顺搜知更鸟"
+      },
+      {
+       "characterId": "currency_wars_character_23",
+       "priority": 2,
+       "note": "符玄：组三圣或二量子"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_21",
+     "currency_wars_bond_22"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_44"
+    ],
+    "costFocus": [
+     3
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "三星真理达成",
+     "金币不足刷新价"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+      "claimId": "operation-timeline-truth"
+     }
+    ],
+    "notes": [
+     "经济榨干没出三星→立即停手攒钱上 9 找老杨：二星九人口试用真理已能通关。",
+     "二位面 boss 为三星狂花萨姆/银枝/『精选意灵』(音) 时：不死途换砂金顶（符玄单保不住）；其他 boss 符玄带生存装可单保。"
+    ]
+   },
+   "actionIds": [
+    "chase-3star-at-7",
+    "warn-boss-sam-swap"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+     "claimId": "operation-timeline-truth"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "plane3-pursuit-ascend",
+   "title": "三位面：老杨缇宝大成→五追击→七追击",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 9,
+     "max": 10,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_54",
+      "currency_wars_character_08"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_44",
+      "currency_wars_character_20",
+      "currency_wars_character_55",
+      "currency_wars_character_29",
+      "currency_wars_character_43"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_44": 3
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_20",
+       "priority": 1,
+       "note": "老杨（瓦尔特）：到位阵容大成"
+      },
+      {
+       "characterId": "currency_wars_character_60",
+       "priority": 2,
+       "note": "赛飞儿提前留备战席：开五追击不卡牌，找到托帕再换"
+      },
+      {
+       "characterId": "currency_wars_character_16",
+       "priority": 3,
+       "note": "托帕：追击转到位后的最终件"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_21",
+     "currency_wars_bond_22"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_20"
+    ],
+    "costFocus": [
+     5
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "老杨已购入"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+      "claimId": "operation-timeline-truth"
+     }
+    ],
+    "notes": []
+   },
+   "actionIds": [
+    "welt-tibao-complete",
+    "five-pursuit-ascend"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+     "claimId": "operation-timeline-truth"
+    }
+   ],
+   "notes": []
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "huohuo-stack-theory",
+   "title": "花火优于星期日的叠轴论证（本攻略核心游戏理解）",
+   "instruction": "真理伤害来源=自己回合战技触发的追击，刚需拉条拐；最优解=前台蓄能帆花火：刻律德菈复制战技让拐力×2（意译）（军功叠满 10 层成爵位瞬间需立刻消耗），花火把真理行动均匀分布在行动条上、每一动都吃满复制；星期日立即行动式拉条留长真空期、刻律叠层被浪费——『星期日看似乘二实际没吃满，花火只拉 50% 却让每一动实打实乘二』。星期日+花火共存时花火错轴，让刻律完美插队。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_54",
+    "currency_wars_character_44"
+   ],
+   "priority": 92,
+   "conditions": [],
+   "benefits": [
+    "真理每一动吃满刻律复制"
+   ],
+   "costs": [
+    "花火占前台位"
+   ],
+   "risks": [],
+   "preconditions": [
+    "花火已购入",
+    "刻律德菈已上场"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+     "claimId": "huohuo-over-sunday-axis"
+    }
+   ]
+  },
+  {
+   "actionId": "truth-equipment",
+   "title": "装备优先级：电锯双风暴潮+花火蓄能帆刻律鞋",
+   "instruction": "真理=电锯(083)+两件风暴潮(066)；辅助一优先=花火蓄能帆(077)+刻律反重力皮靴(055)——直接决定知更鸟大招内出手次数，必做；二优先=符玄生存装；三优先=知更鸟电磁弹射器+『奇樱专利弹』(音,未证实)——有知更鸟本体可不发弹射器，仪器 2+2+2 速度散件堆高速（只慢 10+ 行动值）。",
+   "operationType": "buy_equipment",
+   "targetCharacterIds": [
+    "currency_wars_character_44"
+   ],
+   "priority": 80,
+   "conditions": [],
+   "benefits": [
+    "知更鸟大招内出手次数最大化"
+   ],
+   "costs": [],
+   "risks": [
+    "第三优先装备两个 ASR 候选并存：『奇樱专利弹』(转写 raw)/『行星钻地弹』(B1 notes 订正候选，更可能官方名)——official-game-dictionary 建档后裁决"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+     "claimId": "equipment-priority-truth"
+    }
+   ]
+  },
+  {
+   "actionId": "avoid-three-affixes",
+   "title": "开局刷三词条（box 条件：真理特化）",
+   "instruction": "开局刷掉同步行动(t3_22)、忍无可忍(t3_02)、永久创伤(t3_16)——刷掉就很难暴毙；真理输出溢出，不怕减输出类词条。注意词条评价强依赖队伍：忍无可忍在白厄线=有救、二刀线=好词条，本线=刷掉。（GOBS 3.7 总纲补强：急速制冷(官方名极速制冷/t3_13，ASR 同音=冻结/战技点)GOBS 11-19 总纲列难处理第一档；同作者 11-25 迭代帖降级为可解（追击雀 22 次解控收尾）——『叠鞋/拉条轴尤其致命』为整理者推断非原话，采信需队伍相性核对）",
+   "operationType": "select_encounter_option",
+   "priority": 999,
+   "conditions": [
+    {
+     "field": "enemy_affixes",
+     "operator": "contains_any",
+     "expected": [
+      "enemy_affix_t3_22",
+      "enemy_affix_t3_02",
+      "enemy_affix_t3_16",
+      "enemy_affix_t3_13"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [],
+   "costs": [],
+   "risks": [
+    "enemy_affixes 字段未接入运行时观测——本卡按常驻提示承载",
+    "acquired_items 条件字段未接入（field-dictionary 二节）且 on_equipment_acquired/on_affix_seen 触发器 fail-closed——相关门控本期按常驻提示承载"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+     "claimId": "affix-ban-three-truth"
+    },
+    {
+     "evidenceSetId": "evidence-multi-old-era-37-41",
+     "claimId": "gobs-37-streak-framework"
+    },
+    {
+     "evidenceSetId": "evidence-multi-old-era-37-41",
+     "claimId": "gobs-self-revision-6days"
+    }
+   ],
+   "trigger": "on_affix_seen"
+  },
+  {
+   "actionId": "chase-3star-at-7",
+   "title": "七人口追三星真理",
+   "instruction": "七人口=三星真理关键节点：D 牌过程中顺搜知更鸟和符玄（组三圣或二量子）；这套能撑到真理卡 50 利息追三星。",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_44"
+   ],
+   "priority": 88,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 7,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "主C星级档位"
+   ],
+   "costs": [
+    "7 级集中花金"
+   ],
+   "risks": [],
+   "preconditions": [
+    "等级≥7"
+   ],
+   "invalidatesWhen": [
+    "真理已三星"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+     "claimId": "operation-timeline-truth"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 7
+   }
+  },
+  {
+   "actionId": "warn-boss-sam-swap",
+   "title": "boss 应对：狂花系换砂金顶",
+   "instruction": "第二位面 boss 若为三星狂花萨姆/银枝/『精选意灵』(音)：不死途换砂金顶一下（单靠符玄保不住）；其他 boss 符玄随便带生存装就能单保。砂金虽加强护盾量，试用砂金第三位面仍难保人——只当前中期过渡生存位。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_52",
+    "currency_wars_character_08"
+   ],
+   "priority": 60,
+   "conditions": [],
+   "benefits": [
+    "二位面生存保底"
+   ],
+   "costs": [],
+   "risks": [
+    "『狂花萨姆/精选意灵』为玩家 boss 俗称未入目录"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+     "claimId": "operation-timeline-truth"
+    }
+   ],
+   "trigger": "on_boss_appear"
+  },
+  {
+   "actionId": "welt-tibao-complete",
+   "title": "九人口老杨+缇宝大成（备用：榨干上 9）",
+   "instruction": "第三位面九人口找到老杨（瓦尔特）和缇宝阵容基本大成；若经济榨干没出三星真理：立即停手攒钱上 9 找老杨——二星九人口试用真理强度已能通关。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_20",
+    "currency_wars_character_55"
+   ],
+   "priority": 76,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 9,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "终局双插件"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "等级≥9"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+     "claimId": "operation-timeline-truth"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 9
+   }
+  },
+  {
+   "actionId": "five-pursuit-ascend",
+   "title": "五追击→七追击质变（赛飞儿保牌技巧）",
+   "instruction": "拿到追击转(141)开五追击：直接后排带赛飞儿(60)——同时开五追击+2-1(音，未证实)，提前留备战席不卡牌，找到托帕再换；10 人口+双追击转开七追击=整整 120 增伤；前排不需要生存位（真理一动秒全屏，boss 除外）。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_60",
+    "currency_wars_character_16"
+   ],
+   "priority": 55,
+   "conditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_141"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "追击羁绊高阶质变"
+   ],
+   "costs": [],
+   "risks": [
+    "『2-1』(音)『猫』(音)为未证实术语",
+    "『猫/塞贝尔→赛飞儿(60)』为 ASR 音译中置信推断（notes 术语备注），非实锤等式",
+    "acquired_items 条件字段未接入（field-dictionary 二节）且 on_equipment_acquired/on_affix_seen 触发器 fail-closed——相关门控本期按常驻提示承载"
+   ],
+   "preconditions": [
+    "追击转已获得"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+     "claimId": "five-seven-pursuit-ascend"
+    }
+   ],
+   "trigger": "on_equipment_acquired"
+  }
+ ],
+ "branches": [
+  {
+   "branchId": "pursuit-transfer-gate",
+   "priority": 1,
+   "when": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_141"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "thenActionIds": [
+    "five-pursuit-ascend"
+   ],
+   "otherwiseActionIds": [],
+   "transitionToPhaseId": null,
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+     "claimId": "five-seven-pursuit-ascend"
+    }
+   ]
+  }
+ ],
+ "alternativeRoutes": [
+  {
+   "routeId": "scholar-variant-4_4",
+   "title": "4.4 变体：学者真理轮椅（主线推荐）",
+   "triggerConditions": [
+    {
+     "field": "owned_characters",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_character_48"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [],
+   "tradeoffs": [
+    "4.4 期同主C 更优框架=三追击+双拉条+银河学者免伤（阮•梅 2 星 150 增伤）",
+    "本表追击本体线为 4.2 期原版框架，4.4 引用建议直接用 scholar 线",
+    "见 guide-v44-truth-scholar-wheelchair",
+    "持阮•梅(48)时优先走 scholar 线（本表与 scholar 线互斥组 truth-mainc，BestMatch 并列时以 scholar 为 4.4 主线）"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+     "claimId": "44-framework-carried"
+    },
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "ruanmei-2star-150-50"
+    }
+   ],
+   "mutuallyExclusiveGroup": "truth-mainc"
+  }
+ ],
+ "excludedContent": [],
+ "craftingPaths": [
+  {
+   "resultId": "currency_wars_equipment_066",
+   "inputIds": [
+    "currency_wars_equipment_044",
+    "currency_wars_equipment_046"
+   ],
+   "note": "折叠小刀+轮滑鞋→火力风暴潮（官方配置 compose_list；真理双风暴潮刚需）",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-official-cw-game-config",
+     "claimId": "compose-list-recipes"
+    }
+   ]
+  },
+  {
+   "resultId": "currency_wars_equipment_071",
+   "inputIds": [
+    "currency_wars_equipment_042",
+    "currency_wars_equipment_046"
+   ],
+   "note": "和平手枪+轮滑鞋→电磁弹射器（官方配置 35030103 compose_list；知更鸟三优先）",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-official-cw-game-config",
+     "claimId": "source-metadata"
+    }
+   ]
+  }
+ ],
+ "risks": [
+  {
+   "riskId": "4_2-claims-on-4_4",
+   "severity": "medium",
+   "description": "源视频为 4.2 期：追击 150→300/不死途加入等在 4.4 持续有效（BWIKI 300% 互证+4.4 学者真理沿用框架），但『狂花萨姆/精选意灵』boss 名与部分数字为 ASR 口播。",
+   "mitigation": "verified 需 4.4 实机复验；数值引用带口径。",
+   "evidenceRefs": []
+  },
+  {
+   "riskId": "term-unverified",
+   "severity": "low",
+   "description": "『奇樱专利弹』『2-1』『猫』『狂花萨姆』『精选意灵』未入目录（记 unknowns）。",
+   "mitigation": "结构化字段不使用；official-game-dictionary.v1.json 建档后复核。",
+   "evidenceRefs": []
+  },
+  {
+   "riskId": "evidence-refs-mixed-sources",
+   "severity": "low",
+   "description": "本表一级源=transcripts/BV1yQ9dBYEJB.txt+notes-BV1yQ9dBYEJB.md（独立证据集 evidence-bilibili-bv1yq9dbyejb-night2 已建）；部分 evidenceRefs 历史上借用过 evidence-bilibili-bv18yowbfeze（甘泽视频），R8 P1 指出借用错位，已机械回填为本集 claim——保留此披露防回归。",
+   "mitigation": "R8 回访时核验无 bv18yowbfeze 残留。",
+   "evidenceRefs": []
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+   "claimId": "source-metadata"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+   "claimId": "truth-4_2-biggest-buff"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+   "claimId": "trial-2star-zero-loss-a840"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+   "claimId": "huohuo-over-sunday-axis"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+   "claimId": "affix-ban-three-truth"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+   "claimId": "equipment-priority-truth"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+   "claimId": "operation-timeline-truth"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+   "claimId": "five-seven-pursuit-ascend"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1yq9dbyejb-night2",
+   "claimId": "44-framework-carried"
+  },
+  {
+   "evidenceSetId": "evidence-multi-strength-tierlist",
+   "claimId": "affix-threat-consensus"
+  }
+ ],
+ "notes": [
+  "2026-09-07 夜班2 本体转化：源=B1 轮 ASR 转写（本体重转交叉一致）+notes-BV1yQ9dBYEJB.md；UP=这看缘吧（B1 笔记订正，非甘泽）。",
+  "杨叔=瓦尔特(20)、追击转=141、蓄能帆=077 按既有映射；『同步行动』=t3_22 官方对表命中。",
+  "花火叠轴论证与双鞋阿雅（BV18yoWBfEZe 花火叠鞋 20→40）互为独立交叉——4.2 期『花火高频拉条=通用最优前排』结论两源成立。",
+  "词条 box 条件三证：忍无可忍在真理线=刷掉/白厄线=有救/二刀线=好词条（+NGA 阿雅队必避）——词条通用排名必须带队伍相性。",
+  "用户三纪律：全部参数溯源转写稿+notes；表成后交子代理审查（与 evidence 建集一并）。",
+  "R8 处置（2026-09-07）：7 处借用引用机械回填 night2 集+guideCodes 作者张冠李戴修正（双码属这看缘吧）+恢复披露条目——销项以『文件内无 bv18yowbfeze 残留』为准。",
+  "R8 P3-1 口径标注：忍无可忍在双鞋阿雅线『有忍无可忍可硬打』（1-7 前期低难轴）vs NGA『阿雅队必避』（A850 高难轴）——同 archetype 难度轴差异，preserve_all_sources 双保留。",
+  "2026-09-07 兼容修改 A1（依 compat-modification-candidates.md）：词条卡补急速制冷(t3_13)——依据 GOBS 3.7 总纲『难处理第一档』，3.7 旧理解经 4.4 队伍相性核对后收录（待 R9 审查）。（R9 P1-3 勘误：补口径演进——GOBS 11-25 迭代帖已将急速制冷降级为可解；『叠鞋致命』为推断已标注；NGA 4.4 威胁共识未列急速制冷于头部=4.4 口径下超宣称不成立）",
+  "2026-09-07 下午（用户最终定性）：guideCodes 字段整体移除——攻略码=游戏内部分享码，对软件无功能意义，最终 JSON 成品不得含攻略码字段（RULES 七.0 修订）。"
+ ]
+}

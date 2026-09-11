@@ -1,0 +1,765 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-baie-armor",
+ "title": "4.4 白厄反甲流：三反甲质变+站位学（甘泽更新版 BV1Vz766SELa，4.3 完整形态）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-baie-armor",
+ "archetypeName": "白厄反甲流（护盾量×反甲倍率替代攻击乘区，三反甲质变，白厄 4 号位站位学）",
+ "goalIds": [
+  "stable",
+  "a850-capable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_40",
+   "currency_wars_character_08",
+   "currency_wars_character_54"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_52",
+   "currency_wars_character_34",
+   "currency_wars_character_68",
+   "currency_wars_character_23",
+   "currency_wars_character_67",
+   "currency_wars_character_05",
+   "currency_wars_character_15",
+   "currency_wars_character_19",
+   "currency_wars_character_trailblazer"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_048"
+  ],
+  "bondIds": [
+   "currency_wars_bond_05"
+  ],
+  "investmentEnvironmentIds": [
+   "investment_environment_082",
+   "investment_environment_003",
+   "investment_environment_004"
+  ],
+  "investmentStrategyIds": [
+   "investment_strategy_223"
+  ]
+ },
+ "sourceRefs": [
+  {
+   "platform": "bilibili",
+   "refId": "BV1Vz766SELa",
+   "url": "https://www.bilibili.com/video/BV1Vz766SELa",
+   "title": "梦回币战开服！A840 0命白厄最强势玩法还是反甲（甘泽，2026-06-05，4.3 期更新版完整教学）"
+  },
+  {
+   "platform": "bilibili",
+   "refId": "BV1aNCnBQELf",
+   "url": "https://www.bilibili.com/video/BV1aNCnBQELf",
+   "title": "初版：白厄的终极轮椅！7人口反甲流（甘泽，2025-11-12，131万播放——演化锚点）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.3",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "4.4",
+    "area": "货币战争-白厄反甲",
+    "change": "4.4 姬子•启行后台+领航员体系改写阵容结构（三游侠+二护盾→四列车+刃+白厄『多送四件反甲倍率』），见 BV1GkKV6CE4g 与 guide-v44-baie-backline-himeko-countershock",
+    "impact": "本表保留 4.3 反甲本体版骨架（反甲公式/词条四档/站位学/三反甲质变在 4.4 全部成立）；阵容结构 4.4 优先参考姬子后台版",
+    "evidenceRefs": []
+   },
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+    "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+    "evidenceRefs": []
+   }
+  ],
+  "supersededBy": null,
+  "notes": [
+   "与 guide-v44-baie-backline-himeko-countershock（4.4 姬子后台反震版）互为演化分支：本表=白厄前台三反甲本体版（4.3 完整形态）；反甲公式/词条四档/站位学两版通用。",
+   "初版 BV1aNCnBQELf（131 万播放）与更新版 BV1Vz766SELa 构成甘泽双版本范式（同双鞋阿雅）。"
+  ]
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g-asr",
+      "claimId": "source-metadata"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "opening-scan",
+   "title": "开局：词条四档筛查+boss 重开规则",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ],
+    "nodeRanges": [
+     {
+      "planeId": 1,
+      "fromNodeIndex": 1,
+      "toNodeIndex": 3
+     }
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_40"
+     ],
+     "backCharacterIds": [],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_40",
+       "priority": 1,
+       "note": "白厄本体卡"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_05"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_40"
+    ],
+    "costFocus": [
+     3
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "白厄已购入"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+      "claimId": "boss-and-cup-monster"
+     }
+    ],
+    "notes": [
+     "开局 boss 施瓦罗/萨姆局重开（会出红绿灯）；酒杯怪只在遭遇关及前一关出现——遭遇关点详情可查并刷掉，一把最多遇一次。"
+    ]
+   },
+   "actionIds": [
+    "affix-four-tiers-action",
+    "warn-cup-monster"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+     "claimId": "affix-four-tiers"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "mid-armor-rush",
+   "title": "中期：经济环境+七人口阵容站位+三反甲冲刺",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     1,
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 6,
+     "max": 7,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_08",
+      "currency_wars_character_40",
+      "currency_wars_character_52"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_67",
+      "currency_wars_character_34",
+      "currency_wars_character_54"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_40": 2
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_40",
+       "priority": 1,
+       "targetStars": 3
+      },
+      {
+       "characterId": "currency_wars_character_08",
+       "priority": 1,
+       "targetStars": 3,
+       "note": "不死途：固定前排（前台游侠星级的唯一来源）"
+      },
+      {
+       "characterId": "currency_wars_character_34",
+       "priority": 2,
+       "targetStars": 3,
+       "note": "黄泉：狼尊升费删三费牌后最佳 D 牌时机"
+      },
+      {
+       "characterId": "currency_wars_character_68",
+       "priority": 3
+      },
+      {
+       "characterId": "currency_wars_character_54",
+       "priority": 2,
+       "note": "花火：1-3 费拐力最高通拐"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_05"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_40",
+     "currency_wars_character_08",
+     "currency_wars_character_34"
+    ],
+    "costFocus": [
+     3
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "三星白厄+双三星游侠达成",
+     "金币不足刷新价"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+      "claimId": "d-priority-and-wolf-promote"
+     }
+    ],
+    "notes": [
+     "三星优先级=白厄>不死途>黄泉>乱破；7 级 D 牌顺手拿狼尊升 4 费删三费牌池。",
+     "装备：只做三反甲，两件没伤害第三件毁天灭地（幸运 40→60%/免伤 19→29%/倍率 500→750%/开局盾 2 万→3 万）。"
+    ]
+   },
+   "actionIds": [
+    "armor-rush-3",
+    "positioning-4slot",
+    "wolf-promote-prune"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+     "claimId": "three-armor-quantum-leap"
+    },
+    {
+     "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+     "claimId": "economy-env-and-lineup"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "plane3-investment",
+   "title": "三位面：投资决策树+云璃保盾",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 8,
+     "max": 10,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_08",
+      "currency_wars_character_40",
+      "currency_wars_character_52"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_trailblazer",
+      "currency_wars_character_67",
+      "currency_wars_character_34",
+      "currency_wars_character_54"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_40": 2
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_trailblazer",
+       "priority": 2,
+       "note": "八人口上记忆主（=记忆命途开拓者；源音『祭主』为 ASR 记法）"
+      },
+      {
+       "characterId": "currency_wars_character_15",
+       "priority": 1,
+       "note": "云璃优先级大于昔涟：保盾稳峰值=爽局"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_05"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_15"
+    ],
+    "costFocus": [
+     4,
+     5
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "云璃已购入"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+      "claimId": "decision-priority-and-detail"
+     }
+    ],
+    "notes": [
+     "经济透支难上九：想要的五费寄希望三位面补给节点。"
+    ]
+   },
+   "actionIds": [
+    "plane3-invest-tree",
+    "yunli-shield"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+     "claimId": "decision-priority-and-detail"
+    }
+   ],
+   "notes": []
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "affix-four-tiers-action",
+   "title": "开局词条四档筛查（白厄反甲特化）",
+   "instruction": "必刷：正当防卫(t3_01)、紧急止血(t3_11)——紧急回血时点在反甲伤害之后，残血怪被奶起要重反几遍。建议避开：榜样激励/丢失幸运/皮糙肉厚。可无视硬打：能量逃逸/沉重脚步/时间刺客/永久创伤。顶级正面词条：战个痛快/一鼓作气（30 行动值随便杀+boss 关 20 行动值提高出灵替概率）。白厄开局词条压力比正常阵容小很多。",
+   "operationType": "select_encounter_option",
+   "priority": 999,
+   "conditions": [
+    {
+     "field": "enemy_affixes",
+     "operator": "contains_any",
+     "expected": [
+      "enemy_affix_t3_01",
+      "enemy_affix_t3_11"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [],
+   "costs": [],
+   "risks": [
+    "enemy_affixes 字段未接入运行时观测——本卡按常驻提示承载"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+     "claimId": "affix-four-tiers"
+    }
+   ],
+   "trigger": "on_affix_seen"
+  },
+  {
+   "actionId": "warn-cup-monster",
+   "title": "boss 与特殊怪筛查",
+   "instruction": "开局 boss 施瓦罗/萨姆局重开（它们让战斗关出现红绿灯）；酒杯怪克制白厄——只在遭遇关及前一关出现，遭遇关点开详情查看，有则直接刷掉，一把最多遇一次；死龙/五合一/三合一可力大砖飞。",
+   "operationType": "select_encounter_option",
+   "priority": 998,
+   "conditions": [],
+   "benefits": [],
+   "costs": [],
+   "risks": [
+    "施瓦罗/萨姆/红绿灯/酒杯怪为怪物俗称（jargon-mappings.v1 部分建档）"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+     "claimId": "boss-and-cup-monster"
+    }
+   ],
+   "trigger": "on_boss_appear"
+  },
+  {
+   "actionId": "armor-rush-3",
+   "title": "三反甲冲刺（二杠五没三件→重开）",
+   "instruction": "三反甲大于一切：一二位面优先装备类投资做反甲，三件做完才考虑队友装备；两件反甲没伤害，第三件毁天灭地（幸运 40→60%/免伤 19→29%/倍率 500→750%/开局盾 2 万→3 万，合计 200%+）；二杠五/二杠七还没三反甲或开局装备不顺→尽早重开。第四件特权反甲提升也大。",
+   "operationType": "buy_equipment",
+   "targetCharacterIds": [
+    "currency_wars_character_40"
+   ],
+   "priority": 95,
+   "conditions": [],
+   "benefits": [
+    "多层质变 200%+"
+   ],
+   "costs": [
+    "全部装备预算投入反甲"
+   ],
+   "risks": [
+    "反甲数值为 ASR 口播，与 BWIKI 048 页对照待做"
+   ],
+   "preconditions": [
+    "白厄已购入"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+     "claimId": "three-armor-quantum-leap"
+    }
+   ]
+  },
+  {
+   "actionId": "positioning-4slot",
+   "title": "站位学：白厄 4 号位+迷咪中间位（50% 伤害差）",
+   "instruction": "三月七优先挂盾给 4 号位而非残血位→白厄站 4 号位；有记忆主时三月七优先挂迷迷→迷迷放主角和白厄中间（白厄蹭盾+火种），记忆主站 3 号位；不死途固定站前排（只有它前排白厄才吃得到前台游侠星级）；带试用砂金而非盾单/三月后台单挂（保前台三人）。站位调对比全站错伤害高约 50%。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_40",
+    "currency_wars_character_67",
+    "currency_wars_character_08"
+   ],
+   "priority": 90,
+   "conditions": [],
+   "benefits": [
+    "站位修正=伤害提升约 50%"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "三月七已上场"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+     "claimId": "economy-env-and-lineup"
+    }
+   ]
+  },
+  {
+   "actionId": "wolf-promote-prune",
+   "title": "狼尊升费删牌（提高白厄黄泉刷新率）",
+   "instruction": "七级 D 牌顺手拿狼尊（银狼LV.999）升到四费——从三费牌库删掉，提高刷出黄泉和白厄的概率；三星黄泉最佳时机=狼尊升费+三星白厄后三费牌池剩得少时。",
+   "operationType": "other",
+   "targetCharacterIds": [
+    "currency_wars_character_05"
+   ],
+   "priority": 58,
+   "conditions": [],
+   "benefits": [
+    "三费牌池薄化"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "狼尊已购入"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+     "claimId": "d-priority-and-wolf-promote"
+    }
+   ]
+  },
+  {
+   "actionId": "plane3-invest-tree",
+   "title": "三位面投资决策树",
+   "instruction": "特权装备（第四件反甲提升也非常大）>财富宝钻/多元化团队（拉人口多上拐）>钱和投影仪>护盾转职/星间旅人转职（踢盾单多上拐如缇宝）>五费聘用书找云璃；三换一看给什么：投影仪/冶金炉都有用，给金垃圾袋多 15 块。",
+   "operationType": "select_investment_strategy",
+   "priority": 60,
+   "conditions": [],
+   "benefits": [
+    "上限提升路径明确"
+   ],
+   "costs": [],
+   "risks": [
+    "『三换一』策略名待对表"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+     "claimId": "decision-priority-and-detail"
+    }
+   ],
+   "trigger": "on_phase_enter"
+  },
+  {
+   "actionId": "yunli-shield",
+   "title": "云璃保盾（优先级大于昔涟）",
+   "instruction": "云璃优先级大于昔涟：云璃局基本是爽局——能把白厄的盾保下来，输出稳定在峰值；有诺抄昔涟(音)开局启动最快。经济透支难上九：想要的五费寄希望三位面补给节点。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_15",
+    "currency_wars_character_19"
+   ],
+   "priority": 50,
+   "conditions": [],
+   "benefits": [
+    "白厄护盾峰值稳定"
+   ],
+   "costs": [],
+   "risks": [
+    "『诺抄昔涟』(音) 未证实"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+     "claimId": "decision-priority-and-detail"
+    }
+   ]
+  }
+ ],
+ "branches": [],
+ "alternativeRoutes": [
+  {
+   "routeId": "himeko-backline-4_4",
+   "title": "4.4 后继分支：姬子后台反震版",
+   "triggerConditions": [],
+   "actionIds": [],
+   "tradeoffs": [
+    "4.4 阵容结构已改写：三游侠+二护盾→四列车+刃+白厄（多送四件反甲倍率）",
+    "见 guide-v44-baie-backline-himeko-countershock",
+    "反甲公式/词条四档/站位学两版通用"
+   ],
+   "evidenceRefs": []
+  },
+  {
+   "routeId": "direct-damage-contrast",
+   "title": "对照：直伤白厄（喜欢砸直伤的玩家）",
+   "triggerConditions": [],
+   "actionIds": [],
+   "tradeoffs": [
+    "玩法无分对错适合最好（UP 原话）",
+    "反甲优点=伤害高/生存压力小/造价便宜；缺点=对开局环境和装备要求更高",
+    "直伤线见 guide-v44-direct-baie-ranger（练度硬门槛）与证据层直伤白厄帖"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+     "claimId": "armor-vs-direct-comparison"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [],
+ "craftingPaths": [],
+ "risks": [
+  {
+   "riskId": "armor-values-asr",
+   "severity": "medium",
+   "description": "三反甲质变参数（幸运 40→60%/免伤 19→29%/倍率 500→750%/开局盾 2 万→3 万）全部为 ASR 口播，未与 BWIKI 装备页(048)对照。",
+   "mitigation": "升级 reviewed 前对照；引用带口径。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+     "claimId": "three-armor-quantum-leap"
+    }
+   ]
+  },
+  {
+   "riskId": "monster-nicknames",
+   "severity": "low",
+   "description": "施瓦罗/红绿灯/酒杯怪/死龙/五合一/三合一为怪物俗称（部分已在 jargon-mappings.v1 建档）。",
+   "mitigation": "映射建档后复核。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+     "claimId": "boss-and-cup-monster"
+    }
+   ]
+  },
+  {
+   "riskId": "4_3-version-baseline",
+   "severity": "low",
+   "description": "源视频为 4.3 期（A840 顶难口径）；4.4 姬子后台版已改写阵容结构——本表骨架（公式/词条/站位/三反甲节点）4.4 成立，阵容优先参考 4.4 后继版。",
+   "mitigation": "verified 需 4.4 实机复验。",
+   "evidenceRefs": []
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+   "claimId": "source-metadata"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+   "claimId": "armor-damage-formula"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+   "claimId": "affix-four-tiers"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+   "claimId": "boss-and-cup-monster"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+   "claimId": "economy-env-and-lineup"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+   "claimId": "d-priority-and-wolf-promote"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+   "claimId": "three-armor-quantum-leap"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+   "claimId": "decision-priority-and-detail"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1vz766sela-night2",
+   "claimId": "armor-vs-direct-comparison"
+  }
+ ],
+ "notes": [
+  "2026-09-07 夜班2 本体转化：白厄反甲流派更新版（用户点名『与双鞋阿雅几乎齐名』）——evidence-bilibili-bv1vz766sela（9 claims）+本 playbook。",
+  "UP=甘泽成谣雨成诗；两版范式与双鞋阿雅同构（初版 131 万+更新版完整教学）。",
+  "杨叔=瓦尔特(20)；反甲=以牙还牙甲(048)；词条 ID 11 个全对表。",
+  "与 4.4 姬子后台反震版（guide-v44-baie-backline-himeko-countershock）互为演化分支，互相引用。",
+  "2026-09-07 下午（用户最终定性）：guideCodes 字段整体移除——攻略码=游戏内部分享码，对软件无功能意义，最终 JSON 成品不得含攻略码字段（RULES 七.0 修订）。"
+ ]
+}

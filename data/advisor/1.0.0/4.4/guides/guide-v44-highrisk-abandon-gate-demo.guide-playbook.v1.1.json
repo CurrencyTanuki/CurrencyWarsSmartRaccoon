@@ -1,0 +1,282 @@
+{
+  "schemaVersion": "guide-playbook.v1.1",
+  "guideId": "guide-v44-highrisk-abandon-gate-demo",
+  "title": "4.4 连败止损高风险决策门控演示：卖主C/弃局（P3-13 校验样例，非玩家攻略）",
+  "status": "draft",
+  "applicableGameVersions": [
+    "4.4"
+  ],
+  "archetypeId": "archetype-highrisk-gate-demo",
+  "archetypeName": "高风险决策门控演示（软件校验样例；口径取自开局五档帖的『拉完了→重开』档）",
+  "goalIds": [
+    "stable"
+  ],
+  "signals": {
+    "coreCharacterIds": [],
+    "optionalCharacterIds": [],
+    "equipmentIds": [],
+    "bondIds": [],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+  },
+  "notes": [
+    "本样例为 R5 P3-13 清偿物：高风险门控路径此前零样例覆盖——opening-tier-selector 的 abandon_run 动作只出现在 branch thenActionIds、不在任何 phase.actionIds，IsHighRisk→Gated→WarningOnly→『⛔ 前缀』渲染链路从未被样例走到。本样例把两个高风险动作（sell_character / abandon_run）直接挂进 phase.actionIds。",
+    "missingInformationPolicy.highRiskDecisionBehavior=never_auto_execute 的决策口径：高风险动作（卖出/弃局/重金刷新）在信息不足、冲突或低于 minimumConfidence 时绝不自动执行（STANDARD_v1.1 §operations/§missingInformationPolicy）。当前 C# 模型未建模 missingInformationPolicy（加载时进 LoadWarnings『schema 内未建模』），门控由 Action.IsHighRisk 硬编码两种 operationType 实现——字段建模与清单外高风险口径对齐留待后续批次。",
+    "演示对照设计：hold-and-stabilize（operationType=other，无高风险）为对照组，可正常参与三态评估；sell/abandon 两动作无论条件是否满足恒为 ⛔ 警示卡。signals 全空=BestMatch 0 分，不干扰自动推荐。",
+    "证据引用说明：本样例不引入新证据源，止损口径锚定 evidence-miyoushe-77037489 的 tier-none-restart（开局第五档『拉完了』：建议重开）；具体阈值（血量<10/<5）为演示参数，非作者数值，禁当攻略引用。"
+  ],
+  "applicability": {
+    "required": [],
+    "prohibited": [],
+    "defaultUnknownPolicy": "require_review"
+  },
+  "phases": [
+    {
+      "phaseId": "loss-streak-decision",
+      "title": "连败止损决策点（高风险演示）",
+      "order": 1,
+      "selector": {
+        "planeIds": [
+          2
+        ],
+        "nodeIds": [
+          "2-1"
+        ],
+        "nodeTypes": [
+          "preparation"
+        ]
+      },
+      "recommendedState": {
+        "economy": {
+          "min": null,
+          "max": null,
+          "unit": "coin"
+        },
+        "health": {
+          "min": null,
+          "max": null,
+          "unit": "health"
+        },
+        "level": {
+          "min": null,
+          "max": null,
+          "unit": "level"
+        },
+        "population": {
+          "min": null,
+          "max": null,
+          "unit": "population"
+        },
+        "remainingActionPoints": {
+          "min": null,
+          "max": null,
+          "unit": "action_point"
+        },
+        "lineup": {
+          "frontCharacterIds": [],
+          "backCharacterIds": [],
+          "benchCharacterIds": [],
+          "minimumStarsByCharacterId": {},
+          "acquisitionPriorities": []
+        },
+        "equipment": [],
+        "bondIds": [],
+        "investmentEnvironmentIds": [],
+        "investmentStrategyIds": []
+      },
+      "actionIds": [
+        "hold-and-stabilize",
+        "sell-carry-stop-bleeding",
+        "abandon-run-stop-loss"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-none-restart"
+        }
+      ],
+      "notes": [
+        "三动作同阶段并列展示三态分流：对照组 ReadyNow；两个高风险动作恒 WarningOnly+⛔（IsHighRisk 门控优先于条件评估，EvaluatePhase 先查 raw.Gated）。"
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "actionId": "hold-and-stabilize",
+      "title": "稳住不丢：连败期按购物计划补强",
+      "instruction": "连败但血量尚可时按既定购物计划补强（对照演示组）。本动作演示无高风险 operationType 的正常三态评估路径。",
+      "operationType": "other",
+      "priority": 70,
+      "conditions": [],
+      "benefits": [
+        "保留翻盘空间"
+      ],
+      "costs": [],
+      "risks": [
+        "连败期盲目刷新会加速出局（作者泛称口径）"
+      ],
+      "preconditions": [
+        "备战页可见"
+      ],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "source-metadata"
+        }
+      ]
+    },
+    {
+      "actionId": "sell-carry-stop-bleeding",
+      "title": "卖主C止损（高风险：绝不自动执行）",
+      "instruction": "血量濒危且主C已无翻盘作用时，演示口径：卖出主C回笼经济苟活——本条为演示用动作，无外部出处（所引 evidence-miyoushe-77037489 作者口径仅覆盖多次 D 牌找质量/忍受连败/建议重开止损，见 tier-none-restart，未覆盖卖主C止损）；软件侧按 missingInformationPolicy.highRiskDecisionBehavior=never_auto_execute 处理：只渲染 ⛔ 警示卡，永不进入『现在做』，绝不自动执行。",
+      "operationType": "sell_character",
+      "priority": 40,
+      "conditions": [
+        {
+          "field": "health",
+          "operator": "less_than",
+          "expected": 10,
+          "unknownPolicy": "require_review",
+          "evidenceRefs": [
+            {
+              "evidenceSetId": "evidence-miyoushe-77037489",
+              "claimId": "source-metadata"
+            }
+          ]
+        }
+      ],
+      "benefits": [
+        "回笼经济维持基础运营"
+      ],
+      "costs": [
+        "失去主C战力，基本放弃本局上限"
+      ],
+      "risks": [
+        "卖出不可逆；STANDARD_v1.1：卖出价=费用原价（官方教程口径），高风险操作必须尊重 highRiskDecisionBehavior"
+      ],
+      "preconditions": [
+        "血量濒危且主C无翻盘作用（演示口径）"
+      ],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [
+        "hold-and-stabilize"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "source-metadata"
+        }
+      ]
+    },
+    {
+      "actionId": "abandon-run-stop-loss",
+      "title": "弃局重开止损（高风险：绝不自动执行）",
+      "instruction": "质量与经济双无且血量濒危时，作者口径建议重开止损（『拉完了』档）；软件侧按 never_auto_execute 处理：只渲染 ⛔ 警示卡，永不进入『现在做』，绝不自动执行。",
+      "operationType": "abandon_run",
+      "priority": 30,
+      "conditions": [
+        {
+          "field": "health",
+          "operator": "less_than",
+          "expected": 5,
+          "unknownPolicy": "require_review",
+          "evidenceRefs": [
+            {
+              "evidenceSetId": "evidence-miyoushe-77037489",
+              "claimId": "tier-none-restart"
+            }
+          ]
+        }
+      ],
+      "benefits": [
+        "止损换局"
+      ],
+      "costs": [
+        "当前局投入作废"
+      ],
+      "risks": [
+        "弃局不可逆；与 opening-tier-selector 的 quality-roll-or-restart 同口径（该动作只在 branch 内、本样例首次进 phase）"
+      ],
+      "preconditions": [
+        "连败且质量/经济双无（作者口径）"
+      ],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [
+        "hold-and-stabilize"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-none-restart"
+        }
+      ]
+    }
+  ],
+  "branches": [
+    {
+      "branchId": "low-health-stop-loss",
+      "priority": 1,
+      "when": [
+        {
+          "field": "health",
+          "operator": "less_than",
+          "expected": 10,
+          "unknownPolicy": "require_review",
+          "evidenceRefs": [
+            {
+              "evidenceSetId": "evidence-miyoushe-77037489",
+              "claimId": "source-metadata"
+            }
+          ]
+        }
+      ],
+      "thenActionIds": [
+        "sell-carry-stop-bleeding",
+        "abandon-run-stop-loss"
+      ],
+      "otherwiseActionIds": [
+        "hold-and-stabilize"
+      ],
+      "transitionToPhaseId": null,
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "source-metadata"
+        }
+      ]
+    }
+  ],
+  "alternativeRoutes": [],
+  "risks": [
+    {
+      "riskId": "irreversible-highrisk-actions",
+      "severity": "high",
+      "description": "卖主C与弃局均为不可逆高风险动作；missingInformationPolicy.highRiskDecisionBehavior=never_auto_execute 要求信息不足/低置信时绝不自动执行。R5 P3-13 登记前该门控链路零样例覆盖，冒烟看到的警示卡全部来自全局 risks 而非高风险动作。",
+      "mitigation": "面板只警示：IsHighRisk→Gated→WarningOnly→『⛔』前缀；执行必须人工确认。",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-none-restart"
+        }
+      ]
+    }
+  ],
+  "missingInformationPolicy": {
+    "defaultBehavior": "mark_unknown",
+    "highRiskDecisionBehavior": "never_auto_execute",
+    "conflictBehavior": "preserve_all_sources",
+    "minimumConfidence": 0.6
+  },
+  "evidenceRefs": [
+    {
+      "evidenceSetId": "evidence-miyoushe-77037489",
+      "claimId": "source-metadata"
+    },
+    {
+      "evidenceSetId": "evidence-miyoushe-77037489",
+      "claimId": "tier-none-restart"
+    }
+  ]
+}

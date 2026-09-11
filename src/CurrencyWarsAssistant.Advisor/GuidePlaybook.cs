@@ -29,6 +29,8 @@ namespace CurrencyWarsAdvisor.GuidePlaybooks
         [JsonPropertyName("risks")] public List<Risk> Risks { get; set; } = new();
         [JsonPropertyName("craftingPaths")] public List<CraftingPath> CraftingPaths { get; set; } = new();
         [JsonPropertyName("guideCodes")] public List<GuideCode> GuideCodes { get; set; } = new();
+        // C 实装（v2.2 前置）：信源引用（平台/refId/url/title）——title 启发式映射 source_confidence。
+        [JsonPropertyName("sourceRefs")] public List<SourceRef>? SourceRefs { get; set; }
 
         /// <summary>白班工单#2：加载时发现的未建模字段路径（如 versionApplicability、actions[x].triggerArgs 外新字段）。
         /// 不报错（兼容未来小版本），但不再静默丢弃——面板/调用方可展示告警。</summary>
@@ -81,7 +83,7 @@ namespace CurrencyWarsAdvisor.GuidePlaybooks
 
         private static void CollectUnknownFields(JsonElement root, GuidePlaybook pb)
         {
-            // 根级双查：schema 外字段（拼写漂移）+ schema 内但 C# 模型未建模（如 applicability/versionApplicability，当前被静默丢弃）
+            // 根级双查：schema 外字段（拼写漂移）+ schema 内但 C# 模型未建模（ModeledRootProps 差集，建模后自动移出告警）
             foreach (var prop in root.EnumerateObject())
             {
                 if (!RootProps.Contains(prop.Name))
@@ -90,7 +92,8 @@ namespace CurrencyWarsAdvisor.GuidePlaybooks
                     pb.LoadWarnings.Add(prop.Name + "（schema 内未建模）");
             }
             if (root.TryGetProperty("signals", out var sig)) Scan(sig, SignalsProps, "signals", pb);
-            // R6 P3-3：已建模容器的二层扫描（recommendedState/shoppingPlan/applicability 内部不再静默丢弃）
+            // R6 P3-3+审计 09-11：已建模容器的二层扫描（recommendedState/shoppingPlan/applicability 内部不再静默丢弃；
+            // 嵌套字段已全部建模进数据类，schema 内未建模项由 Scan 照常告警）
             if (root.TryGetProperty("phases", out var phases) && phases.ValueKind == JsonValueKind.Array)
                 for (int i = 0; i < phases.GetArrayLength(); i++)
                 {
@@ -170,6 +173,8 @@ namespace CurrencyWarsAdvisor.GuidePlaybooks
         [JsonPropertyName("equipmentIds")] public List<string> EquipmentIds { get; set; } = new();
         [JsonPropertyName("bondIds")] public List<string> BondIds { get; set; } = new();
         [JsonPropertyName("investmentStrategyIds")] public List<string> InvestmentStrategyIds { get; set; } = new();
+        // P2（审计 09-11）补建模：schema 合法字段，此前静默丢弃。
+        [JsonPropertyName("investmentEnvironmentIds")] public List<string> InvestmentEnvironmentIds { get; set; } = new();
     }
 
     public sealed class Phase
@@ -182,6 +187,8 @@ namespace CurrencyWarsAdvisor.GuidePlaybooks
         [JsonPropertyName("recommendedState")] public RecommendedState? RecommendedState { get; set; }
         [JsonPropertyName("shoppingPlan")] public ShoppingPlan? ShoppingPlan { get; set; }
         [JsonPropertyName("notes")] public List<string> Notes { get; set; } = new();
+        // P2（审计 09-11）补建模：schema 合法字段，此前静默丢弃。
+        [JsonPropertyName("evidenceRefs")] public List<EvidenceRef>? EvidenceRefs { get; set; }
     }
 
     /// <summary>账号/版本层前置（applicability.required）——BestMatch 排除与面板提示用（第 2 期 B）。
@@ -219,6 +226,13 @@ namespace CurrencyWarsAdvisor.GuidePlaybooks
         [JsonPropertyName("refreshPolicy")] public string? RefreshPolicy { get; set; }
         [JsonPropertyName("stopWhen")] public List<string> StopWhen { get; set; } = new();
         [JsonPropertyName("notes")] public List<string> Notes { get; set; } = new();
+        // P2（审计 09-11）补建模：费用可达门控所需数据，此前静默丢弃。refreshBound/costFocus
+        // 数据形制未定，先以原始 JSON/字符串保形（不猜结构）。
+        [JsonPropertyName("keepGoldAtLeast")] public int? KeepGoldAtLeast { get; set; }
+        [JsonPropertyName("targetLevel")] public int? TargetLevel { get; set; }
+        [JsonPropertyName("spendDownToGold")] public int? SpendDownToGold { get; set; }
+        [JsonPropertyName("refreshBound")] public JsonElement? RefreshBound { get; set; }
+        [JsonPropertyName("costFocus")] public string? CostFocus { get; set; }
     }
 
     public sealed class Selector
@@ -251,6 +265,10 @@ namespace CurrencyWarsAdvisor.GuidePlaybooks
         [JsonPropertyName("benefits")] public List<string> Benefits { get; set; } = new();
         [JsonPropertyName("evidenceRefs")] public List<EvidenceRef>? EvidenceRefs { get; set; }
         [JsonPropertyName("risks")] public List<string> Risks { get; set; } = new();
+        // P2（审计 09-11）补建模：schema 合法字段，此前静默丢弃。costs 数据形制未定，保形不猜结构。
+        [JsonPropertyName("costs")] public JsonElement? Costs { get; set; }
+        [JsonPropertyName("preconditions")] public List<Condition> Preconditions { get; set; } = new();
+        [JsonPropertyName("invalidatesWhen")] public List<Condition> InvalidatesWhen { get; set; } = new();
 
         /// <summary>高风险动作（弃局/卖出等）面板只警示，永不作为"现在做"。</summary>
         public bool IsHighRisk => OperationType is "abandon_run" or "sell_character";
@@ -276,6 +294,9 @@ namespace CurrencyWarsAdvisor.GuidePlaybooks
         [JsonPropertyName("when")] public List<Condition> When { get; set; } = new();
         [JsonPropertyName("thenActionIds")] public List<string> ThenActionIds { get; set; } = new();
         [JsonPropertyName("otherwiseActionIds")] public List<string> OtherwiseActionIds { get; set; } = new();
+        // P2（审计 09-11）补建模：schema 合法字段，此前静默丢弃。
+        [JsonPropertyName("transitionToPhaseId")] public string? TransitionToPhaseId { get; set; }
+        [JsonPropertyName("evidenceRefs")] public List<EvidenceRef>? EvidenceRefs { get; set; }
     }
 
     public sealed class AlternativeRoute
@@ -296,6 +317,14 @@ namespace CurrencyWarsAdvisor.GuidePlaybooks
         [JsonPropertyName("resultId")] public string ResultId { get; set; } = "";
         [JsonPropertyName("inputIds")] public List<string> InputIds { get; set; } = new();
         [JsonPropertyName("note")] public string? Note { get; set; }
+    }
+
+    public sealed class SourceRef
+    {
+        [JsonPropertyName("platform")] public string Platform { get; set; } = "";
+        [JsonPropertyName("refId")] public string RefId { get; set; } = "";
+        [JsonPropertyName("url")] public string? Url { get; set; }
+        [JsonPropertyName("title")] public string? Title { get; set; }
     }
 
     public sealed class GuideCode

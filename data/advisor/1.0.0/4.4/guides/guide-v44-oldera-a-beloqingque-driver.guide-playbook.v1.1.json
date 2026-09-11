@@ -1,0 +1,1057 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-oldera-a-beloqingque-driver",
+ "title": "4.4 贝洛青雀「机甲驾驶员」：青雀佩贝洛伯格星徽驱动造物引擎的 0 行动值循环（3.7 期起源体系传承表，4.4 循环重算点已标注，old-era-a 转化）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-beloqingque-machine-driver",
+ "archetypeName": "贝洛青雀机甲驾驶员流（青雀刚需贝洛伯格星徽=驾驶员；布洛妮娅拉条+引擎充能构成 0 行动值循环：鸭拉雀→雀行动充能→引擎满拉伤害最高贝洛伯格角色；仙舟底座 5→7→10 档，2 战技点副羁绊；旧终极 7仙舟+6贝洛伯格因 4.4 档位重做不可表达，现行终极=10仙舟+2贝洛伯格）",
+ "goalIds": [
+  "stable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_64",
+   "currency_wars_character_12"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_54",
+   "currency_wars_character_43"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_130",
+   "currency_wars_equipment_123",
+   "currency_wars_equipment_055"
+  ],
+  "bondIds": [
+   "currency_wars_bond_02",
+   "currency_wars_bond_12",
+   "currency_wars_bond_23"
+  ],
+  "investmentEnvironmentIds": [],
+  "investmentStrategyIds": []
+ },
+ "sourceRefs": [
+  {
+   "platform": "miyoushe",
+   "refId": "70685621",
+   "url": "https://www.miyoushe.com/sr/article/70685621",
+   "title": "让我摸个鱼吧Moyu《【V3.7攻略】货币战争上分攻略丨机甲驾驶员雀总开高达》（2025-11-17，体系主源，全文快照在档）"
+  },
+  {
+   "platform": "bahamut",
+   "refId": "snA=12290",
+   "url": "https://forum.gamer.com.tw/C.php?bsn=72822&snA=12290",
+   "title": "巴哈姆特《貨幣戰爭好玩嗎?到底該怎麼玩?》B4/B10/B12 楼回帖群（2025-11-17~22，0 行动值循环原型+环境口碑）"
+  },
+  {
+   "platform": "internal",
+   "refId": "OLDER_VIDEO_AUDIT_MID482",
+   "url": "file://C:/Users/zzz81/Desktop/guide-research-v1.0.0/output-template/reports/OLDER_VIDEO_AUDIT_MID482.md",
+   "title": "MID482 审计：4.4 贝洛伯格 2/4/6→2/4、造物引擎充能上限 12→10（4.4 兴替断点锚）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "3.7",
+    "area": "体系起源（旧版口碑层）",
+    "change": "3.7 期起源并成为上分主流轮椅：青雀刚需贝洛伯格星徽当驾驶员、终极 7仙舟+6贝洛伯格 或 10仙舟+2贝洛伯格（70685621）；0 行动值循环原型（巴哈 12290 B4 楼）；『A8 打满 20 难一律轮椅贝洛青雀』（B10 楼）；低费 C 三分天下之一（71164174）。当时贝洛伯格档位含 6 档、造物引擎充能上限 12。",
+    "impact": "本表阵容骨架/装备路径/循环思路全部自 3.7 传承；3.7 的档位与充能参数在 4.4 已失效，见 4.4 条。",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+      "claimId": "phase-lineup-37"
+     },
+     {
+      "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+      "claimId": "zero-ap-loop-b4"
+     },
+     {
+      "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+      "claimId": "a8-environment-endorsement"
+     }
+    ]
+   },
+   {
+    "gameVersion": "4.4",
+    "area": "羁绊/召唤物层（贝洛伯格+造物引擎重做）",
+    "change": "贝洛伯格羁绊档位由 2/4/6 调为 2/4（『原 4 人口效果下沉至 2 人口』），造物引擎充能上限由 12 降至 10；现行文本：队员行动后为引擎充能，充满后攻击敌人并让伤害最高的贝洛伯格角色立即行动；引擎初始 6 能量/上限 10，充满 600%/1200% 火伤；2 级 36%/4 级 72% 增伤+2 级起全队总伤 25%→40%（MID482 审计+bond-compendium+BWIKI 现文本）。",
+    "impact": "①旧终极『7仙舟+6贝洛伯格』在现行 2/4 档位下不可表达，现行终极改为 10仙舟+2贝洛伯格；②引擎循环的充能节奏按初始 6/上限 10 重算，旧视频/旧帖的循环速度结论不可直抄；③现行充能触发为『行动后』而非 3.7 回帖的『耗点』——循环机制描述以现行文本为准。",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+      "claimId": "v44-engine-recalc"
+     },
+     {
+      "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+      "claimId": "v44-engine-current-text"
+     }
+    ]
+   },
+   {
+    "gameVersion": "4.4",
+    "area": "角色层（布洛妮娅形态）",
+    "change": "布洛妮娅（character_12）现行自带 bonds=大守护者+燃血+贝洛伯格，且有『基于小队中贝洛伯格和燃血角色数量加入人数更多的羁绊』的动态归属机制（bond-compendium）。",
+    "impact": "3.7『布洛妮娅有仙舟星徽更好』的结论在 4.4 需复核：其仙舟计数现在只能靠仙舟星徽（equipment_123）外挂，且动态归属机制可能与星徽计数叠加方式未定义——本表保留该操作但降级为待复核项。",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+      "claimId": "source-metadata"
+     }
+    ]
+   }
+  ],
+  "supersededBy": null,
+  "notes": [
+   "版本声明+兴替检查（RULES 三.3）：本表为旧版体系传承表——baseline 锚 4.4（现行参数），3.7 起源结论逐条标注版本归属；『主轴存活、参数必须重算』（A 批报告 §4-观察 10 原判定），非推倒重来的体系。",
+   "4.4 期社区静默：第三方侧零条贝洛青雀复测/推翻内容（A/B/C 三批深翻窗口扫描），按『未见推翻≠已复测』定级；4.6 贪饕重审触发器同样适用于本表（若贝洛伯格/造物引擎再改则本表作废重写）。",
+   "4.4 可行性锚点：iqizna 开局榜（M-03）将『贝洛伯格』列入开局『人上人』档（能打伤害的羁绊）——羁绊层在 4.4 存活；青雀体系层的 4.4 强度未复测。"
+  ]
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+      "claimId": "source-metadata"
+     }
+    ]
+   },
+   {
+    "field": "acquired_items",
+    "operator": "contains_any",
+    "expected": [
+     "currency_wars_equipment_130"
+    ],
+    "unknownPolicy": "require_review",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+      "claimId": "belo-badge-driver-requirement"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "beloqq-open-transition",
+   "title": "前期：仙舟+贝洛伯格低费过渡，补给只认鞋子和装甲",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation",
+     "reward"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_64"
+     ],
+     "backCharacterIds": [],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_64",
+       "priority": 1,
+       "targetStars": 2,
+       "note": "青雀=驾驶员本体，1 费低星可用；低费过渡期先上场"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_12",
+     "currency_wars_bond_02"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "actionIds": [
+    "open-lowcost-transition",
+    "prioritize-shoe-armor-supply"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "phase-lineup-37"
+    }
+   ],
+   "notes": [
+    "3.7 原文：『找仙舟和贝洛伯格的低费卡过渡即可，装备优先找鞋子和装甲』——过渡羁绊=仙舟+贝洛伯格双阵营低费；源未给等级/经济数值，recommendedState 数值域全部 null。"
+   ]
+  },
+  {
+   "phaseId": "beloqq-driver-online",
+   "title": "驾驶员就位：青雀佩贝洛伯格星徽，布洛妮娅挂仙舟星徽",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     1,
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_64",
+      "currency_wars_character_12"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_54"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_12",
+       "priority": 1,
+       "note": "布洛妮娅=循环另一齿轮（拉条+充能），5 费；来位即上"
+      },
+      {
+       "characterId": "currency_wars_character_54",
+       "priority": 2,
+       "note": "花火=充能副齿轮+2 战技点组件"
+      }
+     ],
+     "substituteCharacters": [
+      {
+       "characterId": "currency_wars_character_54",
+       "substitutes": [
+        "currency_wars_character_43"
+       ],
+       "note": "2 战技点位：花火或刻律德菈二选一（70685621 段 17 原文口径）"
+      }
+     ]
+    },
+    "equipment": [
+     {
+      "characterId": "currency_wars_character_64",
+      "equipmentIds": [
+       "currency_wars_equipment_130"
+      ],
+      "priority": 1,
+      "substituteEquipmentIds": []
+     },
+     {
+      "characterId": "currency_wars_character_12",
+      "equipmentIds": [
+       "currency_wars_equipment_123"
+      ],
+      "priority": 2,
+      "substituteEquipmentIds": []
+     }
+    ],
+    "bondIds": [
+     "currency_wars_bond_02",
+     "currency_wars_bond_12",
+     "currency_wars_bond_23"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "actionIds": [
+    "craft-belobog-badge-to-qingque",
+    "give-bronya-xianzhou-badge"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "belo-badge-driver-requirement"
+    }
+   ],
+   "notes": [
+    "装甲+红水晶=贝洛伯格星徽为 3.7 合成路径（70685621 段 15）；4.4 星徽获取渠道以现行游戏内为准（补给/合成入口未逐项对表）。",
+    "布洛妮娅挂仙舟星徽为 3.7 口径传承，4.4 因其动态羁绊归属机制列为待复核（见 versionApplicability.knownChanges[2] 与 risks.bronya-badge-form-44）。"
+   ]
+  },
+  {
+   "phaseId": "beloqq-loop-online",
+   "title": "中期：5 仙舟+2 战技点，0 行动值循环启动",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     1,
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation",
+     "battle"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "remainingActionPoints": {
+     "min": 0,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_64",
+      "currency_wars_character_12"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_54"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": []
+    },
+    "equipment": [
+     {
+      "characterId": "currency_wars_character_64",
+      "equipmentIds": [
+       "currency_wars_equipment_130",
+       "currency_wars_equipment_055"
+      ],
+      "priority": 1,
+      "substituteEquipmentIds": []
+     }
+    ],
+    "bondIds": [
+     "currency_wars_bond_12",
+     "currency_wars_bond_02",
+     "currency_wars_bond_23"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [],
+    "costFocus": [
+     1,
+     2
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "5 仙舟成阵+2 战技点组件（花火或刻律德菈）到手"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+      "claimId": "phase-lineup-37"
+     }
+    ],
+    "notes": [
+     "中期目标=『优先凑出 5 仙舟提升强度，可以额外找花火或刻律德菈配合青雀组成 2 战技点羁绊』（70685621 段 17）；源未给刷新预算，stopWhen 只锚结构。"
+    ]
+   },
+   "actionIds": [
+    "start-zero-ap-loop",
+    "mid-5xianzhou-2sp"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "zero-ap-loop-b4"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "v44-engine-current-text"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "phase-lineup-37"
+    }
+   ],
+   "notes": [
+    "循环以 4.4 现行文本重述：贝洛伯格队员行动后引擎充能（初始 6/上限 10）→充满攻击敌人+让伤害最高的贝洛伯格角色立即行动——3.7 回帖版『耗点充能』触发描述与现行文本不一致，执行层一律按现行文本（冲突已 preserve，见证据集 conflicts）。"
+   ]
+  },
+  {
+   "phaseId": "beloqq-endgame-tiers",
+   "title": "后期：尽快 7 仙舟，终极 10仙舟+2贝洛伯格（旧 6 贝洛档不可表达）",
+   "order": 4,
+   "selector": {
+    "planeIds": [
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation",
+     "battle",
+     "boss"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "remainingActionPoints": {
+     "min": 0,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_64",
+      "currency_wars_character_12"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_54"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": []
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_12",
+     "currency_wars_bond_02"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "actionIds": [
+    "rush-7xianzhou",
+    "endgame-10xianzhou-2belo"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "phase-lineup-37"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "v44-engine-recalc"
+    }
+   ],
+   "notes": [
+    "『尽快凑出 7 仙舟，否则很刮』（70685621 段 19）；现行仙舟档位 [3,5,7,10]、贝洛伯格档位 [2,4]——终极档位组合取 10仙舟+2贝洛伯格。",
+    "伤害主体=羁绊召唤物（『伤害都是高达打的』）：引擎 600%/1200% 火伤+神君段数为现行文本层口径，具体数值随档位兑现浮动。"
+   ]
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "open-lowcost-transition",
+   "title": "开局拿仙舟+贝洛伯格低费卡过渡",
+   "instruction": "前期商店只拿仙舟与贝洛伯格双阵营的低费卡（青雀 1 费优先上手）：双阵营底座同时服务后期两羁绊档位，过渡期不追星不买格子（3.7 口径传承）。",
+   "operationType": "buy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_64"
+   ],
+   "priority": 950,
+   "conditions": [
+    {
+     "field": "plane",
+     "operator": "equals",
+     "expected": 1,
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "双阵营低费底座=前期基础伤害过渡+后期档位储备"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "phase-lineup-37"
+    }
+   ]
+  },
+  {
+   "actionId": "prioritize-shoe-armor-supply",
+   "title": "补给优先鞋子和装甲（鞋→反重力皮靴；装甲+红水晶→贝洛伯格星徽）",
+   "instruction": "补给节点装备优先级=鞋子和装甲：鞋子合成反重力皮靴（equipment_055，青雀机动/启动件），装甲+红水晶合成贝洛伯格星徽（equipment_130，体系核心件）——装备优先于角色的体系需求（与 GOBS『补给挑装备』口径同构）。",
+   "operationType": "buy_equipment",
+   "targetCharacterIds": [],
+   "priority": 900,
+   "conditions": [],
+   "benefits": [
+    "驾驶员核心件+启动件双路径锁定"
+   ],
+   "costs": [
+    "过渡期角色质量让位装备"
+   ],
+   "risks": [],
+   "preconditions": [
+    "补给/奖励节点出现鞋或装甲"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "phase-lineup-37"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "belo-badge-driver-requirement"
+    }
+   ]
+  },
+  {
+   "actionId": "craft-belobog-badge-to-qingque",
+   "title": "贝洛伯格星徽到手立刻给青雀（驾驶员上任）",
+   "instruction": "贝洛伯格星徽（equipment_130）到手后立即给青雀佩戴：『核心是青雀刚需贝洛伯格星徽作为驾驶员』——星徽使青雀计入贝洛伯格羁绊计数并触发其特化玩法；无星徽则体系不成立（转 alternativeRoutes.pursuit-qingque-subtype 或换体系）。",
+   "operationType": "equip_badge",
+   "targetCharacterIds": [
+    "currency_wars_character_64"
+   ],
+   "priority": 999,
+   "conditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_130"
+     ],
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "体系成立：青雀=贝洛伯格计数成员+造物引擎循环齿轮"
+   ],
+   "costs": [
+    "星徽占用青雀装备位"
+   ],
+   "risks": [
+    "星徽获取失败=体系整体不可行（高严重度，见 risks.badge-dependency）"
+   ],
+   "preconditions": [
+    "装甲+红水晶已合成贝洛伯格星徽或补给直接产出"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "belo-badge-driver-requirement"
+    }
+   ],
+   "trigger": "on_equipment_acquired",
+   "triggerArgs": {
+    "equipmentId": "currency_wars_equipment_130"
+   }
+  },
+  {
+   "actionId": "give-bronya-xianzhou-badge",
+   "title": "布洛妮娅挂仙舟星徽（3.7 口径传承，4.4 待复核）",
+   "instruction": "『其次布洛妮娅有仙舟星徽更好』：给布洛妮娅佩戴仙舟星徽（equipment_123）使其计入仙舟羁绊计数，加速 5/7/10 仙舟档位兑现——注意 4.4 布洛妮娅自带大守护者/燃血/贝洛伯格三羁绊且有动态归属机制，星徽计数与动态归属的叠加行为未实测，执行前按 missingInformationPolicy 复核。",
+   "operationType": "equip_badge",
+   "targetCharacterIds": [
+    "currency_wars_character_12"
+   ],
+   "priority": 850,
+   "conditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_123"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "仙舟档位提前兑现（+1 计数）"
+   ],
+   "costs": [
+    "仙舟星徽机会成本（可给其他仙舟成员）"
+   ],
+   "risks": [
+    "4.4 动态归属机制下的计数行为未定义（待复核）"
+   ],
+   "preconditions": [
+    "布洛妮娅已上场且仙舟星徽在手"
+   ],
+   "invalidatesWhen": [
+    "仙舟档位已满（如已 10 仙舟）"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "belo-badge-driver-requirement"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "source-metadata"
+    }
+   ]
+  },
+  {
+   "actionId": "mid-5xianzhou-2sp",
+   "title": "中期凑 5 仙舟+2 战技点（花火或刻律德菈二选一）",
+   "instruction": "『优先凑出 5 仙舟提升强度，可以额外找花火或刻律德菈配合青雀组成 2 战技点羁绊』——花火（2 费后台，自带战技点+量子同频）优先；战技点组件同时是循环充能齿轮（3.7 回帖口径：耗点给花火充能；4.4 现行为行动后充能，花火高频行动等效供能）。",
+   "operationType": "buy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_54",
+    "currency_wars_character_43"
+   ],
+   "priority": 800,
+   "conditions": [],
+   "benefits": [
+    "5 仙舟强度档+2 战技点副羁绊",
+    "花火/刻律=青雀 2 战技点组件（星徽联动容错）"
+   ],
+   "costs": [
+    "中期经济投入"
+   ],
+   "risks": [],
+   "preconditions": [
+    "驾驶员已就位（青雀有贝洛伯格星徽）"
+   ],
+   "invalidatesWhen": [
+    "已进入 10 仙舟终局换阵"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "phase-lineup-37"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "zero-ap-loop-b4"
+    }
+   ]
+  },
+  {
+   "actionId": "start-zero-ap-loop",
+   "title": "启动 0 行动值循环（现行文本版：行动充能→引擎满拉伤害最高贝洛伯格角色）",
+   "instruction": "循环原理（4.4 现行文本重述）：贝洛伯格队员（青雀/布洛妮娅等）行动后为造物引擎充能（初始 6 能量/上限 10）→充满后引擎攻击敌人并让本场伤害最高的贝洛伯格角色立即行动→布洛妮娅拉条/引擎拉条互相喂行动→青雀高频行动持续供能与输出，形成接近 0 行动值消耗的循环（3.7 回帖版『鸭拉雀→雀耗点→机器人+花火充能→机器人满拉鸭』为同一循环的旧触发描述，已按 4.4 文本改写）。引擎伤害=600%/1200% 火伤（现行 BWIKI），『伤害都是高达打的』。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_64",
+    "currency_wars_character_12"
+   ],
+   "priority": 700,
+   "conditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_130"
+     ],
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "0 行动值循环=遭遇战行动值压力大幅下降",
+    "引擎火伤=前期基础伤害主力"
+   ],
+   "costs": [
+    "需手操维持行动顺序（『按得烦』）"
+   ],
+   "risks": [
+    "4.4 充能 12→10+触发改写后的实际循环启动轮次无实战样本（risks.loop-recalc-44）"
+   ],
+   "preconditions": [
+    "青雀佩贝洛伯格星徽+布洛妮娅上场"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "zero-ap-loop-b4"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "v44-engine-current-text"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "loop-synergy-crosscheck"
+    }
+   ]
+  },
+  {
+   "actionId": "rush-7xianzhou",
+   "title": "后期尽快凑 7 仙舟（否则很刮）",
+   "instruction": "『尽快凑出 7 仙舟，否则很刮』：7 仙舟=神君高段位档（现行仙舟 thresholds [3,5,7,10]），仙舟转/贝洛伯格转越多阵容越灵活——转职星徽优先服务于档位跃迁。",
+   "operationType": "buy_character",
+   "targetCharacterIds": [],
+   "priority": 600,
+   "conditions": [],
+   "benefits": [
+    "神君 7 档段数兑现（现文本 3/5/7/10 级段数 4→10）"
+   ],
+   "costs": [
+    "后期经济集中投入仙舟组件"
+   ],
+   "risks": [],
+   "preconditions": [
+    "中期 5 仙舟已稳"
+   ],
+   "invalidatesWhen": [
+    "已 10 仙舟"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "phase-lineup-37"
+    }
+   ]
+  },
+  {
+   "actionId": "endgame-10xianzhou-2belo",
+   "title": "终局档位：10仙舟+2贝洛伯格（旧 7仙舟+6贝洛伯格不可表达）",
+   "instruction": "终极目标在 4.4 取『10仙舟+2贝洛伯格』（现行两羁绊档位均可表达）；3.7 原文另一终极『7仙舟+6贝洛伯格』因 4.4 贝洛伯格档位 2/4/6→2/4 不再可表达——引用旧攻略见到 6 贝洛档目标一律按本条改写。伤害主体=神君段数+造物引擎火伤双召唤物。",
+   "operationType": "other",
+   "targetCharacterIds": [],
+   "priority": 500,
+   "conditions": [],
+   "benefits": [
+    "现行档位下的最高双召唤物伤害形态"
+   ],
+   "costs": [
+    "10 仙舟人口与经济门槛高"
+   ],
+   "risks": [
+    "10 仙舟未成时输出回落 7 仙舟档（中途档位管理见 rush-7xianzhou）"
+   ],
+   "preconditions": [
+    "7 仙舟已兑现+经济允许冲 10 档"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [
+    "rush-7xianzhou"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "phase-lineup-37"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "v44-engine-recalc"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "engine-quant-38"
+    }
+   ]
+  }
+ ],
+ "branches": [
+  {
+   "branchId": "beloborg-badge-gate",
+   "priority": 1,
+   "when": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_130"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "thenActionIds": [
+    "craft-belobog-badge-to-qingque",
+    "give-bronya-xianzhou-badge",
+    "mid-5xianzhou-2sp",
+    "start-zero-ap-loop"
+   ],
+   "otherwiseActionIds": [],
+   "transitionToPhaseId": "beloqq-loop-online",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "belo-badge-driver-requirement"
+    }
+   ]
+  }
+ ],
+ "alternativeRoutes": [
+  {
+   "routeId": "pursuit-qingque-subtype",
+   "title": "无贝洛伯格星徽但有追击星徽：转追击青雀亚型（7仙舟2战技点/7仙舟2治疗）",
+   "triggerConditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_none",
+     "expected": [
+      "currency_wars_equipment_130"
+     ],
+     "unknownPolicy": "require_review"
+    },
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_141"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [],
+   "tradeoffs": [
+    "亚型共享『仙舟底座+青雀 0 行动值』骨架：追击徽章流青雀【7仙舟2战技点】（BV1CvkrBZE12，3.7）/无敌追击青雀【7仙舟2治疗】（miyou 70842589，3.7）——0 行动值无限动+神君充电宝",
+    "亚型代价：『要手操，凹一个追击星辉，有些 boss 词条要避免』（70842589 自述）；两源均为简介/回帖层，视频内容层未转写，4.4 追击星徽归类修复后属『越新越强』路径但需按现行表重配",
+    "本表不结构化亚型运营节点（证据仅 claim 级），成型后可另立附表"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "pursuit-qingque-subtype"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "lowcost-c-trio"
+    }
+   ]
+  },
+  {
+   "routeId": "no-badge-generic-line",
+   "title": "两星徽均不可得：放弃青雀体系，回开局分档决策树",
+   "triggerConditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_none",
+     "expected": [
+      "currency_wars_equipment_130",
+      "currency_wars_equipment_141"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [],
+   "tradeoffs": [
+    "『低费 C 从头玩到尾只有三个：万敌/青雀/阿雅』（71164174）——青雀两大开局前提（追击转或贝洛伯格转）都不成立时按该口径换线",
+    "回 guide-v44-opening-tier-selector 重估开局质量档；保留仙舟低费底座可平滑转通用仙舟体系"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "lowcost-c-trio"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [],
+ "risks": [
+  {
+   "riskId": "loop-recalc-44",
+   "severity": "high",
+   "description": "4.4 贝洛伯格 2/4/6→2/4+造物引擎充能 12→10（且现行触发文本为『行动后充能』）——3.7 旧循环的启动速度/伤害节奏全部失效，审计定性『不只是数值重算』；4.4 期无本体系复测样本，重算后的循环启动轮次未知。",
+   "mitigation": "本表循环一律按 4.4 现行文本（初始 6 能量/上限 10/行动后充能/充满拉伤害最高贝洛伯格角色）执行；引用任何旧贝洛青雀攻略前先过 versionApplicability 过滤；待 4.4 实战样本后回填循环节奏。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "v44-engine-recalc"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "v44-engine-current-text"
+    }
+   ]
+  },
+  {
+   "riskId": "badge-dependency",
+   "severity": "high",
+   "description": "体系单点依赖贝洛伯格星徽（『青雀刚需』）：装甲+红水晶合成路径受红钻供给波动影响，星徽不到手则驾驶员循环整体不成立。",
+   "mitigation": "补给优先级提前锁装甲（prioritize-shoe-armor-supply）；星徽不可得时按 branches/alternativeRoutes 转追击亚型或换体系，不强凑。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "belo-badge-driver-requirement"
+    }
+   ]
+  },
+  {
+   "riskId": "old-guide-6belo-trap",
+   "severity": "medium",
+   "description": "旧攻略（含本体系 3.7 主源）的终极目标『7仙舟+6贝洛伯格』在现行档位下不可表达——直接照抄旧帖会追求不存在的 6 贝洛档，浪费人口与经济。",
+   "mitigation": "终局一律取 endgame-10xianzhou-2belo（10仙舟+2贝洛伯格）；看到任何『6 贝洛伯格』表述按 4.4 档位表改写。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "v44-engine-recalc"
+    }
+   ]
+  },
+  {
+   "riskId": "manual-operation-cost",
+   "severity": "medium",
+   "description": "循环需持续手操维持行动顺序（B10『缺点按得烦』+亚型自述『要手操』）：挂机场景下循环供能断档，输出回落。",
+   "mitigation": "自动挂机场景降级使用（当普通仙舟阵容打）；手操场景按『青雀→布洛妮娅→青雀』优先行动序维持引擎供能。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "a8-environment-endorsement"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "pursuit-qingque-subtype"
+    }
+   ]
+  },
+  {
+   "riskId": "bronya-badge-form-44",
+   "severity": "low",
+   "description": "『布洛妮娅挂仙舟星徽更好』为 3.7 口径：4.4 布洛妮娅自带大守护者/燃血/贝洛伯格羁绊与动态归属机制，外挂仙舟星徽的实际计数/互斥行为未实测。",
+   "mitigation": "give-bronya-xianzhou-badge 已标 unknownPolicy=require_review；执行前在羁绊面板确认布洛妮娅当前羁绊归属，仙舟计数不足时优先把仙舟星徽让给其他仙舟成员。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+     "claimId": "source-metadata"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+   "claimId": "source-metadata"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+   "claimId": "belo-badge-driver-requirement"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+   "claimId": "phase-lineup-37"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+   "claimId": "zero-ap-loop-b4"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+   "claimId": "a8-environment-endorsement"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+   "claimId": "pursuit-qingque-subtype"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+   "claimId": "lowcost-c-trio"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+   "claimId": "engine-quant-38"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+   "claimId": "loop-synergy-crosscheck"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+   "claimId": "v44-engine-recalc"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+   "claimId": "v44-engine-current-text"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-a-beloqingque-machine",
+   "claimId": "post37-silent-context"
+  }
+ ],
+ "notes": [
+  "转化来源：deep-hunt-old-era.md §3.11 首条（A 批 78 候选）——A 批 §3.1~§3.10 细节已由 evidence-multi-old-era-37-41（50 键结构前身批次）收录，本表只消化该报告残余的最高价值体系；快照与互证材料全部在档，零新增抓取。",
+  "体系空白判定：既有 21+3 份 playbook（samples）无任何青雀/造物引擎主输出样本（全库检索零命中）；本表为该体系首条结构化证据链，与 guide-v44-oldera-b-quantum-seele（同批 B 表）在『造物引擎拉条循环』机制上互为旁证但体系互斥（驾驶员主输出 vs 量子斩杀主 C）。",
+  "兴替检查示范（RULES 三.3）：本表 knownChanges 三条把『3.7 起源口碑→4.4 结构性重做→布洛妮娅形态变化』逐条归属版本，旧终极阵容不可表达判例写入 risks.old-guide-6belo-trap。",
+  "攻略码纪律（RULES 七.0）：亚型两条源（BV1CvkrBZE12/miyou 70842589）简介含攻略码，本表与证据集均不收录码字符串。",
+  "数值纪律：recommendedState 数值域除循环向 remainingActionPoints 下限 0 外全部 null；引擎/神君/羁绊数值只存在于 claims/instruction 文本层并标来源与可信层级；源未给的等级/经济/刷新预算一律不编造。",
+  "v1.2 字段使用：actions.craft-belobog-badge-to-qingque 携带 trigger=on_equipment_acquired+triggerArgs；phases.beloqq-driver-online lineup.substituteCharacters 承载花火↔刻律德菈二选一。"
+ ]
+}

@@ -1,0 +1,1085 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-oldera-b-quantum-seele",
+ "title": "4.4 量子希儿斩杀/再现循环：压血线→阈值追加攻击收割→再动循环的几乎无限行动体系（3.7 起源→4.2 强化复活→4.3 延续，old-era-b 转化）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-quantum-seele-execution-loop",
+ "archetypeName": "量子希儿斩杀流（3 费前台主 C：敌方血量压至阈值→自动追加攻击收割→触发天赋再现再次行动→两次攻击再触发再现=几乎无限行动循环；斩杀阈值为可成长词条（星级+量子同频档位），3.7 口径 3 星+4 量子=35% 斩杀线；4.2 口碑『阿雅之下第一人』+全体系护航位；4.2 出装换代=双火力风暴潮+高周波电锯）",
+ "goalIds": [
+  "stable",
+  "a840-capable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_35"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_36",
+   "currency_wars_character_54",
+   "currency_wars_character_27",
+   "currency_wars_character_23",
+   "currency_wars_character_49"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_066",
+   "currency_wars_equipment_083"
+  ],
+  "bondIds": [
+   "currency_wars_bond_22",
+   "currency_wars_bond_23",
+   "currency_wars_bond_02"
+  ],
+  "investmentEnvironmentIds": [],
+  "investmentStrategyIds": []
+ },
+ "sourceRefs": [
+  {
+   "platform": "miyoushe",
+   "refId": "75254819",
+   "url": "https://www.miyoushe.com/sr/article/75254819",
+   "title": "Jape《【V4.2攻略】货币战争4.2最强势的3费》（2026-05-10，4.2 机制/出装主源，全文快照在档）"
+  },
+  {
+   "platform": "miyoushe",
+   "refId": "75227513",
+   "url": "https://www.miyoushe.com/sr/article/75227513",
+   "title": "风风风风风瑾《货币战争A8-40各流派个人评价》（2026-05-09，4.2 口碑定位与弱点主源）"
+  },
+  {
+   "platform": "internal",
+   "refId": "BV1SqkSBbEVu.report",
+   "url": "file://C:/Users/zzz81/Desktop/cw-guide-night-20260905/research/guides/game_reports/BV1SqkSBbEVu.report.md",
+   "title": "念熙 3.7 期量子希儿斩杀流教学局转写报告（2025-11-09，103.4 万播放，斩杀阈值机制起源锚）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "3.7",
+    "area": "体系起源（机制层）",
+    "change": "3.7 首发周确立机制底座：斩杀阈值=可成长词条（星级+量子同频提升），3 星+4 量子=35% 斩杀线；七人口 4量子+2贝洛+2盛会+2战技点配方；出装电锯刚需+火力风暴潮；三费主C『幸运暴击>前台强度』取向（BV1SqkSBbEVu，百万播放教学，转写在档）。",
+    "impact": "机制骨架（阈值收割+再现循环）为体系不变的底座；3.7 数值（35% 线）与出装单风暴潮形态已过时。",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+      "claimId": "lineage-37-execution-mechanic"
+     },
+     {
+      "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+      "claimId": "lineage-37-lineup"
+     }
+    ]
+   },
+   {
+    "gameVersion": "4.2",
+    "area": "角色强化+A8-40 环境（复活与口碑登顶）",
+    "change": "4.2 希儿『加强之后卷土重来』（Jape，官方改动条目归属未逐条对表——同期锚点含追击 150→300/A8-40 上线）：阈值追加攻击+再现循环文本化；出装换代=双火力风暴潮（每次攻击+10% 强度叠层，与高频攻击耦合）+高周波电锯（幸运一击伤害+10%）；口碑=『阿雅之下第一人』『4.2 上分首选』，并承担任意后期风暴潮主 C 的护航位；低成本版=【4量子同频2列车同行】（星穹中心）。",
+    "impact": "本表 4.2 层为体系最强形态口径；A8-40 敌人血量变厚使 3.7 期三费主 C（白厄）让位、希儿吃加强上位——跨版本引用 3.7 出装与强度结论一律失效。",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+      "claimId": "v42-buff-revival"
+     },
+     {
+      "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+      "claimId": "v42-equipment-jape"
+     },
+     {
+      "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+      "claimId": "v42-tier-word"
+     }
+    ]
+   },
+   {
+    "gameVersion": "4.3",
+    "area": "环境话语延续",
+    "change": "4.3 期环境全评以『欢愉战舰 vs 量子战舰』对垒（BV1Xt7C69EGX，本批唯一 4.3 环境全评）——量子希儿系以『量子战舰』话语保持第一梯队；B2 报告 §4-A6：4.2 起至 4.3 仍是上分首选。",
+    "impact": "体系在 4.3 无削弱/重做痕迹；运营参数未见 4.3 专帖更新（传播面以 B站层为主）。",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+      "claimId": "lineage-43-quantum-battleship"
+     }
+    ]
+   },
+   {
+    "gameVersion": "4.4",
+    "area": "静默存活+待复测缺口",
+    "change": "4.4 期第三方侧未见削弱公告/推翻内容（B2 报告 §4-A6+C 批窗口扫描）；目录结构核对通过：希儿=character_35（3 费前台，贝洛伯格+量子同频）、量子同频档位 [2,3,4,5]（3 星+4 量子结构可达成）。缺口：35% 斩杀线等具体数值在 4.2 乘区调整与 4.4 数值层改动后未复测。",
+    "impact": "本表结构层（循环/配队/出装框架）可按 4.4 执行；一切具体数值（斩杀线%、+10% 叠层）只作文本层参考，不得作自动执行阈值。",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+      "claimId": "v44-status-catalog"
+     }
+    ]
+   }
+  ],
+  "supersededBy": null,
+  "notes": [
+   "版本声明+兴替检查（RULES 三.3）：本表为跨版本谱系表——3.7 起源（机制发明）→4.2 强化复活（出装换代+口碑登顶）→4.3 话语延续→4.4 静默存活；引用任何单时点结论必须带版本，3.7 末『希儿中规中矩』（19 流派总结）与 4.2『阿雅之下第一人』的口碑反转是库内少见的同版本内定级分歧样本（首发周教学帖 vs 期 stagnant 末口碑）。",
+   "4.5 期按『社区静默=未见推翻≠已复测』定级（C 批口径沿用）；4.6 贪饕重审触发器适用于本表。",
+   "机制登记落实：BV1SqkSBbEVu 报告④曾登记『斩杀阈值可成长为 playbook 未收录机制、schema 无斩杀线字段』——本表以 risks.execution-threshold-unverified 承载该缺口，斩杀线不入结构化数值字段。"
+  ]
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+      "claimId": "source-metadata"
+     }
+    ]
+   },
+   {
+    "field": "character_stars",
+    "operator": "greater_or_equal",
+    "expected": "currency_wars_character_35=1",
+    "unknownPolicy": "require_review",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+      "claimId": "lineage-37-lineup"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "seele-early-economy",
+   "title": "前期：保经济速升 7 级找希儿（可合法卖血）",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation",
+     "battle"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 1,
+     "max": 7,
+     "unit": "level"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [],
+     "backCharacterIds": [
+      "currency_wars_character_49"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_35",
+       "priority": 1,
+       "targetStars": 2,
+       "note": "体系唯一刚需件：3 费希儿，商店 7 级窗口开找"
+      },
+      {
+       "characterId": "currency_wars_character_49",
+       "priority": 2,
+       "note": "希儿来早可与佩拉组 2 贝洛伯格过渡（拉条+三费数值）"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_02"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_35"
+    ],
+    "targetLevel": {
+     "min": 7,
+     "max": 7,
+     "unit": "level"
+    },
+    "costFocus": [
+     3
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "希儿 2 星到手（二阶段两星够用口径）"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+      "claimId": "lineage-37-lineup"
+     }
+    ],
+    "notes": [
+     "3.7 教学口径：『尽量不掉血+保经济速升 7 级找希儿』；投资策略取向=前后台强度/幸运一击+经济类（『这套阵容对金币需求比较大』）。"
+    ]
+   },
+   "actionIds": [
+    "rush-level-7-find-seele",
+    "sell-blood-keep-economy",
+    "pair-pela-belobog-transition"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-lineup"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-equipment"
+    }
+   ],
+   "notes": [
+    "level 上限 7 为 3 费卡商店窗口常规锚（3.7 配方口径）；源未给经济数值，economy 数值域 null。"
+   ]
+  },
+  {
+   "phaseId": "seele-2star-window",
+   "title": "二阶段：两星希儿够用，电锯+风暴潮上装",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     1,
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation",
+     "reward"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 7,
+     "max": null,
+     "unit": "level"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_35"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_49"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_35": 2
+     },
+     "acquisitionPriorities": []
+    },
+    "equipment": [
+     {
+      "characterId": "currency_wars_character_35",
+      "equipmentIds": [
+       "currency_wars_equipment_083",
+       "currency_wars_equipment_066"
+      ],
+      "priority": 1,
+      "substituteEquipmentIds": []
+     }
+    ],
+    "bondIds": [
+     "currency_wars_bond_22",
+     "currency_wars_bond_02"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "actionIds": [
+    "equip-saw-stormsurge",
+    "lucky-crit-over-frontpower"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-equipment"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "v42-equipment-jape"
+    }
+   ],
+   "notes": [
+    "出装两代口径并载：3.7=电锯刚需+单风暴潮+幸运暴击散件；4.2=双风暴潮+电锯（叠层与攻击频次耦合）——4.4 执行取 4.2 形态，数值作文本层参考。"
+   ]
+  },
+  {
+   "phaseId": "seele-3star-rush",
+   "title": "3-1 前追三星希儿+凑 4 量子同频（斩杀线成长）",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 7,
+     "max": null,
+     "unit": "level"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_35"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_54",
+      "currency_wars_character_27",
+      "currency_wars_character_23"
+     ],
+     "benchCharacterIds": [
+      "currency_wars_character_36",
+      "currency_wars_character_30",
+      "currency_wars_character_43"
+     ],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_35": 3
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_35",
+       "priority": 1,
+       "targetStars": 3,
+       "note": "3-1 前追到三星（斩杀线随星级成长）"
+      }
+     ],
+     "substituteCharacters": [
+      {
+       "characterId": "currency_wars_character_36",
+       "substitutes": [
+        "currency_wars_character_29"
+       ],
+       "note": "3.7 可变件：无转职时知更鸟/布洛妮娅按需顶替周日位（『记忆主』未入目录，文本层见证据集）"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_22",
+     "currency_wars_bond_09",
+     "currency_wars_bond_23",
+     "currency_wars_bond_02"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_35"
+    ],
+    "costFocus": [
+     3
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "希儿 3 星（3-1 节点前）"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+      "claimId": "lineage-37-lineup"
+     }
+    ],
+    "notes": [
+     "『质量实在低+装备不对→建议重开』为 UP 明示止损口径（与马拉松式硬打口径相反，教学目标=上分效率）。"
+    ]
+   },
+   "actionIds": [
+    "chase-3star-before-3-1",
+    "quantum-4-stack"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-lineup"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-execution-mechanic"
+    }
+   ],
+   "notes": [
+    "4 量子同频=斩杀线成长轴（3.7 口径 3星4量子=35%）；4.2 低成本版为 4量子2列车（星穹中心）——4 量子档在现行目录 [2,3,4,5] 结构可达。"
+   ]
+  },
+  {
+   "phaseId": "seele-execution-endgame",
+   "title": "终局：压血线→阈值收割→再现循环（0 行动值形态）",
+   "order": 4,
+   "selector": {
+    "planeIds": [
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "battle",
+     "boss",
+     "encounter"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "remainingActionPoints": {
+     "min": 0,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_35"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_54",
+      "currency_wars_character_27",
+      "currency_wars_character_23"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_35": 3
+     },
+     "acquisitionPriorities": []
+    },
+    "equipment": [
+     {
+      "characterId": "currency_wars_character_35",
+      "equipmentIds": [
+       "currency_wars_equipment_066",
+       "currency_wars_equipment_066",
+       "currency_wars_equipment_083"
+      ],
+      "priority": 1,
+      "substituteEquipmentIds": []
+     }
+    ],
+    "bondIds": [
+     "currency_wars_bond_22",
+     "currency_wars_bond_23",
+     "currency_wars_bond_02"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "actionIds": [
+    "execution-loop-reap"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "v42-buff-revival"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-execution-mechanic"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "v42-lineup-4q2train"
+    }
+   ],
+   "notes": [
+    "equipment 同 ID 重复=双火力风暴潮（4.2 形态，equipmentIds 数组允许同 ID 重复计数，validator 对 equipmentIds 只做存在性校验）；若校验口径不接受重复，执行层按『风暴潮×2+电锯×1』文本理解。",
+    "『0 行动值逆机制瞬秒 BOSS』（BV1AA9QBDEtb 标题口径）为终局形态：循环成型后行动值消耗趋零。"
+   ]
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "rush-level-7-find-seele",
+   "title": "保经济速升 7 级找希儿",
+   "instruction": "『尽量不掉血+保经济速升 7 级找希儿』（3.7 配方，4.2 上分首选延续）：经济类投资策略优先（『这套阵容对金币需求比较大』）；7 级=3 费希儿商店窗口。",
+   "operationType": "buy_xp",
+   "targetCharacterIds": [
+    "currency_wars_character_35"
+   ],
+   "priority": 950,
+   "conditions": [],
+   "benefits": [
+    "3 费主 C 最快入柜+经济不破 50 利息线"
+   ],
+   "costs": [
+    "前期战力投入减少"
+   ],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [
+    "希儿已 2 星且质量达标"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-lineup"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-equipment"
+    }
+   ]
+  },
+  {
+   "actionId": "sell-blood-keep-economy",
+   "title": "合法卖血：质量不高时卖血换二阶段速升",
+   "instruction": "『前期质量实在不高，可以简单卖一些血量到二阶段速升期寻找三星希儿』——卖血=速升成本，不追求连败收益（与连败流不同）；配合『质量实在低+装备不对→建议重开』的止损线使用。",
+   "operationType": "other",
+   "targetCharacterIds": [],
+   "priority": 700,
+   "conditions": [
+    {
+     "field": "health",
+     "operator": "greater_than",
+     "expected": 40,
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "二阶段速升找三星的容错空间"
+   ],
+   "costs": [
+    "血量容错（晋升档位下探风险）"
+   ],
+   "risks": [
+    "40 期望值为保守锚（源未给数值，require_review）"
+   ],
+   "preconditions": [
+    "希儿未 2 星且经济不足速刷"
+   ],
+   "invalidatesWhen": [
+    "血量进入低晋升档（<40）"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-lineup"
+    }
+   ]
+  },
+  {
+   "actionId": "pair-pela-belobog-transition",
+   "title": "希儿来早与佩拉组 2 贝洛伯格过渡",
+   "instruction": "『早期希儿来早可与佩拉组贝洛伯格（拉条+三费数值过渡）』：2 贝洛伯格同时给造物引擎供能（引擎充满拉伤害最高贝洛伯格角色=希儿吃拉条），为再现循环提前搭齿轮；推荐过渡羁绊池（3.7 口径）=燃血夜神/列车同行/贝洛伯格持续伤害/群攻/狙击。",
+   "operationType": "buy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_49",
+    "currency_wars_character_35"
+   ],
+   "priority": 800,
+   "conditions": [],
+   "benefits": [
+    "过渡强度+引擎拉条齿轮提前就位"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "希儿已到手"
+   ],
+   "invalidatesWhen": [
+    "4 量子成型（过渡件让位量子组件）"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-lineup"
+    }
+   ]
+  },
+  {
+   "actionId": "equip-saw-stormsurge",
+   "title": "电锯刚需+火力风暴潮（4.2 形态=双风暴潮+电锯）",
+   "instruction": "希儿出装：高周波电锯（equipment_083）刚需+火力风暴潮（equipment_066）——4.2 换代形态为『两个火力风暴潮：每次攻击都提高 10% 强度，配合几乎无限循环的追加攻击叠层』+电锯（幸运一击伤害+10%）；3.7 形态为电锯+单风暴潮+幸运暴击散件。+10% 数值为攻略文本层，4.2 乘区调整后未复测。",
+   "operationType": "buy_equipment",
+   "targetCharacterIds": [
+    "currency_wars_character_35"
+   ],
+   "priority": 900,
+   "conditions": [],
+   "benefits": [
+    "叠层收益与循环攻击频次耦合（越打越强）"
+   ],
+   "costs": [
+    "风暴潮需求量上升（双件）"
+   ],
+   "risks": [
+    "+10% 数值未在 4.4 复测（risks.execution-threshold-unverified 同源缺口）"
+   ],
+   "preconditions": [
+    "补给/合成产出电锯或风暴潮"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "v42-equipment-jape"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-equipment"
+    }
+   ],
+   "trigger": "on_equipment_acquired",
+   "triggerArgs": {
+    "equipmentId": "currency_wars_equipment_066"
+   }
+  },
+  {
+   "actionId": "lucky-crit-over-frontpower",
+   "title": "三费主C取向：幸运暴击>前台强度",
+   "instruction": "『希儿作为三费卡，前台强度数值不如高费卡给得慷慨，所以不一定非得堆前台强度，反而更刚需幸运暴击来搭配斩杀机制』——散件选择优先幸运暴击/幸运一击池（斩舰刀/战场强化手册类为 3.7 例，斩舰刀在他系语境另有『陷阱』评价，不并案）；辅助位=胜利之旗/武器大师/信息注入器（3.7 口径）。",
+   "operationType": "other",
+   "targetCharacterIds": [
+    "currency_wars_character_35"
+   ],
+   "priority": 750,
+   "conditions": [],
+   "benefits": [
+    "斩杀机制与幸运一击协同（触发率即收割率）"
+   ],
+   "costs": [
+    "面板强度成长让位"
+   ],
+   "risks": [
+    "4.2 乘区调整后『幸运暴击>前台强度』的相对收益未复测"
+   ],
+   "preconditions": [
+    "电锯+风暴潮已到位（散件溢出阶段）"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-equipment"
+    }
+   ]
+  },
+  {
+   "actionId": "chase-3star-before-3-1",
+   "title": "3-1 前追三星希儿",
+   "instruction": "『二阶段两星希儿够用；3-1 前追到三星希儿』——三星=斩杀线成长终点（3.7：3 星+4 量子=35% 斩杀线）+4.2 双风暴潮叠层载体；『搜到关键卡一星即可停手』的社区通用纪律在此让位于三星目标（体系刚需）。",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_35"
+   ],
+   "priority": 850,
+   "conditions": [
+    {
+     "field": "character_stars",
+     "operator": "less_than",
+     "expected": "currency_wars_character_35=3",
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "斩杀线成长上限+全伤害形态成型"
+   ],
+   "costs": [
+    "经济集中投入（对金币需求大）"
+   ],
+   "risks": [
+    "追三失败=按止损口径转护航位或重开（alternativeRoutes）"
+   ],
+   "preconditions": [
+    "希儿 2 星到手+经济≥可刷新水位"
+   ],
+   "invalidatesWhen": [
+    "希儿已 3 星"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-lineup"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-execution-mechanic"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 7
+   }
+  },
+  {
+   "actionId": "quantum-4-stack",
+   "title": "凑 4 量子同频（斩杀线成长轴）",
+   "instruction": "『这个百分比可以通过升星以及量子同频来进行提升』——量子组件=花火（2 费后台，自带量子同频+战技点+盛会）/银狼（4 费，量子同频）/符玄（4 费后台，量子同频）+希儿本体=4 量子（3.7 配方）；4.2 低成本版为【4量子同频2列车同行】（星穹中心，成员表未转写）。量子同频星徽（equipment_142）可作计数外挂。",
+   "operationType": "buy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_54",
+    "currency_wars_character_27",
+    "currency_wars_character_23"
+   ],
+   "priority": 820,
+   "conditions": [],
+   "benefits": [
+    "斩杀阈值档位成长（结构可达：现行 4 量子档存在）"
+   ],
+   "costs": [
+    "4 个组件位挤压副羁绊"
+   ],
+   "risks": [],
+   "preconditions": [
+    "希儿在阵"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-execution-mechanic"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-lineup"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "v42-lineup-4q2train"
+    }
+   ]
+  },
+  {
+   "actionId": "execution-loop-reap",
+   "title": "压血线→阈值收割→再现循环（终局执行）",
+   "instruction": "执行序列（Jape 4.2 机制文本）：①先用全队输出把敌方血量压到斩杀阈值内（『我们需要先将敌方血量降低到一定阈值以内』）→②希儿自动追加攻击收割→触发天赋再现再次行动→两次攻击再触发再现=『不断循环输出』『几乎无限行动』；配合双风暴潮叠层（每次攻击+10% 强度）越打越强。『0 行动值逆机制瞬秒 BOSS』（栎格格标题口径）为成型形态；3-7 不召唤小怪 boss（卡芙卡/五合一）收割目标少『会稍微难受，不过一样一脚踹死』（风瑾）。",
+   "operationType": "start_battle",
+   "targetCharacterIds": [
+    "currency_wars_character_35"
+   ],
+   "priority": 600,
+   "conditions": [
+    {
+     "field": "character_stars",
+     "operator": "greater_or_equal",
+     "expected": "currency_wars_character_35=2",
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "行动值消耗趋零+BOSS 级斩杀上限"
+   ],
+   "costs": [
+    "前中期手操压血线（『前中期吃一点手操』）"
+   ],
+   "risks": [
+    "『战个痛快』词条非常怕（enemy_affix_t2_10，见 risks.war-of-joy-affix）"
+   ],
+   "preconditions": [
+    "希儿 2 星+电锯/风暴潮在身"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "v42-buff-revival"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "v42-tier-word"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "v42-lineup-4q2train"
+    }
+   ]
+  }
+ ],
+ "branches": [
+  {
+   "branchId": "seele-2star-gate",
+   "priority": 1,
+   "when": [
+    {
+     "field": "character_stars",
+     "operator": "greater_or_equal",
+     "expected": "currency_wars_character_35=2",
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "thenActionIds": [
+    "equip-saw-stormsurge",
+    "chase-3star-before-3-1",
+    "quantum-4-stack"
+   ],
+   "otherwiseActionIds": [
+    "rush-level-7-find-seele",
+    "sell-blood-keep-economy"
+   ],
+   "transitionToPhaseId": "seele-3star-rush",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-lineup"
+    }
+   ]
+  }
+ ],
+ "alternativeRoutes": [
+  {
+   "routeId": "escort-pivot-line",
+   "title": "追三失败/高难受压：转体系级护航位（护后期风暴潮主 C 到成型）",
+   "triggerConditions": [
+    {
+     "field": "character_stars",
+     "operator": "less_than",
+     "expected": "currency_wars_character_35=3",
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [],
+   "tradeoffs": [
+    "4.2 口径：『任何想玩的后期成型风暴潮主c，都可以用希儿一直护到成型』——希儿本身降级为护航件，主 C 位让给火花（『风暴潮前中期希儿护，然后转火花比较顺』）或红A（『红a，希儿护航』）",
+    "保留 4 量子+电锯/风暴潮底座即可，无需强追三星；本表不覆盖接棒主 C 的运营（见 guide-v44-joy-aha-slot-expansion 火花侧）"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "v42-tier-word"
+    }
+   ]
+  },
+  {
+   "routeId": "reroll-gate-line",
+   "title": "质量低+装备不对：重开（教学明示止损）",
+   "triggerConditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_none",
+     "expected": [
+      "currency_wars_equipment_083"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [],
+   "tradeoffs": [
+    "『质量实在低+装备不对→建议重开』（BV1SqkSBbEVu 明示，电锯刚需无平替）——上分效率目标下重开合法化，与连胜资产目标（马拉松口径）相反，两种场景不可混用",
+    "回 guide-v44-opening-tier-selector 重估开局档位后再战"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-lineup"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-equipment"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [],
+ "risks": [
+  {
+   "riskId": "execution-threshold-unverified",
+   "severity": "high",
+   "description": "斩杀阈值具体数值（3.7 口径 3星4量子=35%）与装备叠层数值（+10%/+10%）在 4.2 基础伤害乘区调整与 4.4 数值层改动后全部未复测；schema 无『斩杀线』字段（BV1SqkSBbEVu 报告④登记的结构缺口），阈值只能以文本层承载。",
+   "mitigation": "本表全部数值不入结构化判定字段、只作文本参考（missingInformationPolicy.minimumConfidence=0.6 兜底）；执行前读游戏内希儿天赋面板确认现行阈值；待实测/官方文本后回填。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "lineage-37-execution-mechanic"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "v44-status-catalog"
+    }
+   ]
+  },
+  {
+   "riskId": "war-of-joy-affix",
+   "severity": "high",
+   "description": "『非常怕战个痛快』（enemy_affix_t2_10，风瑾十局口径）：该词条直接破坏压血线→收割的节奏前提，为体系最强负面词条；其余负面词条『个人觉得无所谓』。",
+   "mitigation": "开局词条审查见该词条即按 opening-tier-selector 重开档处理；已入局时优先转 escort-pivot-line 或速通低难节点。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "v42-tier-word"
+    }
+   ]
+  },
+  {
+   "riskId": "no-summon-boss-window",
+   "severity": "medium",
+   "description": "3-7 不召唤小怪的 boss（卡芙卡/五合一等）：收割目标少、循环起爆慢，『希儿会稍微难受』——仍可打但节奏拉长。",
+   "mitigation": "该类 boss 节点前把血线压制工具（副 C/群攻过渡件）留够；不因单节点放弃三星计划（『一样一脚踹死』口径）。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "v42-tier-word"
+    }
+   ]
+  },
+  {
+   "riskId": "early-micro-heavy",
+   "severity": "medium",
+   "description": "『前中期吃一点手操』：压血线与循环启动都需手操节奏控制，挂机场景收益打折。",
+   "mitigation": "挂机场景降级为普通 4 量子阵容打；手操场景按『压血线→停手看收割』节拍执行。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "v42-tier-word"
+    }
+   ]
+  },
+  {
+   "riskId": "buff-attribution-unclear",
+   "severity": "low",
+   "description": "Jape『加强』未指明对应哪条官方 4.2 改动（同期有追击 150→300/A8-40/欢愉实装多个候选）——机制归属影响跨版本外推方向。",
+   "mitigation": "本表不写强化数值、只写强化后行为描述；4.4 兼容修改时以游戏内现行面板为准。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+     "claimId": "v42-buff-revival"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+   "claimId": "source-metadata"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+   "claimId": "lineage-37-execution-mechanic"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+   "claimId": "lineage-37-lineup"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+   "claimId": "lineage-37-equipment"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+   "claimId": "v42-buff-revival"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+   "claimId": "v42-equipment-jape"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+   "claimId": "v42-tier-word"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+   "claimId": "v42-lineup-4q2train"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+   "claimId": "lineage-43-quantum-battleship"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+   "claimId": "v44-status-catalog"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-b-quantum-seele",
+   "claimId": "lowcost-c-trio-seele-side"
+  }
+ ],
+ "notes": [
+  "转化来源：deep-hunt-old-era-b2.md §3.1（风瑾评价全文快照）/§3.4（Jape 3 费全文快照）/§1.1（BV1AA9QBDEtb/BV1F4oWBGEho/BV1Xt7C69EGX）——B 批 62 候选中体系完整度最高的未覆盖项；3.7 起源层用库内在档转写 BV1SqkSBbEVu.report.md 并集（C 批 breadth 互证先例），零新增抓取。",
+  "体系空白判定：既有 21+3 份 playbook 无量子希儿样本；BV1SqkSBbEVu 报告④『斩杀阈值可成长=17 份 playbook 未收录』的登记由本表落实。",
+  "与 A 批表的关系：guide-v44-oldera-a-beloqingque-driver 同用造物引擎拉条机制（辅助引擎用法），本表为斩杀主 C 用法——机制互证、体系互斥，两表 evidenceRefs 互不引用对方证据集。",
+  "兴替检查示范（RULES 三.3）：knownChanges 四条按 3.7/4.2/4.3/4.4 归属；『希儿中规中矩』（3.7 末）vs『阿雅之下第一人』（4.2）的口碑反转写入 notes——同体系不同时点引用必须带版本。",
+  "攻略码纪律（RULES 七.0）：BV1F4oWBGEho 简介含【4量子2列车】攻略码，本表与证据集均不收录码字符串。",
+  "数值纪律：斩杀线 35%/叠层 +10% 等全部保留在 claims/instruction 文本层并标来源与可信层级；recommendedState 数值域除 level 窗口（7 级 3 费窗口，社区通用锚）与卖血保守线（40，require_review）外为 null；equipment 数组同 ID 重复表达『双风暴潮』已在校验口径注记。",
+  "v1.2 字段使用：actions.equip-saw-stormsurge 携带 trigger=on_equipment_acquired+triggerArgs、chase-3star-before-3-1 携带 trigger=on_level_threshold+triggerArgs；phases.seele-3star-rush lineup.substituteCharacters 承载周日位可变件。"
+ ]
+}

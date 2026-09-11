@@ -1,0 +1,1175 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-lili-wolf-chain",
+ "title": "4.4 狸狸养狼链：狸狸的早晨随机星徽赌狼狩转+满级狼终局（甘泽 20 连胜挑战 P5 实战体系，缘神操刀 SSS）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-lili-wolf-chain",
+ "archetypeName": "狸狸养狼链（狸狸的早晨+大变活狸+步狸村之谜策略层组合：狼狩星徽数量×狼等级双随机轴，满级狼=终局战力终点，体系赌注型）",
+ "goalIds": [
+  "stable",
+  "a850-capable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_56"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_57",
+   "currency_wars_character_51",
+   "currency_wars_character_39",
+   "currency_wars_character_25",
+   "currency_wars_character_20",
+   "currency_wars_character_71"
+  ],
+  "equipmentIds": [],
+  "bondIds": [
+   "currency_wars_bond_10",
+   "currency_wars_bond_31"
+  ],
+  "investmentEnvironmentIds": [],
+  "investmentStrategyIds": [
+   "investment_strategy_328",
+   "investment_strategy_329",
+   "investment_strategy_318",
+   "investment_strategy_294",
+   "investment_strategy_065",
+   "investment_strategy_321"
+  ]
+ },
+ "sourceRefs": [
+  {
+   "platform": "bilibili",
+   "refId": "BV1wNu26fEYX?p=5",
+   "url": "https://www.bilibili.com/video/BV1wNu26fEYX?p=5",
+   "title": "甘泽 20 连胜联合挑战 P5 狸狸的早晨养狼局 SSS（缘神操刀，100.2 分钟）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": [],
+  "supersededBy": null,
+  "notes": [
+   "与 guide-v44-opening-tier-selector（开局分档）头彩档同源：本局为该头彩池第三个实战样本（P5 狸狸的早晨/P10 黑塔纪元+口述轮回不止），速 5-6 级保连胜与开局分档连胜档吻合。",
+   "与 guide-v44-feixiao-pursuit（飞霄追击）同主 C 载体不同体系：本线飞霄=狼狩星徽穿戴载体，战力来自狼而非飞霄本体追击轴。",
+   "17 份既有 playbook 无任何『狸狸/狼狩/养狼』体系样本——本表为该库第一条养狼实战证据链（P5 报告 §③）的结构化转化。"
+  ]
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "acquired_items",
+    "operator": "contains_any",
+    "expected": [
+     "investment_strategy_328"
+    ],
+    "unknownPolicy": "require_review",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-marathon-g-p5",
+      "claimId": "headcai-open-lili-morning"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "open-headcai-lock",
+   "title": "开局词条预览+偷彩锁头彩（1-1~1-2）",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ],
+    "nodeRanges": [
+     {
+      "planeId": 1,
+      "fromNodeIndex": 1,
+      "toNodeIndex": 2
+     }
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 3,
+     "max": 3,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_39"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_56",
+      "currency_wars_character_57",
+      "currency_wars_character_51"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_56",
+       "priority": 1,
+       "note": "飞霄=狼狩(狼兽)载体必留（『飞霄是狼兽(狼狩)，你不能走』）"
+      },
+      {
+       "characterId": "currency_wars_character_57",
+       "priority": 2,
+       "note": "椒丘(音『娇秋』)上场"
+      },
+      {
+       "characterId": "currency_wars_character_51",
+       "priority": 2,
+       "note": "灵砂(音『莎姐』)上场"
+      },
+      {
+       "characterId": "currency_wars_character_39",
+       "priority": 3,
+       "note": "镜流(ASR『静流』)前排，秘技有冰冻"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_10"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": [
+     "investment_strategy_328",
+     "investment_strategy_294"
+    ]
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_56",
+     "currency_wars_character_57",
+     "currency_wars_character_51"
+    ],
+    "costFocus": [
+     1
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "刷出棱彩【狸狸的早晨】并拿下第二策略棱彩【远见】"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-marathon-g-p5",
+      "claimId": "headcai-open-lili-morning"
+     }
+    ],
+    "notes": [
+     "『先慢慢找一费的，直接奔着高本找就完了』；帧 1-2 金币 11→0（刷策略消耗）"
+    ]
+   },
+   "actionIds": [
+    "open-roll-headcai",
+    "veto-spark-box-save-truth",
+    "keep-feixiao-ditch-xianzhou",
+    "mirror-front-freeze"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "headcai-open-lili-morning"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "hp-chain-frames"
+    }
+   ],
+   "notes": [
+    "词条：低费审美+开局不利+第一位面强化（UP 判『很阴』，实际威胁未兑现——开局不利全程按『少少输点就行』处理）",
+    "帧证：1-2 HP 62 = 80（基线）-20（开局不利词缀）+2（1-1 胜）；1-3 已 Lv5 2/20"
+   ]
+  },
+  {
+   "phaseId": "wolf-ramp-mid",
+   "title": "狼养成线：保狼+档位管理+七级低找彦卿（1-3~2-1）",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     1,
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ],
+    "nodeRanges": [
+     {
+      "planeId": 1,
+      "fromNodeIndex": 3,
+      "toNodeIndex": 9
+     }
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": 47,
+     "max": 70,
+     "unit": "health"
+    },
+    "level": {
+     "min": 5,
+     "max": 7,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_39"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_56",
+      "currency_wars_character_57",
+      "currency_wars_character_51"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_56",
+       "priority": 1,
+       "note": "狼狩载体保持"
+      },
+      {
+       "characterId": "currency_wars_character_25",
+       "priority": 2,
+       "note": "彦卿（ASR『燕青』推断对表）=狼狩 4 费，七级低找"
+      },
+      {
+       "characterId": "currency_wars_character_51",
+       "priority": 3,
+       "note": "56:40 灵砂/学者减伤上场争论段"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_10"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": [
+     "investment_strategy_065"
+    ]
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_25"
+    ],
+    "costFocus": [
+     4
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "狼狩档位再上一档或彦卿到手"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-marathon-g-p5",
+      "claimId": "wolf-tier-and-exp-frames"
+     },
+     {
+      "evidenceSetId": "evidence-marathon-g-p5",
+      "claimId": "level7-vs-rush8-odds"
+     }
+    ],
+    "notes": [
+     "七级低 vs 速八：『30 次低牌 vs 10 次』期望差→先低后升；42:30 实录『52 块钱上八第一下五狼』"
+    ]
+   },
+   "actionIds": [
+    "wolf-tier-management",
+    "seven-low-d-yanqing",
+    "conditional-rush-eight",
+    "lili-far-right-protect",
+    "wolf-ai-preconfig"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "wolf-tier-and-exp-frames"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "lili-no-population-frame"
+    }
+   ],
+   "notes": [
+    "帧锚：1-7 Lv6 0/40；2-1 Lv6 16/40、金币 61 息 5（顶，『没东西可买』的副产品）",
+    "狼经验帧：37:30 两狼 Lv2 20/24 + Lv4 148/250；狸狸 7 只后台各带星徽角标，不占人口（13/13 帧）"
+   ]
+  },
+  {
+   "phaseId": "grail-endgame-fullwolf",
+   "title": "六狼+圣杯+满级狼收官（2-x~3-7）",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": 0,
+     "max": 9,
+     "unit": "coin"
+    },
+    "health": {
+     "min": 47,
+     "max": 100,
+     "unit": "health"
+    },
+    "level": {
+     "min": 8,
+     "max": 9,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_39"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_56",
+      "currency_wars_character_57",
+      "currency_wars_character_51",
+      "currency_wars_character_20"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_20",
+       "priority": 1,
+       "note": "老杨（瓦尔特）：『直接升九找老杨…这么多钱，老杨轻轻松松』"
+      },
+      {
+       "characterId": "currency_wars_character_56",
+       "priority": 2,
+       "note": "狼狩载体满配"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_10",
+     "currency_wars_bond_31"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": [
+     "investment_strategy_321",
+     "investment_strategy_329"
+    ]
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_20"
+    ],
+    "costFocus": [
+     5
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "狼满级（帧证阈值 1500）且老杨与能量装到位"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-marathon-g-p5",
+      "claimId": "stake-system-transferable"
+     },
+     {
+      "evidenceSetId": "evidence-marathon-g-p5",
+      "claimId": "economy-interest-frames"
+     }
+    ],
+    "notes": [
+     "满级召唤物=战力终点：经济清空点=召唤物满级节点（帧证 88:20 金币 9→终局），不需要留 all-in 保险；终局不追三星"
+    ]
+   },
+   "actionIds": [
+    "grail-passive-windfall",
+    "level-nine-find-welt",
+    "endgame-spend-all",
+    "blue-diamond-tradeoff",
+    "avoid-himeko-bug"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "grail-passive-entry"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "wolf-tier-and-exp-frames"
+    }
+   ],
+   "notes": [
+    "[82:10-85:00] 圣杯试炼开启（读规则『对应队友上场会减掉羁绊星辉』）→『圣杯加的满血』（47→100 口述归因，帧证 3-5=100）",
+    "59:30『这已经六狼了…八狼开不出了，六狼，结束了』；终局帧：盗火行者血 59%、总伤 9.12 亿、真伤单跳 40.55 亿（帧读数存档，榜一读数两不定）"
+   ]
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "open-roll-headcai",
+   "title": "开局刷头彩：棱彩狸狸的早晨+棱彩远见",
+   "instruction": "开局策略节点主动刷头彩：目标=棱彩【狸狸的早晨】（头彩池『拿到就赢』：狸狸的早晨/黑塔纪元/轮回不止等，『假装犹豫直接刷』）；拿下后第二策略继续取棱彩【远见】（得随机黄金策略+15 金，后续策略节点全改随机棱彩策略——对头彩池同一方向加注，不改变体系）。UP 口径：用开局刷的次数赌棱彩概率，是挑战赛主动加注行为。",
+   "operationType": "select_investment_strategy",
+   "targetCharacterIds": [],
+   "priority": 999,
+   "conditions": [],
+   "benefits": [
+    "体系确定性核心（狼狩星徽唯一来源）提前锁定",
+    "后续策略节点全棱彩化"
+   ],
+   "costs": [
+    "开局经济与刷新次数（帧 1-2 金币 11→0）"
+   ],
+   "risks": [
+    "头彩刷取为概率行为，未中即回开局分档常规体系（见 alternativeRoutes）"
+   ],
+   "preconditions": [
+    "全试用·不重开连胜挑战口径（每局玩法不重复，跨局排程允许『省』体系）"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "headcai-open-lili-morning"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "source-metadata"
+    }
+   ]
+  },
+  {
+   "actionId": "veto-spark-box-save-truth",
+   "title": "否决火花礼盒：省真理跨局排程",
+   "instruction": "被提议的【火花礼盒】（=棱彩【偶像经济】，官方底表对表成功）应否决：『你要省真理』——每局玩法不重复约束下，真理体系留给后续场次（P15 实际成为真理局互证）；20 连胜挑战在开局阶段即按『剩余局数×未用主 C』做全局资源分配（排程型跨局因果）。",
+   "operationType": "select_investment_strategy",
+   "targetCharacterIds": [],
+   "priority": 950,
+   "conditions": [],
+   "benefits": [
+    "保住后续场次的主 C 资源（跨局排程）"
+   ],
+   "costs": [
+    "本局放弃偶像经济体系"
+   ],
+   "risks": [
+    "跨局排程结论依赖同挑战多局口径（P5→P15），单局复制不成立"
+   ],
+   "preconditions": [
+    "多局连胜挑战口径"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "save-truth-cross-game-scheduling"
+    }
+   ]
+  },
+  {
+   "actionId": "keep-feixiao-ditch-xianzhou",
+   "title": "定体系弃仙舟线、保飞霄狼狩载体",
+   "instruction": "开局定养狼体系即弃仙舟线（『仙舟得滚了』），保飞霄（『飞霄是狼兽(狼狩)，你不能走』）；卖飞霄换艾丝妲的取舍被当场否决并回摆（『刀给艾斯达』=艾丝妲 ASR）——狼狩星徽唯一来源=狸狸随机星徽，载体与星徽都不可丢。",
+   "operationType": "sell_character",
+   "targetCharacterIds": [
+    "currency_wars_character_56",
+    "currency_wars_character_71"
+   ],
+   "priority": 900,
+   "conditions": [],
+   "benefits": [
+    "体系载体确定性"
+   ],
+   "costs": [
+    "放弃仙舟线过渡强度"
+   ],
+   "risks": [
+    "卖飞霄换艾丝妲在本局被否决：本线禁卖狼狩载体"
+   ],
+   "preconditions": [
+    "开局已判『这关必须开始养狼』"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "lili-wolf-causality"
+    }
+   ]
+  },
+  {
+   "actionId": "mirror-front-freeze",
+   "title": "镜流前排（秘技冰冻）",
+   "instruction": "镜流（ASR『静流』）调去前排：『静流先滚去前排…秘技有冰冻』——开局前排控制位。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_39"
+   ],
+   "priority": 700,
+   "conditions": [],
+   "benefits": [
+    "前排冰冻控制"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "source-metadata"
+    }
+   ]
+  },
+  {
+   "actionId": "wolf-tier-management",
+   "title": "狼狩档位管理：复盘单位=档位兑现",
+   "instruction": "养狼期操作目标从『赢』降为『别断档』：狼狩档位 3→5→6 逐级兑现（『这已经六狼了…八狼开不出了，六狼，结束了』）；随机星徽类策略的期望管理=只算『还差几个狼转』，不为单个星徽改阵容。狼走一关+32 经验（口述），满级阈值 1500（帧证首见）；『三杠二必出满级狼，多拿几件装备没什么区别』（满级召唤物即战力终点）。",
+   "operationType": "other",
+   "targetCharacterIds": [],
+   "priority": 800,
+   "conditions": [],
+   "benefits": [
+    "赌注型体系按档位兑现复盘而非单场胜负"
+   ],
+   "costs": [],
+   "risks": [
+    "『+32 经验/关』与『30 次 vs 10 次』低牌数为口述级（证据集 conditions 标注）"
+   ],
+   "preconditions": [
+    "狸狸的早晨已锁定（狼狩星徽来源成立）"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "wolf-tier-and-exp-frames"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "wolf-exp-32-per-stage"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "stake-system-transferable"
+    }
+   ]
+  },
+  {
+   "actionId": "seven-low-d-yanqing",
+   "title": "七级低 D 找彦卿（期望差分支）",
+   "instruction": "七级慢 D 找特定 4 费彦卿（ASR『燕青』推断对表）：『你升八之后只有大概 10 次低牌机会，现在有接近 30 次…七级低』——低牌次数期望差取七级低；与通用『上八找四费』口径并存的条件分支。",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_25"
+   ],
+   "priority": 750,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 7,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "低牌次数期望最大化（口述约 30 次 vs 10 次）"
+   ],
+   "costs": [
+    "七级集中花金"
+   ],
+   "risks": [
+    "『燕青=彦卿』为 ASR 推断对表；次数为口述级估计"
+   ],
+   "preconditions": [
+    "等级≥7 且未上 8"
+   ],
+   "invalidatesWhen": [
+    "彦卿已到手或狼狩档位已兑现"
+   ],
+   "fallbackActionIds": [
+    "conditional-rush-eight"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "level7-vs-rush8-odds"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 7
+   }
+  },
+  {
+   "actionId": "conditional-rush-eight",
+   "title": "速上八分支（52 块上八实录）",
+   "instruction": "速上八分支：42:30 实录『52 块钱上八第一下五狼，罗哥变狼兽(音,未对表)』——当七级低牌预算耗尽且狼差一档时上八；注意上八后仅约 10 次低牌机会（口述），需配合 stopWhen 收手。",
+   "operationType": "buy_xp",
+   "targetCharacterIds": [],
+   "priority": 740,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "less_than",
+     "expected": 8,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "狼狩档位窗口提前"
+   ],
+   "costs": [
+    "上八后低牌机会骤减（口述约 10 次）"
+   ],
+   "risks": [
+    "『罗哥变狼兽』为 ASR 未对表"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [
+    "等级已≥8"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "level7-vs-rush8-odds"
+    }
+   ]
+  },
+  {
+   "actionId": "lili-far-right-protect",
+   "title": "大变活狸防刷：带能量转的狸狸移最右",
+   "instruction": "【大变活狸】（棱彩位面 2,3，重随机最右 3 狸狸星徽+2 星徽秘典）在场时：『把带能量转的狸狸移到最右边防刷掉』——位次即保星徽操作（狸狸为星徽穿戴单位、不占人口、无标准角色 ID，操作只在文本承载）。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [],
+   "priority": 710,
+   "conditions": [],
+   "benefits": [
+    "重随机时保住关键星徽（能量转）"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "已获【大变活狸】"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "lili-wolf-causality"
+    }
+   ]
+  },
+  {
+   "actionId": "wolf-ai-preconfig",
+   "title": "狼 AI 不可控的事前配置对冲",
+   "instruction": "狼 AI『走寂寞/打假赛』（34:00/61:10 两次差点超时）无现场解，应对全部是事前配置：三群攻卡位（『开三群攻就是为了卡这个』）、能量装堆老杨保大招、把『狼差一档』的局按『输一把也 40 血容错』接受；狼逃跑判定『很随机，到现在没搞懂』（68:00）——不为其现场操作。",
+   "operationType": "other",
+   "targetCharacterIds": [
+    "currency_wars_character_20"
+   ],
+   "priority": 720,
+   "conditions": [],
+   "benefits": [
+    "赌注型体系的极差段对冲"
+   ],
+   "costs": [
+    "群攻/能量装资源占用"
+   ],
+   "risks": [
+    "狼 AI 行为不可控为本体系固有风险，只能事前配置+血线容错"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "wolf-ai-uncontrollable"
+    }
+   ]
+  },
+  {
+   "actionId": "grail-passive-windfall",
+   "title": "狸狸随机星徽被动入圣杯（意外之财不规划）",
+   "instruction": "狸狸的早晨随机星徽开出命运圣杯星徽=被动入圣杯（『狸狸发了个杯子，还真是圣杯』）→圣杯任务线启动后开圣杯试炼（读规则『对应队友上场会减掉羁绊星辉』）→『圣杯将完成我所有的愿望』+『圣杯加的满血』（47→100 口述归因，帧证 3-5=100）。随机星徽被动入圣杯为未收录进入路径：按意外之财处理，不作主动规划目标。",
+   "operationType": "other",
+   "targetCharacterIds": [],
+   "priority": 600,
+   "conditions": [],
+   "benefits": [
+    "被动任务线+满血续航（口述归因）"
+   ],
+   "costs": [],
+   "risks": [
+    "圣杯满血归因口述级，帧证仅 3-5=100"
+   ],
+   "preconditions": [
+    "随机星徽开出命运圣杯星徽（概率事件）"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "grail-passive-entry"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "hp-chain-frames"
+    }
+   ]
+  },
+  {
+   "actionId": "level-nine-find-welt",
+   "title": "升九找老杨",
+   "instruction": "73:40 起『直接升九找老杨…这么多钱，老杨轻轻松松』；经验帧证 Lv9 0/84 与官方 A5+ 列吻合（本局为经验表第 2 份独立帧级再验证）。",
+   "operationType": "buy_xp",
+   "targetCharacterIds": [
+    "currency_wars_character_20"
+   ],
+   "priority": 700,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 8,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "终局插件（能量装载体+大招轴）"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "等级≥8"
+   ],
+   "invalidatesWhen": [
+    "等级已=9"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "exp-table-frame-verification"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "economy-interest-frames"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 8
+   }
+  },
+  {
+   "actionId": "endgame-spend-all",
+   "title": "终局清空经济换老杨+装备（不追三星）",
+   "instruction": "终局连买带 D 清空找老杨+装备（88:20 帧金币 9→终局）：满级狼即战力终点，不追三星、不留 all-in 保险（all-in 预算根本没动用）——经济清空点=召唤物满级节点。",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_20"
+   ],
+   "priority": 650,
+   "conditions": [],
+   "benefits": [
+    "把运气折算成战力而不是存款"
+   ],
+   "costs": [
+    "清空经济（无利息缓冲）"
+   ],
+   "risks": [
+    "单局样本；若狼未满级此打法不成立"
+   ],
+   "preconditions": [
+    "狼已满级（帧证阈值 1500）"
+   ],
+   "invalidatesWhen": [
+    "狼未满级或老杨未到手且血线告急"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "stake-system-transferable"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "economy-interest-frames"
+    }
+   ]
+  },
+  {
+   "actionId": "blue-diamond-tradeoff",
+   "title": "三选一收益争论（蓝钻/群攻转/装备，dissent 不裁决）",
+   "instruction": "76:30-79:20 蓝钻/群攻转/毒品(音,装备)三选一收益争论未收敛：『拿钻的收益稳定比毒品高…真摸不到就就拿钻』——两派并存按 dissent 双列，本表不裁决；现场执行=『真摸不到就拿钻』的兜底口径。",
+   "operationType": "select_reward",
+   "targetCharacterIds": [],
+   "priority": 500,
+   "conditions": [],
+   "benefits": [
+    "兜底口径明确（摸不到目标就取稳定收益）"
+   ],
+   "costs": [],
+   "risks": [
+    "『毒品』=装备 ASR 音译未对表；收益对比为口述级"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "source-metadata"
+    }
+   ]
+  },
+  {
+   "actionId": "avoid-himeko-bug",
+   "title": "禁忌：机子卡星辉 bug 主动弃用",
+   "instruction": "禁忌案例：机子（=姬子，ASR；具体形态报告未消歧）『卡星辉 bug/一人算两个羁绊人口』现场搜视频验证后主动弃用（『既然要玩就正经一点』）——本表不收录 bug 打法，仅作禁忌记录。",
+   "operationType": "other",
+   "targetCharacterIds": [],
+   "priority": 100,
+   "conditions": [],
+   "benefits": [
+    "规避 bug 依赖（对局稳定性）"
+   ],
+   "costs": [
+    "放弃潜在人口/羁绊收益"
+   ],
+   "risks": [
+    "bug 机制细节以现场搜证口述为准，未官方核实"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "himeko-bug-abstain"
+    }
+   ]
+  }
+ ],
+ "branches": [
+  {
+   "branchId": "headcai-gate",
+   "priority": 1,
+   "when": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "investment_strategy_328"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "thenActionIds": [
+    "wolf-tier-management"
+   ],
+   "otherwiseActionIds": [],
+   "transitionToPhaseId": "wolf-ramp-mid",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "headcai-open-lili-morning"
+    }
+   ]
+  },
+  {
+   "branchId": "rush-eight-gate",
+   "priority": 2,
+   "when": [
+    {
+     "field": "level",
+     "operator": "less_than",
+     "expected": 8,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "thenActionIds": [
+    "seven-low-d-yanqing"
+   ],
+   "otherwiseActionIds": [
+    "conditional-rush-eight"
+   ],
+   "transitionToPhaseId": null,
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "level7-vs-rush8-odds"
+    }
+   ]
+  }
+ ],
+ "alternativeRoutes": [
+  {
+   "routeId": "no-headcai-generic-open",
+   "title": "未刷出头彩：回开局分档常规运营",
+   "triggerConditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_none",
+     "expected": [
+      "investment_strategy_328"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [],
+   "tradeoffs": [
+    "头彩未中=体系前提不成立（狼狩星徽唯一来源=狸狸随机星徽），按 guide-v44-opening-tier-selector 开局分档决策树走常规体系，不做半吊子养狼",
+    "本表 signals 全部失效，bondIds/investmentStrategyIds 不作为匹配信号"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "headcai-open-lili-morning"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "lili-wolf-causality"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [],
+ "risks": [
+  {
+   "riskId": "headcai-luck-gate",
+   "severity": "high",
+   "description": "整个体系以开局刷出棱彩【狸狸的早晨】为前提（头彩池口述『拿到就赢』）；未刷出则狼狩星徽唯一来源不成立，体系不可执行。",
+   "mitigation": "未命中即回 guide-v44-opening-tier-selector 常规分档，不做半吊子养狼（见 alternativeRoutes.no-headcai-generic-open）。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "headcai-open-lili-morning"
+    }
+   ]
+  },
+  {
+   "riskId": "wolf-ai-uncontrollable",
+   "severity": "medium",
+   "description": "狼 AI『打假赛/走寂寞』两次差点超时（34:00/61:10），逃跑判定『很随机』——现场无解，是本体系固有极差点。",
+   "mitigation": "事前配置对冲（三群攻卡位/能量装堆老杨保大招）+按『输一把也 40 血容错』接受小败；复盘单位=档位兑现。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "wolf-ai-uncontrollable"
+    }
+   ]
+  },
+  {
+   "riskId": "wolf-buff-constraint-unverified",
+   "severity": "medium",
+   "description": "『狼不吃拐/不吃易伤、基础伤害仅三月七（罗刹变体）可吃拐』为 UP 口径，未入 bond-compendium；『精血一零(音)』未对表。",
+   "mitigation": "不写入结构化机制字段；待对 cw-skill-digest 后再入狼狩条目 knownConstraints。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "wolf-buff-limitation-verbal"
+    }
+   ]
+  },
+  {
+   "riskId": "verbal-numbers-pending-test",
+   "severity": "medium",
+   "description": "多项关键数字为口述级：『狼走一关+32 经验』『低牌 30 次 vs 10 次』『圣杯满血归因』；另 3-7 伤害榜读数因帧分辨率两读不定。",
+   "mitigation": "结构化字段只承载帧证数值（经验表/利息上限 5/满级阈值 1500/血量链）；口述级留 claims 的 conditions 标注，引用带口径。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "wolf-exp-32-per-stage"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "grail-passive-entry"
+    }
+   ]
+  },
+  {
+   "riskId": "asr-terms-unverified",
+   "severity": "low",
+   "description": "ASR 音译陷阱密集（P5 报告 §⑤ 清单）：狸狸/镜流/椒丘/灵砂/姬子/彦卿(推断)/罗哥等未全部对表。",
+   "mitigation": "结构化字段不使用未对表名；引用一律回转写原稿。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "source-metadata"
+    }
+   ]
+  },
+  {
+   "riskId": "single-run-sample",
+   "severity": "medium",
+   "description": "全部结论来自单局实战样本（体系赌注型+四重随机全中）；跨局排程结论（省真理）依赖 P15 互证。",
+   "mitigation": "status 保持 draft；泛化前需更多局样本；跨局排程另见 P15 互证口径。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p5",
+     "claimId": "source-metadata"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "source-metadata"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "headcai-open-lili-morning"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "lili-wolf-causality"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "save-truth-cross-game-scheduling"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "lili-no-population-frame"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "wolf-tier-and-exp-frames"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "wolf-bond-official-values"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "wolf-buff-limitation-verbal"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "wolf-exp-32-per-stage"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "exp-table-frame-verification"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "economy-interest-frames"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "hp-chain-frames"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "grail-passive-entry"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "level7-vs-rush8-odds"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "wolf-ai-uncontrollable"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "himeko-bug-abstain"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p5",
+   "claimId": "stake-system-transferable"
+  }
+ ],
+ "notes": [
+  "转化来源：research/guides/game_reports/marathon_g_p5.report.md（六项总结逐条提取）；证据集=samples/evidence/evidence-marathon-g-p5.research-evidence.v1.json（先建证据集再建 playbook，沿罗刹班 P11 流程）。",
+  "狸狸无标准角色 ID（星徽穿戴单位、不占人口——13/13 帧证）：所有涉及狸狸的操作只在 instruction/notes 文本承载，不入 targetCharacterIds/lineup。",
+  "数值纪律（禁止编造）：报告中没有的参数一律 null；帧证数值（经验表 A5+ 列/利息上限 5/狼满级阈值 1500/血量链 62→100）与口述级（+32 经验/低牌次数/圣杯满血归因）分层，口述级全部在 risks/claims.conditions 标注。",
+  "帧证据：tools/audio/marathon_b16/（35 备战帧，crop 沿用 B2/B6）；转写：research/guides/transcripts/marathon-BV1wNu26fEYX_p5.txt（在档复用，本批零 ASR 成本）。",
+  "无攻略码（RULES 七.0）；ASR 专名标『(音)』，未对表标『未对表』。",
+  "与既有体系差异（P5 报告 §③全库缺口）：命运圣杯『随机星徽被动入圣杯』为未收录进入路径；机子卡星辉 bug 为禁忌案例（本表弃用）。"
+ ]
+}

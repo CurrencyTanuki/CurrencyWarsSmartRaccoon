@@ -1,0 +1,1293 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-toppa-company-contract",
+ "title": "4.4 托帕公司契约：双鞋阿雅开局+三杠二转型托帕主C+公司现金流冲层（甘泽 20 连胜挑战 P13 实战体系，SSS·13 连胜）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-toppa-company-contract",
+ "archetypeName": "托帕公司契约（经济严重过热红利→双鞋阿格莱雅保连胜开局→三杠二无痛转托帕&账账：托帕 3 金/关现金流+公司契约冲层+总追击三管血输出）",
+ "goalIds": [
+  "stable",
+  "a850-capable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_16",
+   "currency_wars_character_72"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_52",
+   "currency_wars_character_55",
+   "currency_wars_character_20",
+   "currency_wars_character_36",
+   "currency_wars_character_54",
+   "currency_wars_character_23"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_057"
+  ],
+  "bondIds": [
+   "currency_wars_bond_21",
+   "currency_wars_bond_03"
+  ],
+  "investmentEnvironmentIds": [
+   "investment_environment_060",
+   "investment_environment_010"
+  ],
+  "investmentStrategyIds": [
+   "investment_strategy_263"
+  ]
+ },
+ "sourceRefs": [
+  {
+   "platform": "bilibili",
+   "refId": "BV1wNu26fEYX?p=13",
+   "url": "https://www.bilibili.com/video/BV1wNu26fEYX?p=13",
+   "title": "甘泽 20 连胜联合挑战 P13 第十三把 SSS 托帕（129.9 分钟，末帧横幅操刀：扑满(音)）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": [],
+  "supersededBy": null,
+  "notes": [
+   "与 guide-v44-double-shoe-aglaya 衔接：开局双鞋阿雅两条件边界（生存压力不大+鞋多）为该表适用边界的实战复述；『燕青只玩风暴潮/双鞋风扇有点捞』为该表泛化边界的社区反证。本表覆盖其后的托帕转型段。",
+   "与 guide-v44-truth-pursuit/feixiao-pursuit（追击系）关系：托帕在既有追击表中为『追击转到位后的最终件』，本表为其升格主 C 的形态补全（公司契约经济+总追击三管血输出）——17 份既有 playbook 无托帕主 C 形态，本表为全库首个托帕主 C 完整样本的结构化转化。",
+   "版本演进标记：银枝『能量转>追击转、六级七级即可开机』口径修正 guide-v44-argenti-wheelchair 的转职假设（待该表修订时并入，非本表动作）。"
+  ]
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "require_review",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-marathon-g-p13",
+      "claimId": "source-metadata"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "open-aglaya-ramp",
+   "title": "双鞋阿雅定线+速五+计划内小败（1-1~1-9）",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ],
+    "nodeRanges": [
+     {
+      "planeId": 1,
+      "fromNodeIndex": 1,
+      "toNodeIndex": 9
+     }
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": 0,
+     "max": 39,
+     "unit": "coin"
+    },
+    "health": {
+     "min": 83,
+     "max": 89,
+     "unit": "health"
+    },
+    "level": {
+     "min": 5,
+     "max": 5,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_72"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_36",
+      "currency_wars_character_54"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_72",
+       "priority": 1,
+       "note": "双鞋阿格莱雅：两条件边界（生存压力不大+鞋来的多）"
+      },
+      {
+       "characterId": "currency_wars_character_36",
+       "priority": 2,
+       "note": "星期日拉条（拉周日 vs 拉阿格莱雅手法之争在场）"
+      },
+      {
+       "characterId": "currency_wars_character_54",
+       "priority": 3,
+       "note": "试用花火『每一点速度都很珍贵』，二星必拿"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [],
+    "investmentEnvironmentIds": [
+     "investment_environment_060"
+    ],
+    "investmentStrategyIds": []
+   },
+   "actionIds": [
+    "aglaya-boundary-check",
+    "fast-level-five",
+    "planned-loss-frenzy-node",
+    "encounter-by-survival-pressure",
+    "pig-retry-discipline"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "aglaya-boundary-two-conditions"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "fast-level5-frame"
+    }
+   ],
+   "notes": [
+    "词条：软弱无力+紧急止血(音)+霸凌弱者（『其实还好，不算特别阴间』）——软弱无力对策=全员 3 件装备",
+    "开局先排已用系（『二费玩过一个龙丹了，怕他出个龙丹』——不重复约束前置）",
+    "经济严重过热到手即触发『发月卡』房规（过热局必开抽奖回馈观众）",
+    "经济域下界=0 按帧锚表实锚：1-3（04:10）帧金币=0、1-8=9、1-9=39（R10 P2-T1 修正，原 min=9 与帧表及 fast-level-five.costs『开局金币（1-3 帧 0 金）』自相矛盾）"
+   ]
+  },
+  {
+   "phaseId": "topaz-transition",
+   "title": "满连胜速本+托帕转型窗（2-1~3-2）",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": 21,
+     "max": 65,
+     "unit": "coin"
+    },
+    "health": {
+     "min": 89,
+     "max": 100,
+     "unit": "health"
+    },
+    "level": {
+     "min": 7,
+     "max": 8,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_16"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_52",
+      "currency_wars_character_55",
+      "currency_wars_character_36"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_16",
+       "priority": 1,
+       "targetStars": 2,
+       "note": "三杠二一张即转；一星过渡、两星才猛（两派强度 dissent 并存）"
+      },
+      {
+       "characterId": "currency_wars_character_52",
+       "priority": 2,
+       "note": "全力找砂金：生存位+多一块钱"
+      },
+      {
+       "characterId": "currency_wars_character_55",
+       "priority": 3,
+       "note": "追击转给缇宝"
+      },
+      {
+       "characterId": "currency_wars_character_20",
+       "priority": 4,
+       "note": "老杨：『反正老杨来了基本上就输不了了』"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_21"
+    ],
+    "investmentEnvironmentIds": [
+     "investment_environment_010",
+     "investment_environment_060"
+    ],
+    "investmentStrategyIds": [
+     "investment_strategy_263"
+    ]
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_16",
+     "currency_wars_character_52"
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "三杠二拿到一张托帕并完成换阵",
+     "五追击开启（不带符玄八人口）"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-marathon-g-p13",
+      "claimId": "topaz-transition-window"
+     },
+     {
+      "evidenceSetId": "evidence-marathon-g-p13",
+      "claimId": "five-pursuit-no-fuxuan-sandgold"
+     }
+    ],
+    "notes": [
+     "上八甩托帕优于吃利息：『托帕赚三块钱…这比你吃利息赚呀』（59:10 帧 65 金息 5 仍买人）"
+    ]
+   },
+   "actionIds": [
+    "level-eight-before-topaz",
+    "topaz-swap-aglaya",
+    "five-pursuit-no-fuxuan",
+    "sandgold-survival-econ",
+    "fusion-summon-hold",
+    "sunday-vs-aglaya-cast",
+    "backline-reda-equip"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "topaz-transition-window"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "level-tempo-frames"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "hp-gain2-frame-chain"
+    }
+   ],
+   "notes": [
+    "升级节奏帧证：Lv7（2-6 前 57:05）/Lv8（2-7 中 61:15）——比通用表慢：升级节奏=难度×流派×局势三轴",
+    "融合召唤拿到后不刷新（『刷新会刷掉它所以不刷』）；位面 2 全胜帧链 89→91→93→97→99→100（每胜+2 血第五次帧级实证）",
+    "同期口径副线：银枝『能量转>追击转、六级七级即可开机』修正 argenti-wheelchair（见 versionApplicability.notes）；轮回不止长线伏笔再现"
+   ]
+  },
+  {
+   "phaseId": "company-endgame",
+   "title": "公司体系冲层+零血损收官（3-1~3-7）",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": 0,
+     "max": 64,
+     "unit": "coin"
+    },
+    "health": {
+     "min": 100,
+     "max": 100,
+     "unit": "health"
+    },
+    "level": {
+     "min": 9,
+     "max": 9,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_16"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_52",
+      "currency_wars_character_20",
+      "currency_wars_character_55"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_16": 2
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_16",
+       "priority": 1,
+       "targetStars": 2,
+       "note": "64 金 all-D 追二星托帕（不上 10：追二星边际收益>上 10 概率表）"
+      },
+      {
+       "characterId": "currency_wars_character_20",
+       "priority": 2,
+       "note": "老杨：融合召唤合成或商店获取"
+      },
+      {
+       "characterId": "currency_wars_character_55",
+       "priority": 3,
+       "note": "缇宝保持"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_21",
+     "currency_wars_bond_03"
+    ],
+    "investmentEnvironmentIds": [
+     "investment_environment_010",
+     "investment_environment_060"
+    ],
+    "investmentStrategyIds": [
+     "investment_strategy_263"
+    ]
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_16",
+     "currency_wars_character_20"
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "二星托帕达成或决战开始"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-marathon-g-p13",
+      "claimId": "final-nine-no-ten-choice"
+     }
+    ],
+    "notes": [
+     "终局 Lv9 不上 10：64 金 all-D 追二星托帕/二星猫(哈基米,音,未对表)至 0 金（帧 119:10-120:00）——变量是主 C 费用与成型度（托帕 4 费 vs 五费体系）",
+     "备胎预案：『递个 AG（阿格莱雅）单通也可以』"
+    ]
+   },
+   "actionIds": [
+    "select-company-contract",
+    "hard-armor-all-team",
+    "himeko-ult-manual-off",
+    "mine-fail-consolation",
+    "final-allin-two-star"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "company-contract-economy-chain"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "hard-armor-copy-rule"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "gold-ball-consolation-discipline"
+    }
+   ],
+   "notes": [
+    "3-1 起 HP 顶满 100 后 3-x 零掉血（位面 2/3 零血损，帧链 100→100→100）",
+    "『直接 10 个公司控制 10 金 10 人，一把游戏偷个 100 块钱』（口述量级）；生存装路线=全员 3 件装备对策软弱无力",
+    "3-6 惜败金球：『两个金色魔丸还能接受』，无血损（帧 100→100）"
+   ]
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "aglaya-boundary-check",
+   "title": "开局核验双鞋阿雅两条件边界",
+   "instruction": "开局定双鞋阿格莱雅前核验两条件：『你要想玩得满足两个条件，一是生存压力不大，二是鞋来的多』——两条件同时满足才走双鞋阿雅开局（guide-v44-double-shoe-aglaya 适用边界的实战复述）；不满足则按开局分档常规体系。",
+   "operationType": "other",
+   "targetCharacterIds": [
+    "currency_wars_character_72"
+   ],
+   "priority": 950,
+   "conditions": [],
+   "benefits": [
+    "开局主 C 定线正确率（本局『这把就刚好符合』）"
+   ],
+   "costs": [],
+   "risks": [
+    "生存压力/鞋数量为运行时未接入字段——按常驻提示承载，无法自动判定"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [
+    "两条件任一不满足"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "aglaya-boundary-two-conditions"
+    }
+   ]
+  },
+  {
+   "actionId": "fast-level-five",
+   "title": "4 分钟内速 Lv5",
+   "instruction": "环境红利局现金→等级结构：4 分钟内 Lv5（帧 04:10，与 d_p8 局同档并列全谱最快开级档）——速五吃节点奖励，为连胜开局腾强度。",
+   "operationType": "buy_xp",
+   "targetCharacterIds": [],
+   "priority": 900,
+   "conditions": [],
+   "benefits": [
+    "最早开级档位（帧证并列全谱最快）"
+   ],
+   "costs": [
+    "开局金币（1-3 帧 0 金）"
+   ],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "fast-level5-frame"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "transition-cost-preplanning"
+    }
+   ],
+   "trigger": "on_phase_enter"
+  },
+  {
+   "actionId": "planned-loss-frenzy-node",
+   "title": "狂化关计划内小败（不透支提战力）",
+   "instruction": "狂化关按计划接受受控小败（1-6 帧 88→83，-5）：『你就算提战力，你要提到至少三元周二斗的 2.1…还是有可以接受小输』——不为提战力透支经济；败后 1-7 D 干至 9 金获胜、1-9 前 39 金 D 至 3 金补强回血轨（87→89）。",
+   "operationType": "start_battle",
+   "targetCharacterIds": [],
+   "priority": 800,
+   "conditions": [],
+   "benefits": [
+    "经济保全：受控小败换后续满连胜（位面 2 全胜帧链）"
+   ],
+   "costs": [
+    "-5 小队血量（帧证）"
+   ],
+   "risks": [
+    "『三元周二斗的 2.1』战力口径为口述未对表"
+   ],
+   "preconditions": [
+    "狂化词条节点且提战力成本过高"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "planned-small-loss-frenzy"
+    }
+   ]
+  },
+  {
+   "actionId": "encounter-by-survival-pressure",
+   "title": "遭遇难度按生存压力定档",
+   "instruction": "遭遇难度分支=生存压力定档：『有花火绝对打遭遇三了，没花火，雅(阿格莱雅)中期结节的压力太大了』——有二星花火可打最高档（本局口述 120 难度，首见数字待帧级复核）；无花火且主 C 中期结节压力大→降档。『试用花火每一点速度都很珍贵』（二星花火必拿）。",
+   "operationType": "select_encounter_option",
+   "targetCharacterIds": [
+    "currency_wars_character_54"
+   ],
+   "priority": 780,
+   "conditions": [],
+   "benefits": [
+    "遭遇收益与生存风险匹配"
+   ],
+   "costs": [],
+   "risks": [
+    "『遭遇 120 难度』为首见口述数字待帧级复核，不写入结构化条件"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "encounter-survival-pressure-branch"
+    }
+   ],
+   "trigger": "on_node_enter"
+  },
+  {
+   "actionId": "pig-retry-discipline",
+   "title": "猪类奖励怪 retry 纪律",
+   "instruction": "『凹半个小时不跑猪』——猪类奖励怪逃走前允许长凹 retry；与矿/捕满类节点的止损口径（mine-fail-consolation）互补：值得凹的凹，凹不动的按惜败收 consolation。",
+   "operationType": "other",
+   "targetCharacterIds": [],
+   "priority": 400,
+   "conditions": [],
+   "benefits": [
+    "奖励怪收益最大化"
+   ],
+   "costs": [
+    "时间成本（节目效果兼顾）"
+   ],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "encounter-survival-pressure-branch"
+    }
+   ]
+  },
+  {
+   "actionId": "level-eight-before-topaz",
+   "title": "3-2 前提前上八甩托帕（经济 override 利息）",
+   "instruction": "托帕转型成本前置规划：3-2 前提前上八甩托帕——『托帕赚三块钱…这比你吃利息赚呀』（经济 override 利息的决策实例：59:10 帧 65 金息 5 仍花钱上人）；升级节奏帧证 Lv8 落在 2-7 内（比通用表慢，A850 双转型局压级）。",
+   "operationType": "buy_xp",
+   "targetCharacterIds": [],
+   "priority": 850,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "less_than",
+     "expected": 8,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "转型窗口提前一节点，换阵一次到位"
+   ],
+   "costs": [
+    "放弃当节点满息"
+   ],
+   "risks": [
+    "通用 50 金满息口径在经济类现金流体系下失效——须带环境口径引用"
+   ],
+   "preconditions": [
+    "托帕转型已规划（三杠二转阵容标准节点）"
+   ],
+   "invalidatesWhen": [
+    "等级已≥8"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "topaz-transition-window"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "level-tempo-frames"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "company-contract-economy-chain"
+    }
+   ]
+  },
+  {
+   "actionId": "topaz-swap-aglaya",
+   "title": "三杠二转型：托帕换下阿格莱雅",
+   "instruction": "三杠二拿到一张托帕即换阵（『再见了阿格莱亚』）——群内标准阵容直接调用（『我把那个托帕的阵容发发群了』），转型是一次换阵操作而不是一次重建；一星托帕过渡，两星才猛（强度两派 dissent 双列：『没老杨强度也一般的』 vs 『托帕强度可以的呀…两星才猛』）。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_16",
+    "currency_wars_character_72"
+   ],
+   "priority": 880,
+   "conditions": [
+    {
+     "field": "owned_characters",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_character_16"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "托帕 3 金/关现金流+总追击输出形态上线"
+   ],
+   "costs": [
+    "放弃双鞋阿雅既有体系（过渡期强度波动）"
+   ],
+   "risks": [
+    "一星托帕输出天花板提前已知（『一星尽力』）——星级缺口提前声明"
+   ],
+   "preconditions": [
+    "已持有托帕&账账至少一张"
+   ],
+   "invalidatesWhen": [
+    "三杠二未拿到托帕——按 alternativeRoutes 继续双鞋阿雅"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "topaz-transition-window"
+    }
+   ]
+  },
+  {
+   "actionId": "five-pursuit-no-fuxuan",
+   "title": "五追击不带符玄（八人口口径）",
+   "instruction": "五追击口径：『八人口能开出五追击不？不带符玄八人口可以』——八人口五追击不绑符玄；追击转给缇宝（沿用既有追击系口径）；总追击打 boss 三管血输出形态（『总追击打第三管血很舒服』）。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_55",
+    "currency_wars_character_23"
+   ],
+   "priority": 760,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 8,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "八人口即开五追击"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "等级≥8"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "five-pursuit-no-fuxuan-sandgold"
+    }
+   ]
+  },
+  {
+   "actionId": "sandgold-survival-econ",
+   "title": "全力找砂金（生存位+经济位）",
+   "instruction": "『全力找砂金…砂金可以当生存位，找砂金还多一块钱』——生存位+经济位双价值（与 P10『托帕加砂金四块钱一关』经济线同源）。",
+   "operationType": "buy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_52"
+   ],
+   "priority": 750,
+   "conditions": [],
+   "benefits": [
+    "生存位+每关多一块钱"
+   ],
+   "costs": [],
+   "risks": [
+    "『砂金』ASR 作『杀金/纱巾/沙金』——引用回原稿"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "five-pursuit-no-fuxuan-sandgold"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "company-contract-economy-chain"
+    }
+   ]
+  },
+  {
+   "actionId": "fusion-summon-hold",
+   "title": "融合召唤到手后停止刷新（防刷掉）",
+   "instruction": "拿到棱彩【融合召唤】后停止刷新商店（『刷新会刷掉它所以不刷』——『全网最尊重融合召唤的主播』）；后期『是老杨融合召唤』直接合成出老杨——策略即主 C 的机制型获取路径，与商店找老杨并行。",
+   "operationType": "other",
+   "targetCharacterIds": [
+    "currency_wars_character_20"
+   ],
+   "priority": 700,
+   "conditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "investment_strategy_263"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "五费主件（老杨）合成获取"
+   ],
+   "costs": [
+    "放弃刷新找牌（与 all-D 冲突需排程）"
+   ],
+   "risks": [
+    "单局行为样本"
+   ],
+   "preconditions": [
+    "已持有【融合召唤】"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "fusion-summon-welt"
+    }
+   ]
+  },
+  {
+   "actionId": "sunday-vs-aglaya-cast",
+   "title": "拉周日 vs 拉阿格莱雅手法（dissent 不裁决）",
+   "instruction": "双鞋叠层手法细节争论（dissent 双列不裁决）：『周日前 30 鞋子是白跑了…我就是要拉周日，怎么了』——拉条顺序（星期日 vs 阿格莱雅）影响双鞋叠层收益，留 guide-v44-double-shoe-aglaya 手法库复核；本表只记录分歧存在。",
+   "operationType": "other",
+   "targetCharacterIds": [
+    "currency_wars_character_36",
+    "currency_wars_character_72"
+   ],
+   "priority": 300,
+   "conditions": [],
+   "benefits": [],
+   "costs": [],
+   "risks": [
+    "手法优劣无现场结论——preserve_all_sources 双保留"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "source-metadata"
+    }
+   ]
+  },
+  {
+   "actionId": "backline-reda-equip",
+   "title": "后台红A：全队发装备位",
+   "instruction": "后台红 A（ASR 音译未对表）：『往后台一放，直接给你全队发两个装备…上前台少拐…他可能在前台一局里两件都发不出来，但在后台直接每人两件』——后台发放收益高于前台（P9 跨局结论的机制化补全）。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [],
+   "priority": 620,
+   "conditions": [],
+   "benefits": [
+    "全队装备供给"
+   ],
+   "costs": [
+    "前台少一个拐位"
+   ],
+   "risks": [
+    "『红A』具体单位未对表——不入结构化字段，仅文本承载"
+   ],
+   "preconditions": [
+    "已持有该单位"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "backline-reda-full-team-equip"
+    }
+   ]
+  },
+  {
+   "actionId": "select-company-contract",
+   "title": "转职转公司：公司契约体系冲层",
+   "instruction": "3-1 起转公司契约体系冲层：『直接 10 个公司控制 10 金 10 人，一把游戏偷个 100 块钱』（口述量级）——BWIKI §12『公司契约（翡翠+砂金累计 40 利息后给托帕&账账）』的实战形态首份完整口述；与托帕 3 金/关、砂金+1 金/关构成现金流组合，override 通用利息表。",
+   "operationType": "select_investment_environment",
+   "targetCharacterIds": [],
+   "priority": 820,
+   "conditions": [],
+   "benefits": [
+    "每关固定现金流（口述量级：一把游戏约偷 100 块）"
+   ],
+   "costs": [
+    "转职资源（『公司转职提前锻』——转型成本前置规划的一部分）"
+   ],
+   "risks": [
+    "『偷 100 块』为口述量级非帧证累计；BWIKI 触发条件与本局配置对应未逐帧核验"
+   ],
+   "preconditions": [
+    "托帕已上场（公司契约关联托帕&账账）"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "company-contract-economy-chain"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "transition-cost-preplanning"
+    }
+   ]
+  },
+  {
+   "actionId": "hard-armor-all-team",
+   "title": "全员 3 件硬甲对策软弱无力（复制机制）",
+   "instruction": "软弱无力词条对策=全员 3 件装备：『这把直接做 10 件硬甲』（『硬甲』对表=很硬的甲 currency_wars_equipment_057，整理者推断）；硬甲复制机制实录（口述挂实测）：『硬甲只要装备在就能一直提供双倍…只要你不大退过，大退过的话就必须得重新卡』。",
+   "operationType": "buy_equipment",
+   "targetCharacterIds": [],
+   "priority": 700,
+   "conditions": [],
+   "benefits": [
+    "词条减伤对冲（没有 3 件装备的角色伤害 80% 的团队级应对）"
+   ],
+   "costs": [
+    "装备资源 10 件"
+   ],
+   "risks": [
+    "复制机制与大退规则为口述级挂实测",
+    "『硬甲』→很硬的甲(057) 为整理者推断对表，报告未给官方名"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [
+    "对局大退过（复制状态须重新卡）"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "hard-armor-copy-rule"
+    }
+   ]
+  },
+  {
+   "actionId": "himeko-ult-manual-off",
+   "title": "姬子大招手动关停（保输出轴）",
+   "instruction": "姬子（ASR『机子』；具体形态报告未消歧）大招手动关停：『机子这个放大有点干扰我们的输出了』——输出轴干扰时的大招管理。",
+   "operationType": "other",
+   "targetCharacterIds": [],
+   "priority": 350,
+   "conditions": [],
+   "benefits": [
+    "输出轴不被打断"
+   ],
+   "costs": [
+    "放弃该大招收益"
+   ],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "source-metadata"
+    }
+   ]
+  },
+  {
+   "actionId": "mine-fail-consolation",
+   "title": "矿/捕节点惜败止损：收金球 consolation",
+   "instruction": "矿/捕满类节点输出不够时按『惜败』处理：『29 行动值肯定抓不到的…有二星托帕肯定抓到的，一星托帕只能说尽力了』——收金球/金色魔丸 consolation 入账（『惜败惜败，两个金色魔丸还能接受』），不头铁换阵：对『差一张』的正确响应是下一节点补，不是当场推翻；把 all-in 预算留给下一个节点窗口。",
+   "operationType": "collect_mine",
+   "targetCharacterIds": [],
+   "priority": 450,
+   "conditions": [],
+   "benefits": [
+    "失败保底入账、无血损（帧 100→100）"
+   ],
+   "costs": [
+    "放弃该节点主奖励"
+   ],
+   "risks": [],
+   "preconditions": [
+    "主 C 星级缺口已提前声明（一星托帕=尽力口径）"
+   ],
+   "invalidatesWhen": [
+    "二星托帕已达成（按可抓捕口径执行）"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "gold-ball-consolation-discipline"
+    }
+   ]
+  },
+  {
+   "actionId": "final-allin-two-star",
+   "title": "终局 64 金 all-D 追二星（Lv9 不上 10）",
+   "instruction": "3-7 终局 64 金 all-D 追二星托帕/二星猫（哈基米,音,未对表）至 0 金（帧 119:10-120:00）——Lv9 不上 10：单核一星托帕下『追二星』的边际收益被判定高于『上 10 概率表』（与 d_p8 局同队伍两种解，变量是主 C 费用与成型度：托帕 4 费 vs 五费体系）。决战口径：『总追击打第三管血很舒服…他还回血给我刷伤害』（boss 三管血+回血被当刷分）。备胎预案：『递个 AG（阿格莱雅）单通也可以』。",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_16"
+   ],
+   "priority": 700,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 9,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "主 C 星级档位（两星才猛）"
+   ],
+   "costs": [
+    "清空经济（终局无利息需求）"
+   ],
+   "risks": [
+    "『哈基米』为 ASR 未对表；不上 10 的取舍为口述级决策"
+   ],
+   "preconditions": [
+    "等级≥9 且进入终局节点"
+   ],
+   "invalidatesWhen": [
+    "二星托帕已达成"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "final-nine-no-ten-choice"
+    }
+   ]
+  }
+ ],
+ "branches": [
+  {
+   "branchId": "topaz-acquired-gate",
+   "priority": 1,
+   "when": [
+    {
+     "field": "owned_characters",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_character_16"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "thenActionIds": [
+    "topaz-swap-aglaya"
+   ],
+   "otherwiseActionIds": [],
+   "transitionToPhaseId": "company-endgame",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "topaz-transition-window"
+    }
+   ]
+  },
+  {
+   "branchId": "overheat-cash-structure-gate",
+   "priority": 2,
+   "when": [
+    {
+     "field": "investment_environments",
+     "operator": "contains_any",
+     "expected": [
+      "investment_environment_060"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "thenActionIds": [
+    "level-eight-before-topaz",
+    "select-company-contract"
+   ],
+   "otherwiseActionIds": [],
+   "transitionToPhaseId": null,
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "econ-overheat-roomrule"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "transition-cost-preplanning"
+    }
+   ]
+  }
+ ],
+ "alternativeRoutes": [
+  {
+   "routeId": "no-topaz-keep-aglaya",
+   "title": "三杠二未拿到托帕：继续双鞋阿雅",
+   "triggerConditions": [
+    {
+     "field": "owned_characters",
+     "operator": "contains_none",
+     "expected": [
+      "currency_wars_character_16"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [],
+   "tradeoffs": [
+    "按 guide-v44-double-shoe-aglaya 继续运营；AG 单通为口述备胎预案（『递个 AG 单通也可以』）",
+    "托帕现金流（3 金/关）与公司契约体系不成立，经济线回通用利息口径（带口径引用）"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "topaz-transition-window"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "final-nine-no-ten-choice"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [],
+ "risks": [
+  {
+   "riskId": "topaz-star-dissent",
+   "severity": "medium",
+   "description": "托帕强度两派当场并存（dissent 双列）：『没老杨强度也一般的』 vs 『托帕强度可以的呀…两星才猛』；一星托帕输出天花板提前已知（3-6 抓捕失败『一星托帕只能说尽力了』）。",
+   "mitigation": "星级缺口提前声明（『两星才猛/一星尽力』）+失败按预案收 consolation，不当场推翻阵容。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "topaz-transition-window"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "gold-ball-consolation-discipline"
+    }
+   ]
+  },
+  {
+   "riskId": "overheat-env-dependent",
+   "severity": "medium",
+   "description": "本局曲线为环境红利顺风局（经济严重过热+鞋特别多）：金币全程高水位的激进经济线以过热环境为底；常规环境下现金流体系成立但连胜开局条件需两条件复核。",
+   "mitigation": "通用 50 金满息口径在经济环境过热局失效——引用须带环境口径；开局走 aglaya-boundary-check 两条件门。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "econ-overheat-roomrule"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "transition-cost-preplanning"
+    }
+   ]
+  },
+  {
+   "riskId": "hard-armor-copy-unverified",
+   "severity": "medium",
+   "description": "硬甲复制+大退规则为口述级挂实测；『硬甲』→很硬的甲(currency_wars_equipment_057) 为整理者推断对表（报告未给官方名，standard-ids 无同名条目）。",
+   "mitigation": "数值不引用；057 映射复核后再升结构化引用；复制状态依赖『不大退过』。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "hard-armor-copy-rule"
+    }
+   ]
+  },
+  {
+   "riskId": "operator-attribution-conflict",
+   "severity": "low",
+   "description": "操刀者口径冲突：末帧横幅『扑满』vs marathon 矩阵『念熙』双源并列，待地下 P13（BV1q7uq6ZES8 P13）字幕核对。",
+   "mitigation": "不影响操作结论；引用操刀者时标『扑满(音)』加注；建议列入下一批 ASR 优先级。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "operator-attribution-conflict"
+    }
+   ]
+  },
+  {
+   "riskId": "encounter-120-unverified",
+   "severity": "low",
+   "description": "遭遇 120 难度为 A850 局首见口述数字，待帧级复核；『铺满猪』retry 段同源。",
+   "mitigation": "不写入结构化条件；遭遇难度按生存压力定档的定性口径引用。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "encounter-survival-pressure-branch"
+    }
+   ]
+  },
+  {
+   "riskId": "asr-terms-unverified",
+   "severity": "low",
+   "description": "ASR 音译陷阱密集（P13 报告 §⑤ 清单）：哈基米(猫)/头发/焦大哥/红A/扑满(同词两义)等未对表。",
+   "mitigation": "结构化字段不使用未对表名；引用一律回转写原稿。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "source-metadata"
+    }
+   ]
+  },
+  {
+   "riskId": "single-run-sample",
+   "severity": "medium",
+   "description": "全部结论来自单局实战样本（环境红利+双转型顺风局形态，与 P8/d_p8 构成第三种形态）。",
+   "mitigation": "status 保持 draft；泛化前需更多局样本；转型成本前置规划结论为整理者综合口径。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p13",
+     "claimId": "source-metadata"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "source-metadata"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "operator-attribution-conflict"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "econ-overheat-roomrule"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "aglaya-boundary-two-conditions"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "fast-level5-frame"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "planned-small-loss-frenzy"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "encounter-survival-pressure-branch"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "yanqing-storm-tide-only"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "topaz-transition-window"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "five-pursuit-no-fuxuan-sandgold"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "company-contract-economy-chain"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "fusion-summon-welt"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "hard-armor-copy-rule"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "backline-reda-full-team-equip"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "argenti-energy-transfer-update"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "hp-gain2-frame-chain"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "level-tempo-frames"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "pushbar-cap-boss-heal"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "gold-ball-consolation-discipline"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "final-nine-no-ten-choice"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p13",
+   "claimId": "transition-cost-preplanning"
+  }
+ ],
+ "notes": [
+  "转化来源：research/guides/game_reports/marathon_g_p13.report.md（六项总结逐条提取）；证据集=samples/evidence/evidence-marathon-g-p13.research-evidence.v1.json（先建证据集再建 playbook，沿罗刹班 P11 流程）。",
+  "整理者对表注（与报告原注并存）：『经济严重过热』=investment_environment_060（目录同名命中，报告标『(音,未对表)』）；『公司契约』=investment_environment_010；『融合召唤』=investment_strategy_263；『硬甲』→很硬的甲=currency_wars_equipment_057（推断对表）。",
+  "数值纪律（禁止编造）：报告中没有的参数一律 null；帧证数值（帧锚表/每胜+2 血链/升级节奏 Lv7/8/9）与口述级（偷 100 块/120 难度/推条上限/复制规则）分层，口述级全部在 risks/claims.conditions 标注。",
+  "跨局钩子（报告 §③ 末）：地下 P13（BV1q7uq6ZES8 P13，操刀者侧音频）未转写——核对操刀者口径只需转写该 P 片头字幕，建议列入下一批 ASR 优先级。",
+  "帧证据：tools/audio/marathon_b9/sheets_g_p13/（85 备战节点帧+末帧整帧）；转写：research/guides/transcripts/marathon_g_p13.txt（46 切片）。",
+  "无攻略码（RULES 七.0）；ASR 专名标『(音)』，未对表标『未对表』。",
+  "与本局相关的跨表修正建议（不在本表动作内）：银枝能量转口径→guide-v44-argenti-wheelchair；燕青只玩风暴潮→guide-v44-double-shoe-aglaya 泛化边界；后台红A机制化表述→truth-pursuit 相关 evidence 增补（报告 §③ 建议）。",
+  "2026-09-10 R10 处置（reviews/arbitration_20260910/r10_formal_review.md §五 项6/7 + P3-T4）：phase1 economy.min 9→0（帧锚表 1-3（04:10）金币=0，与 fast-level-five.costs『开局金币（1-3 帧 0 金）』对齐）；sunday-vs-aglaya-cast operationType reposition_character→other（内容=拉条顺序手法分歧记录，非移位）；fusion-summon-hold operationType select_investment_strategy→other（内容=持有后停刷防刷掉+合成纪律，策略选择动作早已完成）。"
+ ]
+}

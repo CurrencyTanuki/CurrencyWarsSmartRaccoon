@@ -1,0 +1,877 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-joy-aha-slot-expansion",
+ "title": "4.4 欢愉阿哈装备栏扩展流：后台爻光外包行动频率（RX1018 08-24 系统级解析）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-joy-aha-slot-expansion",
+ "archetypeName": "欢愉阿哈装备栏扩展流（三外置槽+后台三鞋爻光高频阿哈时刻）",
+ "goalIds": [
+  "stable",
+  "a850-capable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_10",
+   "currency_wars_character_trailblazer"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_05",
+   "currency_wars_character_09",
+   "currency_wars_character_07",
+   "currency_wars_character_01",
+   "currency_wars_character_20",
+   "currency_wars_character_23",
+   "currency_wars_character_54",
+   "currency_wars_character_55",
+   "currency_wars_character_02",
+   "currency_wars_character_26"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_066",
+   "currency_wars_equipment_055",
+   "currency_wars_equipment_021",
+   "currency_wars_equipment_032"
+  ],
+  "bondIds": [
+   "currency_wars_bond_29"
+  ],
+  "investmentEnvironmentIds": [
+   "investment_environment_031",
+   "investment_environment_043",
+   "investment_environment_058",
+   "investment_environment_017"
+  ],
+  "investmentStrategyIds": [
+   "investment_strategy_034",
+   "investment_strategy_168",
+   "investment_strategy_125",
+   "investment_strategy_254",
+   "investment_strategy_145",
+   "investment_strategy_280"
+  ]
+ },
+ "sourceRefs": [
+  {
+   "platform": "miyoushe",
+   "refId": "77726062",
+   "url": "https://www.miyoushe.com/sr/article/77726062",
+   "title": "欢愉羁绊完全解析（RX1018，2026-08-24，7400 字系统级）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "V4.5（2026-08-26）仅 19 条修复，无赛季扩充",
+    "impact": "参数基线不受影响；verified 升级需 V4.5 实机复验",
+    "evidenceRefs": []
+   },
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+    "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+    "evidenceRefs": []
+   }
+  ],
+  "supersededBy": null,
+  "notes": []
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-77726062",
+      "claimId": "source-metadata"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "preview-and-commit",
+   "title": "第一位面：阿哈装备预览判据与风暴潮铺设",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ],
+    "nodeRanges": [
+     {
+      "planeId": 1,
+      "fromNodeIndex": 1,
+      "toNodeIndex": 9
+     }
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [],
+     "backCharacterIds": [
+      "currency_wars_character_10"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_10",
+       "priority": 1,
+       "note": "后台爻光=行动频率外包核心"
+      },
+      {
+       "characterId": "currency_wars_character_trailblazer",
+       "priority": 1,
+       "note": "欢愉主（开拓者欢愉形态）"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_29"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_10"
+    ],
+    "costFocus": [
+     1
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "爻光已购入",
+     "金币不足刷新价"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-77726062",
+      "claimId": "backline-yaoguang-aha-moment"
+     }
+    ],
+    "notes": [
+     "找鞋效率策略优先（公司军火更新/好运来/自由市场）——欢愉装备栏多、鞋缺口大。"
+    ]
+   },
+   "actionIds": [
+    "aha-preview-gate",
+    "firestorm-on-aha",
+    "backline-yaoguang-shoes"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "aha-equipment-preview"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "firestorm-best-slot"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "core-assembly",
+   "title": "中期：标准队框架与 7 欢愉激活",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     1,
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": 6,
+     "max": 8,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [],
+     "backCharacterIds": [
+      "currency_wars_character_10",
+      "currency_wars_character_trailblazer"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_54",
+       "priority": 1,
+       "note": "花火补战技点"
+      },
+      {
+       "characterId": "currency_wars_character_20",
+       "priority": 1,
+       "note": "老杨（瓦尔特）拖倒计时"
+      },
+      {
+       "characterId": "currency_wars_character_23",
+       "priority": 2,
+       "note": "符玄=必需生存位（绝对热量）"
+      },
+      {
+       "characterId": "currency_wars_character_55",
+       "priority": 3,
+       "note": "前期增伤通辅"
+      },
+      {
+       "characterId": "currency_wars_character_02",
+       "priority": 4,
+       "note": "后期后台千冶•刃凑 2 减防"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_29"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_20",
+     "currency_wars_character_23"
+    ],
+    "costFocus": [
+     2,
+     4
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "瓦尔特与符玄均已购入"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-77726062",
+      "claimId": "standard-team-frame"
+     }
+    ],
+    "notes": [
+     "鞋和星徽有着落后转经济策略（爆晶矿/采购专员/淘金客/大扩招），或专家招募找五费聘用书拿瓦尔特。"
+    ]
+   },
+   "actionIds": [
+    "standard-frame",
+    "emblem-to-welt",
+    "warn-affix-taboo"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "standard-team-frame"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "joy-star-emblem-welt"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "late-optimization",
+   "title": "后期：2 减防补强与生存对策",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 8,
+     "max": 10,
+     "unit": "level"
+    },
+    "population": {
+     "min": 8,
+     "max": 10,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_20"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_02",
+      "currency_wars_character_10",
+      "currency_wars_character_trailblazer"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_20",
+       "priority": 1,
+       "note": "前台瓦尔特（欢愉星徽持有者，二魂回能）"
+      },
+      {
+       "characterId": "currency_wars_character_02",
+       "priority": 1,
+       "note": "后台千冶•刃凑 2 减防"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_29",
+     "currency_wars_bond_17"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_02"
+    ],
+    "costFocus": [
+     2
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "千冶•刃已购入"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-77726062",
+      "claimId": "standard-team-frame"
+     }
+    ],
+    "notes": []
+   },
+   "actionIds": [
+    "late-two-defense",
+    "survival-contingency"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "standard-team-frame"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "affix-taboo-and-survival"
+    }
+   ],
+   "notes": []
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "aha-preview-gate",
+   "title": "阿哈装备预览判据（开局势检查）",
+   "instruction": "将任一欢愉角色（或星徽）放上出战位，在羁绊列表点欢愉羁绊即可预览阿哈本局的简易装备；若阿哈一个火力风暴潮都合不出来，标准大欢愉玩法很难高效运作——考虑变异玩法、彻底放弃欢愉或当场零成本重开。",
+   "operationType": "other",
+   "priority": 95,
+   "conditions": [],
+   "benefits": [
+    "开局即判可行性与路线分流"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "aha-equipment-preview"
+    }
+   ]
+  },
+  {
+   "actionId": "firestorm-on-aha",
+   "title": "阿哈三槽优先火力风暴潮",
+   "instruction": "阿哈外置三槽最优装备是火力风暴潮（阿哈时刻内所有欢愉技都触发装备效果，频率高叠层极快）；反重力皮靴与光速螺旋桨不适合阿哈（基础速度不高，叠不上去）。",
+   "operationType": "buy_equipment",
+   "priority": 90,
+   "conditions": [],
+   "benefits": [
+    "阿哈时刻叠层最大化"
+   ],
+   "costs": [
+    "装备压力大（需专门留找装备策略）"
+   ],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "firestorm-best-slot"
+    }
+   ]
+  },
+  {
+   "actionId": "backline-yaoguang-shoes",
+   "title": "后台爻光：反重力皮靴+阿瓦隆",
+   "instruction": "给后台爻光塞满反重力皮靴（速度远超前台、高频开大触发额外阿哈时刻），再塞一件阿瓦隆让额外阿哈时刻频率再翻倍。",
+   "operationType": "equip_badge",
+   "targetCharacterIds": [
+    "currency_wars_character_10"
+   ],
+   "priority": 85,
+   "conditions": [],
+   "benefits": [
+    "行动频率外包给后台"
+   ],
+   "costs": [],
+   "risks": [
+    "后台携带反重力皮靴跑条的角色四件套辅助效果不生效——建议 2+2 速度散件",
+    "4.2 期内修正（BV1b4Li6sExP 2026-05-22 落在 4.2 期窗口内，R9 P2-2 勘误：原标『4.3 演化』与库内锚点 4.3=2026-06-05 矛盾，实为 4.2 期内修正）（甘泽 BV1b4Li6sExP）：绯英单 C 队反重力鞋默认应给欢愉主（产『好活当赏』更多→转绯英能量），爻光仅两种例外拿鞋：①爻光升三星而欢愉主只有一星；②阿哈能吃两个风暴潮——R9 P2-1 勘误：原注漏『欢愉主只有一星』例外条件，已恢复；4.4/4.5 期需实机复核（数据源为社区『硬币豚豚鼠』提供口径）"
+   ],
+   "preconditions": [
+    "爻光已上场"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "backline-yaoguang-aha-moment"
+    }
+   ]
+  },
+  {
+   "actionId": "standard-frame",
+   "title": "标准欢愉队框架",
+   "instruction": "欢愉角色+补战技点的花火+拖倒计时的老杨（瓦尔特）+必需生存位符玄（绝对热量）；剩余坑位 1-2 个增伤通辅（前期缇宝，后期前台瓦尔特配后台千冶•刃凑 2 减防；坑位有剩再带花火/托帕/忘归人）。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_54",
+    "currency_wars_character_20",
+    "currency_wars_character_23"
+   ],
+   "priority": 70,
+   "conditions": [],
+   "benefits": [
+    "体系标准配置"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "standard-team-frame"
+    }
+   ]
+  },
+  {
+   "actionId": "emblem-to-welt",
+   "title": "欢愉星徽优先给老杨",
+   "instruction": "欢愉星徽建议优先给老杨（瓦尔特）：前台火花+银狼LV.999+姬子•启行后只剩他需要额外欢愉技触发符玄绝对热量；且二魂后星徽带来可观回能，省一件蓄能帆。",
+   "operationType": "other",
+   "priority": 75,
+   "conditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_021",
+      "currency_wars_equipment_032"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "触发链补全+回能收益"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "已获欢愉星徽或欢愉卡带"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "joy-star-emblem-welt"
+    }
+   ]
+  },
+  {
+   "actionId": "late-two-defense",
+   "title": "后期前台瓦尔特+后台千冶•刃",
+   "instruction": "后期前排上瓦尔特、后台补千冶•刃凑 2 减防补强输出；坑位有剩再带花火/托帕/忘归人。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_20",
+    "currency_wars_character_02"
+   ],
+   "priority": 55,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 8,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "减防乘区补强"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "人口≥8"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "standard-team-frame"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 8
+   }
+  },
+  {
+   "actionId": "survival-contingency",
+   "title": "生存对策（高压局）",
+   "instruction": "生存压力大时：让千冶•刃携带两件特权/简易/钻石装备保证最后一件生存装变特权，和/或让姬子复制欢愉主的很硬的甲强化生存。",
+   "operationType": "equip_badge",
+   "targetCharacterIds": [
+    "currency_wars_character_02",
+    "currency_wars_character_01"
+   ],
+   "priority": 50,
+   "conditions": [],
+   "benefits": [
+    "第三位面防暴毙"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "affix-taboo-and-survival"
+    }
+   ]
+  },
+  {
+   "actionId": "warn-affix-taboo",
+   "title": "禁区：四词条回避",
+   "instruction": "避开大幅提升敌人输出的忍无可忍/正当防卫、缩减战斗关倒计时的时间刺客/战个痛快；选负面词条反而挑给敌人加血/上减伤/给我方减输出的（欢愉队不缺输出）；高难度真正怕的是第三位面暴毙减员。",
+   "operationType": "other",
+   "priority": 999,
+   "conditions": [],
+   "benefits": [],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "affix-taboo-and-survival"
+    }
+   ]
+  }
+ ],
+ "branches": [
+  {
+   "branchId": "seven-joy-gate",
+   "priority": 1,
+   "when": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_021",
+      "currency_wars_equipment_032"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "thenActionIds": [
+    "emblem-to-welt"
+   ],
+   "otherwiseActionIds": [],
+   "transitionToPhaseId": null,
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "joy-star-unlock-and-himeko-copy"
+    }
+   ]
+  }
+ ],
+ "alternativeRoutes": [
+  {
+   "routeId": "variant-feiying-mainc",
+   "title": "变异：绯英主C（无法激活 7 欢愉时）",
+   "triggerConditions": [],
+   "actionIds": [],
+   "tradeoffs": [
+    "绯英两件火力风暴潮+永动机打终结技",
+    "阿哈改选高周波电锯或胜利之旗",
+    "7 欢愉可激活时优先下绯英"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "variant-feiying-mainc"
+    }
+   ]
+  },
+  {
+   "routeId": "variant-hysilens-joy",
+   "title": "变异：欢愉海瑟音轰穿 A8-40",
+   "triggerConditions": [],
+   "actionIds": [],
+   "tradeoffs": [
+    "海瑟音带欢愉星徽堆深海回响",
+    "3 群攻+海瑟音+爻光+欢愉主",
+    "成型后轻松轰穿 A8-40"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "variant-hysilens-joy"
+    }
+   ]
+  },
+  {
+   "routeId": "variant-himeko-pursuit",
+   "title": "变异：追击转姬子（附加直伤 2.5 倍）",
+   "triggerConditions": [],
+   "actionIds": [],
+   "tradeoffs": [
+    "三星姬子战技 400% 增伤",
+    "激活 3 追击后欢愉技附加直伤约为原输出 2.5 倍",
+    "姬子自带火力风暴潮"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "variant-himeko-pursuit"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [],
+ "craftingPaths": [
+  {
+   "resultId": "currency_wars_equipment_066",
+   "inputIds": [
+    "currency_wars_equipment_044",
+    "currency_wars_equipment_046"
+   ],
+   "note": "折叠小刀+轮滑鞋→火力风暴潮（官方配置 compose_list；阿哈三槽+角色槽双刚需）",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-official-cw-game-config",
+     "claimId": "compose-list-recipes"
+    }
+   ]
+  }
+ ],
+ "risks": [
+  {
+   "riskId": "half-price-mechanism-unverified",
+   "severity": "low",
+   "description": "阿哈槽『半价安装进阶装备』为帖内口径，BWIKI 欢愉页未载明价格机制。",
+   "mitigation": "实机核对前按 author_recommendation 处理。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "aha-external-equipment-slots"
+    }
+   ]
+  },
+  {
+   "riskId": "environment-joy-contract-not-recommended",
+   "severity": "medium",
+   "description": "欢愉契约（investment_environment_042）资源总量少，作者完全不推荐；最舒服=老牌战技点契约（031），次选粗星佩佩(058)/劳务派遣(017)/欢愉邀请(043)。",
+   "mitigation": "选环境时按此优先级提示。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "environment-choice"
+    }
+   ]
+  },
+  {
+   "riskId": "equipment-pressure-tradeoff",
+   "severity": "medium",
+   "description": "欢愉队代价=装备压力大（大量装备栏位需填满）+风暴潮叠层需时间导致通关现实时间较长。",
+   "mitigation": "预留一个找装备策略位。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77726062",
+     "claimId": "summary-positioning"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-miyoushe-77726062",
+   "claimId": "source-metadata"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77726062",
+   "claimId": "aha-external-equipment-slots"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77726062",
+   "claimId": "joy-star-unlock-and-himeko-copy"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77726062",
+   "claimId": "firestorm-best-slot"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77726062",
+   "claimId": "backline-yaoguang-aha-moment"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77726062",
+   "claimId": "aha-equipment-preview"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77726062",
+   "claimId": "standard-team-frame"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77726062",
+   "claimId": "joy-star-emblem-welt"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77726062",
+   "claimId": "affix-taboo-and-survival"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77726062",
+   "claimId": "investment-priority"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77726062",
+   "claimId": "environment-choice"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77726062",
+   "claimId": "aha-speed-formula"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77726062",
+   "claimId": "summary-positioning"
+  }
+ ],
+ "notes": [
+  "2026-09-07 本体转化自 evidence-miyoushe-77726062（RX1018 欢愉完全解析，16 claims 全量结构化；文字源段落级定位）。三变异玩法以 alternativeRoutes 记档（各自展开成独立 playbook 留后续）。",
+  "杨叔/老杨=瓦尔特(20)、泛称『刃』=千冶•刃(02) 均按用户拍板（2026-09-06）映射。",
+  "自造条件字段备案：acquired_items（已获星徽/卡带/装备查询，沿用既有口径）。",
+  "阿哈速度公式（aha-speed-formula）为作者实测拟合模型，理论 9 万速/18000% 前台强度仅记档不入动作参数。",
+  "欢愉星级解锁链（3级8%幸运率/4级16%+第2栏/5级24%+第3栏）与 BWIKI 官方数值互证，已由证据层承载。",
+  "R9 P2-4 登记：本表与 dot 表的 4.5 knownChanges evidenceRefs 均为空引用（BV1Kf8X6zEmB 评论区文字层无独立证据集），待建集后回填。",
+  "2026-09-07 下午（用户最终定性）：guideCodes 字段整体移除——攻略码=游戏内部分享码，对软件无功能意义，最终 JSON 成品不得含攻略码字段（RULES 七.0 修订）。"
+ ]
+}

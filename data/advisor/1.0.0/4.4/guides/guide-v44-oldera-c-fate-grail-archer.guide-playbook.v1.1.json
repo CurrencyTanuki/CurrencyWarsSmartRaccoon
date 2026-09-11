@@ -1,0 +1,1140 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-oldera-c-fate-grail-archer",
+ "title": "4.4 命运圣杯祈愿试炼体系：圣杯星徽凑五圣杯+Archer 唯一真C+任务操作学（烟波浩渺教程/蹉跎往生量化/巴哈天湖楼，old-era-c 转化）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-fate-grail-wish-trial",
+ "archetypeName": "命运圣杯祈愿试炼体系（圣杯星徽引擎凑五圣杯，Archer=唯一后期真C；任务操作学：留羁绊做任务/完成即卖不没收/都是这家伙的错速败白拿/挂姬子解阿瓦隆/主动降阵容压线）",
+ "goalIds": [
+  "stable",
+  "a850-capable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_14",
+   "currency_wars_character_33"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_trailblazer",
+   "currency_wars_character_54",
+   "currency_wars_character_43",
+   "currency_wars_character_02",
+   "currency_wars_character_55",
+   "currency_wars_character_20",
+   "currency_wars_character_42",
+   "currency_wars_character_15"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_001",
+   "currency_wars_equipment_064",
+   "currency_wars_equipment_066"
+  ],
+  "bondIds": [
+   "currency_wars_bond_31"
+  ],
+  "investmentEnvironmentIds": [
+   "investment_environment_018",
+   "investment_environment_019"
+  ],
+  "investmentStrategyIds": [
+   "investment_strategy_333",
+   "investment_strategy_321"
+  ]
+ },
+ "sourceRefs": [
+  {
+   "platform": "miyoushe",
+   "refId": "77066576",
+   "url": "https://www.miyoushe.com/sr/article/77066576",
+   "title": "烟波浩渺的彼岸《星铁4.4版本货币战争趣味玩法命运圣杯，终极奖励堪比直接通关》（2026-07-31）"
+  },
+  {
+   "platform": "miyoushe",
+   "refId": "76917798",
+   "url": "https://www.miyoushe.com/sr/article/76917798",
+   "title": "蹉跎往生《以防你不知道货币战争新出的圣杯羁绊有多强》（2026-07-24）"
+  },
+  {
+   "platform": "miyoushe",
+   "refId": "77495769",
+   "url": "https://www.miyoushe.com/sr/article/77495769",
+   "title": "竹间檐上《货币战争A8N50，50连胜》（2026-08-15）"
+  },
+  {
+   "platform": "bahamut",
+   "refId": "snA=13490",
+   "url": "https://forum.gamer.com.tw/C.php?bsn=72822&snA=13490",
+   "title": "Himari《天湖開局 A850》+青树海底捞月楼+月嶽岚回帖（2026-07-28）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "4.4",
+    "area": "命运圣杯羁绊/投资环境层",
+    "change": "4.4 新增命运圣杯羁绊（祈愿试炼 2 选 1、2/3/4/5 圣杯逐级给）与 Fate 联动角色远坂凛/吉尔伽美什（命运圣杯 4 人组补全 Saber/Archer）；7-17 时点第三方观察『圣杯相关策略暂时无法遇到』，07-24 Fate 完整上线后体系开放。",
+    "impact": "本表全部机制为 4.4 新增，不适用 4.4 之前任何版本；版本归属=官方 snA=13416 赛季扩充说明+M-07 观察口径。",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+      "claimId": "grail-trial-mechanism"
+     }
+    ]
+   }
+  ],
+  "supersededBy": null,
+  "notes": [
+   "版本声明+兴替检查（RULES 三.3）：命运圣杯为 4.4 新机制、无更早版本前身，不存在旧结论反转链；4.5 期（08-26 后）第三方侧零条圣杯机制变更/失效/重测内容，爽局仍围绕五圣杯/诅咒圣杯——按『未见推翻』而非『已复测』定级（deep-hunt-old-era-c.md §4-A4/§4-C9）。",
+   "黑天鹅风险登记：4.6 前瞻『贪饕机制将影响周常币战』（BV1rE4D6jEJZ，08-30）——若兑现，本表在 4.6 需整体重审。",
+   "候选来源：deep-hunt-old-era-c.md（第三批旧版深翻，73 候选/14 细节）§3.3~§3.7/§3.14 五源细节的体系化转化；快照 research/guides/textlayer_hunt_old_c/。"
+  ]
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "acquired_items",
+    "operator": "contains_any",
+    "expected": [
+     "currency_wars_equipment_001"
+    ],
+    "unknownPolicy": "require_review",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+      "claimId": "grail-emblem-five-bond-gate"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "grail-entry-decide",
+   "title": "入口分档：星徽/任务质量决定投入度（位面 1）",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_33"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_trailblazer"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_33",
+       "priority": 1,
+       "note": "中期 C 位=上记忆主（trailblazer 前台形态）"
+      },
+      {
+       "characterId": "currency_wars_character_14",
+       "priority": 2,
+       "note": "后期唯一真C，有送 Archer 的任务=天胡"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_31"
+    ],
+    "investmentEnvironmentIds": [
+     "investment_environment_019",
+     "investment_environment_018"
+    ],
+    "investmentStrategyIds": [
+     "investment_strategy_333",
+     "investment_strategy_321"
+    ]
+   },
+   "actionIds": [
+    "select-grail-environment",
+    "select-fault-strategy",
+    "pick-grail-emblem-strategy",
+    "borrow-grail-chars-to-open-tasks"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-best-investments"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-trial-mechanism"
+    }
+   ],
+   "notes": [
+    "任务质量分档（源口径）：送 Archer 的任务=天胡；经验/金币类=中不溜；玩法的强度取决于给什么任务。"
+   ]
+  },
+  {
+   "phaseId": "grail-task-operations",
+   "title": "任务运营学：留羁绊/完成即卖/速败白拿/阿瓦隆特例（位面 1~3）",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     1,
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation",
+     "encounter",
+     "reward",
+     "battle"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_33",
+      "currency_wars_character_trailblazer"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_02",
+      "currency_wars_character_55",
+      "currency_wars_character_20"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_14",
+       "priority": 1,
+       "note": "二圣杯『远坂凛在场刷新 20 次给红A』任务=最优获取；红A 后期才来则阵容成型不转"
+      }
+     ]
+    },
+    "equipment": [
+     {
+      "characterId": "currency_wars_character_33",
+      "equipmentIds": [
+       "currency_wars_equipment_001"
+      ],
+      "priority": 1,
+      "substituteEquipmentIds": []
+     }
+    ],
+    "bondIds": [
+     "currency_wars_bond_31"
+    ],
+    "investmentEnvironmentIds": [
+     "investment_environment_019",
+     "investment_environment_018"
+    ],
+    "investmentStrategyIds": [
+     "investment_strategy_333"
+    ]
+   },
+   "actionIds": [
+    "keep-grail-bond-during-task",
+    "sell-grail-chars-after-reward",
+    "fault-highdiff-speedfail",
+    "equip-emblem-fail-unit",
+    "avalon-task-deramp",
+    "chase-reda-refresh-task"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "task-progress-needs-bond-onfield"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "reward-kept-after-selling"
+    }
+   ],
+   "notes": [
+    "命运圣杯装备不只圣杯角色能用，只是圣杯角色效果更强（77066576 段24）。",
+    "不完美完成=每场战斗进度超过基本通过线但未满 100%（snA=13560 B1）；『焉知非福（连续不完美完成 3 个节点）』任务与速败打法共用该判定。"
+   ]
+  },
+  {
+   "phaseId": "grail-endgame-five-bond",
+   "title": "五圣杯终局：三星 Archer 结算与无限之釜（位面 2~3）",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation",
+     "battle",
+     "boss"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_trailblazer"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_14",
+      "currency_wars_character_54",
+      "currency_wars_character_43"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_14": 2
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_14",
+       "priority": 1,
+       "targetStars": 3,
+       "note": "后期通关取决于 Archer 或 2 星 Archer；五圣杯圣杯奖励=三星 Archer+全属性 99%"
+      }
+     ],
+     "substituteCharacters": [
+      {
+       "characterId": "currency_wars_character_14",
+       "substitutes": [],
+       "note": "其他 3 名命运圣杯角色后期 Carry 能力都不足——Archer 无同羁绊替身，找不到时转通用阵容"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_31"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "actionIds": [
+    "schedule-saber-to-archer",
+    "sell-saber-lategame",
+    "settle-wish-rewards"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "archer-only-true-carry"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-tier-rewards-quantified"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "infinite-cauldron-reward"
+    }
+   ],
+   "notes": [
+    "无限之釜=直接完成所有愿望→全部 3 星命运圣杯角色+极·专属装备+巨幅圣杯装备，『相当于 3 星昔涟或 3 星 5 费银狼 LV.999』（类比口碑）。"
+   ]
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "select-grail-environment",
+   "title": "选命运圣杯邀请/契约投资环境",
+   "instruction": "玩命运圣杯时优先选投资环境：命运圣杯邀请（investment_environment_019）或命运圣杯契约（investment_environment_018）——烟波浩渺原文『最好投资环境有命运圣杯邀请，命运圣杯契约或者投资策略有都是这家伙的错！』。",
+   "operationType": "select_investment_environment",
+   "targetCharacterIds": [],
+   "priority": 900,
+   "conditions": [],
+   "benefits": [
+    "圣杯任务供给频率/质量提升（源定性『最好』，无量化）"
+   ],
+   "costs": [],
+   "risks": [
+    "『最好』为作者定性排序，未给出与其他环境的对照数据"
+   ],
+   "preconditions": [
+    "决定投入命运圣杯体系（见 branches.emblem-gate）"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-best-investments"
+    }
+   ]
+  },
+  {
+   "actionId": "select-fault-strategy",
+   "title": "拿『都是这家伙的错！』棱彩策略",
+   "instruction": "投资策略『都是这家伙的错！』（investment_strategy_333，棱彩，位面 1/2/3 可用）与圣杯邀请/契约并列为圣杯体系最佳投资：即使失败了也视为完美通关（像差分宇宙里的桂冠）。",
+   "operationType": "select_investment_strategy",
+   "targetCharacterIds": [],
+   "priority": 890,
+   "conditions": [],
+   "benefits": [
+    "失败也按完美通关结算（高难遭遇奖励可白拿）"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "fault-strategy-speedfail"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-best-investments"
+    }
+   ]
+  },
+  {
+   "actionId": "pick-grail-emblem-strategy",
+   "title": "拿『命运圣杯星徽』策略补星徽缺口",
+   "instruction": "『命运圣杯星徽』（investment_strategy_321，金色，位面 1/2/3）直接提供圣杯星徽：命运圣杯只有 4 角色，最终试炼需开 5 圣杯羁绊，必须至少 1 个命运圣杯星徽凑数。",
+   "operationType": "select_investment_strategy",
+   "targetCharacterIds": [],
+   "priority": 880,
+   "conditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_none",
+     "expected": [
+      "currency_wars_equipment_001"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "解锁 5 圣杯终极试炼资格（无星徽不可达成）"
+   ],
+   "costs": [
+    "占用一个策略槽位"
+   ],
+   "risks": [],
+   "preconditions": [
+    "策略节点出现该选项（随机）"
+   ],
+   "invalidatesWhen": [
+    "已持有命运圣杯星徽"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-emblem-five-bond-gate"
+    }
+   ]
+  },
+  {
+   "actionId": "borrow-grail-chars-to-open-tasks",
+   "title": "顺手拿圣杯角色激活任务（蹭奖励）",
+   "instruction": "即使本局不玩命运圣杯阵容，看到命运圣杯角色也顺手拿一下，放上场激活看是什么任务：有的任务不需要战斗或只需少量战斗，完成拿到奖励后把角色卖掉即可；50 连胜帖同口径『圣杯角色也顺手拿开任务看看有没有能做的』。",
+   "operationType": "buy_character",
+   "targetCharacterIds": [],
+   "priority": 600,
+   "conditions": [],
+   "benefits": [
+    "零体系投入白拿任务奖励"
+   ],
+   "costs": [
+    "短期占用人口与买人金"
+   ],
+   "risks": [
+    "激活的任务若需长期留角色在场，蹭任务会挤占常规运营"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [
+    "sell-grail-chars-after-reward"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-side-hustle"
+    }
+   ]
+  },
+  {
+   "actionId": "keep-grail-bond-during-task",
+   "title": "任务进行中保持圣杯角色在场",
+   "instruction": "任务完成前圣杯羁绊必须留着：如 3 圣杯开出的任务，完成前要留 3 个圣杯角色在场上，不然任务不计进度——任务期禁卖圣杯角色、禁下羁绊。",
+   "operationType": "other",
+   "targetCharacterIds": [],
+   "priority": 850,
+   "conditions": [],
+   "benefits": [
+    "任务进度正常累计"
+   ],
+   "costs": [
+    "任务期阵容灵活性下降"
+   ],
+   "risks": [],
+   "preconditions": [
+    "已有进行中的圣杯任务"
+   ],
+   "invalidatesWhen": [
+    "任务已完成（转入完成即卖）"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "task-progress-needs-bond-onfield"
+    }
+   ]
+  },
+  {
+   "actionId": "sell-grail-chars-after-reward",
+   "title": "任务完成后立即卖圣杯角色（奖励不没收）",
+   "instruction": "任务完全完成拿到奖励后，下掉圣杯羁绊甚至卖掉圣杯角色都没关系，奖励不会没收——任务奖励与羁绊在场解耦是本体系核心经济技巧；顺手蹭任务路线同样做完即卖。",
+   "operationType": "sell_character",
+   "targetCharacterIds": [],
+   "priority": 800,
+   "conditions": [],
+   "benefits": [
+    "回收金币、释放人口（不没收规则兜底）"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "对应任务奖励已到手"
+   ],
+   "invalidatesWhen": [
+    "仍有进行中任务依赖在场羁绊"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "reward-kept-after-selling"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-side-hustle"
+    }
+   ]
+  },
+  {
+   "actionId": "fault-highdiff-speedfail",
+   "title": "遭遇节点刷高难+单角色速败白拿奖励",
+   "instruction": "有『都是这家伙的错！』时：在遭遇节点刷新选高难度，只上场一个角色并佩戴命运圣杯星徽，节约时间赶紧失败——失败视为完美通关，获得高难度遭遇奖励。",
+   "operationType": "select_encounter_option",
+   "targetCharacterIds": [],
+   "priority": 860,
+   "conditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "investment_strategy_333"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "高难遭遇奖励零战损获取、节省实战时间"
+   ],
+   "costs": [
+    "放弃该节点正常胜利收益"
+   ],
+   "risks": [
+    "依赖『失败=完美通关』策略判定，策略未到手时不可执行"
+   ],
+   "preconditions": [
+    "已选『都是这家伙的错！』"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "fault-strategy-speedfail"
+    }
+   ]
+  },
+  {
+   "actionId": "equip-emblem-fail-unit",
+   "title": "星徽佩戴管理：不想赢的局摘星徽",
+   "instruction": "普通的输了也无关紧要的关卡，不把命运圣杯星徽佩戴在出场角色身上，这样输了就不会扣生效次数；需要速败拿高难奖励时才把星徽给上场的单角色。",
+   "operationType": "equip_badge",
+   "targetCharacterIds": [],
+   "priority": 700,
+   "conditions": [],
+   "benefits": [
+    "保护星徽生效次数"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "持有命运圣杯星徽"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "fault-strategy-speedfail"
+    }
+   ]
+  },
+  {
+   "actionId": "avalon-task-deramp",
+   "title": "阿瓦隆任务（20 次终结技）：挂姬子或主动降阵容压线",
+   "instruction": "『开 20 次终结技』类任务与强阵容互斥（秒全清开不出次数）。优先解法=挂姬子：一场解完 20 次，每按一下算一次，4 次大招解完（月嶽岚口径）。备选解法（青树海底捞月局）：3-5 遭遇选高难位打完到 19/20，最后在 3-6 奖励关把非圣杯角色放场外、红A 放后排，给装了诅咒件和圣杯星徽的云璃带永动机，压线通过考验——为做任务主动降低阵容完成度。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_42",
+    "currency_wars_character_15"
+   ],
+   "priority": 750,
+   "conditions": [
+    {
+     "field": "grail_task_requirement",
+     "operator": "contains_any",
+     "expected": [
+      "终结技次数类任务（如阿瓦隆 20 次）"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "强阵容下也能完成任务进度"
+   ],
+   "costs": [
+    "压线局有真实败北风险（放场外/后排=自削战力）"
+   ],
+   "risks": [
+    "『每按一下算一次』为回帖口径未帧证；压线失手即白给血量"
+   ],
+   "preconditions": [
+    "识别出次数型任务（开局任务预览）"
+   ],
+   "invalidatesWhen": [
+    "任务已计满或本局无次数型任务"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "avalon-20ult-workarounds"
+    }
+   ]
+  },
+  {
+   "actionId": "chase-reda-refresh-task",
+   "title": "追二圣杯刷新任务保送红A（Archer）",
+   "instruction": "二圣杯有任务『远坂凛在场时刷新 20 次给红A』：开到即从第 1 位面一路保送（红A 否则要到后期才来，届时阵容已成型不会转）——刷任务期优先凑二圣杯并保持远坂凛在场（远坂凛=currency_wars_character_04，已入角色目录；处置批更正原『未入目录』误记并回填 ID）。",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_14",
+    "currency_wars_character_04"
+   ],
+   "priority": 780,
+   "conditions": [
+    {
+     "field": "bond_count",
+     "operator": "greater_or_equal",
+     "expected": 2,
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "唯一真C 的最早获取路径（源称『一路保送』）"
+   ],
+   "costs": [
+    "20 次刷新的商店金消耗"
+   ],
+   "risks": [
+    "任务池随机，不保证开出；『刷新 20 次』计数为玩家复述"
+   ],
+   "preconditions": [
+    "二圣杯羁绊已成立且任务池出现该任务"
+   ],
+   "invalidatesWhen": [
+    "红A 已到手"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "reda-refresh-task-preservation"
+    }
+   ]
+  },
+  {
+   "actionId": "schedule-saber-to-archer",
+   "title": "阵容时刻表：中期 Saber+记忆主，后期切 Archer 核",
+   "instruction": "中期 C 位=Saber（上记忆主前台形态）；后期 C 位=Archer（再上花火和刻律德菈），通用辅助选千冶·刃、缇宝、瓦尔特等。后期通关能力取决于 Archer 或 2 星 Archer——其他 3 名圣杯角色后期 Carry 不足。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_33",
+    "currency_wars_character_trailblazer",
+    "currency_wars_character_14"
+   ],
+   "priority": 700,
+   "conditions": [],
+   "benefits": [
+    "任务期与输出期阵容各按窗口最优"
+   ],
+   "costs": [],
+   "risks": [
+    "Archer 迟迟不来时无同羁绊过渡 C（3 角色后期 Carry 不足）"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [
+    "sell-saber-lategame"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-lineup-schedule"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "archer-only-true-carry"
+    }
+   ]
+  },
+  {
+   "actionId": "sell-saber-lategame",
+   "title": "任务做完卖 Saber/吉尔伽美什（不留 5 圣杯）",
+   "instruction": "后期输出主力是 Archer 和远坂凛：任务做完后把 Saber 和吉尔伽美什卖掉，不用留着 5 圣杯羁绊——终局人口让位给 Archer 核心与辅助组。",
+   "operationType": "sell_character",
+   "targetCharacterIds": [
+    "currency_wars_character_33",
+    "currency_wars_character_03"
+   ],
+   "priority": 680,
+   "conditions": [],
+   "benefits": [
+    "人口/金币向 Archer 核集中"
+   ],
+   "costs": [
+    "放弃 5 圣杯羁绊的持续任务供给"
+   ],
+   "risks": [],
+   "preconditions": [
+    "Archer 核已成型且圣杯任务奖励已结算"
+   ],
+   "invalidatesWhen": [
+    "仍有未完成任务需要羁绊在场"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "reward-kept-after-selling"
+    }
+   ]
+  },
+  {
+   "actionId": "settle-wish-rewards",
+   "title": "五圣杯/无限之釜结算：三星 Archer+全属性 99% 或直接完成所有愿望",
+   "instruction": "五圣杯会给一个圣杯：三星 Archer+全属性增幅 99%+一大堆命运改价（天湖连锁口碑，依赖运气）；终极奖励无限之釜=不用做任务直接完成所有愿望：全部 3 星命运圣杯角色+他们的极·专属装备+巨幅提升属性的圣杯装备，『相当于 3 星昔涟或 3 星 5 费银狼 LV.999』。",
+   "operationType": "other",
+   "targetCharacterIds": [
+    "currency_wars_character_14"
+   ],
+   "priority": 640,
+   "conditions": [
+    {
+     "field": "bond_count",
+     "operator": "greater_or_equal",
+     "expected": 5,
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "体系终点战力（三星五费级 C+成套专属装）"
+   ],
+   "costs": [
+    "凑五圣杯的星徽/任务投入"
+   ],
+   "risks": [
+    "档位奖励数值为单帖口碑（76917798），无第二源帧证"
+   ],
+   "preconditions": [
+    "命运圣杯星徽已持有（5 圣杯硬门槛）"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-tier-rewards-quantified"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "infinite-cauldron-reward"
+    }
+   ]
+  }
+ ],
+ "branches": [
+  {
+   "branchId": "emblem-gate",
+   "priority": 1,
+   "when": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_001"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "thenActionIds": [
+    "pick-grail-emblem-strategy",
+    "keep-grail-bond-during-task"
+   ],
+   "otherwiseActionIds": [
+    "borrow-grail-chars-to-open-tasks"
+   ],
+   "transitionToPhaseId": "grail-task-operations",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-emblem-five-bond-gate"
+    }
+   ]
+  },
+  {
+   "branchId": "archer-line-gate",
+   "priority": 2,
+   "when": [
+    {
+     "field": "grail_task_reward",
+     "operator": "contains_any",
+     "expected": [
+      "送Archer的任务（天胡档）"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "thenActionIds": [
+    "schedule-saber-to-archer",
+    "chase-reda-refresh-task"
+   ],
+   "otherwiseActionIds": [
+    "borrow-grail-chars-to-open-tasks"
+   ],
+   "transitionToPhaseId": null,
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "archer-only-true-carry"
+    }
+   ]
+  }
+ ],
+ "alternativeRoutes": [
+  {
+   "routeId": "no-emblem-side-hustle-only",
+   "title": "无星徽：只蹭任务不开五圣杯路线",
+   "triggerConditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_none",
+     "expected": [
+      "currency_wars_equipment_001"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [
+    "borrow-grail-chars-to-open-tasks",
+    "sell-grail-chars-after-reward"
+   ],
+   "tradeoffs": [
+    "无星徽开不出 5 圣杯终极试炼（命运圣杯只有 4 角色），体系只保留『顺手拿开任务、做完就卖』的过渡收益",
+    " signals.bondIds/investmentStrategyIds 不作为匹配信号，阵容走本局常规体系"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-emblem-five-bond-gate"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-side-hustle"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [
+  {
+   "category": "extreme_high_roll",
+   "description": "1-3 红 A 天湖三任务链（20 刷新送红A/掉血立马送 20 刷新/不完美通关双倍伤害立刻送王冠，『人物、装备、队友全在 1-3 启程就安排好了』）。",
+   "reason": "极端高开样本（妖精社 77092893 自述），任务组合依赖运气不可复制，不作标准路线；仅作任务池上限记录。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "extreme-roll-1-3-task-chain"
+    }
+   ]
+  }
+ ],
+ "risks": [
+  {
+   "riskId": "emblem-gate-hard",
+   "severity": "high",
+   "description": "命运圣杯只有 4 角色，最终试炼需 5 圣杯羁绊，必须至少 1 个命运圣杯星徽凑数——无星徽则体系终局（无限之釜/五圣杯奖励）全部不可达。",
+   "mitigation": "无星徽即走 alternativeRoutes.no-emblem-side-hustle-only（只蹭任务）；见到『命运圣杯星徽』策略（investment_strategy_321）优先补缺。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-emblem-five-bond-gate"
+    }
+   ]
+  },
+  {
+   "riskId": "task-rng-variance",
+   "severity": "medium",
+   "description": "每局圣杯任务都不一样，强度取决于给什么任务（送 Archer=天胡，经验金币=中不溜）——体系上限由任务池随机性主导。",
+   "mitigation": "入口先激活任务预览再决定投入度（branches.archer-line-gate）；蹭任务路线（做完即卖）作为任何任务质量下的保底收益。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-trial-mechanism"
+    }
+   ]
+  },
+  {
+   "riskId": "archer-dependency",
+   "severity": "high",
+   "description": "后期通关取决于 Archer 或 2 星 Archer，其他 3 名命运圣杯角色后期 Carry 能力都不足——Archer 不来则体系无终点战力。",
+   "mitigation": "二圣杯刷新任务（远坂凛在场刷新 20 次给红A）为最早获取路径；通用辅助组（刃/缇宝/瓦尔特）保证 Archer 缺位时阵容仍有基础强度，必要时整体转常规体系。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "archer-only-true-carry"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "reda-refresh-task-preservation"
+    }
+   ]
+  },
+  {
+   "riskId": "avalon-deramp-cost",
+   "severity": "medium",
+   "description": "次数型任务（阿瓦隆 20 次终结技）与强阵容互斥：秒全清开不出次数，需挂姬子或放场外角色/后排红A 压线——主动降完成度有真实败北风险。",
+   "mitigation": "优先挂姬子解法（每按一下算一次，4 次大招解完）；压线局只在奖励关执行且保留诅咒件+星徽+永动机的容错配置（青树局实录）。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "avalon-20ult-workarounds"
+    }
+   ]
+  },
+  {
+   "riskId": "lowconfidence-single-source-entries",
+   "severity": "low",
+   "description": "两条低可信单源：档位奖励量化（三圣杯=2 五费球/五圣杯=三星 Archer+99%，76917798 单帖）与『卖光圣杯角色换 4 徽章+首见摧毁圣杯』（77732227，10 观看 0 回复自述随缘局）。",
+   "mitigation": "结构化字段只承载多源一致的机制（试炼机制/不没收规则/星徽门槛）；量化数字保留 claims.conditions 口碑标注，摧毁圣杯不作操作依据。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-tier-rewards-quantified"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "sell-all-grail-4-emblems"
+    }
+   ]
+  },
+  {
+   "riskId": "post45-silent-unretested",
+   "severity": "medium",
+   "description": "4.5 期第三方零复测：『未见推翻』不能升级为『已验证』；官方 4.5 纯修复清单 19 条提示任务/复制类机制曾被官方调整，圣杯任务层是否有静默改动未知；4.6 贪饕若改周常币战需整体重审。",
+   "mitigation": "status 保持 draft；引用时标注『4.4 口径，4.5 社区静默未经复测』；4.6 上线后按公告重审（BV1rE4D6jEJZ 预警）。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "post45-silent-no-retest"
+    }
+   ]
+  },
+  {
+   "riskId": "catalog-gaps-fate-entities",
+   "severity": "low",
+   "description": "目录覆盖更正（处置批核实）：远坂凛=character_04（costs [1]，bond_31/23 成员）/吉尔伽美什=character_03（costs [2]，bond_31 成员）均已入 standard-ids/characters.json（2026-08-01 在档，早于建集 40 天）——建集时误记『未入角色目录』系核对疏漏，本表已更正并回填 ID；现余缺口仅道具类：无限之釜/极·专属装备/命运改价/双三辉宠物未入道具目录。",
+   "mitigation": "道具类未收录细节全部放 instruction/notes 文本并标『未入目录』，待官方目录扩充后再回填结构化字段；角色已可按 ID 结构化引用（chase-reda-refresh-task 回填 character_04、sell-saber-lategame 回填 character_03）。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+     "claimId": "grail-lineup-schedule"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "source-metadata"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "grail-trial-mechanism"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "grail-best-investments"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "grail-emblem-five-bond-gate"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "archer-only-true-carry"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "infinite-cauldron-reward"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "grail-lineup-schedule"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "task-progress-needs-bond-onfield"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "reward-kept-after-selling"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "fault-strategy-speedfail"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "grail-side-hustle"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "grail-equipment-universal"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "grail-tier-rewards-quantified"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "reda-refresh-task-preservation"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "avalon-20ult-workarounds"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "cursed-grail-skip-pretasks"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "imperfect-completion-definition"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "extreme-roll-1-3-task-chain"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "sell-all-grail-4-emblems"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-fate-grail",
+   "claimId": "post45-silent-no-retest"
+  }
+ ],
+ "notes": [
+  "转化来源：deep-hunt-old-era-c.md §3.3（77066576 教程）/§3.5（76917798 量化）/§3.6（77092893 天湖）/§3.7（77495769 红A 路径）/§3.4+快照（13490 阿瓦隆操作学/诅咒圣杯）/§3.14（13560 不完美完成定义）；证据集先建（samples/evidence/evidence-multi-oldera-c-fate-grail.research-evidence.v1.json，20 claims），本表全部 evidenceRefs 只引该集真实 claimId。",
+  "体系空白判定：19 份既有 playbook（samples 17+drafts 2）无任何『命运圣杯/祈愿试炼』样本——lili 养狼链 draft notes 明示『随机星徽被动入圣杯为未收录进入路径』，本表补上主动进入路径的主证据链。",
+  "攻略码纪律（RULES 七.0）：本体系七源均无攻略码，本表不含 guideCodes。",
+  "文本层实体（处置批更正）：远坂凛=character_04/吉尔伽美什=character_03 已核实入 standard-ids/characters.json（bond_31 成员，建集时误记未入册，本表已更正并回填 ID）；仍只在文本层承载的为道具类：无限之釜/极·专属装备/命运改价/双三辉宠物未入目录；其余角色 ID 已对表（Saber=33/Archer=14/记忆主=trailblazer/花火=54/刻律=43/刃=02/缇宝=55/瓦尔特=20/姬子=42/云璃=15）。",
+  "数值纪律：全表无帧证数值（文本层攻略），recommendedState 数值域全部 null；口碑数字（99% 增幅/20 次刷新/20 次终结技）保留在 claims/instruction 并标来源与可信层级。"
+ ]
+}

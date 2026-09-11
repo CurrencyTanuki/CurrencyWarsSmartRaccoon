@@ -1,0 +1,1029 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-argenti-wheelchair",
+ "title": "4.4 银枝轮椅通拐流：五辅助抬C+3群攻鸟挂位，对群特化（iqizna 07-28）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-argenti-wheelchair",
+ "archetypeName": "银枝轮椅通拐流（4.4 银枝离开能量羁绊后以杨叔/主角/缇宝/花火/千冶刃五辅助+符玄轮椅强抬，翡翠开 3 群攻+知更鸟挂位补乘区，对群特化）",
+ "goalIds": [
+  "stable",
+  "a850-capable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_45"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_20",
+   "currency_wars_character_trailblazer",
+   "currency_wars_character_55",
+   "currency_wars_character_54",
+   "currency_wars_character_02",
+   "currency_wars_character_23",
+   "currency_wars_character_65",
+   "currency_wars_character_29",
+   "currency_wars_character_57",
+   "currency_wars_character_36"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_066",
+   "currency_wars_equipment_052",
+   "currency_wars_equipment_064",
+   "currency_wars_equipment_074",
+   "currency_wars_equipment_079",
+   "currency_wars_equipment_080",
+   "currency_wars_equipment_075",
+   "currency_wars_equipment_020",
+   "currency_wars_equipment_004",
+   "currency_wars_equipment_140"
+  ],
+  "bondIds": [
+   "currency_wars_bond_19"
+  ],
+  "investmentEnvironmentIds": [],
+  "investmentStrategyIds": []
+ },
+ "sourceRefs": [
+  {
+   "platform": "miyoushe",
+   "refId": "77006068",
+   "url": "https://www.miyoushe.com/sr/article/77006068",
+   "title": "4.4货币战争攻略——银枝（iqizna，2026-07-28）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "V4.5（2026-08-26）对货币战争仅 19 条纯修复，无赛季扩充、无玩法参数迁移",
+    "impact": "参数基线不受影响；verified 升级仍需 V4.5 实机复验",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+      "claimId": "v45-applicability-context"
+     }
+    ]
+   },
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+    "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+    "evidenceRefs": []
+   }
+  ],
+  "supersededBy": null,
+  "notes": [
+   "挂件含千冶•刃（泡泡枪辅助件）：4.5 修复清单涉及千冶刃相关条目（夜班研究层记录），其对辅助位影响待实机复验。"
+  ]
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+      "claimId": "source-metadata-77006068"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "early-chase-3star",
+   "title": "前期：追三星银枝+过渡双辅助",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1,
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_45"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_57",
+      "currency_wars_character_02"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_45": 3
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_45",
+       "priority": 1,
+       "targetStars": 3,
+       "note": "一定要找到 3 星银枝，不然后期伤害不够"
+      },
+      {
+       "characterId": "currency_wars_character_57",
+       "priority": 2,
+       "note": "椒丘：前中期代替老杨，少量治疗"
+      },
+      {
+       "characterId": "currency_wars_character_02",
+       "priority": 3,
+       "note": "千冶•刃：泡泡枪保生存（泛称刃按用户拍板 2026-09-06 映射 02）"
+      },
+      {
+       "characterId": "currency_wars_character_36",
+       "priority": 4,
+       "note": "星期日：前中期代替主角"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_19"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_45",
+     "currency_wars_character_57"
+    ],
+    "costFocus": [
+     1
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "银枝 3 星达成",
+     "银枝累计 7 张以上"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+      "claimId": "argenti-lineup-equipment"
+     },
+     {
+      "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+      "claimId": "argenti-roll-finish"
+     }
+    ],
+    "notes": []
+   },
+   "actionIds": [
+    "chase-argenti-3star",
+    "early-sub-supports"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-lineup-equipment"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "equipment-window",
+   "title": "装备装配：银枝风暴潮+冷笑话引擎，符玄/刃分工",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     1,
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_45"
+     ],
+     "backCharacterIds": [],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": []
+    },
+    "equipment": [
+     {
+      "characterId": "currency_wars_character_45",
+      "equipmentIds": [
+       "currency_wars_equipment_066",
+       "currency_wars_equipment_052"
+      ],
+      "priority": 1,
+      "substituteEquipmentIds": [
+       "currency_wars_equipment_064"
+      ]
+     },
+     {
+      "characterId": "currency_wars_character_23",
+      "equipmentIds": [
+       "currency_wars_equipment_074"
+      ],
+      "priority": 2,
+      "substituteEquipmentIds": []
+     },
+     {
+      "characterId": "currency_wars_character_02",
+      "equipmentIds": [
+       "currency_wars_equipment_079",
+       "currency_wars_equipment_080",
+       "currency_wars_equipment_075"
+      ],
+      "priority": 3,
+      "substituteEquipmentIds": []
+     }
+    ],
+    "bondIds": [
+     "currency_wars_bond_19"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [],
+    "costFocus": [],
+    "refreshPolicy": "never",
+    "stopWhen": [
+     "银枝已有风暴潮+冷笑话引擎"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+      "claimId": "argenti-lineup-equipment"
+     }
+    ],
+    "notes": [
+     "泡泡枪暂无标准 ID：千冶•刃辅助三件套第一件仅入 instruction，结构化暂记钻地弹/追逐星辰/胜利之旗三件。"
+    ]
+   },
+   "actionIds": [
+    "equip-argenti-core",
+    "equip-fuxuan-blade"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-lineup-equipment"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "wheelchair-final",
+   "title": "大成：上等级换轮椅通拐最终阵容+运行监控",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 8,
+     "max": 10,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_45"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_20",
+      "currency_wars_character_trailblazer",
+      "currency_wars_character_55",
+      "currency_wars_character_54",
+      "currency_wars_character_02",
+      "currency_wars_character_23",
+      "currency_wars_character_65",
+      "currency_wars_character_29"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_45": 3
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_20",
+       "priority": 1,
+       "note": "杨叔（瓦尔特，用户拍板 2026-09-06）：五辅助之一"
+      },
+      {
+       "characterId": "currency_wars_character_23",
+       "priority": 2,
+       "note": "符玄：万能生存"
+      },
+      {
+       "characterId": "currency_wars_character_65",
+       "priority": 3,
+       "note": "翡翠：上 3 群攻（少量爆伤和速度）"
+      },
+      {
+       "characterId": "currency_wars_character_29",
+       "priority": 4,
+       "note": "鸟（知更鸟）：拉条、加攻、增伤，还能拿 10% 幸运率"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_19"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_20",
+     "currency_wars_character_23",
+     "currency_wars_character_65",
+     "currency_wars_character_29"
+    ],
+    "costFocus": [
+     5
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "轮椅通拐九人成阵",
+     "金币不足刷新价"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+      "claimId": "argenti-lineup-equipment"
+     }
+    ],
+    "notes": []
+   },
+   "actionIds": [
+    "level-up-final-swap",
+    "deploy-wheelchair-nine",
+    "patch-multiplier",
+    "keep-aoe-borrow-ball",
+    "watch-single-target",
+    "manual-auto-battle"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-roll-finish"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-lineup-equipment"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-failure-and-patch"
+    }
+   ],
+   "notes": [
+    "3 群攻构成=银枝+翡翠+缇宝（AI 按 standard-ids 羁绊归属推读，帖内未明列第三人）；群攻保留是借力球（帖内称助力球）回转的前提。"
+   ]
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "chase-argenti-3star",
+   "title": "追三星银枝（后期伤害硬指标）",
+   "instruction": "一定要找到 3 星银枝，不然后期伤害不够；攒到 7 张以上也可提前转入上等级节奏。",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_45"
+   ],
+   "priority": 95,
+   "conditions": [],
+   "benefits": [
+    "后期伤害达标"
+   ],
+   "costs": [
+    "前期金币集中投入刷牌"
+   ],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [
+    "银枝已 3 星或累计 7 张以上"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-lineup-equipment"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-roll-finish"
+    }
+   ],
+   "trigger": "on_shop_roll"
+  },
+  {
+   "actionId": "early-sub-supports",
+   "title": "前中期过渡：椒丘代老杨、周日代主角",
+   "instruction": "前中期分别用椒丘和周日代替老杨和主角；椒丘的少量治疗和千冶•刃的泡泡枪可以保障生存。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_57",
+    "currency_wars_character_36",
+    "currency_wars_character_02"
+   ],
+   "priority": 80,
+   "conditions": [],
+   "benefits": [
+    "过渡期生存与辅助位不空转"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [
+    "上等级换最终阵容（踢掉椒丘、周日）"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-lineup-equipment"
+    }
+   ],
+   "trigger": "on_phase_enter"
+  },
+  {
+   "actionId": "equip-argenti-core",
+   "title": "银枝必备：风暴潮+冷笑话引擎",
+   "instruction": "银枝必备一个风暴潮和冷笑话引擎，第三件可以是风暴潮/鞋子/永动机。",
+   "operationType": "buy_equipment",
+   "targetCharacterIds": [
+    "currency_wars_character_45"
+   ],
+   "priority": 90,
+   "conditions": [],
+   "benefits": [
+    "风暴潮乘区+冷笑话引擎循环为伤害底座"
+   ],
+   "costs": [],
+   "risks": [
+    "『鞋子』具体装备帖内未指明，无标准 ID"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-lineup-equipment"
+    }
+   ],
+   "trigger": "on_equipment_acquired"
+  },
+  {
+   "actionId": "equip-fuxuan-blade",
+   "title": "符玄带绝对热量；千冶刃带辅助三件套",
+   "instruction": "符玄带绝对热量；千冶•刃带通用辅助三件套：泡泡枪、钻地弹或追逐星辰、胜利之旗。",
+   "operationType": "buy_equipment",
+   "targetCharacterIds": [
+    "currency_wars_character_23",
+    "currency_wars_character_02"
+   ],
+   "priority": 72,
+   "conditions": [],
+   "benefits": [
+    "生存位与辅助刃的装备分工就位"
+   ],
+   "costs": [],
+   "risks": [
+    "泡泡枪未入装备目录（疑 07-24 新增），暂只能入 instruction"
+   ],
+   "preconditions": [
+    "符玄已购入",
+    "千冶•刃已购入"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-lineup-equipment"
+    }
+   ],
+   "trigger": "on_equipment_acquired"
+  },
+  {
+   "actionId": "level-up-final-swap",
+   "title": "3 星或 7 张以上→上等级踢过渡件",
+   "instruction": "找到 3 星银枝或有 7 张以上后，上等级；踢掉椒丘、周日，换上最终阵容。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_45",
+    "currency_wars_character_57",
+    "currency_wars_character_36"
+   ],
+   "priority": 85,
+   "conditions": [
+    {
+     "field": "argenti_stars",
+     "operator": "greater_or_equal",
+     "expected": 3,
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "过渡件让位给五辅助轮椅"
+   ],
+   "costs": [],
+   "risks": [
+    "argenti_stars 为自造运行时字段（先例 kafka_stars/feixiao_stars）；『或累计 7 张以上』的并列口径无法单条件表达，见 instruction"
+   ],
+   "preconditions": [
+    "银枝 3 星（或累计 7 张以上）"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [
+    "early-sub-supports"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-roll-finish"
+    }
+   ],
+   "trigger": "on_character_star_up",
+   "triggerArgs": {
+    "characterId": "currency_wars_character_45",
+    "stars": 3
+   }
+  },
+  {
+   "actionId": "deploy-wheelchair-nine",
+   "title": "轮椅通拐九人成阵",
+   "instruction": "最终阵容=杨叔、主角、缇宝、花火、千冶•刃五个辅助+符玄这个万能生存；剩余两位置之一上翡翠开 3 群攻（获得少量爆伤和速度），另一个挂鸟（拉条、加攻、增伤，还能拿 10% 幸运率）。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_20",
+    "currency_wars_character_trailblazer",
+    "currency_wars_character_55",
+    "currency_wars_character_54",
+    "currency_wars_character_02",
+    "currency_wars_character_23",
+    "currency_wars_character_65",
+    "currency_wars_character_29"
+   ],
+   "priority": 88,
+   "conditions": [],
+   "benefits": [
+    "五辅助+生存+乘区挂件全就位"
+   ],
+   "costs": [],
+   "risks": [
+    "3 群攻第三人为缇宝系 AI 推读（帖内未明列）",
+    "『10% 幸运率』为作者口述数值"
+   ],
+   "preconditions": [
+    "椒丘/周日已踢掉",
+    "银枝 3 星在场"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-lineup-equipment"
+    }
+   ],
+   "trigger": "manual"
+  },
+  {
+   "actionId": "patch-multiplier",
+   "title": "乘区补丁：阿瓦隆/天地乖离见即装",
+   "instruction": "银枝失去能量羁绊后几乎没有伤害增幅区：有阿瓦隆或天地乖离开辟之星就装上，补齐增幅乘区。",
+   "operationType": "buy_equipment",
+   "targetCharacterIds": [
+    "currency_wars_character_45"
+   ],
+   "priority": 74,
+   "conditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_020",
+      "currency_wars_equipment_004"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "补上缺失的增幅乘区"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-failure-and-patch"
+    }
+   ],
+   "trigger": "on_equipment_acquired"
+  },
+  {
+   "actionId": "keep-aoe-borrow-ball",
+   "title": "群攻要保留：借力球保能量回转",
+   "instruction": "群攻要保留——助力球（借力球）会极大提升银枝的能量回转速度；这也是翡翠 3 群攻位不可拆的原因。",
+   "operationType": "other",
+   "priority": 60,
+   "conditions": [],
+   "benefits": [
+    "银枝能量回转提速"
+   ],
+   "costs": [],
+   "risks": [
+    "『助力球』疑即群攻羁绊借力球：BWIKI 官方效果=受击转移真伤，与帖内『提升能量回转速度』口径不同，映射中置信、效果差异记档"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-failure-and-patch"
+    }
+   ],
+   "trigger": "on_phase_enter"
+  },
+  {
+   "actionId": "watch-single-target",
+   "title": "失效监控：长时间对单输出大幅下降",
+   "instruction": "银枝阵容适合对群——长时间对单时，即使有助力球，输出也会大幅下降；对单 boss 局按对群特化表的局限调整预期。",
+   "operationType": "other",
+   "priority": 58,
+   "conditions": [],
+   "benefits": [],
+   "costs": [],
+   "risks": [
+    "本表核心失效条件：对单场景整表降级使用"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-failure-and-patch"
+    }
+   ],
+   "trigger": "on_boss_appear"
+  },
+  {
+   "actionId": "manual-auto-battle",
+   "title": "自动战斗需手动：迷迷会拉杨叔",
+   "instruction": "自动战斗时迷迷很可能会拉杨叔，需要手动控制。",
+   "operationType": "other",
+   "priority": 56,
+   "conditions": [],
+   "benefits": [
+    "避免自动战斗拉错启动轴"
+   ],
+   "costs": [
+    "自动战斗挂机收益受限"
+   ],
+   "risks": [
+    "『迷迷』指向未证实（疑游戏本体记忆精灵），帖内未展开"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-failure-and-patch"
+    }
+   ],
+   "trigger": "manual"
+  },
+  {
+   "actionId": "energy-transfer-variant",
+   "title": "分支：有能量转→给银枝、鸟换周日",
+   "instruction": "有能量星徽（能量转）就给银枝带上、鸟换周日——走能量补丁变体，缓解失去能量羁绊后的增幅区缺口。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_45",
+    "currency_wars_character_29",
+    "currency_wars_character_36"
+   ],
+   "priority": 52,
+   "conditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_140"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "能量回转与增幅区补丁"
+   ],
+   "costs": [
+    "鸟位让出（损失拉条/加攻/增伤/幸运率）"
+   ],
+   "risks": [
+    "『能量转』=能量星徽(equipment_140) 为中置信映射"
+   ],
+   "preconditions": [
+    "已拿到能量星徽"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-failure-and-patch"
+    }
+   ],
+   "trigger": "on_equipment_acquired"
+  }
+ ],
+ "branches": [
+  {
+   "branchId": "energy-transfer-gate",
+   "priority": 1,
+   "when": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_140"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "thenActionIds": [
+    "energy-transfer-variant"
+   ],
+   "otherwiseActionIds": [],
+   "transitionToPhaseId": null,
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-failure-and-patch"
+    }
+   ]
+  }
+ ],
+ "alternativeRoutes": [
+  {
+   "routeId": "owned-argenti-windset",
+   "title": "本体银枝线：风套频繁自拉条",
+   "triggerConditions": [
+    {
+     "field": "owned_characters",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_character_45"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [],
+   "tradeoffs": [
+    "有自己的银枝时带上风套（局外遗器概念）频繁自拉条，效果尚可",
+    "依赖本体练度，非质变解"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-44-energy-loss"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [
+  {
+   "category": "outdated_core",
+   "description": "银枝能量羁绊流派（4.3 及以前）",
+   "reason": "4.4 版本更新后银枝离开能量羁绊、仅补偿一点攻击力，作者主张放弃能量流派改走轮椅通拐；能量向仅保留『能量星徽给银枝+鸟换周日』的补丁分支（见 energy-transfer-variant）",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-44-energy-loss"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-failure-and-patch"
+    }
+   ]
+  }
+ ],
+ "craftingPaths": [
+  {
+   "resultId": "currency_wars_equipment_066",
+   "inputIds": [
+    "currency_wars_equipment_044",
+    "currency_wars_equipment_046"
+   ],
+   "note": "折叠小刀+轮滑鞋→火力风暴潮（官方配置 compose_list；银枝必备风暴潮，主动合成比等刷稳）",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-official-cw-game-config",
+     "claimId": "compose-list-recipes"
+    }
+   ]
+  }
+ ],
+ "risks": [
+  {
+   "riskId": "single-target-failure",
+   "severity": "high",
+   "description": "核心失效条件：银枝轮椅为对群特化——长时间对单时即使有助力球，输出也会大幅下降。",
+   "mitigation": "对单 boss 局把本表当对群特化表降级使用；配合 watch-single-target 监控与 patch-multiplier 补乘区。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-failure-and-patch"
+    }
+   ]
+  },
+  {
+   "riskId": "term-mapping-confidence",
+   "severity": "medium",
+   "description": "未证实术语与中置信映射备案：泡泡枪未入装备目录（疑 07-24 新增）；助力球≈借力球但效果口径与 BWIKI 官方不一致；鞋子/迷迷未证实；能量转=能量星徽(140) 中置信；鸟=知更鸟、杨叔=瓦尔特(20)、千冶刃=character_02 为社区简称/用户拍板；3 群攻第三人=缇宝为 AI 推读。",
+   "mitigation": "未证实术语只留在 instruction/risks/notes；结构化条件一律 require_review。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-lineup-equipment"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-failure-and-patch"
+    }
+   ]
+  },
+  {
+   "riskId": "tier-claim-scope",
+   "severity": "medium",
+   "description": "强度口径：iqizna 全主C分级（试用/0命口径）将银枝列 B 级；本表为该 B 级条目分篇的运营层细则，评级层与运营层互补。",
+   "mitigation": "引用与匹配时带口径声明。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "source-metadata-77006068"
+    }
+   ]
+  },
+  {
+   "riskId": "energy-loss-wording",
+   "severity": "low",
+   "description": "『4.4 银枝离开能量羁绊、仅补偿一点攻击力』为作者口述归纳，未逐条对照官方 4.4 更新公告；与 standard-ids 银枝羁绊归属（星间旅人+群攻，确无能量）吻合。",
+   "mitigation": "结构化判定以 standard-ids 羁绊归属为准；帖子口径差异记档不合并。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "argenti-44-energy-loss"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+   "claimId": "source-metadata-77006068"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+   "claimId": "argenti-44-energy-loss"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+   "claimId": "argenti-lineup-equipment"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+   "claimId": "argenti-roll-finish"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+   "claimId": "argenti-failure-and-patch"
+  },
+  {
+   "evidenceSetId": "evidence-official-cw-game-config",
+   "claimId": "compose-list-recipes"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+   "claimId": "v45-applicability-context"
+  }
+ ],
+ "notes": [
+  "2026-09-06 本体转化自 evidence-miyoushe-77056698-77006068 银枝侧 5 条 claim（与已转化的万敌侧 guide-v44-mydei-hit-charge 合卷同一证据集，两侧体系差异大分表交付）。",
+  "杨叔=瓦尔特(character_20)、泛称刃=千冶•刃(character_02) 按用户拍板（2026-09-06）入结构化字段；鸟=知更鸟(29)、椒丘(57)、星期日(36) 沿用 claim subjectRefs 映射。",
+  "刃归属旁证存档：同作者同系列万敌篇泛称『刃』（先例映射 70）、银枝篇明写『千冶刃』（映射 02），支持『刃(70)与千冶•刃(02)为两个不同单位』读法——本表五辅助位按千冶•刃(02) 处理。",
+  "自造条件字段备案（STANDARD §14.6 运行时字段字典）：argenti_stars（银枝星级查询，本期新用，先例 kafka_stars/feixiao_stars）；owned_characters/acquired_items 沿用先例。",
+  "『迷迷』在帖内未展开（疑游戏本体记忆精灵），自动战斗拉杨叔的提示按软件可提示范畴收录为 manual 动作，不做机制断言。",
+  "评论区阵容码未抓取（iqizna 系列码集中在合集贴 76807134 评论区，未登录评论受限），故 guideCodes 为空。",
+  "2026-09-07 下午（用户最终定性）：guideCodes 字段整体移除——攻略码=游戏内部分享码，对软件无功能意义，最终 JSON 成品不得含攻略码字段（RULES 七.0 修订）。"
+ ]
+}

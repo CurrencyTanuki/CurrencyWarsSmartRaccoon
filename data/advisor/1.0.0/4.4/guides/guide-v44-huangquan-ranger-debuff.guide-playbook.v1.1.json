@@ -1,0 +1,725 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-huangquan-ranger-debuff",
+ "title": "4.4 黄泉游侠减益流：3游侠4减益+量子同频（iqizna 07-20）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-huangquan-ranger-debuff",
+ "archetypeName": "黄泉游侠减益流（3游侠叠增幅+4减益真伤，兼顾输出与生存）",
+ "goalIds": [
+  "stable",
+  "a850-capable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_34"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_68",
+   "currency_wars_character_08",
+   "currency_wars_character_23",
+   "currency_wars_character_54",
+   "currency_wars_character_55",
+   "currency_wars_character_57",
+   "currency_wars_character_02",
+   "currency_wars_character_20",
+   "currency_wars_character_31"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_066",
+   "currency_wars_equipment_052",
+   "currency_wars_equipment_057",
+   "currency_wars_equipment_077"
+  ],
+  "bondIds": [
+   "currency_wars_bond_05",
+   "currency_wars_bond_17",
+   "currency_wars_bond_22"
+  ],
+  "investmentEnvironmentIds": [],
+  "investmentStrategyIds": []
+ },
+ "sourceRefs": [
+  {
+   "platform": "miyoushe",
+   "refId": "76826405",
+   "url": "https://www.miyoushe.com/sr/article/76826405",
+   "title": "4.4货币战争攻略——黄泉（iqizna，2026-07-20）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "V4.5（2026-08-26）对货币战争仅 19 条修复，无赛季扩充、晋升上限 170 与 A850 不变",
+    "impact": "参数基线不受影响；verified 升级仍需 V4.5 实机复验",
+    "evidenceRefs": []
+   },
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+    "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+    "evidenceRefs": []
+   }
+  ],
+  "supersededBy": null,
+  "notes": [
+   "4.4 依赖点：刃入池大幅提升黄泉残梦获取效率——若后续版本刃机制变动需重审本表。"
+  ]
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76826405",
+      "claimId": "source-metadata"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "early-4debuff-shore",
+   "title": "前期：4 减益过渡抗压",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ],
+    "nodeRanges": [
+     {
+      "planeId": 1,
+      "fromNodeIndex": 1,
+      "toNodeIndex": 9
+     }
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": 6,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_34"
+     ],
+     "backCharacterIds": [],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_34",
+       "priority": 1
+      },
+      {
+       "characterId": "currency_wars_character_57",
+       "priority": 2,
+       "note": "椒丘：减益件+残梦供给"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_17"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_34",
+     "currency_wars_character_57"
+    ],
+    "costFocus": [
+     1,
+     2,
+     3
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "4 减益已开",
+     "符玄已购入（生存压力解除）"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76826405",
+      "claimId": "early-4debuff-roll-7"
+     }
+    ],
+    "notes": [
+     "前期没找到符玄生存压力较大：先开 4 减益降低敌方伤害，输出通常足够。"
+    ]
+   },
+   "actionIds": [
+    "open-4debuff-early"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76826405",
+     "claimId": "early-4debuff-roll-7"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "level7-dual-chase",
+   "title": "7 级：d 牌同找黄泉+不死途",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     1,
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 7,
+     "max": 8,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_34"
+     ],
+     "backCharacterIds": [],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_34": 3,
+      "currency_wars_character_08": 3
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_34",
+       "priority": 1,
+       "targetStars": 3
+      },
+      {
+       "characterId": "currency_wars_character_08",
+       "priority": 1,
+       "targetStars": 3,
+       "note": "3 星不死途是 280% 增幅条件之一"
+      },
+      {
+       "characterId": "currency_wars_character_68",
+       "priority": 3,
+       "note": "乱破除非来得多否则不追三"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_05",
+     "currency_wars_bond_17"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_34",
+     "currency_wars_character_08"
+    ],
+    "costFocus": [
+     1,
+     2,
+     3
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "黄泉与不死途三星（或差不多）",
+     "金币不足刷新价"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76826405",
+      "claimId": "early-4debuff-roll-7"
+     }
+    ],
+    "notes": []
+   },
+   "actionIds": [
+    "level7-dual-chase-action"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76826405",
+     "claimId": "early-4debuff-roll-7"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "level9-complete",
+   "title": "上 9 成型：3游侠4减益+3量子同频",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 9,
+     "max": 10,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_34"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_23",
+      "currency_wars_character_54",
+      "currency_wars_character_55",
+      "currency_wars_character_57",
+      "currency_wars_character_02",
+      "currency_wars_character_20"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_34": 3
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_23",
+       "priority": 1,
+       "note": "符玄：生存+量子同频件"
+      },
+      {
+       "characterId": "currency_wars_character_20",
+       "priority": 1,
+       "note": "杨叔（瓦尔特，用户拍板 2026-09-06）"
+      },
+      {
+       "characterId": "currency_wars_character_68",
+       "priority": 3,
+       "note": "乱破（来得多才追三）"
+      },
+      {
+       "characterId": "currency_wars_character_31",
+       "priority": 4,
+       "note": "波提欧：运气好时的上位替换"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_05",
+     "currency_wars_bond_17",
+     "currency_wars_bond_22"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_23",
+     "currency_wars_character_20"
+    ],
+    "costFocus": [
+     4,
+     5
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "符玄与杨叔均已购入"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76826405",
+      "claimId": "level9-complete-and-fallback"
+     }
+    ],
+    "notes": [
+     "装备口径：黄泉带风暴潮+冷笑话引擎；椒丘带很硬的甲和蓄能帆弥补血量劣势并提供更多残梦；刃带常规辅助装。"
+    ]
+   },
+   "actionIds": [
+    "level9-complete-action",
+    "warn-single-boss"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76826405",
+     "claimId": "level9-complete-and-fallback"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-76826405",
+     "claimId": "core-lineup-3ranger-4debuff"
+    }
+   ],
+   "notes": [
+    "阵容口径：4 游侠或 6 减益太占格子、收益较低——开 3 游侠+4 减益；符玄/花火/缇宝正好开 3 量子同频。"
+   ]
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "open-4debuff-early",
+   "title": "前期先开 4 减益抗压",
+   "instruction": "前期没找到符玄生存压力较大时，先开 4 减益降低敌方伤害（得 60% 真伤并兼顾输出）；输出通常足够。",
+   "operationType": "deploy_character",
+   "priority": 85,
+   "conditions": [],
+   "benefits": [
+    "敌方伤害降低+真伤收益",
+    "生存压力缓解"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [
+    "符玄已上场"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76826405",
+     "claimId": "early-4debuff-roll-7"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-76826405",
+     "claimId": "huangquan-bond-framework"
+    }
+   ]
+  },
+  {
+   "actionId": "level7-dual-chase-action",
+   "title": "7 级后 d 牌同找黄泉+不死途",
+   "instruction": "7 级后 d 牌同时找黄泉和不死途（两者都要追三）；乱破除非来得多否则不追三。",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_34",
+    "currency_wars_character_08"
+   ],
+   "priority": 90,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 7,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "280% 伤害/速度增幅条件（2星乱破+3星不死途）就位"
+   ],
+   "costs": [
+    "7 级集中花金"
+   ],
+   "risks": [],
+   "preconditions": [
+    "等级≥7"
+   ],
+   "invalidatesWhen": [
+    "黄泉与不死途均已三星"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76826405",
+     "claimId": "early-4debuff-roll-7"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-76826405",
+     "claimId": "huangquan-bond-framework"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 7
+   }
+  },
+  {
+   "actionId": "level9-complete-action",
+   "title": "追三星后上 9 补符玄杨叔",
+   "instruction": "追到（或差不多追到）三星黄泉和不死途后上 9，补符玄、杨叔（瓦尔特），阵容大成。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_23",
+    "currency_wars_character_20"
+   ],
+   "priority": 75,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 9,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "3游侠4减益+3量子同频终阵成型"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "黄泉/不死途三星或接近",
+    "符玄与杨叔已购入"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [
+    "bad-luck-no-level9"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76826405",
+     "claimId": "level9-complete-and-fallback"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 9
+   }
+  },
+  {
+   "actionId": "bad-luck-no-level9",
+   "title": "d 牌运不佳：不上 9 苟结算",
+   "instruction": "游侠体系很看 d 牌运气：运气不佳上不去 9 就不要杨叔，凭三星黄泉+不死途苟到胜利结算；运气好则上 3 星乱破，甚至上波提欧。",
+   "operationType": "other",
+   "priority": 55,
+   "conditions": [],
+   "benefits": [
+    "止损保结算"
+   ],
+   "costs": [
+    "终阵强度打折"
+   ],
+   "risks": [],
+   "preconditions": [
+    "d 牌运分流判定：三星黄泉+不死途已到手而等级/经济不足以安全上 9"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76826405",
+     "claimId": "level9-complete-and-fallback"
+    }
+   ]
+  },
+  {
+   "actionId": "warn-single-boss",
+   "title": "失效预警：单体 boss 局乏力",
+   "instruction": "最终 boss 以单体为主时黄泉输出可能乏力，可考虑其他阵容——当局出现单体 boss 迹象时提前评估换线。",
+   "operationType": "other",
+   "priority": 999,
+   "conditions": [],
+   "benefits": [],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76826405",
+     "claimId": "single-boss-weakness"
+    }
+   ]
+  }
+ ],
+ "branches": [],
+ "alternativeRoutes": [
+  {
+   "routeId": "lucky-3star-luanpo",
+   "title": "好运线：3 星乱破/波提欧上位",
+   "triggerConditions": [
+    {
+     "field": "luanpo_copies",
+     "operator": "greater_or_equal",
+     "expected": 6,
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [
+    "level9-complete-action"
+   ],
+   "tradeoffs": [
+    "乱破来得多为 280% 增幅补 2 星件",
+    "经济宽裕可上波提欧强化上限"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76826405",
+     "claimId": "level9-complete-and-fallback"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [],
+ "craftingPaths": [
+  {
+   "resultId": "currency_wars_equipment_066",
+   "inputIds": [
+    "currency_wars_equipment_044",
+    "currency_wars_equipment_046"
+   ],
+   "note": "折叠小刀+轮滑鞋→火力风暴潮（官方配置 compose_list；黄泉核心装）",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-official-cw-game-config",
+     "claimId": "compose-list-recipes"
+    }
+   ]
+  }
+ ],
+ "risks": [
+  {
+   "riskId": "single-boss-weakness",
+   "severity": "medium",
+   "description": "失效条件：最终 boss 以单体为主时黄泉输出可能乏力（对群向阵容）。",
+   "mitigation": "局势分析按 boss 形态提前预警换线（invalidatesWhen 语义；面板走警示卡）。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76826405",
+     "claimId": "single-boss-weakness"
+    }
+   ]
+  },
+  {
+   "riskId": "amp-condition-precise",
+   "severity": "low",
+   "description": "280% 伤害/速度增幅的前置为 2 星乱破+3 星不死途（作者口径），数值未经官方文本核对；乱破 2 星未到位时按实际增幅折算预期。",
+   "mitigation": "升级 reviewed 前与 BWIKI 巡海游侠页对照。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76826405",
+     "claimId": "huangquan-bond-framework"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-miyoushe-76826405",
+   "claimId": "source-metadata"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76826405",
+   "claimId": "huangquan-bond-framework"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76826405",
+   "claimId": "blade-42-residue"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76826405",
+   "claimId": "core-lineup-3ranger-4debuff"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76826405",
+   "claimId": "early-4debuff-roll-7"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76826405",
+   "claimId": "level9-complete-and-fallback"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76826405",
+   "claimId": "single-boss-weakness"
+  }
+ ],
+ "notes": [
+  "2026-09-06 本体转化自 evidence-miyoushe-76826405 全部 7 条 claim（iqizna 黄泉篇，A 级口径运营层细则）。",
+  "杨叔=瓦尔特(character_20) 按用户拍板（2026-09-06）入结构化字段。",
+  "自造条件字段备案（STANDARD §14.6 运行时字段字典）：luanpo_copies（乱破持有数查询，本期新用）。",
+  "4.4 依赖：刃入池提升残梦效率——本表 signals 含 character_02（泛称按 conflicts-register A1 拍板映射，2026-09-06；原 character_70 临时映射废止）。",
+  "刃归属已拍板（用户 2026-09-06）：泛称『刃』默认千冶•刃(character_02)；仅攻略明示专家顾问语境才指 1费刃(70)——本表挂件位已按 02 映射。",
+  "2026-09-07 下午（用户最终定性）：guideCodes 字段整体移除——攻略码=游戏内部分享码，对软件无功能意义，最终 JSON 成品不得含攻略码字段（RULES 七.0 修订）。"
+ ]
+}

@@ -1,0 +1,565 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-oldera-c-kafka-pursuit3",
+ "title": "4.4 卡芙卡追击流 3.0：dot 起家→银狼压制→追击标记复活（巴哈 snA=13457 跨版本谱系自述，old-era-c 转化）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-kafka-pursuit-lineage",
+ "archetypeName": "卡芙卡追击流 3.0（4.0 dot 过渡 1.0→4.1~4.3 银狼 LV.999 压制势微 2.0→4.4 官方强化卡芙卡+追击标记复活 3.0：前中期火力风暴潮主C，后期辅助化=省战技点+敌受伤 15% 减益+触发队友追击）",
+ "goalIds": [
+  "stable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_46"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_17",
+   "currency_wars_character_23"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_066",
+   "currency_wars_equipment_077"
+  ],
+  "bondIds": [
+   "currency_wars_bond_21",
+   "currency_wars_bond_14"
+  ],
+  "investmentEnvironmentIds": [],
+  "investmentStrategyIds": []
+ },
+ "sourceRefs": [
+  {
+   "platform": "bahamut",
+   "refId": "snA=13457",
+   "url": "https://forum.gamer.com.tw/C.php?bsn=72822&snA=13457",
+   "title": "【攻略】4.4版本貨幣戰爭-卡芙卡追擊流3.0（2026-07-19，同系列第三版）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "4.0",
+    "area": "卡芙卡追击流定位",
+    "change": "初版（1.0）发布：定位为 dot 队前中期过渡（系列前作 snA=12759，本批未抓，以 13457 自述为准）。",
+    "impact": "本表谱系起点；4.0 期口径不适用于 4.4 引用。",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+      "claimId": "lineage-1-0-dot-transition"
+     }
+    ]
+   },
+   {
+    "gameVersion": "4.1",
+    "area": "追击流环境",
+    "change": "银狼 LV.999 出现（4.1~4.3 期），追击流一度势微（2.0 期，前作 snA=13230）。",
+    "impact": "4.1~4.3 期引用追击流结论需降权——旧结论『追击流可用』在该窗口被环境压制。",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+      "claimId": "lineage-2-0-silverwolf-suppression"
+     }
+    ]
+   },
+   {
+    "gameVersion": "4.4",
+    "area": "卡芙卡数值/追击标记机制",
+    "change": "官方强化卡芙卡（作者转述的官方理由=帮 dot 体系前中期过渡），强化直接进基础数值；追击标记机制强化后复活（3.0）。",
+    "impact": "本表的全部可执行内容仅以 4.4 为基线；3.0 复活是版本强化驱动而非玩家开发驱动。",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+      "claimId": "lineage-3-0-revival"
+     }
+    ]
+   }
+  ],
+  "supersededBy": null,
+  "notes": [
+   "版本声明+兴替检查（RULES 三.3）：本表本身就是兴替链样本——同一流派 1.0→2.0 势微→3.0 复活，旧结论（4.0 追击流可用→4.1~4.3 不可用→4.4 复活）随版本反复摆动，任何『追击流强弱』断言必须钉在版本号上。",
+   "4.5 期（08-26 后）第三方零复测/零推翻（absence of counterevidence）；帖内 4.5 评论区（未抓）为报告指定复核点；dot 复兴线第三方正文级验证仍缺（deep-hunt-old-era-c.md §4-C11），勿直接升级。",
+   "与 guide-v44-dot-kafka-revival（iqizna 07-29）同角色不同亚型：dot 系（星核猎手刃激活）与追击系 3.0（火力风暴潮+蓄能帆）构成 4.4 卡芙卡双亚型证据面。"
+  ]
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "lineup",
+    "operator": "contains_any",
+    "expected": [
+     "currency_wars_character_46"
+    ],
+    "unknownPolicy": "require_review",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+      "claimId": "kafka-lineup-equipment"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "kafka-carry-window",
+   "title": "前中期主力输出窗：火力风暴潮卡芙卡前台（位面 1~2）",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1,
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation",
+     "battle"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_46"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_17",
+      "currency_wars_character_23"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {}
+    },
+    "equipment": [
+     {
+      "characterId": "currency_wars_character_46",
+      "equipmentIds": [
+       "currency_wars_equipment_066",
+       "currency_wars_equipment_077"
+      ],
+      "priority": 1,
+      "substituteEquipmentIds": [
+       "currency_wars_equipment_105",
+       "currency_wars_equipment_116"
+      ]
+     }
+    ],
+    "bondIds": [
+     "currency_wars_bond_14",
+     "currency_wars_bond_21"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "actionIds": [
+    "draft-kafka-core-lineup",
+    "equip-firestorm-battery",
+    "earlymid-carry-prioritize"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "kafka-lineup-equipment"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "lineage-3-0-revival"
+    }
+   ],
+   "notes": [
+    "组队=卡芙卡+黑天鹅+霍霍+符玄（任意生存）：霍霍未入角色目录，生存位以符玄承载结构化字段、霍霍留在文本层。",
+    "第三件装备『舞舞舞』未入装备目录，文本层保留；替代口径=生存装。"
+   ]
+  },
+  {
+   "phaseId": "kafka-support-transition",
+   "title": "后期辅助化转型：省战技点+15% 减益+触发队友追击（位面 2~3）",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation",
+     "battle",
+     "boss"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_46"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_17",
+      "currency_wars_character_23"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {}
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_14",
+     "currency_wars_bond_21"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "actionIds": [
+    "late-support-transition"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "kafka-role-swing"
+    }
+   ],
+   "notes": [
+    "触发条件=『后期敌人血量膨胀』（作者定性，无血量阈值数值）——branches.late-scaling-gate 按位面近似。"
+   ]
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "draft-kafka-core-lineup",
+   "title": "组队：卡芙卡+黑天鹅+符玄（+霍霍文本位）",
+   "instruction": "3.0 组队=卡芙卡+黑天鹅+霍霍+符玄，任意生存位可替。结构化承载：卡芙卡（46，前后台）+黑天鹅（17）+符玄（23）；霍霍未入角色目录只留文本——dot 双核底色（卡芙卡+黑天鹅同持持续伤害羁绊）与追击标签并存。",
+   "operationType": "buy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_46",
+    "currency_wars_character_17",
+    "currency_wars_character_23"
+   ],
+   "priority": 900,
+   "conditions": [],
+   "benefits": [
+    "追击触发核心+dot 伤害底色+生存位齐备"
+   ],
+   "costs": [],
+   "risks": [
+    "『任意生存』口径下霍霍位的具体替代收益未展开"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "kafka-lineup-equipment"
+    }
+   ]
+  },
+  {
+   "actionId": "equip-firestorm-battery",
+   "title": "装备：火力风暴潮+蓄能帆（第三件舞舞舞或生存装）",
+   "instruction": "卡芙卡前台配合火力风暴潮输出可观（3.0 复活核心装备）；装备组合=火力风暴潮（066）+蓄能帆（077），第三件舞舞舞（未入目录）或生存装——特权上位替代（105/116）按合成层常规处理。",
+   "operationType": "buy_equipment",
+   "targetCharacterIds": [
+    "currency_wars_character_46"
+   ],
+   "priority": 850,
+   "conditions": [],
+   "benefits": [
+    "4.4 强化后的基础数值直接乘装备乘区（前台输出可观）"
+   ],
+   "costs": [
+    "双核心装的经济投入"
+   ],
+   "risks": [
+    "『舞舞舞』未入装备目录，无法结构化；第三件优先级无量化"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "kafka-lineup-equipment"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "lineage-3-0-revival"
+    }
+   ]
+  },
+  {
+   "actionId": "earlymid-carry-prioritize",
+   "title": "前中期把卡芙卡当主C用",
+   "instruction": "3.0 前中期定位=主力输出：官方强化直接进基础数值，卡芙卡前台配合火力风暴潮输出可观——资源（装备/人口/刷新）在前中期向卡芙卡倾斜，不吃后期才成型的赌注。",
+   "operationType": "other",
+   "targetCharacterIds": [
+    "currency_wars_character_46"
+   ],
+   "priority": 800,
+   "conditions": [],
+   "benefits": [
+    "版本强化红利期最大化（过渡窗口输出）"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "4.4 基线（3.0 复活成立）"
+   ],
+   "invalidatesWhen": [
+    "进入后期血量膨胀窗口（转 late-support-transition）"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "lineage-3-0-revival"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "kafka-role-swing"
+    }
+   ]
+  },
+  {
+   "actionId": "late-support-transition",
+   "title": "后期辅助化：省战技点+减益+触发队友追击",
+   "instruction": "后期敌人血量膨胀后卡芙卡转辅助：省战技点、挂减益（敌人受伤+15%，全文唯一数值）、触发队友追击——输出职责让位，卡芙卡保留在场作为追击/减益引擎。",
+   "operationType": "other",
+   "targetCharacterIds": [
+    "currency_wars_character_46"
+   ],
+   "priority": 700,
+   "conditions": [],
+   "benefits": [
+    "战技点经济+全队追击收益+15% 易伤放大"
+   ],
+   "costs": [
+    "主C 位置让渡（需队友接输出）"
+   ],
+   "risks": [
+    "『敌人受伤+15%』为攻略正文口径无帧证；『后期』无血量阈值定义"
+   ],
+   "preconditions": [
+    "进入后期窗口（branches.late-scaling-gate 近似判定）"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "kafka-role-swing"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "plane": 3
+   }
+  }
+ ],
+ "branches": [
+  {
+   "branchId": "late-scaling-gate",
+   "priority": 1,
+   "when": [
+    {
+     "field": "plane",
+     "operator": "greater_or_equal",
+     "expected": 3,
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "thenActionIds": [
+    "late-support-transition"
+   ],
+   "otherwiseActionIds": [
+    "earlymid-carry-prioritize"
+   ],
+   "transitionToPhaseId": "kafka-support-transition",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "kafka-role-swing"
+    }
+   ]
+  }
+ ],
+ "alternativeRoutes": [
+  {
+   "routeId": "dot-subtype-instead",
+   "title": "同角色 dot 亚型替代（星核猎手刃体系）",
+   "triggerConditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "dot 系装备/星核猎手底子成型（iqizna 07-29 路线前提）"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [],
+   "tradeoffs": [
+    "卡芙卡官方 4.4 强化理由=帮 dot 体系过渡：dot 亚型（guide-v44-dot-kafka-revival）与本追击亚型共享强化红利，按到手装备/羁绊底子择一深耕，不双修",
+    "本表不否定 dot 亚型，两亚型为 4.4 卡芙卡并行证据面"
+   ],
+   "mutuallyExclusiveGroup": "kafka-44-subtype",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "lineage-3-0-revival"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "post45-silent-context"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [],
+ "risks": [
+  {
+   "riskId": "single-author-lineage",
+   "severity": "medium",
+   "description": "全部谱系叙述（1.0/2.0/3.0）为同作者自述单源：1.0/2.0 前作（snA=12759/13230）未抓取复核，『官方强化理由』亦为作者转述——谱系锚点可能存在记忆偏差。",
+   "mitigation": "引用时标注『单作者谱系自述』；1.0/2.0 原帖补抓后再升级结论；与 B2 批追击 300% 重构记录交叉锚定。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "lineage-1-0-dot-transition"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "code-and-series-anchors"
+    }
+   ]
+  },
+  {
+   "riskId": "sna-20-record-conflict",
+   "severity": "low",
+   "description": "巴哈侧栏『卡芙卡追擊流2.0』条目 snA=13577（显示 2026-05-22）与 13457 文内自述『2.0=snA=13230』冲突，未验证。",
+   "mitigation": "以 13457 文内链接为准（快照注记 preserve_all_sources）；不影响 3.0/4.4 结论。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "code-and-series-anchors"
+    }
+   ]
+  },
+  {
+   "riskId": "mechanism-numbers-untabbed",
+   "severity": "medium",
+   "description": "关键机制无官方数值对表：『追击标记机制强化』无 patch 细节，『敌人受伤+15%』全文唯一数值，霍霍/舞舞舞未入目录——结构化引用能力受限。",
+   "mitigation": "未对表数值只在 claims/instruction 文本层并标来源；待 BWIKI/官方字典收录后回填。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "kafka-role-swing"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "kafka-lineup-equipment"
+    }
+   ]
+  },
+  {
+   "riskId": "post45-unretested",
+   "severity": "medium",
+   "description": "4.5 期零复测：3.0 复活结论未经 4.5 环境实测（银狼类环境压制曾在本谱系 2.0 期发生过，环境再变的风险有先例）；4.5 评论区（未抓）为报告指定复核点。",
+   "mitigation": "status 保持 draft；引用带『4.4 口径，4.5 未复测』；4.6 贪饕改动周常币战则按公告整体重审。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+     "claimId": "post45-silent-context"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+   "claimId": "source-metadata"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+   "claimId": "lineage-1-0-dot-transition"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+   "claimId": "lineage-2-0-silverwolf-suppression"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+   "claimId": "lineage-3-0-revival"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+   "claimId": "kafka-role-swing"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+   "claimId": "kafka-lineup-equipment"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+   "claimId": "code-and-series-anchors"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-kafka-pursuit-lineage",
+   "claimId": "post45-silent-context"
+  }
+ ],
+ "notes": [
+  "转化来源：deep-hunt-old-era-c.md §3.1（本批最高价值候选：唯一跨版本连载流派谱系自述）；证据集先建（samples/evidence/evidence-multi-oldera-c-kafka-pursuit-lineage.research-evidence.v1.json，8 claims），本表 evidenceRefs 只引该集真实 claimId。",
+  "攻略码纪律（RULES 七.0）：原帖自带攻略码，码体按纪律不收录——本表与证据集成品均不含码字符串，原文见快照 baha_misc_44_45.md §1；本表不含 guideCodes。",
+  "文本层实体：霍霍（角色）/舞舞舞（装备）未入 standard-ids 目录，只在 instruction/notes 文本承载。",
+  "数值纪律：全文唯一数值『敌人受伤+15%』为攻略正文口径，recommendedState 数值域全部 null。",
+  "兴替检查示范（RULES 三.3）：1.0（4.0）→2.0（4.1~4.3 势微）→3.0（4.4 复活）三段 knownChanges 全部钉版本号，old-era 旧结论以演化链节点身份入册。"
+ ]
+}

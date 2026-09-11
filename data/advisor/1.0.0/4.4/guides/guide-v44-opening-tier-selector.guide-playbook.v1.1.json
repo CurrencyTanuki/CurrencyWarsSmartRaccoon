@@ -1,0 +1,707 @@
+{
+  "schemaVersion": "guide-playbook.v1.1",
+  "guideId": "guide-v44-opening-tier-selector",
+  "title": "4.4 开局五档决策树：夯/顶级/人上人/NPC/拉完了（iqizna 07-29）",
+  "status": "draft",
+  "applicableGameVersions": [
+    "4.4"
+  ],
+  "archetypeId": "archetype-generic-opening-tier",
+  "archetypeName": "通用开局分档决策（阵容无关，开局质量评估与分流）",
+  "goalIds": [
+    "stable",
+    "economic"
+  ],
+  "signals": {
+    "coreCharacterIds": [],
+    "optionalCharacterIds": [
+      "currency_wars_character_04",
+      "currency_wars_character_03",
+      "currency_wars_character_33",
+      "currency_wars_character_58",
+      "currency_wars_character_71",
+      "currency_wars_character_48"
+    ],
+    "equipmentIds": [],
+    "bondIds": [
+      "currency_wars_bond_12",
+      "currency_wars_bond_10",
+      "currency_wars_bond_14",
+      "currency_wars_bond_11",
+      "currency_wars_bond_02",
+      "currency_wars_bond_08",
+      "currency_wars_bond_03",
+      "currency_wars_bond_31"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": [
+      "investment_strategy_200",
+      "investment_strategy_296",
+      "investment_strategy_262",
+      "investment_strategy_300",
+      "investment_strategy_331",
+      "investment_strategy_330",
+      "investment_strategy_328",
+      "investment_strategy_085",
+      "investment_strategy_086",
+      "investment_strategy_089",
+      "investment_strategy_091",
+      "investment_strategy_099",
+      "investment_strategy_195"
+    ]
+  },
+  "sourceRefs": [
+    {
+      "platform": "miyoushe",
+      "refId": "post-77037489",
+      "url": "https://www.miyoushe.com/sr/article/77037489",
+      "title": "4.4货币战争攻略——开局（iqizna，2026-07-29）"
+    }
+  ],
+  "versionApplicability": {
+    "baselineVersion": "4.4",
+    "verifiedThrough": null,
+    "knownChanges": [
+      {
+        "gameVersion": "4.5",
+        "area": "货币战争整体",
+        "change": "V4.5（2026-08-26）对货币战争仅 19 条问题修复，无赛季扩充",
+        "impact": "策略/羁绊清单不受影响；verified 升级仍需实机复验",
+        "evidenceRefs": []
+      },
+      {
+        "gameVersion": "4.5",
+        "area": "货币战争整体",
+        "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+        "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+        "evidenceRefs": []
+      }
+    ],
+    "supersededBy": null,
+    "notes": [
+      "与包内 guide-v44-generic-economy-stoploss（经济止损）互补：本表管『开局分档』，止损表管『中盘退出条件』。"
+    ]
+  },
+  "applicability": {
+    "required": [
+      {
+        "field": "gameVersion",
+        "operator": "equals",
+        "expected": "4.4",
+        "unknownPolicy": "reject",
+        "evidenceRefs": [
+          {
+            "evidenceSetId": "evidence-miyoushe-77037489",
+            "claimId": "source-metadata"
+          }
+        ]
+      }
+    ],
+    "prohibited": [],
+    "defaultUnknownPolicy": "require_review"
+  },
+  "phases": [
+    {
+      "phaseId": "opening-decision",
+      "title": "开局分档评估（1-1~1-2）",
+      "order": 1,
+      "selector": {
+        "planeIds": [
+          1
+        ],
+        "nodeIds": [],
+        "nodeTypes": [
+          "preparation"
+        ],
+        "nodeRanges": [
+          {
+            "planeId": 1,
+            "fromNodeIndex": 1,
+            "toNodeIndex": 2
+          }
+        ]
+      },
+      "recommendedState": {
+        "economy": {
+          "min": null,
+          "max": null,
+          "unit": "coin"
+        },
+        "health": {
+          "min": null,
+          "max": null,
+          "unit": "health"
+        },
+        "level": {
+          "min": null,
+          "max": null,
+          "unit": "level"
+        },
+        "population": {
+          "min": null,
+          "max": null,
+          "unit": "population"
+        },
+        "remainingActionPoints": {
+          "min": null,
+          "max": null,
+          "unit": "action_point"
+        },
+        "lineup": {
+          "frontCharacterIds": [],
+          "backCharacterIds": [],
+          "benchCharacterIds": [],
+          "minimumStarsByCharacterId": {},
+          "acquisitionPriorities": [
+            {
+              "characterId": "currency_wars_character_04",
+              "priority": 1,
+              "note": "凛：圣杯任务资源，见到果断买"
+            },
+            {
+              "characterId": "currency_wars_character_03",
+              "priority": 1,
+              "note": "闪闪：同上"
+            },
+            {
+              "characterId": "currency_wars_character_33",
+              "priority": 1,
+              "note": "saber：同上"
+            }
+          ]
+        },
+        "equipment": [],
+        "bondIds": [],
+        "investmentEnvironmentIds": [],
+        "investmentStrategyIds": []
+      },
+      "actionIds": [
+        "pick-god-strategy",
+        "buy-grail-chars",
+        "scholar-company-economy",
+        "commit-team-sketch",
+        "lean-damage-bond-start"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "source-metadata"
+        }
+      ],
+      "notes": [
+        "分档判定由 branches 按优先级执行：夯 > 顶级 > 人上人 > NPC > 拉完了。"
+      ]
+    },
+    {
+      "phaseId": "economy-scaling",
+      "title": "NPC 路线：用血量换经济到 1 位面 boss 门口",
+      "order": 2,
+      "selector": {
+        "planeIds": [
+          1
+        ],
+        "nodeIds": [],
+        "nodeTypes": [
+          "preparation",
+          "battle"
+        ],
+        "nodeRanges": [
+          {
+            "planeId": 1,
+            "fromNodeIndex": 3,
+            "toNodeIndex": 9
+          }
+        ]
+      },
+      "recommendedState": {
+        "economy": {
+          "min": null,
+          "max": null,
+          "unit": "coin"
+        },
+        "health": {
+          "min": null,
+          "max": null,
+          "unit": "health"
+        },
+        "level": {
+          "min": null,
+          "max": 8,
+          "unit": "level"
+        },
+        "population": {
+          "min": null,
+          "max": null,
+          "unit": "population"
+        },
+        "remainingActionPoints": {
+          "min": null,
+          "max": null,
+          "unit": "action_point"
+        },
+        "lineup": {
+          "frontCharacterIds": [],
+          "backCharacterIds": [],
+          "benchCharacterIds": [],
+          "minimumStarsByCharacterId": {},
+          "acquisitionPriorities": []
+        },
+        "equipment": [],
+        "bondIds": [],
+        "investmentEnvironmentIds": [],
+        "investmentStrategyIds": [
+          "investment_strategy_085",
+          "investment_strategy_086",
+          "investment_strategy_089",
+          "investment_strategy_091",
+          "investment_strategy_099",
+          "investment_strategy_195"
+        ]
+      },
+      "actionIds": [
+        "economy-sustain-until-boss"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-npc-economy"
+        }
+      ],
+      "notes": [
+        "『奋斗协议只能 8 级』为作者原文备注。"
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "actionId": "pick-god-strategy",
+      "title": "夯档：逆天投资策略秒选",
+      "instruction": "开局拿到决议：娱乐星球/不等价交换/轮回不止（需金垃圾袋，术语未证实）/本姑娘就是罗刹（需双鞋风扇，术语未证实）/飞光•映月/黑塔纪元/狸狸的早晨（星徽不能太差）任一：务必秒选。（原帖段6 以玩梗口吻表达同时刷出多个属极端天胡，非严格规则。）",
+      "operationType": "select_investment_strategy",
+      "priority": 100,
+      "conditions": [],
+      "benefits": [
+        "开局即锁定高强度路线"
+      ],
+      "costs": [],
+      "risks": [
+        "部分策略附带前提（金垃圾袋/双鞋风扇/星徽质量），前提术语未证实，命中判定须 require_review"
+      ],
+      "preconditions": [
+        "投资策略选择界面已弹出"
+      ],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-han-god-strategies"
+        }
+      ]
+    },
+    {
+      "actionId": "commit-team-sketch",
+      "title": "顶级档：按配队雏形定阵",
+      "instruction": "开局已有配队雏形（主C+两拐+一件合适装备）或自己高配主C：按雏形滑入对应阵容攻略，前期争取连胜，血量经济双收。",
+      "operationType": "other",
+      "priority": 90,
+      "conditions": [
+        {
+          "field": "has_team_sketch",
+          "operator": "equals",
+          "expected": true,
+          "unknownPolicy": "require_review"
+        }
+      ],
+      "benefits": [
+        "平滑过渡到成型阵容"
+      ],
+      "costs": [],
+      "risks": [],
+      "preconditions": [],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-top-team-sketch"
+        }
+      ]
+    },
+    {
+      "actionId": "lean-damage-bond-start",
+      "title": "人上人档：双伤害羁绊启动",
+      "instruction": "开出仙舟/狼狩/dot/列车/贝洛伯格中至少两个：有一定强度，运气好可连胜；鞋子可加速神君/造物引擎行动助力连胜。",
+      "operationType": "other",
+      "priority": 80,
+      "conditions": [],
+      "benefits": [
+        "无需主C也有战斗力"
+      ],
+      "costs": [
+        "上限低于成型阵容"
+      ],
+      "risks": [
+        "『至少两个』的计数条件当前 schema 表达不了（contains_any 只判存在），由运行时按羁绊计数实现"
+      ],
+      "preconditions": [],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-strong-damage-bonds"
+        }
+      ]
+    },
+    {
+      "actionId": "buy-grail-chars",
+      "title": "圣杯任务角色果断买",
+      "instruction": "圣杯任务提供经济或资源：看到凛/闪闪/saber 果断购买。",
+      "operationType": "buy_character",
+      "targetCharacterIds": [
+        "currency_wars_character_04",
+        "currency_wars_character_03",
+        "currency_wars_character_33"
+      ],
+      "priority": 70,
+      "conditions": [],
+      "benefits": [
+        "圣杯任务资源线"
+      ],
+      "costs": [
+        "占用金币"
+      ],
+      "risks": [],
+      "preconditions": [
+        "金币≥角色费用"
+      ],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "grail-economy-supplement"
+        }
+      ]
+    },
+    {
+      "actionId": "scholar-company-economy",
+      "title": "学者/公司经济线",
+      "instruction": "学者羁绊第一层 3 金币（2 星黑塔/艾丝妲/阮•梅开第二层）；公司羁绊每节点 1 金币——经济分档下顺路collect。",
+      "operationType": "other",
+      "priority": 50,
+      "conditions": [],
+      "benefits": [
+        "小额稳定经济"
+      ],
+      "costs": [],
+      "risks": [
+        "数值为作者口述，未逐条对官方文本"
+      ],
+      "preconditions": [],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "scholar-company-economy"
+        }
+      ]
+    },
+    {
+      "actionId": "economy-sustain-until-boss",
+      "title": "NPC 档：血量换经济拖到 boss 门口",
+      "instruction": "有经济类策略（开源节流/商业间谍/被动收入/利息上调/淘金客/奋斗协议）时：不着急胜利，用血量换经济，等 1 位面 boss 门口再启动一波。",
+      "operationType": "other",
+      "priority": 60,
+      "conditions": [],
+      "benefits": [
+        "后期启动资本"
+      ],
+      "costs": [
+        "血量与前期连胜"
+      ],
+      "risks": [
+        "血量红线由运行时策略把关（作者未给具体血量下限）"
+      ],
+      "preconditions": [
+        "开局判定为 NPC 档"
+      ],
+      "invalidatesWhen": [
+        "血量进入危险区间"
+      ],
+      "fallbackActionIds": [
+        "quality-roll-or-restart"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-npc-economy"
+        }
+      ]
+    },
+    {
+      "actionId": "quality-roll-or-restart",
+      "title": "拉完了档：d 牌找质量或建议重开",
+      "instruction": "无质量无经济时：挑战连胜/不喜刷开局者可以未来经济为代价多次 d 牌找质量或忍受连败；否则建议重开。重开决策属高风险动作，软件侧须人工复核或运行时门控，绝不自动执行。",
+      "operationType": "abandon_run",
+      "priority": 40,
+      "conditions": [
+        {
+          "field": "opening_quality_tier",
+          "operator": "is_unknown",
+          "expected": null,
+          "unknownPolicy": "require_review"
+        }
+      ],
+      "benefits": [
+        "止损换局"
+      ],
+      "costs": [
+        "当前局投入作废"
+      ],
+      "risks": [
+        "重开=不可逆高风险动作；本表继承作者给人类玩家的口径，自动执行必须由 missingInformationPolicy 门控"
+      ],
+      "preconditions": [
+        "四档全部未命中"
+      ],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-none-restart"
+        }
+      ]
+    }
+  ],
+  "branches": [
+    {
+      "branchId": "tier-han-gate",
+      "priority": 1,
+      "when": [
+        {
+          "field": "investment_strategies",
+          "operator": "contains_any",
+          "expected": [
+            "investment_strategy_200",
+            "investment_strategy_296",
+            "investment_strategy_262",
+            "investment_strategy_300",
+            "investment_strategy_331",
+            "investment_strategy_330",
+            "investment_strategy_328"
+          ],
+          "unknownPolicy": "require_review",
+          "evidenceRefs": [
+            {
+              "evidenceSetId": "evidence-miyoushe-77037489",
+              "claimId": "tier-han-god-strategies"
+            }
+          ]
+        }
+      ],
+      "thenActionIds": [
+        "pick-god-strategy"
+      ],
+      "otherwiseActionIds": [],
+      "transitionToPhaseId": null,
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-han-god-strategies"
+        }
+      ]
+    },
+    {
+      "branchId": "tier-top-gate",
+      "priority": 2,
+      "when": [
+        {
+          "field": "has_team_sketch",
+          "operator": "equals",
+          "expected": true,
+          "unknownPolicy": "require_review",
+          "evidenceRefs": [
+            {
+              "evidenceSetId": "evidence-miyoushe-77037489",
+              "claimId": "tier-top-team-sketch"
+            }
+          ]
+        }
+      ],
+      "thenActionIds": [
+        "commit-team-sketch"
+      ],
+      "otherwiseActionIds": [],
+      "transitionToPhaseId": null,
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-top-team-sketch"
+        }
+      ]
+    },
+    {
+      "branchId": "tier-damage-bonds-gate",
+      "priority": 3,
+      "when": [
+        {
+          "field": "bonds",
+          "operator": "contains_any",
+          "expected": [
+            "currency_wars_bond_12",
+            "currency_wars_bond_10",
+            "currency_wars_bond_14",
+            "currency_wars_bond_11",
+            "currency_wars_bond_02"
+          ],
+          "unknownPolicy": "require_review",
+          "evidenceRefs": [
+            {
+              "evidenceSetId": "evidence-miyoushe-77037489",
+              "claimId": "tier-strong-damage-bonds"
+            }
+          ]
+        }
+      ],
+      "thenActionIds": [
+        "lean-damage-bond-start"
+      ],
+      "otherwiseActionIds": [],
+      "transitionToPhaseId": null,
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-strong-damage-bonds"
+        }
+      ]
+    },
+    {
+      "branchId": "tier-npc-gate",
+      "priority": 4,
+      "when": [
+        {
+          "field": "investment_strategies",
+          "operator": "contains_any",
+          "expected": [
+            "investment_strategy_085",
+            "investment_strategy_086",
+            "investment_strategy_089",
+            "investment_strategy_091",
+            "investment_strategy_099",
+            "investment_strategy_195"
+          ],
+          "unknownPolicy": "require_review",
+          "evidenceRefs": [
+            {
+              "evidenceSetId": "evidence-miyoushe-77037489",
+              "claimId": "tier-npc-economy"
+            }
+          ]
+        }
+      ],
+      "thenActionIds": [
+        "economy-sustain-until-boss"
+      ],
+      "otherwiseActionIds": [],
+      "transitionToPhaseId": "economy-scaling",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-npc-economy"
+        }
+      ]
+    },
+    {
+      "branchId": "tier-none-gate",
+      "priority": 5,
+      "when": [
+        {
+          "field": "opening_quality_tier",
+          "operator": "equals",
+          "expected": "none",
+          "unknownPolicy": "use_fallback"
+        }
+      ],
+      "thenActionIds": [
+        "quality-roll-or-restart"
+      ],
+      "otherwiseActionIds": [],
+      "transitionToPhaseId": null,
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-none-restart"
+        }
+      ]
+    }
+  ],
+  "alternativeRoutes": [],
+  "risks": [
+    {
+      "riskId": "counting-condition-limitation",
+      "severity": "medium",
+      "description": "『人上人』档要求『至少两个不同伤害羁绊』，当前 condition 体系（contains_any）只能判存在性，表达不了计数。",
+      "mitigation": "由运行时按羁绊计数实现；已在 STANDARD §14.7 登记为下一版候选语义。",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-strong-damage-bonds"
+        }
+      ]
+    },
+    {
+      "riskId": "restart-automation-risk",
+      "severity": "high",
+      "description": "『建议重开』是作者给人类玩家的口径；软件自动弃局重开=不可逆高风险动作。",
+      "mitigation": "missingInformationPolicy.highRiskDecisionBehavior=never_auto_execute 已强制；运行时须接用户闸门（与主项目『重开一局已获长期授权』口径对齐由白班确认）。",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-none-restart"
+        }
+      ]
+    },
+    {
+      "riskId": "unverified-terms",
+      "severity": "low",
+      "description": "『金垃圾袋』『双鞋风扇』未入标准目录；学者/公司金币数为作者口述。",
+      "mitigation": "结构化字段不含这些术语；命中判定 require_review。",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77037489",
+          "claimId": "tier-han-god-strategies"
+        }
+      ]
+    }
+  ],
+  "missingInformationPolicy": {
+    "defaultBehavior": "mark_unknown",
+    "highRiskDecisionBehavior": "never_auto_execute",
+    "conflictBehavior": "preserve_all_sources",
+    "minimumConfidence": 0.6
+  },
+  "evidenceRefs": [
+    {
+      "evidenceSetId": "evidence-miyoushe-77037489",
+      "claimId": "source-metadata"
+    },
+    {
+      "evidenceSetId": "evidence-miyoushe-77037489",
+      "claimId": "tier-han-god-strategies"
+    },
+    {
+      "evidenceSetId": "evidence-miyoushe-77037489",
+      "claimId": "tier-none-restart"
+    }
+  ],
+  "notes": [
+    "第四份样例：通用开局分档决策树（阵容无关），演示 branches 优先级链（五档依次判定）+ transitionToPhaseId 的实际使用 + abandon_run 高风险动作的门控写法。",
+    "分档间为互斥优先级关系（先到先得），与 branches 的 priority 字段语义一致。",
+    "审查修复记录(R3)：tier-none-gate 改 equals 'none'+use_fallback（原 is_unknown 会把『未知』误当『拉完了』）；自造字段 has_team_sketch/opening_quality_tier 为运行时待定义字段，白班建字段字典时需收录。",
+    "tier-none-gate 分支说明：『none』由运行时在前四档 gate 均未命中时标记；本分支即 else 语义，依赖 priority 时序兜底，不得把『未知』与『拉完了』混同。"
+  ]
+}

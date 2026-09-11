@@ -1,0 +1,763 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-dragonil-sp-point",
+ "title": "4.4 龙丹战技点流：无限耗点强化+4列车160%（iqizna 07-27，A 级口径）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-dragonil-sp-point",
+ "archetypeName": "龙丹战技点流（饮月无限耗点强化普攻，4 战技点 4 列车双羁绊轴）",
+ "goalIds": [
+  "stable",
+  "a850-capable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_53"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_04",
+   "currency_wars_character_36",
+   "currency_wars_character_20",
+   "currency_wars_character_trailblazer",
+   "currency_wars_character_02",
+   "currency_wars_character_23",
+   "currency_wars_character_47",
+   "currency_wars_character_69",
+   "currency_wars_character_01",
+   "currency_wars_character_29"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_083",
+   "currency_wars_equipment_066"
+  ],
+  "bondIds": [
+   "currency_wars_bond_23",
+   "currency_wars_bond_11"
+  ],
+  "investmentEnvironmentIds": [],
+  "investmentStrategyIds": []
+ },
+ "sourceRefs": [
+  {
+   "platform": "miyoushe",
+   "refId": "76987716",
+   "url": "https://www.miyoushe.com/sr/article/76987716",
+   "title": "4.4货币战争攻略——龙丹（iqizna，2026-07-27）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "V4.5 仅 19 条修复，无赛季扩充",
+    "impact": "参数基线不受影响；verified 升级需实机复验",
+    "evidenceRefs": []
+   },
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+    "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+    "evidenceRefs": []
+   }
+  ],
+  "supersededBy": null,
+  "notes": []
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+      "claimId": "source-metadata-76987716"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "early-4sp-transition",
+   "title": "前期：直接开 4 战技点过渡",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ],
+    "nodeRanges": [
+     {
+      "planeId": 1,
+      "fromNodeIndex": 1,
+      "toNodeIndex": 9
+     }
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_53"
+     ],
+     "backCharacterIds": [],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_53",
+       "priority": 1
+      },
+      {
+       "characterId": "currency_wars_character_47",
+       "priority": 2,
+       "note": "风堇：前期生存（霍霍/盾丹亦可，盾丹未证实术语）"
+      },
+      {
+       "characterId": "currency_wars_character_01",
+       "priority": 3,
+       "note": "姬子可拿来过渡（开 4 列车）"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_23"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_53",
+     "currency_wars_character_47"
+    ],
+    "costFocus": [
+     1,
+     2
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "饮月已购入",
+     "4 战技点已开"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+      "claimId": "dragon-il-transition"
+     }
+    ],
+    "notes": [
+     "4 战技点的『再现』都是体系牌、自然开启，无需硬凑。"
+    ]
+   },
+   "actionIds": [
+    "open-4sp-early",
+    "dragon-equipment"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "dragon-il-transition"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "dragon-il-lineup-equipment"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "level67-chase-star",
+   "title": "6/7 级：找饮月三星+圣杯任务机会",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     1,
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 6,
+     "max": 7,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_53"
+     ],
+     "backCharacterIds": [],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_53": 3
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_53",
+       "priority": 1,
+       "targetStars": 3,
+       "note": "3 星每耗 1 点=180% 对单/90% 对群倍率"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_23",
+     "currency_wars_bond_11"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_53"
+    ],
+    "costFocus": [
+     2
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "饮月三星达成",
+     "金币不足刷新价"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+      "claimId": "dragon-il-transition"
+     }
+    ],
+    "notes": []
+   },
+   "actionIds": [
+    "chase-star-67",
+    "grail-task-encounter"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "dragon-il-transition"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "level9-10-complete",
+   "title": "上 9 大成与上 10 上限选项",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 9,
+     "max": 10,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_53"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_20",
+      "currency_wars_character_trailblazer",
+      "currency_wars_character_23",
+      "currency_wars_character_36",
+      "currency_wars_character_02"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_53": 3
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_20",
+       "priority": 1,
+       "note": "杨叔（瓦尔特）必备"
+      },
+      {
+       "characterId": "currency_wars_character_trailblazer",
+       "priority": 1,
+       "note": "记忆主必备（真伤乘区）"
+      },
+      {
+       "characterId": "currency_wars_character_36",
+       "priority": 2,
+       "note": "周日（星期日）开 4 列车 160% 前台强度"
+      },
+      {
+       "characterId": "currency_wars_character_69",
+       "priority": 3,
+       "note": "上 10 时霍霍开 3 能量"
+      },
+      {
+       "characterId": "currency_wars_character_29",
+       "priority": 4,
+       "note": "上 10 可选挂鸟（知更鸟）"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_23",
+     "currency_wars_bond_11"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_20",
+     "currency_wars_character_36",
+     "currency_wars_character_23"
+    ],
+    "costFocus": [
+     3,
+     4,
+     5
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "杨叔/星期日/符玄均已购入"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+      "claimId": "dragon-il-finish-and-cap"
+     }
+    ],
+    "notes": []
+   },
+   "actionIds": [
+    "level9-complete",
+    "level10-flex",
+    "warn-rin-frontline"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "dragon-il-finish-and-cap"
+    }
+   ],
+   "notes": []
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "open-4sp-early",
+   "title": "前期直接开 4 战技点",
+   "instruction": "前期直接开 4 战技点（体系牌自然开启），生存位用风堇/霍霍/盾丹；有姬子也可以拿来过渡开 4 列车，领航员选三月七或龙丹都可以。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_47",
+    "currency_wars_character_69",
+    "currency_wars_character_01"
+   ],
+   "priority": 85,
+   "conditions": [],
+   "benefits": [
+    "过渡简单，羁绊自然开启"
+   ],
+   "costs": [],
+   "risks": [
+    "『盾丹』为未证实术语（记 otherRefs）"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [
+    "上 9 成型"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "dragon-il-transition"
+    }
+   ]
+  },
+  {
+   "actionId": "dragon-equipment",
+   "title": "饮月装备：双电锯+风暴潮",
+   "instruction": "饮月带两个高周波电锯+风暴潮；4 列车刚好提供 160% 前台强度，正好带上周日（星期日）开 4 列车。",
+   "operationType": "buy_equipment",
+   "targetCharacterIds": [
+    "currency_wars_character_53"
+   ],
+   "priority": 80,
+   "conditions": [],
+   "benefits": [
+    "输出乘区配平"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "饮月已购入"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "dragon-il-lineup-equipment"
+    }
+   ]
+  },
+  {
+   "actionId": "chase-star-67",
+   "title": "6/7 级尽量找饮月三星",
+   "instruction": "在 6/7 级商店尽量找饮月三星——3 星饮月每消耗一个战技点提高 180% 对单/90% 对群倍率，无限耗点强化的核心档位。",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_53"
+   ],
+   "priority": 90,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 6,
+     "unknownPolicy": "reject"
+    },
+    {
+     "field": "level",
+     "operator": "less_or_equal",
+     "expected": 7,
+     "unknownPolicy": "use_fallback"
+    }
+   ],
+   "benefits": [
+    "倍率档位到位"
+   ],
+   "costs": [
+    "6/7 级集中花金"
+   ],
+   "risks": [],
+   "preconditions": [
+    "等级 6-7"
+   ],
+   "invalidatesWhen": [
+    "饮月已三星"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "dragon-il-transition"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "dragon-il-point-mechanic"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 6
+   }
+  },
+  {
+   "actionId": "grail-task-encounter",
+   "title": "碰到闪闪/Saber 做 2 圣杯任务",
+   "instruction": "如果碰到闪闪（吉尔伽美什）或 Saber，就做一下 2 圣杯的任务。",
+   "operationType": "select_encounter_option",
+   "targetCharacterIds": [
+    "currency_wars_character_03",
+    "currency_wars_character_33"
+   ],
+   "priority": 60,
+   "conditions": [],
+   "benefits": [
+    "圣杯任务收益"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "阵容含吉尔伽美什或 Saber"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "dragon-il-transition"
+    }
+   ]
+  },
+  {
+   "actionId": "level9-complete",
+   "title": "上 9 找杨叔/主角/符玄大成",
+   "instruction": "后期上 9 找到杨叔（瓦尔特）、记忆主和符玄，阵容大成；剩余位置挂上千冶•刃（万能拐）。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_20",
+    "currency_wars_character_trailblazer",
+    "currency_wars_character_23",
+    "currency_wars_character_02"
+   ],
+   "priority": 75,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 9,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "终阵成型"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "等级≥9"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "dragon-il-finish-and-cap"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 9
+   }
+  },
+  {
+   "actionId": "level10-flex",
+   "title": "上 10：霍霍 3 能量或挂鸟",
+   "instruction": "如果上 10 级，可以挂上霍霍开启 3 能量并提升生存能力，也可以挂上鸟（知更鸟）。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_69",
+    "currency_wars_character_29"
+   ],
+   "priority": 55,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 10,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "上限补强"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "等级≥10"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "dragon-il-finish-and-cap"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 10
+   }
+  },
+  {
+   "actionId": "warn-rin-frontline",
+   "title": "警示：凛前台极限位易阵亡",
+   "instruction": "凛（远坂凛）也可以放前台：释放[第二魔法实验]可能因消耗战技点获得额外回合、再放强化战技叠加爆伤拐（后期 99 层宝石=198% 爆伤+默认 70%=268%）——饮月爆伤可以破千，但凛容易阵亡，谨慎选择。",
+   "operationType": "other",
+   "priority": 999,
+   "conditions": [],
+   "benefits": [],
+   "costs": [],
+   "risks": [
+    "凛前台容易阵亡（作者明示）"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "dragon-il-finish-and-cap"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "rin-new-sp-point-support"
+    }
+   ]
+  }
+ ],
+ "branches": [],
+ "alternativeRoutes": [],
+ "excludedContent": [],
+ "craftingPaths": [
+  {
+   "resultId": "currency_wars_equipment_066",
+   "inputIds": [
+    "currency_wars_equipment_044",
+    "currency_wars_equipment_046"
+   ],
+   "note": "折叠小刀+轮滑鞋→火力风暴潮（官方配置 compose_list）",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-official-cw-game-config",
+     "claimId": "compose-list-recipes"
+    }
+   ]
+  }
+ ],
+ "risks": [
+  {
+   "riskId": "tier-claim-scope",
+   "severity": "low",
+   "description": "强度口径：iqizna 全主C分级将饮月列 A 级（试用/0命口径）；『苍龙濯世轻松破百亿』为作者展示值不外推。",
+   "mitigation": "引用带口径声明。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "source-metadata-76987716"
+    }
+   ]
+  },
+  {
+   "riskId": "unverified-terms",
+   "severity": "low",
+   "description": "『盾丹』『迷迷』为未证实术语（记 otherRefs/notes，不入结构化字段）。",
+   "mitigation": "定位后更新。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "dragon-il-transition"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+   "claimId": "source-metadata-76987716"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+   "claimId": "dragon-il-point-mechanic"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+   "claimId": "rin-new-sp-point-support"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+   "claimId": "dragon-il-lineup-equipment"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+   "claimId": "dragon-il-transition"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+   "claimId": "dragon-il-finish-and-cap"
+  }
+ ],
+ "notes": [
+  "2026-09-07 本体转化自 evidence-miyoushe-76987716-76883466 龙丹侧 6 条 claim（追击侧已另有 guide-v44-feixiao-pursuit）。",
+  "杨叔=瓦尔特(20)、泛称『刃』=千冶•刃(02) 按用户拍板（2026-09-06）映射；『电锯』=高周波电锯(083) 对表命中。",
+  "凛的 268% 爆伤口径（99 层宝石=198%+默认 70%）为作者口述，未对官方文本。",
+  "2026-09-07 下午（用户最终定性）：guideCodes 字段整体移除——攻略码=游戏内部分享码，对软件无功能意义，最终 JSON 成品不得含攻略码字段（RULES 七.0 修订）。"
+ ]
+}

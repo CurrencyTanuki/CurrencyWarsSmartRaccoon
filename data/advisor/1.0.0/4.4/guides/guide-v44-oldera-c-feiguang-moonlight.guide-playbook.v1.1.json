@@ -1,0 +1,729 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-oldera-c-feiguang-moonlight",
+ "title": "4.4 飞光·映月镜流景元师徒流：镜流星级=景元费率引擎，先追 3 星 3 费景元再升镜流 3 星变 3 星 5 费（M-07 官方文本+首日实战，old-era-c 转化）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-feiguang-moonlight-shifu",
+ "archetypeName": "飞光·映月镜流景元师徒流（位面 1 棱彩策略引擎：获得镜流+特殊 1 费景元并挂师徒羁绊，镜流 2 星→景元 3 费、镜流 3 星→景元 5 费；最优路径=先追 3 星 3 费景元再升镜流 3 星，保星级换费率）",
+ "goalIds": [
+  "stable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_39",
+   "currency_wars_character_13"
+  ],
+  "optionalCharacterIds": [],
+  "equipmentIds": [],
+  "bondIds": [
+   "currency_wars_bond_33"
+  ],
+  "investmentEnvironmentIds": [],
+  "investmentStrategyIds": [
+   "investment_strategy_331"
+  ]
+ },
+ "sourceRefs": [
+  {
+   "platform": "miyoushe",
+   "refId": "76747952",
+   "url": "https://www.miyoushe.com/sr/article/76747952",
+   "title": "o独v泪o《货币战争4.4新增策略（圣杯相关策略暂时无法遇到）》（2026-07-17，M-07 策略全文载体）"
+  },
+  {
+   "platform": "miyoushe",
+   "refId": "77238470",
+   "url": "https://www.miyoushe.com/sr/article/77238470",
+   "title": "烟波浩渺的彼岸《星铁4.4货币战争10大必选投资策略，选到就通关》（2026-08-06，M-08）"
+  },
+  {
+   "platform": "bilibili",
+   "refId": "BV18KNz6gEYD",
+   "url": "https://www.bilibili.com/video/BV18KNz6gEYD",
+   "title": "强碱性硫酸茶《抽到就通关的小众T0阵容三师徒0tA8N50第三位面遭遇4》（2026-07-15，简介层）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "4.4",
+    "area": "投资策略层（新增棱彩策略）",
+    "change": "4.4 新增棱彩策略『飞光·映月』（位面 1）：获得镜流与特殊 1 费景元并挂师徒羁绊；镜流 2 星时景元变 3 费、镜流 3 星时变 5 费。同族策略『飞光·传剑』（位面 2，彦卿+景元）同期新增。",
+    "impact": "本表全部机制为 4.4 新增，4.3 及之前不存在该策略；景元费率随镜流星级联动为 4.4 特有机制。",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+      "claimId": "feiguang-official-text"
+     }
+    ]
+   }
+  ],
+  "supersededBy": null,
+  "notes": [
+   "版本声明+兴替检查（RULES 三.3）：本体系为 4.4 新增策略、无旧版本前身，无旧结论反转链；4.5 期第三方零复测/零推翻（deep-hunt-old-era-c.md §4-A 全局结论：08-26 后 140 条 B站 CW 内容零条 4.5 修复后失效/重测类内容——本体系静默系该全局结论下的推论），按『未见推翻』而非『已复测』定级。",
+   "开局质量旁证：iqizna 开局榜（M-03，77037489）将『飞光映月』列入开局『夯（逆天策略秒选）』档——与 M-08『10 大必选投资策略』收录互证其开局优先级。",
+   "候选来源：deep-hunt-old-era-c.md §3.12（BV18KNz6gEYD 简介层细节）+ breadth-expansion M-07/M-08 快照；BV 视频内容层未转写（C 批无 ASR 纪律），本表机制字段全部锚在文本层两源。"
+  ]
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "acquired_items",
+    "operator": "contains_any",
+    "expected": [
+     "investment_strategy_331"
+    ],
+    "unknownPolicy": "require_review",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+      "claimId": "feiguang-official-text"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "feiguang-pick-plane1",
+   "title": "位面 1 策略节点：秒选飞光·映月",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_13"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_39"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_39",
+       "priority": 1,
+       "note": "镜流星级=景元费率引擎，体系第一资源"
+      },
+      {
+       "characterId": "currency_wars_character_13",
+       "priority": 2,
+       "note": "特殊景元：费率随镜流星级变化，星级保留"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_33"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": [
+     "investment_strategy_331"
+    ]
+   },
+   "actionIds": [
+    "pick-feiguang-moonlight"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-official-text"
+    }
+   ],
+   "notes": [
+    "策略出现面=位面 1（availablePlanes=[1]，棱彩）：错过即本局无此体系，见 risks.plane1-prism-gate。"
+   ]
+  },
+  {
+   "phaseId": "jingliu-2star-shop-window",
+   "title": "镜流 2 星：商店刷 3 费景元窗口（位面 1）",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 1,
+     "max": 7,
+     "unit": "level"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_13"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_39"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_39": 2
+     }
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_33"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": [
+     "investment_strategy_331"
+    ]
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_13",
+     "currency_wars_character_39"
+    ],
+    "costFocus": [
+     3
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "景元追到 3 星（3 费态）后再动镜流星级"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+      "claimId": "feiguang-day1-practice"
+     }
+    ],
+    "notes": [
+     "首日实战口径：『拿到飞光策略镜流升2星后可以在商店刷到3费景元』——镜流 2 星开启 3 费景元商店窗口。"
+    ]
+   },
+   "actionIds": [
+    "level-jingliu-unlock-3cost",
+    "roll-shop-3cost-jingyuan"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-official-text"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-day1-practice"
+    }
+   ],
+   "notes": [
+    "level 上限 7 为低费追 3 星常规窗口（源未给等级口径，取保守区间）；『3 师徒羁绊』第三人未在文本层出现（unknowns 已记），lineup 仅承载双核。"
+   ]
+  },
+  {
+   "phaseId": "shifu-ascend-5cost",
+   "title": "升镜流 3 星：3 星 3 费景元变 3 星 5 费景元（位面 1~2）",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     1,
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation",
+     "battle"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_13"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_39"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_39": 3,
+      "currency_wars_character_13": 3
+     }
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_33"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": [
+     "investment_strategy_331"
+    ]
+   },
+   "actionIds": [
+    "chase-3star-before-jingliu-3star",
+    "ascend-jingyuan-to-5cost",
+    "fallback-without-35jingyuan"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-star-order-path"
+    }
+   ],
+   "notes": [
+    "顺序敏感（M-08）：先追 3 星 3 费景元、再升镜流 3 星——顺序颠倒会让景元先变 5 费、追 3 星成本按 5 费计。",
+    "兜底口径（首日实战）：『没35景元也随便打了，3师徒羁绊太强了』——体系下限由师徒羁绊兜底而非 3 星 5 费赌注。"
+   ]
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "pick-feiguang-moonlight",
+   "title": "秒选棱彩策略飞光·映月",
+   "instruction": "位面 1 策略节点出现『飞光·映月』（investment_strategy_331，棱彩）直接选取：获得镜流和特殊 1 费景元并获得师徒羁绊——iqizna 开局榜将其列开局『夯（逆天策略秒选）』档，M-08 收入 10 大必选投资策略。",
+   "operationType": "select_investment_strategy",
+   "targetCharacterIds": [],
+   "priority": 999,
+   "conditions": [
+    {
+     "field": "plane",
+     "operator": "equals",
+     "expected": 1,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "师徒双核到手+景元费率引擎启动",
+    "开局质量档位直接进『夯』档（iqizna 分档旁证）"
+   ],
+   "costs": [],
+   "risks": [
+    "位面 1 限定+棱彩稀有度：错过本局无此体系"
+   ],
+   "preconditions": [
+    "位面 1 策略节点刷新出该策略"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-official-text"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-day1-practice"
+    }
+   ]
+  },
+  {
+   "actionId": "level-jingliu-unlock-3cost",
+   "title": "升镜流 2 星开启 3 费景元",
+   "instruction": "拿到飞光策略后先升镜流到 2 星：策略文本『镜流2星时，景元变为3费』；首日实战『镜流升2星后可以在商店刷到3费景元』——镜流星级是景元费率引擎，2 星档=3 费追星窗口。",
+   "operationType": "buy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_39"
+   ],
+   "priority": 900,
+   "conditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "investment_strategy_331"
+     ],
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "景元商店费率降至 3 费（追 3 星成本下降）"
+   ],
+   "costs": [
+    "镜流合成投入（3 费角色）"
+   ],
+   "risks": [],
+   "preconditions": [
+    "已选飞光·映月"
+   ],
+   "invalidatesWhen": [
+    "镜流已达 3 星（景元已变 5 费）"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-official-text"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-day1-practice"
+    }
+   ],
+   "trigger": "on_character_star_up",
+   "triggerArgs": {
+    "characterId": "currency_wars_character_39",
+    "stars": 2
+   }
+  },
+  {
+   "actionId": "roll-shop-3cost-jingyuan",
+   "title": "商店刷 3 费景元（3 费态追星）",
+   "instruction": "镜流 2 星窗口内刷商店找 3 费景元：特殊景元按 3 费价入库追星——目标=先把景元追到 3 星（3 费态），商店费率联动确认源为策略文本+首日简介双源。",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_13"
+   ],
+   "priority": 880,
+   "conditions": [
+    {
+     "field": "character_stars",
+     "operator": "greater_or_equal",
+     "expected": "currency_wars_character_39=2",
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "3 费价追 5 费卡身（3 星成本最低窗口）"
+   ],
+   "costs": [
+    "刷新金（源未给预算口径）"
+   ],
+   "risks": [
+    "『能刷到』的牌库可见性细节仅简介层单源（见证据集 unknowns）"
+   ],
+   "preconditions": [
+    "镜流≥2 星且景元未变 5 费"
+   ],
+   "invalidatesWhen": [
+    "镜流升到 3 星（窗口关闭，景元变 5 费）"
+   ],
+   "fallbackActionIds": [
+    "fallback-without-35jingyuan"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-day1-practice"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-official-text"
+    }
+   ]
+  },
+  {
+   "actionId": "chase-3star-before-jingliu-3star",
+   "title": "顺序纪律：景元先 3 星、镜流后 3 星",
+   "instruction": "M-08 明确顺序：『可以先追3星3费景元，再把镜流升到3星，3星3费景元就会变成3星5费景元』——先追星后升引擎，3 星 5 费卡成型（『虽然景元平时登场率不高，但3星5费卡还是很强的』）。",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_13",
+    "currency_wars_character_39"
+   ],
+   "priority": 850,
+   "conditions": [],
+   "benefits": [
+    "3 星 5 费景元以 3 费经济追成（费率与星级解耦）"
+   ],
+   "costs": [
+    "镜流 3 星押后（过渡期输出让位）"
+   ],
+   "risks": [
+    "顺序颠倒=按 5 费价追 3 星（成本不可控）"
+   ],
+   "preconditions": [
+    "3 费态景元追星已启动"
+   ],
+   "invalidatesWhen": [
+    "景元已 3 星（转入 ascend-jingyuan-to-5cost）"
+   ],
+   "fallbackActionIds": [
+    "fallback-without-35jingyuan"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-star-order-path"
+    }
+   ]
+  },
+  {
+   "actionId": "ascend-jingyuan-to-5cost",
+   "title": "升镜流 3 星兑现 3 星 5 费景元",
+   "instruction": "景元 3 星到手后把镜流升到 3 星：『镜流3星时，景元变为你认识的5费景元』——已 3 星的景元保持星级、费率升档，即首日口径的『35 景元』（3 星 5 费景元）。",
+   "operationType": "buy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_39",
+    "currency_wars_character_13"
+   ],
+   "priority": 800,
+   "conditions": [
+    {
+     "field": "character_stars",
+     "operator": "greater_or_equal",
+     "expected": "currency_wars_character_13=3",
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "三星五费级战力（3 星 5 费景元）+师徒羁绊"
+   ],
+   "costs": [
+    "镜流 3 星合成投入"
+   ],
+   "risks": [
+    "费率升档是否影响已有单位的再购价未在文本层说明（unknowns 已记）"
+   ],
+   "preconditions": [
+    "景元已 3 星"
+   ],
+   "invalidatesWhen": [
+    "镜流已 3 星"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-official-text"
+    },
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-star-order-path"
+    }
+   ],
+   "trigger": "on_character_star_up",
+   "triggerArgs": {
+    "characterId": "currency_wars_character_13",
+    "stars": 3
+   }
+  },
+  {
+   "actionId": "fallback-without-35jingyuan",
+   "title": "兜底：没 3 星 5 费景元也照打（师徒羁绊下限）",
+   "instruction": "首日实战兜底口径：『不过说实话没35景元也随便打了，3师徒羁绊太强了』——景元追星失败不弃局，师徒羁绊（bond_33）本体强度兜底；标题口径=三师徒 0t A8N50（第三位面遭遇 4）。",
+   "operationType": "start_battle",
+   "targetCharacterIds": [],
+   "priority": 300,
+   "conditions": [],
+   "benefits": [
+    "体系下限明确（羁绊强度>单卡赌注）"
+   ],
+   "costs": [
+    "放弃 3 星 5 费上限"
+   ],
+   "risks": [
+    "『随便打』『太强』为作者强度自评（简介层），无对照数据"
+   ],
+   "preconditions": [
+    "飞光·映月已选（师徒羁绊成立）"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-day1-practice"
+    }
+   ]
+  }
+ ],
+ "branches": [
+  {
+   "branchId": "feiguang-acquired-gate",
+   "priority": 1,
+   "when": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "investment_strategy_331"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "thenActionIds": [
+    "level-jingliu-unlock-3cost",
+    "roll-shop-3cost-jingyuan"
+   ],
+   "otherwiseActionIds": [],
+   "transitionToPhaseId": "jingliu-2star-shop-window",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-official-text"
+    }
+   ]
+  }
+ ],
+ "alternativeRoutes": [
+  {
+   "routeId": "no-feiguang-generic-line",
+   "title": "位面 1 未刷出飞光·映月：走常规体系",
+   "triggerConditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_none",
+     "expected": [
+      "investment_strategy_331"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [],
+   "tradeoffs": [
+    "策略未到手则镜流/景元无双核联动（景元为常规 5 费、师徒羁绊不成立），本表 signals 全部失效",
+    "回 guide-v44-opening-tier-selector 开局分档决策树；同族策略飞光·传剑（位面 2，彦卿+景元，天河泻强化）为位面 2 的另一条师徒线，本表不覆盖"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-official-text"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [],
+ "risks": [
+  {
+   "riskId": "plane1-prism-gate",
+   "severity": "high",
+   "description": "飞光·映月为位面 1 限定棱彩策略：未刷出则体系整体不成立（镜流/景元无师徒联动，景元回常规 5 费）。",
+   "mitigation": "位面 1 策略节点优先检查；未刷出即走 alternativeRoutes.no-feiguang-generic-line 常规体系，不强凑双核。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-official-text"
+    }
+   ]
+  },
+  {
+   "riskId": "intro-layer-evidence-only",
+   "severity": "medium",
+   "description": "商店刷取路径（镜流 2 星后商店刷 3 费景元）为 B站简介层单源（视频内容层未转写）；机制底座有 M-07 策略文本双源，但『能刷到』的实战可见性无帧证。",
+   "mitigation": "结构化字段只锚策略文本两源（76747952/77238470）；简介层口径保留在 claims.conditions；待 BV 转写或第二实战源后升级。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-day1-practice"
+    }
+   ]
+  },
+  {
+   "riskId": "jingyuan-low-pickrate-economy",
+   "severity": "low",
+   "description": "『景元平时登场率不高』（M-08）：非常规追星目标，商店权重观感偏低且追 3 星占用经济，与其他体系抢预算。",
+   "mitigation": "只在飞光·映月已选的前提下追（费率补偿才成立）；顺序纪律（chase-3star-before-jingliu-3star）控制追星成本。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-star-order-path"
+    }
+   ]
+  },
+  {
+   "riskId": "lineup-third-member-unknown",
+   "severity": "low",
+   "description": "『3 师徒羁绊』第三成员未在文本层出现（师徒 bond_33 已知策略来源=镜流+景元/彦卿+景元两条），完整三师徒阵容无法结构化；0t A8N50 强度为简介自评。",
+   "mitigation": "lineup 只承载镜流+景元双核；三师徒完整阵容待 BV18KNz6gEYD 转写后回填。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+     "claimId": "feiguang-day1-practice"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+   "claimId": "source-metadata"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+   "claimId": "feiguang-official-text"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+   "claimId": "feiguang-star-order-path"
+  },
+  {
+   "evidenceSetId": "evidence-multi-oldera-c-feiguang-strategy",
+   "claimId": "feiguang-day1-practice"
+  }
+ ],
+ "notes": [
+  "转化来源：deep-hunt-old-era-c.md §3.12（BV18KNz6gEYD 首日实战细节）+ breadth-expansion-20260905.md M-07（76747952 策略全文）/M-08（77238470 评价节）——快照 miyou_76747952/miyou_77238470 在 textlayer_hunt_old_c/（C 批补抓），零新增抓取；证据集先建（samples/evidence/evidence-multi-oldera-c-feiguang-strategy.research-evidence.v1.json，4 claims），本表 evidenceRefs 只引该集真实 claimId。",
+  "体系空白判定：19 份既有 playbook 无『镜流/景元/师徒/飞光』样本——guide-v44-strategy-priority-ten 为通用策略优先集不载单策略机制链，本表为 4.4 新策略机制层首条结构化证据链。",
+  "攻略码纪律（RULES 七.0）：三源均无攻略码，本表不含 guideCodes。",
+  "数值纪律：费率联动（1 费→2 星 3 费→3 星 5 费）为策略文本层，无帧证；level 区间/刷新预算等源未给的参数一律 null 或保守区间并在 notes 标注；无 shop 金币帧证，shoppingPlan 仅载目标与停止条件。"
+ ]
+}

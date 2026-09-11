@@ -1,0 +1,1502 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-himeko-garrison",
+ "title": "4.4 姬子盾反驻守流：翡翠收债人精准套盾+借力球补充能，试用可玩（月下chaos 08-03 / 落雨谪仙 07-21）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-himeko-garrison",
+ "archetypeName": "姬子盾反驻守流（领航员&三月七盾反底座：反伤随前台护盾量与光轨层数缩放；翡翠收债人定向掉血→三月七精准套盾→姬子高受击反震；群攻借力球补歼破对单充能）",
+ "goalIds": [
+  "stable",
+  "a850-capable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_01",
+   "currency_wars_character_67"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_65",
+   "currency_wars_character_55",
+   "currency_wars_character_45",
+   "currency_wars_character_38",
+   "currency_wars_character_20",
+   "currency_wars_character_trailblazer",
+   "currency_wars_character_36",
+   "currency_wars_character_54",
+   "currency_wars_character_02",
+   "currency_wars_character_08",
+   "currency_wars_character_43",
+   "currency_wars_character_30",
+   "currency_wars_character_50",
+   "currency_wars_character_52",
+   "currency_wars_character_53",
+   "currency_wars_character_46"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_141",
+   "currency_wars_equipment_139",
+   "currency_wars_equipment_066",
+   "currency_wars_equipment_077",
+   "currency_wars_equipment_064",
+   "currency_wars_equipment_055",
+   "currency_wars_equipment_083",
+   "currency_wars_equipment_060"
+  ],
+  "bondIds": [
+   "currency_wars_bond_32",
+   "currency_wars_bond_11",
+   "currency_wars_bond_15",
+   "currency_wars_bond_19"
+  ],
+  "investmentEnvironmentIds": [],
+  "investmentStrategyIds": [
+   "investment_strategy_249"
+  ]
+ },
+ "sourceRefs": [
+  {
+   "platform": "miyoushe",
+   "refId": "77151995",
+   "url": "https://www.miyoushe.com/sr/article/77151995",
+   "title": "A8-50货币战争姬子启行新手试用攻略，看了就能上分（月下chaos，2026-08-03）"
+  },
+  {
+   "platform": "miyoushe",
+   "refId": "76845072",
+   "url": "https://www.miyoushe.com/sr/article/76845072",
+   "title": "【V4.4攻略】货币战争姬子三月反震输出流讲解（落雨谪仙，2026-07-21）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "V4.5（2026-08-26）对货币战争仅 19 条纯修复，无赛季扩充、无玩法参数迁移",
+    "impact": "参数基线不受影响；领航员复制装备相关结论（4.5 修复公告涉及异常）verified 升级前需实机复验",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+      "claimId": "v45-applicability-context"
+     }
+    ]
+   },
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+    "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+    "evidenceRefs": []
+   }
+  ],
+  "supersededBy": null,
+  "notes": [
+   "两源均为 4.4 期（2026-07-21 / 2026-08-03 发布，姬子启行 4.4 实装）；不适用 4.5 后环境的结论需逐条复验。"
+  ]
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+      "claimId": "source-metadata-77151995"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "plane1-transition-rush7",
+   "title": "位面1：便宜羁绊过渡，存钱速升 7 级店",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ],
+    "nodeRanges": [
+     {
+      "planeId": 1,
+      "fromNodeIndex": 1,
+      "toNodeIndex": 9
+     }
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": 7,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_30"
+     ],
+     "backCharacterIds": [],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_46",
+       "priority": 1,
+       "note": "卡妈（卡芙卡）带火力风暴潮+千冶刃=第一位面最强魔王护"
+      },
+      {
+       "characterId": "currency_wars_character_02",
+       "priority": 1,
+       "note": "千冶•刃：卡妈魔王护搭子（泛称刃按用户拍板 2026-09-06 映射 02）"
+      },
+      {
+       "characterId": "currency_wars_character_30",
+       "priority": 2,
+       "note": "杰帕德：永动机开局速开大叠盾，掩护盾量成型前的危险窗口"
+      }
+     ]
+    },
+    "equipment": [
+     {
+      "characterId": "currency_wars_character_30",
+      "equipmentIds": [
+       "currency_wars_equipment_064"
+      ],
+      "priority": 1,
+      "substituteEquipmentIds": [
+       "currency_wars_equipment_050"
+      ]
+     },
+     {
+      "characterId": "currency_wars_character_46",
+      "equipmentIds": [
+       "currency_wars_equipment_066"
+      ],
+      "priority": 2,
+      "substituteEquipmentIds": []
+     }
+    ],
+    "bondIds": [
+     "currency_wars_bond_14",
+     "currency_wars_bond_12",
+     "currency_wars_bond_02"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "targetLevel": {
+     "min": 7,
+     "max": 7,
+     "unit": "level"
+    },
+    "priorityCharacterIds": [
+     "currency_wars_character_46",
+     "currency_wars_character_02",
+     "currency_wars_character_30"
+    ],
+    "costFocus": [
+     1,
+     2
+    ],
+    "refreshPolicy": "never",
+    "stopWhen": [
+     "7 级商店达成"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+      "claimId": "d-discipline-77151995"
+     }
+    ],
+    "notes": [
+     "姬子 3 费需 7 级商店：前期优先存钱速升 7 级，低位面不恋战 D 牌。"
+    ]
+   },
+   "actionIds": [
+    "early-transition",
+    "gepard-opening",
+    "rush-level7"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "d-discipline-77151995"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "gepard-perpetual-opening"
+    }
+   ],
+   "notes": [
+    "过渡口径（作者）：2 持续伤害 / 3 仙舟 / 2 贝洛伯格等便宜羁绊苟过第一位面。"
+   ]
+  },
+  {
+   "phaseId": "level7-roll-himeko",
+   "title": "7 级 D 牌期：找姬子、升 10 为先，群攻三选二",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     1,
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 7,
+     "max": 10,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_01"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_67",
+      "currency_wars_character_65"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_01": 2
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_01",
+       "priority": 1,
+       "targetStars": 2,
+       "note": "两个 2 星姬子为 D 牌停手线，不追 3 星"
+      },
+      {
+       "characterId": "currency_wars_character_67",
+       "priority": 2,
+       "note": "三月七：盾反底座，1 费便宜易 3 星"
+      },
+      {
+       "characterId": "currency_wars_character_65",
+       "priority": 3,
+       "note": "翡翠：收债人精准套盾链核心"
+      },
+      {
+       "characterId": "currency_wars_character_55",
+       "priority": 4,
+       "note": "群攻拐三选二：缇宝"
+      },
+      {
+       "characterId": "currency_wars_character_45",
+       "priority": 4,
+       "note": "群攻拐三选二：银枝"
+      },
+      {
+       "characterId": "currency_wars_character_38",
+       "priority": 4,
+       "note": "群攻拐三选二：那刻夏"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_32",
+     "currency_wars_bond_11",
+     "currency_wars_bond_15",
+     "currency_wars_bond_19"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_01",
+     "currency_wars_character_67",
+     "currency_wars_character_65",
+     "currency_wars_character_55",
+     "currency_wars_character_45",
+     "currency_wars_character_38"
+    ],
+    "costFocus": [
+     3,
+     1
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "两个 2 星姬子到手",
+     "D 牌十几次仍不足两个 2 星→停手全力升 10 级"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+      "claimId": "d-discipline-77151995"
+     }
+    ],
+    "notes": [
+     "7 级阵容最优=4 列车同行 3 群攻（七人整）；次选 2 列车 3 群攻+2 拐。"
+    ]
+   },
+   "actionIds": [
+    "roll-himeko-level7",
+    "d-stop-rule",
+    "aoe-bench-three-of-two",
+    "himeko-rightmost",
+    "jade-debt-chain"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "d-discipline-77151995"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "jiepo-aoe-charge-fix"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "feicui-shouzhai-taunt-chain"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "level10-endgame",
+   "title": "10 级大成：上拐+装备装配+词条管理",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 10,
+     "max": 10,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_01"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_67",
+      "currency_wars_character_65",
+      "currency_wars_character_55",
+      "currency_wars_character_20",
+      "currency_wars_character_trailblazer",
+      "currency_wars_character_36",
+      "currency_wars_character_54",
+      "currency_wars_character_02"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_20",
+       "priority": 1,
+       "note": "杨叔（瓦尔特，用户拍板 2026-09-06）：高难及减倒计时对局近刚需"
+      },
+      {
+       "characterId": "currency_wars_character_trailblazer",
+       "priority": 2,
+       "note": "记忆主：上拐名单首位档"
+      },
+      {
+       "characterId": "currency_wars_character_36",
+       "priority": 3,
+       "note": "星期日：拉条+充能可后台，作者为周日辩护称对姬子提升非常大"
+      },
+      {
+       "characterId": "currency_wars_character_54",
+       "priority": 4,
+       "note": "花火：拉条（需放前台才能拉条）"
+      },
+      {
+       "characterId": "currency_wars_character_02",
+       "priority": 5,
+       "note": "千冶•刃：拐位挂件"
+      },
+      {
+       "characterId": "currency_wars_character_43",
+       "priority": 6,
+       "note": "刻律德菈：复制助战技（目录推断）"
+      }
+     ]
+    },
+    "equipment": [
+     {
+      "characterId": "currency_wars_character_01",
+      "equipmentIds": [
+       "currency_wars_equipment_066",
+       "currency_wars_equipment_077",
+       "currency_wars_equipment_083"
+      ],
+      "priority": 1,
+      "substituteEquipmentIds": [
+       "currency_wars_equipment_060",
+       "currency_wars_equipment_073"
+      ]
+     },
+     {
+      "characterId": "currency_wars_character_67",
+      "equipmentIds": [
+       "currency_wars_equipment_055"
+      ],
+      "priority": 2,
+      "substituteEquipmentIds": []
+     }
+    ],
+    "bondIds": [
+     "currency_wars_bond_32",
+     "currency_wars_bond_11",
+     "currency_wars_bond_15",
+     "currency_wars_bond_19"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": [
+     "investment_strategy_249"
+    ]
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_20",
+     "currency_wars_character_trailblazer",
+     "currency_wars_character_36",
+     "currency_wars_character_54",
+     "currency_wars_character_02",
+     "currency_wars_character_43"
+    ],
+    "costFocus": [
+     5
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "拐位补齐",
+     "金币不足刷新价"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+      "claimId": "d-discipline-77151995"
+     }
+    ],
+    "notes": []
+   },
+   "actionIds": [
+    "level10-hang-supports",
+    "equip-himeko-core",
+    "pick-eidolon1-strategy",
+    "navigator-reselect",
+    "affix-scan",
+    "no-cc-highdiff",
+    "dual-bele-composition"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "d-discipline-77151995"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "equipment-verdict-77151995"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "trial-himeko-painpoints"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "eidolon1-strategy-verdict"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "negative-environment-77151995"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "welt-highdiff-verdict"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "guide-codes-77151995"
+    }
+   ],
+   "notes": [
+    "上拐名单（作者）：老杨/记忆主/周日/花火/刻律德菈/千冶刃，有追击星辉则不死途追击拐强；2 星姬子在强力拐加持下也能通关。",
+    "试用姬子速度慢（一场仅行动 4-5 次）且自带攻击绳不可更换：拉条辅助（周日/花火）+追击星辉（每次行动拉条 10%，助战技与大招为回合外行动可反复触发）为对口解法。"
+   ]
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "early-transition",
+   "title": "前期 2 持续/3 仙舟/2 贝洛伯格过渡",
+   "instruction": "前期用 2 持续伤害、3 仙舟或 2 贝洛伯格等便宜羁绊苟过第一位面；风暴潮卡妈（卡芙卡）带千冶•刃是第一位面最强魔王护。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_46",
+    "currency_wars_character_02"
+   ],
+   "priority": 88,
+   "conditions": [],
+   "benefits": [
+    "低费羁绊稳过位面1"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [
+    "7 级商店后换盾反核心"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "d-discipline-77151995"
+    }
+   ],
+   "trigger": "on_phase_enter"
+  },
+  {
+   "actionId": "rush-level7",
+   "title": "存钱速升 7 级商店",
+   "instruction": "姬子 3 费需 7 级商店：前期优先存钱速升 7 级，不在低位面恋战 D 牌。",
+   "operationType": "buy_xp",
+   "priority": 90,
+   "conditions": [],
+   "benefits": [
+    "尽早进入 3 费卡池"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "d-discipline-77151995"
+    }
+   ],
+   "trigger": "on_phase_enter"
+  },
+  {
+   "actionId": "gepard-opening",
+   "title": "盾量成型前：杰帕德永动机开局",
+   "instruction": "护盾叠起来前是体系最危险窗口：永动机给杰帕德（或瓦尔特），开局迅速开大叠盾；光能盾牌等加盾装同服务该窗口。",
+   "operationType": "buy_equipment",
+   "targetCharacterIds": [
+    "currency_wars_character_30",
+    "currency_wars_character_20"
+   ],
+   "priority": 75,
+   "conditions": [],
+   "benefits": [
+    "缓解战斗初期生存压力"
+   ],
+   "costs": [
+    "装备位提前投入"
+   ],
+   "risks": [
+    "『杰帕德带永动机开局速开大』依赖其充能循环，为作者经验配装，未给数值链"
+   ],
+   "preconditions": [
+    "杰帕德已上场"
+   ],
+   "invalidatesWhen": [
+    "前台护盾量已成型"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "gepard-perpetual-opening"
+    }
+   ],
+   "trigger": "on_phase_enter"
+  },
+  {
+   "actionId": "roll-himeko-level7",
+   "title": "7 级 D 牌找姬子，升 10 为先",
+   "instruction": "7 级后 D 牌找姬子，但以升 10 级商店为先；作者另称该版本 3 星狼尊/3 星昔涟概率高，可存钱搏爽局。",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_01"
+   ],
+   "priority": 85,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 7,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "核心 3 费入场"
+   ],
+   "costs": [
+    "金币消耗"
+   ],
+   "risks": [
+    "『3 星狼尊/昔涟概率很高』为主观印象"
+   ],
+   "preconditions": [
+    "商店 7 级"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "d-discipline-77151995"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 7
+   }
+  },
+  {
+   "actionId": "d-stop-rule",
+   "title": "D 十几次不足两个 2 星姬子即停手",
+   "instruction": "D 十几次若仍不足两个 2 星姬子就停手，全力升 10 级上拐——2 星姬子在强力拐加持下也能通关，不要死追 3 星。",
+   "operationType": "other",
+   "priority": 92,
+   "conditions": [],
+   "benefits": [
+    "刷新预算转向等级与拐位"
+   ],
+   "costs": [],
+   "risks": [
+    "『十几次』为作者经验阈值，无定量依据"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "d-discipline-77151995"
+    }
+   ],
+   "trigger": "on_shop_roll"
+  },
+  {
+   "actionId": "aoe-bench-three-of-two",
+   "title": "群攻位缇宝/银枝/那刻夏三选二，全部后台",
+   "instruction": "队伍已有翡翠，再补 2 个群攻挂件即可，缇宝/银枝/那刻夏三选二；群攻角色不能放前台——翡翠会优先给群攻角色挂 buff，导致后台缇宝无法正常发挥作用（作者实测）。打到借力球也能给歼破充能，对单充能效率约翻三倍。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_55",
+    "currency_wars_character_45",
+    "currency_wars_character_38"
+   ],
+   "priority": 78,
+   "conditions": [],
+   "benefits": [
+    "借力球补歼破对单充能（约×3）"
+   ],
+   "costs": [],
+   "risks": [
+    "『翡翠优先给群攻挂 buff』为作者实测观察，单源",
+    "『每 hit 1 点/每次攻击 9 点/×3』充能数值为作者口述"
+   ],
+   "preconditions": [
+    "翡翠已上场"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "jiepo-aoe-charge-fix"
+    }
+   ],
+   "trigger": "on_phase_enter"
+  },
+  {
+   "actionId": "himeko-rightmost",
+   "title": "姬子站最右位（灼热轰炸局除外）",
+   "instruction": "三月七在前台无人受伤时更大可能给最右侧角色挂战技：姬子放最右位提高套盾率；负面词条有灼热轰炸时不适用。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_01"
+   ],
+   "priority": 80,
+   "conditions": [
+    {
+     "field": "enemy_affixes",
+     "operator": "contains_none",
+     "expected": [
+      "enemy_affix_t3_17"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "三月七战技稳定挂给姬子"
+   ],
+   "costs": [],
+   "risks": [
+    "『倾向挂最右』为作者经验，未对官方文本核对"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [
+    "负面词条出现灼热轰炸"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "feicui-shouzhai-taunt-chain"
+    }
+   ],
+   "trigger": "on_phase_enter"
+  },
+  {
+   "actionId": "jade-debt-chain",
+   "title": "翡翠『收债人』定向掉血→三月七精准套盾",
+   "instruction": "翡翠天赋收债人让前台角色攻击后掉血→姬子攻击后掉血成为受伤最多者→三月七战技稳定挂给姬子→提高姬子受击反震概率。姬子反震输出依赖被攻击，此链破解『满血前台套不上盾』的死结。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_65",
+    "currency_wars_character_67",
+    "currency_wars_character_01"
+   ],
+   "priority": 82,
+   "conditions": [],
+   "benefits": [
+    "破解满血前台无法精准套盾的机制死结"
+   ],
+   "costs": [],
+   "risks": [
+    "『收债人让前台攻击后掉血』为作者对游戏行为的转述，未对官方文本核对"
+   ],
+   "preconditions": [
+    "翡翠已购入",
+    "三月七已上场"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "feicui-shouzhai-taunt-chain"
+    }
+   ],
+   "trigger": "on_phase_enter"
+  },
+  {
+   "actionId": "level10-hang-supports",
+   "title": "10 级上拐：杨叔/记忆主/周日/花火/刻律德菈/千冶刃",
+   "instruction": "全力升 10 级后上拐：老杨（瓦尔特）、记忆主、周日（星期日）、花火、刻律德菈、千冶•刃；有追击星辉则不死途追击拐强。高难度向再加瓦尔特冲 6 列车同行。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_20",
+    "currency_wars_character_trailblazer",
+    "currency_wars_character_36",
+    "currency_wars_character_54",
+    "currency_wars_character_43",
+    "currency_wars_character_02",
+    "currency_wars_character_08"
+   ],
+   "priority": 86,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 10,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "2 星姬子也能通关的拐力"
+   ],
+   "costs": [
+    "瓦尔特 5 费难刷"
+   ],
+   "risks": [],
+   "preconditions": [
+    "商店 10 级"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "d-discipline-77151995"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "welt-highdiff-verdict"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "trial-himeko-painpoints"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 10
+   }
+  },
+  {
+   "actionId": "equip-himeko-core",
+   "title": "姬子装备：星辉+风暴潮+蓄能帆，勿拿反甲",
+   "instruction": "优先追击/群攻星辉；风暴潮至少 1 个、2 个正好、多了收益递减（一场约二三十层）；蓄能帆效果好（3 群攻耗豆快，更快开大也更快叠风暴潮，后续可下给老杨）；幸运一击乘区匮乏可补碎星斩舰刀但不关键；高周波电锯/斩首行动等前排输出装也给姬子；反甲（以牙还牙甲）与自适应外骨骼均强烈不建议。",
+   "operationType": "buy_equipment",
+   "targetCharacterIds": [
+    "currency_wars_character_01"
+   ],
+   "priority": 76,
+   "conditions": [],
+   "benefits": [
+    "风暴潮叠层与歼破循环提速"
+   ],
+   "costs": [],
+   "risks": [
+    "两件领航员复制候选装备（免控+幸运一击件/减盾耗件）名称在原图，未映射",
+    "『二三十层/收益递减』为作者口述手感值",
+    "碎星斩舰刀=『暴击刀』为推断映射"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "equipment-verdict-77151995"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "welt-highdiff-verdict"
+    }
+   ],
+   "trigger": "on_equipment_acquired"
+  },
+  {
+   "actionId": "pick-eidolon1-strategy",
+   "title": "投资策略优先：姬子一魂（星魂升华）",
+   "instruction": "对低配姬子优先级最高的投资策略是给姬子一魂那张：多一个『豆』并降低助战技充能要求，风暴潮环境下出手次数更多就是王道；次选给装备/给钻/给星辉类，没得选选经济类。",
+   "operationType": "select_investment_strategy",
+   "priority": 70,
+   "conditions": [],
+   "benefits": [
+    "一魂多一豆+降低助战技充能要求"
+   ],
+   "costs": [],
+   "risks": [
+    "该策略对应『星魂升华』(investment_strategy_249) 为按功能推断映射，需回原图核对"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "eidolon1-strategy-verdict"
+    }
+   ],
+   "trigger": "manual"
+  },
+  {
+   "actionId": "navigator-reselect",
+   "title": "领航员选错可重选",
+   "instruction": "领航员选错可在左上角领航员入口重选；本表主路为三月七（盾反底座），其余五分支见备选路线。",
+   "operationType": "other",
+   "priority": 40,
+   "conditions": [],
+   "benefits": [
+    "分支选错零成本纠正"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "navigator-bond-mechanism"
+    }
+   ],
+   "trigger": "manual"
+  },
+  {
+   "actionId": "affix-scan",
+   "title": "词条扫描：恶性词条与贝洛伯格 boss 刷掉",
+   "instruction": "正当防卫（叠不起盾）与能量逃逸（影响循环）影响最大；贝洛伯格系 boss（史瓦罗/可可利亚/杰帕德）战斗关出红绿灯比较难打——均建议刷掉；紧急止血/时间刺客/高费审美量力而行。死龙 boss 局三月七必带绝对热量。",
+   "operationType": "other",
+   "priority": 65,
+   "conditions": [],
+   "benefits": [
+    "避开盾反体系天敌局"
+   ],
+   "costs": [
+    "重开局成本"
+   ],
+   "risks": [
+    "『能量减少→能量逃逸』为推断映射",
+    "红绿灯/死龙为 boss 机制俗称，无标准 ID"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "negative-environment-77151995"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "welt-highdiff-verdict"
+    }
+   ],
+   "trigger": "on_affix_seen"
+  },
+  {
+   "actionId": "no-cc-highdiff",
+   "title": "高难勿给对面挂冰冻/禁锢",
+   "instruction": "高难度不要给对面挂冰冻/禁锢等控制——影响受击频率，反震输出靠被攻击。",
+   "operationType": "other",
+   "priority": 62,
+   "conditions": [],
+   "benefits": [
+    "保住反震触发频率"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "welt-highdiff-verdict"
+    }
+   ],
+   "trigger": "on_phase_enter"
+  },
+  {
+   "actionId": "dual-bele-composition",
+   "title": "双贝转爽局：姬子三月七同带贝洛伯格转会",
+   "instruction": "凹到双贝洛伯格转会时：姬子与三月七同带贝转、三月七带双反重力皮靴拉条姬子；该局不需要翡翠群攻，可多上拐。凹出来是爽局、凹不出来是事故，按分支门禁执行。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_01",
+    "currency_wars_character_67"
+   ],
+   "priority": 55,
+   "conditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_055"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "双贝转盾反爽局"
+   ],
+   "costs": [
+    "需两个贝转+双鞋，很难凹出"
+   ],
+   "risks": [
+    "『贝洛伯格转会』无标准 ID，门禁仅覆盖双鞋（反重力皮靴 055）这一必要件",
+    "『双鞋』=两件反重力皮靴为中置信读法"
+   ],
+   "preconditions": [
+    "双贝洛伯格转会+双鞋已到手"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "guide-codes-77151995"
+    }
+   ],
+   "trigger": "on_equipment_acquired"
+  }
+ ],
+ "branches": [
+  {
+   "branchId": "dual-bele-gate",
+   "priority": 1,
+   "when": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_055"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "thenActionIds": [
+    "dual-bele-composition"
+   ],
+   "otherwiseActionIds": [],
+   "transitionToPhaseId": null,
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "guide-codes-77151995"
+    }
+   ]
+  }
+ ],
+ "alternativeRoutes": [
+  {
+   "routeId": "pure-countersock-4shield",
+   "title": "纯反震分支：4 列车同行 4 护盾（成型向）",
+   "triggerConditions": [],
+   "actionIds": [
+    "gepard-opening",
+    "navigator-reselect"
+   ],
+   "tradeoffs": [
+    "6 位置同时满足 4 列车同行+4 护盾：姬子/三月七/丹恒•腾荒/星期日/记忆主/杰帕德（砂金/饮月为 2 费过渡）",
+    "反伤∝前台护盾量与光轨层数，堆盾即堆输出；反伤不够时姬子正面输出补主 C",
+    "高难度向再加瓦尔特冲 6 列车同行（总位置 8）；刷不到则维持 4 列车",
+    "瓦尔特来了建议记忆主换后台（后台变欢愉主仍有输出）",
+    "反震流怕怪物不攻击：公认难打的 5 战犬也吃力"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "lineup-4train-4shield"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "navigator-shield-buff-scaling"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "welt-highdiff-verdict"
+    }
+   ]
+  },
+  {
+   "routeId": "nav-debuff-welt",
+   "title": "领航员分支：减益姬子（选瓦尔特）",
+   "triggerConditions": [
+    {
+     "field": "navigator_choice",
+     "operator": "equals",
+     "expected": "debuff",
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [],
+   "tradeoffs": [
+    "简单粗暴 36% 真伤加成（作者口述）",
+    "任意带老杨队伍缺人时可直接上，非常强力的辅助定位"
+   ],
+   "mutuallyExclusiveGroup": "navigator-branch",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "navigator-five-branch-review"
+    }
+   ]
+  },
+  {
+   "routeId": "nav-joy-trailblazer",
+   "title": "领航员分支：欢愉姬子（选主角）",
+   "triggerConditions": [
+    {
+     "field": "navigator_choice",
+     "operator": "equals",
+     "expected": "joy",
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [],
+   "tradeoffs": [
+    "辅助定位：补欢愉队仅爻光一个拐的缺口",
+    "配狼尊欢愉改件甚至可无星辉开 7 欢愉",
+    "自带装备打输出太刮"
+   ],
+   "mutuallyExclusiveGroup": "navigator-branch",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "navigator-five-branch-review"
+    }
+   ]
+  },
+  {
+   "routeId": "nav-sp-dragonil",
+   "title": "领航员分支：战技点姬子（选丹恒•饮月）",
+   "triggerConditions": [
+    {
+     "field": "navigator_choice",
+     "operator": "equals",
+     "expected": "sp",
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [],
+   "tradeoffs": [
+    "输出定位但太脆、无辅助能力还抢战技点",
+    "与龙丹定位重叠『左右脑互搏』，留待大神开发"
+   ],
+   "mutuallyExclusiveGroup": "navigator-branch",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "navigator-five-branch-review"
+    }
+   ]
+  },
+  {
+   "routeId": "nav-break-himeko",
+   "title": "领航员分支：击破姬子（选原版姬子）",
+   "triggerConditions": [
+    {
+     "field": "navigator_choice",
+     "operator": "equals",
+     "expected": "break",
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [],
+   "tradeoffs": [
+    "辅助定位尚可",
+    "击破队本身太弱（『太区了』），作者仅试玩一局"
+   ],
+   "mutuallyExclusiveGroup": "navigator-branch",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "navigator-five-branch-review"
+    }
+   ]
+  },
+  {
+   "routeId": "nav-energy-sunday",
+   "title": "领航员分支：能量姬子（选星期日）",
+   "triggerConditions": [
+    {
+     "field": "navigator_choice",
+     "operator": "equals",
+     "expected": "energy",
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [],
+   "tradeoffs": [
+    "输出定位但太刮、能量循环问题大",
+    "自身能量上限不高且吃不满金闪闪（吉尔伽美什）的拐；能量队强的只有阿雅"
+   ],
+   "mutuallyExclusiveGroup": "navigator-branch",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "navigator-five-branch-review"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [
+  {
+   "category": "other",
+   "description": "以甲引怪的反甲思路（以牙还牙甲/自适应外骨骼）",
+   "reason": "作者明确批评：为引怪出反甲类装备是拖后腿（姬子输出位格子紧张），且领航员羁绊提升的反震倍率已稀释反甲价值、自适应外骨骼双适配但属性差——均强烈不建议，网上视频推荐该装备『不知怎么想的』",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "feicui-shouzhai-taunt-chain"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "equipment-verdict-77151995"
+    }
+   ]
+  }
+ ],
+ "craftingPaths": [
+  {
+   "resultId": "currency_wars_equipment_066",
+   "inputIds": [
+    "currency_wars_equipment_044",
+    "currency_wars_equipment_046"
+   ],
+   "note": "折叠小刀+轮滑鞋→火力风暴潮（官方配置 compose_list；本表风暴潮刚需：姬子至少 1 个、卡妈魔王护也需要）",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-official-cw-game-config",
+     "claimId": "compose-list-recipes"
+    }
+   ]
+  },
+  {
+   "resultId": "currency_wars_equipment_055",
+   "inputIds": [
+    "currency_wars_equipment_046",
+    "currency_wars_equipment_046"
+   ],
+   "note": "轮滑鞋×2→反重力皮靴（官方配置 compose_list；双贝转局三月七双鞋刚需，主动合成比等刷稳）",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-official-cw-game-config",
+     "claimId": "compose-list-recipes"
+    }
+   ]
+  }
+ ],
+ "risks": [
+  {
+   "riskId": "unverified-mechanism-chain",
+   "severity": "medium",
+   "description": "机制链多处为作者转述/实测：『收债人让前台攻击后掉血』『三月七无人受伤倾向挂最右』『借力球充能×3』『翡翠优先给群攻挂 buff』均未对官方文本核对。",
+   "mitigation": "机制类条件字段一律 require_review；与 BWIKI 领航员/群攻/护盾页互核后再升级 verified。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "feicui-shouzhai-taunt-chain"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "jiepo-aoe-charge-fix"
+    }
+   ]
+  },
+  {
+   "riskId": "countersock-weakness",
+   "severity": "medium",
+   "description": "反震流软肋=怕怪不攻击：怪物攻击性不强时吃力（公认难打的 5 战犬也吃力）；正当防卫叠不起盾、能量逃逸影响循环。",
+   "mitigation": "对局前跑 affix-scan 词条扫描；低压局降低输出预期，以姬子正面输出补主 C。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "welt-highdiff-verdict"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "negative-environment-77151995"
+    }
+   ]
+  },
+  {
+   "riskId": "term-mapping-confidence",
+   "severity": "low",
+   "description": "未证实术语与推断映射备案：贝洛伯格转会/狼尊/攻击绳/欢愉改件/金闪闪/红绿灯无标准 ID；星魂升华 249、碎星斩舰刀=『暴击刀』为推断映射；刻律德菈『复制助战技』为目录推断。",
+   "mitigation": "未证实术语只留在 instruction/risks/notes；结构化引用挂 require_review。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "eidolon1-strategy-verdict"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "guide-codes-77151995"
+    }
+   ]
+  },
+  {
+   "riskId": "d-threshold-heuristic",
+   "severity": "low",
+   "description": "『D 十几次不足两星即停』为经验阈值无定量依据；『3 星狼尊/昔涟概率高』为主观印象。",
+   "mitigation": "可与包内 evidence-miyoushe-77074467-77124902 的 D 牌期望模型（7 级 3 费场景）定量互校后再结构化。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "d-discipline-77151995"
+    }
+   ]
+  },
+  {
+   "riskId": "version-scope-45-navigator",
+   "severity": "medium",
+   "description": "版本口径：两帖均为 4.4 期；4.5 修复公告涉及领航员复制装备异常，具体影响未核——领航员复制装备相关结论（免控件/减盾耗件）受此波及。",
+   "mitigation": "4.5 环境下领航员复制装备结论需实机复验后再升级 verified。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+     "claimId": "source-metadata-77151995"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+     "claimId": "v45-applicability-context"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "source-metadata-77151995"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "navigator-bond-mechanism"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "trial-himeko-painpoints"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "feicui-shouzhai-taunt-chain"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "jiepo-aoe-charge-fix"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "negative-environment-77151995"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "eidolon1-strategy-verdict"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "d-discipline-77151995"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "equipment-verdict-77151995"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "guide-codes-77151995"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "navigator-five-branch-review"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "source-metadata-76845072"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "navigator-shield-buff-scaling"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "lineup-4train-4shield"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "gepard-perpetual-opening"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "welt-highdiff-verdict"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77151995-76845072",
+   "claimId": "himeko-branch-divergence-inference"
+  },
+  {
+   "evidenceSetId": "evidence-official-cw-game-config",
+   "claimId": "compose-list-recipes"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+   "claimId": "v45-applicability-context"
+  }
+ ],
+ "notes": [
+  "2026-09-06 本体转化自 evidence-miyoushe-77151995-76845072 全部 17 条 claim（含双来源元数据 2 条与 AI 推断 1 条）；与包内 baie-backline-himeko-countershock（白厄后台姬子反震）构成 4.4 姬子盾反域三种构成口径中的群攻盾反分支+纯反震分支（分支划分为 D6 归纳，ai_inference claim 仅入 notes）。",
+  "机制底座（供局势分析引用）：领航员=独立羁绊，可与一名列车同行羁绊成员结合获取其流派羁绊效果；『领航员&三月七』buff 反伤∝前台护盾量×光轨层数；试用姬子面板速度慢（一场 4-5 次行动）且自带攻击绳不可更换。",
+  "杨叔=瓦尔特(character_20)、泛称刃=千冶•刃(character_02) 按用户拍板（2026-09-06）入结构化字段；卡妈=卡芙卡(46)、周日=星期日(36)、龙丹=丹恒•饮月(53)、鸟未出现于本表。",
+  "攻略码②（双贝转）中段被作者以***遮蔽、原样转录，且两码均未经游戏内复现验证——导入失败属预期，需回原帖核对。",
+  "自造条件字段备案（STANDARD §14.6 运行时字段字典）：navigator_choice（领航员分支选择查询，本期新用）；enemy_affixes/acquired_items/level 沿用先例。",
+  "投资环境口径（作者）：优先与红钻/蓝钻/星辉相关（追击/群攻星辉对姬子提升均大）；姬子不绑定投资环境，银金彩、人才下沉等通用强力环境亦可——环境名在配图未全入文本层，故不入结构化字段。",
+  "社区分歧存档：作者为星期日辩护（『不要相信网上黑周日的言论』）；另存目 76829942『姬子没那么轮椅』为姬子强度反方帖，本集仅录作者立场。",
+  "2026-09-07 下午（用户最终定性）：guideCodes 字段整体移除——攻略码=游戏内部分享码，对软件无功能意义，最终 JSON 成品不得含攻略码字段（RULES 七.0 修订）。"
+ ]
+}

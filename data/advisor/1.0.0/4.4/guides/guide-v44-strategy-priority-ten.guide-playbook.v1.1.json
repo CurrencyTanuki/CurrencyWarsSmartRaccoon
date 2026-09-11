@@ -1,0 +1,383 @@
+{
+  "schemaVersion": "guide-playbook.v1.1",
+  "guideId": "guide-v44-strategy-priority-ten",
+  "title": "4.4 十大推荐投资策略候选集（烟波浩渺的彼岸 08-06）",
+  "status": "draft",
+  "applicableGameVersions": [
+    "4.4"
+  ],
+  "archetypeId": "archetype-generic-strategy-priority",
+  "archetypeName": "通用投资策略选择优先集（M7 决策点候选评价层）",
+  "goalIds": [
+    "stable"
+  ],
+  "signals": {
+    "coreCharacterIds": [],
+    "optionalCharacterIds": [
+      "currency_wars_character_67",
+      "currency_wars_character_32",
+      "currency_wars_character_39",
+      "currency_wars_character_13",
+      "currency_wars_character_58",
+      "currency_wars_character_22",
+      "currency_wars_character_72",
+      "currency_wars_character_56",
+      "currency_wars_character_59"
+    ],
+    "equipmentIds": [
+      "currency_wars_equipment_001"
+    ],
+    "bondIds": [
+      "currency_wars_bond_10",
+      "currency_wars_bond_14",
+      "currency_wars_bond_17",
+      "currency_wars_bond_31"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": [
+      "investment_strategy_330",
+      "investment_strategy_300",
+      "investment_strategy_328",
+      "investment_strategy_331",
+      "investment_strategy_244",
+      "investment_strategy_205",
+      "investment_strategy_333",
+      "investment_strategy_051",
+      "investment_strategy_238",
+      "investment_strategy_194",
+      "investment_strategy_128"
+    ]
+  },
+  "sourceRefs": [
+    {
+      "platform": "miyoushe",
+      "refId": "post-77238470",
+      "url": "https://www.miyoushe.com/sr/article/77238470",
+      "title": "星铁4.4货币战争10大必选投资策略（2026-08-06）"
+    }
+  ],
+  "versionApplicability": {
+    "baselineVersion": "4.4",
+    "verifiedThrough": null,
+    "knownChanges": [
+      {
+        "gameVersion": "4.5",
+        "area": "货币战争整体",
+        "change": "V4.5（2026-08-26）仅 19 条问题修复，无赛季扩充、A850 不变",
+        "impact": "参数基线不受影响；verified 升级仍需 V4.5 实机复验",
+        "evidenceRefs": []
+      },
+      {
+        "gameVersion": "4.5",
+        "area": "货币战争整体",
+        "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+        "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+        "evidenceRefs": []
+      }
+    ],
+    "supersededBy": null,
+    "notes": [
+      "V4.5 对货币战争仅修复无赛季（见夜班机制研究），策略清单不受影响。"
+    ]
+  },
+  "applicability": {
+    "required": [
+      {
+        "field": "gameVersion",
+        "operator": "equals",
+        "expected": "4.4",
+        "unknownPolicy": "reject",
+        "evidenceRefs": [
+          {
+            "evidenceSetId": "evidence-miyoushe-77238470",
+            "claimId": "source-metadata"
+          }
+        ]
+      }
+    ],
+    "prohibited": [],
+    "defaultUnknownPolicy": "require_review"
+  },
+  "phases": [
+    {
+      "phaseId": "strategy-selection",
+      "title": "投资策略选择界面出现时",
+      "order": 1,
+      "selector": {
+        "planeIds": [
+          1
+        ],
+        "nodeIds": [
+          "1-3"
+        ],
+        "nodeTypes": [
+          "preparation"
+        ]
+      },
+      "recommendedState": {
+        "economy": {
+          "min": null,
+          "max": null,
+          "unit": "coin"
+        },
+        "health": {
+          "min": null,
+          "max": null,
+          "unit": "health"
+        },
+        "level": {
+          "min": null,
+          "max": null,
+          "unit": "level"
+        },
+        "population": {
+          "min": null,
+          "max": null,
+          "unit": "population"
+        },
+        "remainingActionPoints": {
+          "min": null,
+          "max": null,
+          "unit": "action_point"
+        },
+        "lineup": {
+          "frontCharacterIds": [],
+          "backCharacterIds": [],
+          "benchCharacterIds": [],
+          "minimumStarsByCharacterId": {},
+          "acquisitionPriorities": []
+        },
+        "equipment": [],
+        "bondIds": [],
+        "investmentEnvironmentIds": [],
+        "investmentStrategyIds": []
+      },
+      "actionIds": [
+        "select-recommended-strategy",
+        "gaoxiao-burst-plan",
+        "shidade-cuo-hardest-encounter"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77238470",
+          "claimId": "source-metadata"
+        }
+      ],
+      "notes": [
+        "本表是候选评价层：命中推荐集则倾向选择；十条之间未排序。与主项目 M7 用户拍板优先级（rule.md 四.13：彩238>都是这家伙的错>金051>二极管）重叠时，以后者为准。",
+        "策略随节点出现还受 availablePlanes 限制（如金币大使叽米=[2,3]、藏一手=[2]），运行时以标准目录数据为准。"
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "actionId": "select-recommended-strategy",
+      "title": "命中推荐集则选择该策略",
+      "instruction": "投资策略选择界面出现时，若选项中包含推荐集（黑塔纪元/本姑娘就是罗刹/狸狸的早晨/飞光•映月/金币大使叽米/藏一手/都是这家伙的错！/采购专员•彩/采购专员•金/高效决策/超光速提拔），倾向选择之；具体机制收益见证据层逐策略说明。十条之间无作者排序；与主项目 M7 优先级重叠时按 rule.md 四.13 执行。",
+      "operationType": "select_investment_strategy",
+      "priority": 90,
+      "conditions": [],
+      "benefits": [
+        "强度或趣味兼得（作者口径）"
+      ],
+      "costs": [],
+      "risks": [
+        "推荐集为作者主观评价；命中判定含部分附带前提（如本姑娘就是罗刹的双鞋风扇、狸狸的早晨的星徽质量），软件侧按 require_review 处理"
+      ],
+      "preconditions": [
+        "投资策略选择界面已弹出"
+      ],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77238470",
+          "claimId": "source-metadata"
+        },
+        {
+          "evidenceSetId": "evidence-miyoushe-77238470",
+          "claimId": "s-shi-tade-cuo"
+        }
+      ]
+    },
+    {
+      "actionId": "gaoxiao-burst-plan",
+      "title": "高效决策：45 秒窗口采购计划",
+      "instruction": "若选中高效决策（9999 次免费刷新，仅持续 45 秒）：窗口内只买想要的卡，不要用『买同费卡压缩卡池』技巧（会卡备战席格子）。软件自动化在此窗口的刷新频率天然高于人工手速，但采购目标仍应来自所选阵容的 acquisitionPriorities/shoppingPlan。",
+      "operationType": "other",
+      "priority": 60,
+      "conditions": [
+        {
+          "field": "selected_investment_strategy",
+          "operator": "equals",
+          "expected": "investment_strategy_194",
+          "unknownPolicy": "reject"
+        }
+      ],
+      "benefits": [
+        "免费刷新窗口内最大化收益"
+      ],
+      "costs": [],
+      "risks": [
+        "45 秒/9999 次为作者口述数值；『压缩牌库』为社区技巧术语，未入标准词表"
+      ],
+      "preconditions": [
+        "高效决策已被选中"
+      ],
+      "invalidatesWhen": [
+        "窗口结束"
+      ],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77238470",
+          "claimId": "s-gaoxiao-juece"
+        }
+      ]
+    },
+    {
+      "actionId": "shidade-cuo-hardest-encounter",
+      "title": "都是这家伙的错！：最难遭遇+星徽出战",
+      "instruction": "若选中都是这家伙的错！：获得命运圣杯星徽和 10 金币；一般用法是选最难的遭遇节点，用装备命运圣杯星徽的角色出战——若未完美通关且有携带星徽的角色参与战斗，视为完美通关，但代价是出售 1 名携带星徽的上场角色（可生效 3 次）。",
+      "operationType": "select_encounter_option",
+      "priority": 70,
+      "conditions": [
+        {
+          "field": "selected_investment_strategy",
+          "operator": "equals",
+          "expected": "investment_strategy_333",
+          "unknownPolicy": "reject"
+        }
+      ],
+      "benefits": [
+        "高难遭遇奖励白拿（代偿视为完美通关）",
+        "开局获得星徽+10金币"
+      ],
+      "costs": [
+        "占用遭遇节点选择权",
+        "触发代偿时出售 1 名携带命运圣杯星徽的上场角色（不可逆 roster 动作，每次生效，最多 3 次）"
+      ],
+      "risks": [
+        "代偿出售角色的选择由游戏决定，可能导致关键成员离队——升级 reviewed 前该动作挂 require_review，运行时须与用户闸门确认后才可自动执行"
+      ],
+      "preconditions": [
+        "都是这家伙的错！已被选中",
+        "命运圣杯星徽已装备给出战角色",
+        "已确认接受代偿出售角色的代价"
+      ],
+      "invalidatesWhen": [
+        "星徽未就位"
+      ],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77238470",
+          "claimId": "s-shi-tade-cuo"
+        }
+      ]
+    }
+  ],
+  "branches": [
+    {
+      "branchId": "recommended-set-gate",
+      "priority": 1,
+      "when": [
+        {
+          "field": "investment_strategies",
+          "operator": "contains_any",
+          "expected": [
+            "investment_strategy_330",
+            "investment_strategy_300",
+            "investment_strategy_328",
+            "investment_strategy_331",
+            "investment_strategy_244",
+            "investment_strategy_205",
+            "investment_strategy_333",
+            "investment_strategy_238",
+            "investment_strategy_051",
+            "investment_strategy_194",
+            "investment_strategy_128"
+          ],
+          "unknownPolicy": "require_review",
+          "evidenceRefs": [
+            {
+              "evidenceSetId": "evidence-miyoushe-77238470",
+              "claimId": "source-metadata"
+            }
+          ]
+        }
+      ],
+      "thenActionIds": [
+        "select-recommended-strategy"
+      ],
+      "otherwiseActionIds": [],
+      "transitionToPhaseId": null,
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77238470",
+          "claimId": "source-metadata"
+        }
+      ]
+    }
+  ],
+  "alternativeRoutes": [],
+  "risks": [
+    {
+      "riskId": "priority-deference-to-project",
+      "severity": "medium",
+      "description": "推荐集内部无排序；主项目已有用户拍板的 M7 优先级（彩238>都是这家伙的错>金051>二极管）。两套口径重叠时若误用本表平权处理，会与用户口径冲突。",
+      "mitigation": "运行时必须先套用主项目优先级，本表仅作为『未命中主项目优先级时的扩展候选集』。",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77238470",
+          "claimId": "s-caigou-zhuanyuan"
+        }
+      ]
+    },
+    {
+      "riskId": "available-planes-constraint",
+      "severity": "low",
+      "description": "帖子按『遇到就选』泛称，未提示位面限制；标准目录载明部分策略 availablePlanes 有限（金币大使叽米=[2,3]、藏一手=[2]）。",
+      "mitigation": "命中判定以标准目录 availablePlanes 为准。",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77238470",
+          "claimId": "s-jimi-gold"
+        }
+      ]
+    },
+    {
+      "riskId": "gaoxiao-window-autopilot",
+      "severity": "low",
+      "description": "高效决策的 45 秒人工手速窗口对自动化软件不是瓶颈，但盲目全刷会浪费窗口；『压缩牌库』技巧与备战席格子的冲突为作者提醒。",
+      "mitigation": "窗口内采购目标必须来自所选阵容的购物计划，不做无目标刷新。",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77238470",
+          "claimId": "s-gaoxiao-juece"
+        }
+      ]
+    }
+  ],
+  "missingInformationPolicy": {
+    "defaultBehavior": "mark_unknown",
+    "highRiskDecisionBehavior": "never_auto_execute",
+    "conflictBehavior": "preserve_all_sources",
+    "minimumConfidence": 0.6
+  },
+  "evidenceRefs": [
+    {
+      "evidenceSetId": "evidence-miyoushe-77238470",
+      "claimId": "source-metadata"
+    },
+    {
+      "evidenceSetId": "evidence-miyoushe-77238470",
+      "claimId": "s-shi-tade-cuo"
+    }
+  ],
+  "notes": [
+    "第五份样例：策略评价层 playbook——不做阵容路线图，专注单一决策点（投资策略选择）的候选集与特殊机制动作；演示 selected_investment_strategy 条件驱动后续动作的写法。",
+    "『都是这家伙的错！』的输了算完美通关 = 策略官方代偿效果，与 rule.md 四.13 用户口径互证，非漏洞攻略。",
+    "审查修复记录(R3)：都是这家伙的错！补入官方代偿的出售角色代价（BWIKI 334 表原文互证）；自造条件字段 selected_investment_strategy 为运行时待定义字段，白班建字段字典时需收录。"
+  ]
+}

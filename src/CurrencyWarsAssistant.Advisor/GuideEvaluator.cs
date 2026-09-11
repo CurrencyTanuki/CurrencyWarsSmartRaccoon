@@ -109,11 +109,14 @@ namespace CurrencyWarsAdvisor.GuidePlaybooks
     public static class GuideEvaluator
     {
         /// <summary>M4：按持有角色与攻略 signals 的重合度自动推荐攻略（核心×3/可选×1 加权）。
-        /// 第 2 期 B：账号前置（applicability 的 owned 类条件）不满足的攻略不参与推荐。</summary>
+        /// 第 2 期 B：账号前置（applicability 的 owned 类条件）不满足的攻略不参与推荐。
+        /// P2（审计 09-11）：持有集未完整观测（OwnedKnown=false）时不做推荐——旧实现全库同分
+        /// 静默返回输入序第一册。返回 null=无可推荐（调用方须声明"阵容未接入"类原因）。</summary>
         public static (GuidePlaybook? Pb, int Score) BestMatch(
             IEnumerable<GuidePlaybook> guides, RunContext ctx)
         {
             GuidePlaybook? best = null; int bestScore = 0;
+            if (!ctx.OwnedKnown) return (null, 0); // 阵容未观测：推荐无意义，绝不静默返首册
             foreach (var pb in guides)
             {
                 if (ApplicabilityGaps(pb, ctx).Gaps.Count > 0) continue; // 账号前置未满足：排除出推荐
@@ -164,6 +167,14 @@ namespace CurrencyWarsAdvisor.GuidePlaybooks
                 {
                     case "investment_strategies":
                     case "bonds": // 当局已激活/已选，快照可验证 → 阻断
+                        // P1（审计 09-11）修复：字段未观测（null）≠ 条件不满足——未观测归 Unverified
+                        // 不阻断（与 owned_characters 同口径）；仅在已观测且条件确实不满足时才阻断。
+                        var set = c.Field == "bonds" ? ctx.SynergyIds : ctx.InvestmentStrategyIds;
+                        if (set is null)
+                        {
+                            unverified.Add(c.Field == "bonds" ? "已激活羁绊（未观测，不阻断）" : "已选投资策略（未观测，不阻断）");
+                            break;
+                        }
                         var g = EvalCondition(c, ctx);
                         if (g is not null) gaps.Add(g);
                         break;
@@ -245,10 +256,16 @@ namespace CurrencyWarsAdvisor.GuidePlaybooks
             return null;
         }
 
-        /// <summary>P2-5：分支按 priority 升序、首个 when 全满足者胜（schema 语义）；全不满足才输出最高优先级分支的差距。</summary>
+        /// <summary>P2-5：分支按 priority 升序、首个 when 全满足者胜（schema 语义）；全不满足才输出最高优先级分支的差距。
+        /// P1（审计 09-11）修复：①referenced 同时认 then 与 otherwise 引用（原来 otherwise 引用的动作完全绕过门控）；
+        /// ②方向修正——选中分支的 otherwise 动作应被压制（then/else 语义：条件成立走 then），旧实现反而放行；
+        /// 全部 when 不满足时 otherwise 动作按 else 语义可做，then 动作被最高优先级差距门控。</summary>
         private static string? EvaluateBranchGate(Action a, RunContext ctx, IReadOnlyList<Branch> branches)
         {
             if (branches.Count == 0) return null;
+            bool referenced = branches.Any(b => b.ThenActionIds.Contains(a.ActionId)
+                                                || b.OtherwiseActionIds.Contains(a.ActionId));
+            if (!referenced) return null; // 动作不在任何分支里：不受分支门控
             Branch? selected = null;
             string? topGap = null; // 全不满足时最高优先级分支的差距
             foreach (var br in branches.OrderBy(b => b.Priority))
@@ -265,12 +282,15 @@ namespace CurrencyWarsAdvisor.GuidePlaybooks
                 if (ok) { selected = br; break; } // 首个匹配分支胜出，低优先级分支不再评估
                 topGap ??= gap;
             }
-            bool referenced = branches.Any(b => b.ThenActionIds.Contains(a.ActionId));
-            if (!referenced) return null; // 动作不在任何分支 then 里：不受分支门控
-            if (selected is null) return (topGap ?? "等待分支条件") + "（分支）";
-            return selected.ThenActionIds.Contains(a.ActionId) || selected.OtherwiseActionIds.Contains(a.ActionId)
-                ? null
-                : $"分支 {selected.BranchId} 优先命中（分支）"; // 动作只被未选中的低优先级分支引用
+            if (selected is null)
+            {
+                // 全部 when 不满足：then 动作被门控；otherwise 动作按 else 语义可做。
+                return branches.Any(b => b.ThenActionIds.Contains(a.ActionId))
+                    ? (topGap ?? "等待分支条件") + "（分支）"
+                    : null;
+            }
+            if (selected.ThenActionIds.Contains(a.ActionId)) return null; // 选中分支的 then：可做
+            return $"分支 {selected.BranchId} 优先命中（otherwise 抑制）（分支）"; // 选中分支压制 otherwise 与未选中分支动作
         }
 
         private static string? EvalCondition(ConditionStub c, RunContext ctx)

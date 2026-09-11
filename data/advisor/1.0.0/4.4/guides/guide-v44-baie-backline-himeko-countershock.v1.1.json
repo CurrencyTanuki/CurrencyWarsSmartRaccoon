@@ -1,0 +1,778 @@
+{
+  "schemaVersion": "guide-playbook.v1.2",
+  "guideId": "guide-v44-baie-backline-himeko-countershock",
+  "title": "4.4 白厄前台＋后台姬子反震（条件科研路线）",
+  "status": "draft",
+  "applicableGameVersions": [
+    "4.4"
+  ],
+  "archetypeId": "archetype-baie-backline-himeko-countershock",
+  "archetypeName": "白厄承伤反震与后台姬子复制",
+  "goalIds": [
+    "experimental",
+    "configuration-gated",
+    "research"
+  ],
+  "signals": {
+    "coreCharacterIds": [
+      "currency_wars_character_40",
+      "currency_wars_character_01",
+      "currency_wars_character_67"
+    ],
+    "optionalCharacterIds": [
+      "currency_wars_character_53",
+      "currency_wars_character_02",
+      "currency_wars_character_36",
+      "currency_wars_character_20"
+    ],
+    "equipmentIds": [
+      "currency_wars_equipment_048"
+    ],
+    "bondIds": [
+      "currency_wars_bond_11",
+      "currency_wars_bond_15",
+      "currency_wars_bond_32",
+      "currency_wars_bond_05"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+  },
+  "applicability": {
+    "required": [
+      {
+        "field": "gameVersion",
+        "operator": "equals",
+        "expected": "4.4",
+        "unknownPolicy": "reject",
+        "evidenceRefs": [
+          {
+            "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+            "claimId": "source-metadata"
+          }
+        ]
+      },
+      {
+        "field": "baieConfiguration",
+        "operator": "is_known",
+        "expected": true,
+        "unknownPolicy": "require_review",
+        "evidenceRefs": [
+          {
+            "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+            "claimId": "configuration-gate"
+          }
+        ]
+      }
+    ],
+    "prohibited": [],
+    "defaultUnknownPolicy": "require_review"
+  },
+  "phases": [
+    {
+      "phaseId": "baie-entry-check",
+      "title": "开局配置与环境筛选",
+      "selector": {
+        "planeIds": [
+          1
+        ],
+        "nodeIds": [],
+        "nodeTypes": [
+          "preparation"
+        ]
+      },
+      "recommendedState": {
+        "economy": {
+          "min": null,
+          "max": null,
+          "unit": "coin"
+        },
+        "health": {
+          "min": null,
+          "max": null,
+          "unit": "health"
+        },
+        "level": {
+          "min": null,
+          "max": null,
+          "unit": "level"
+        },
+        "remainingActionPoints": {
+          "min": null,
+          "max": null,
+          "unit": "action_point"
+        },
+        "lineup": {
+          "frontCharacterIds": [
+            "currency_wars_character_40",
+            "currency_wars_character_67"
+          ],
+          "backCharacterIds": [
+            "currency_wars_character_01"
+          ],
+          "benchCharacterIds": [],
+          "minimumStarsByCharacterId": {}
+        },
+        "equipment": [],
+        "bondIds": [
+          "currency_wars_bond_11",
+          "currency_wars_bond_15"
+        ],
+        "investmentEnvironmentIds": [],
+        "investmentStrategyIds": []
+      },
+      "actionIds": [
+        "baie-check-configuration"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+          "claimId": "configuration-gate"
+        },
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+          "claimId": "opening-restart-window"
+        }
+      ],
+      "notes": [],
+      "order": 1
+    },
+    {
+      "phaseId": "baie-core-six",
+      "title": "六人口成型",
+      "selector": {
+        "planeIds": [
+          1,
+          2
+        ],
+        "nodeIds": [],
+        "nodeTypes": [
+          "preparation",
+          "battle"
+        ]
+      },
+      "recommendedState": {
+        "economy": {
+          "min": null,
+          "max": null,
+          "unit": "coin"
+        },
+        "health": {
+          "min": null,
+          "max": null,
+          "unit": "health"
+        },
+        "level": {
+          "min": 7,
+          "max": 7,
+          "unit": "level"
+        },
+        "remainingActionPoints": {
+          "min": null,
+          "max": null,
+          "unit": "action_point"
+        },
+        "lineup": {
+          "frontCharacterIds": [
+            "currency_wars_character_40",
+            "currency_wars_character_67",
+            "currency_wars_character_53",
+            "currency_wars_character_36",
+            "currency_wars_character_02"
+          ],
+          "backCharacterIds": [
+            "currency_wars_character_01"
+          ],
+          "benchCharacterIds": [],
+          "minimumStarsByCharacterId": {
+            "currency_wars_character_40": 3
+          }
+        },
+        "equipment": [
+          {
+            "characterId": "currency_wars_character_40",
+            "equipmentIds": [
+              "currency_wars_equipment_048",
+              "currency_wars_equipment_048"
+            ],
+            "priority": 1,
+            "substituteEquipmentIds": []
+          }
+        ],
+        "bondIds": [
+          "currency_wars_bond_11",
+          "currency_wars_bond_15"
+        ],
+        "investmentEnvironmentIds": [],
+        "investmentStrategyIds": [],
+        "population": {
+          "min": 6,
+          "max": 6,
+          "unit": "population"
+        }
+      },
+      "actionIds": [
+        "baie-build-six-core",
+        "baie-avoid-overstack",
+        "baie-roll-level-seven"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+          "claimId": "six-unit-core"
+        },
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+          "claimId": "avoid-overstack"
+        },
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+          "claimId": "level-seven-baie"
+        }
+      ],
+      "notes": [],
+      "order": 2,
+      "shoppingPlan": {
+        "targetLevel": {
+          "min": 7,
+          "max": 7,
+          "unit": "level"
+        },
+        "spendDownToGold": 2,
+        "priorityCharacterIds": [
+          "currency_wars_character_40",
+          "currency_wars_character_02",
+          "currency_wars_character_67",
+          "currency_wars_character_53",
+          "currency_wars_character_01",
+          "currency_wars_character_36"
+        ],
+        "costFocus": [
+          1,
+          2,
+          3
+        ],
+        "refreshPolicy": "until_target_found",
+        "stopWhen": [
+          "三月七领航员成型且白厄反甲两件",
+          "金币不足刷新价"
+        ],
+        "evidenceRefs": [
+          {
+            "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g-asr",
+            "claimId": "lineup-ladder-six-to-ten"
+          },
+          {
+            "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g-asr",
+            "claimId": "shopping-and-equipment"
+          }
+        ],
+        "notes": [
+          "星期日=currency_wars_character_36（目录在册；ASR 语音记『周日』）。"
+        ]
+      }
+    }
+  ],
+  "actions": [
+    {
+      "actionId": "baie-check-configuration",
+      "title": "先过配置门槛",
+      "instruction": "确认白厄防御套装与关键自有配置；仅试用白厄或多数关键配置缺失时停止，不把科研上限当普适攻略。",
+      "priority": 140,
+      "conditions": [],
+      "benefits": [],
+      "costs": [],
+      "risks": [
+        "低配置容易失去承伤与反震频率"
+      ],
+      "preconditions": [],
+      "invalidatesWhen": [
+        "仅有试用白厄且无防御套装"
+      ],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+          "claimId": "configuration-gate"
+        },
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+          "claimId": "trial-baie-warning"
+        }
+      ],
+      "operationType": "other"
+    },
+    {
+      "actionId": "baie-build-six-core",
+      "title": "建立六人口骨架",
+      "instruction": "用白厄、丹恒·饮月、姬子·启行、星期日、三月七、千冶·刃构成六人口骨架；姬子必须后台，白厄承伤，前排不足时三月七可前台。",
+      "priority": 130,
+      "conditions": [],
+      "benefits": [],
+      "costs": [],
+      "risks": [],
+      "preconditions": [
+        "配置门槛已通过"
+      ],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+          "claimId": "six-unit-core"
+        },
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+          "claimId": "navigator-counter-copy"
+        }
+      ],
+      "operationType": "deploy_character",
+      "targetCharacterIds": [
+        "currency_wars_character_40"
+      ]
+    },
+    {
+      "actionId": "baie-avoid-overstack",
+      "title": "不强追六列车/四护盾",
+      "instruction": "不要为了六列车或四护盾牺牲功能位，也不加入刻律德菈；先保证前台功能单位二星。",
+      "priority": 120,
+      "conditions": [],
+      "benefits": [],
+      "costs": [],
+      "risks": [
+        "过叠羁绊会稀释核心"
+      ],
+      "preconditions": [],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+          "claimId": "avoid-overstack"
+        },
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+          "claimId": "star-and-backline"
+        }
+      ],
+      "operationType": "other"
+    },
+    {
+      "actionId": "baie-roll-level-seven",
+      "title": "七级追白厄三星",
+      "instruction": "七级追白厄三星，八九级再按承伤压力补巡海游侠或生存。",
+      "priority": 125,
+      "conditions": [
+        {
+          "field": "level",
+          "operator": "equals",
+          "expected": 7,
+          "unknownPolicy": "require_review",
+          "evidenceRefs": [
+            {
+              "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+              "claimId": "level-seven-baie"
+            }
+          ]
+        }
+      ],
+      "benefits": [],
+      "costs": [],
+      "risks": [
+        "经济与血量未知时不清空货币"
+      ],
+      "preconditions": [],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+          "claimId": "level-seven-baie"
+        }
+      ],
+      "operationType": "refresh_shop"
+    },
+    {
+      "actionId": "baie-shop-three-cost-on-sight",
+      "title": "三费牌顺手买",
+      "instruction": "三费牌多，前中期遇到必须顺手买（含白厄与功能位），避免七级搜牌时断档。",
+      "operationType": "buy_character",
+      "targetCharacterIds": [
+        "currency_wars_character_40"
+      ],
+      "priority": 85,
+      "conditions": [
+        {
+          "field": "gold",
+          "operator": "greater_or_equal",
+          "expected": 3,
+          "unknownPolicy": "reject"
+        }
+      ],
+      "benefits": [
+        "成型速度提升"
+      ],
+      "costs": [
+        "占用经济"
+      ],
+      "risks": [],
+      "preconditions": [],
+      "invalidatesWhen": [
+        "金币不足以维持刷新计划"
+      ],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g-asr",
+          "claimId": "shopping-and-equipment"
+        }
+      ]
+    },
+    {
+      "actionId": "baie-front-two-star",
+      "title": "前台全员追二星",
+      "instruction": "前台每个星级≈白厄多 120% 前台强度（ASR 数值），前台全员追二星（可顺手升丹恒•饮月二星再卖掉换牌）；姬子纯后台挂件不升星。",
+      "operationType": "other",
+      "priority": 75,
+      "conditions": [],
+      "benefits": [
+        "反震伤害显著提升"
+      ],
+      "costs": [
+        "经济压力"
+      ],
+      "risks": [
+        "120% 为 ASR 转写数值未独立核对"
+      ],
+      "preconditions": [],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g-asr",
+          "claimId": "front-star-120-percent"
+        }
+      ]
+    },
+    {
+      "actionId": "baie-shield-vest-equipment",
+      "title": "盾辅配装：胜利旗+硬甲给姬子复制",
+      "instruction": "三月七除五星纯护光锥外不需要上盾装备（领航员盾不吃姬子面板）；优先做幸运旗(ASR原词，疑为胜利之旗 currency_wars_equipment_075)+硬甲(音)给姬子复制提高拐力；第三件反甲（=以牙还牙甲 currency_wars_equipment_048，包内旧证据映射）做不出可用折叠小刀替代；『刃没本体带泡泡枪(音)挂盾少』。",
+      "operationType": "equip_badge",
+      "targetCharacterIds": [
+        "currency_wars_character_67"
+      ],
+      "priority": 65,
+      "conditions": [],
+      "benefits": [
+        "拐力最大化"
+      ],
+      "costs": [],
+      "risks": [
+        "幸运旗→胜利之旗(075)为中置信推断、硬甲/泡泡枪为 ASR 术语未入标准装备目录（泡泡枪疑 2026-07-24 新增），软件侧不得据此自动检索装备"
+      ],
+      "preconditions": [],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g-asr",
+          "claimId": "shopping-and-equipment"
+        }
+      ]
+    },
+    {
+      "actionId": "baie-avoid-xilian",
+      "title": "绝对不要上昔涟",
+      "instruction": "作者明确禁令：本体系绝对不要上昔涟（5费，character_19）。禁令的具体理由作者未展开（AI 推测与境界/领航员机制相关，未经证实，不得作为事实引用）。",
+      "operationType": "other",
+      "priority": 95,
+      "conditions": [],
+      "benefits": [
+        "避免体系冲突"
+      ],
+      "costs": [],
+      "risks": [
+        "禁令理由为 ai_inference（作者原话只给禁令未给原因）"
+      ],
+      "preconditions": [],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g-asr",
+          "claimId": "lineup-ladder-six-to-ten"
+        }
+      ]
+    },
+    {
+      "actionId": "baie-late-archer-seat",
+      "title": "十人口可选：远坂凛（时效性）",
+      "instruction": "打赢遭遇四或多拿宝钻(音)→10 人口可上远坂凛；作者称投影形态拐力夸张但属时效性内容，过了时间节点即失效。",
+      "operationType": "deploy_character",
+      "targetCharacterIds": [
+        "currency_wars_character_04"
+      ],
+      "priority": 35,
+      "conditions": [
+        {
+          "field": "population",
+          "operator": "greater_or_equal",
+          "expected": 10,
+          "unknownPolicy": "accept_with_penalty"
+        }
+      ],
+      "benefits": [
+        "末期补强"
+      ],
+      "costs": [],
+      "risks": [
+        "时效性强，合并/执行前须核对当前版本是否仍成立"
+      ],
+      "preconditions": [
+        "人口≥10"
+      ],
+      "invalidatesWhen": [
+        "版本更新后未复验"
+      ],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g-asr",
+          "claimId": "lineup-ladder-six-to-ten"
+        }
+      ]
+    }
+  ],
+  "branches": [],
+  "alternativeRoutes": [
+    {
+      "routeId": "baie-welt-showcase",
+      "title": "瓦尔特大数字进阶",
+      "triggerConditions": [
+        {
+          "field": "baselineMastered",
+          "operator": "equals",
+          "expected": true,
+          "unknownPolicy": "require_review",
+          "evidenceRefs": [
+            {
+              "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+              "claimId": "advanced-welt-only"
+            }
+          ]
+        }
+      ],
+      "actionIds": [
+        "baie-build-six-core"
+      ],
+      "tradeoffs": [
+        "上限展示",
+        "不适合新手且可能增加配置压力"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+          "claimId": "advanced-welt-only"
+        }
+      ]
+    }
+  ],
+  "risks": [
+    {
+      "riskId": "baie-not-trial-general",
+      "severity": "high",
+      "description": "该路线作者明确称全试用较吃力。",
+      "mitigation": "把配置门槛设为人工审核；未满足时回退到姬子反震基线。",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+          "claimId": "configuration-gate"
+        },
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+          "claimId": "trial-baie-warning"
+        }
+      ]
+    },
+    {
+      "riskId": "baie-opening-specific",
+      "severity": "high",
+      "description": "视频含特定敌人/红灯重开条件，缺乏正式名称且不具普适性。",
+      "mitigation": "只作科研备注，不自动据此重开。",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+          "claimId": "opening-restart-window"
+        }
+      ]
+    }
+  ],
+  "missingInformationPolicy": {
+    "defaultBehavior": "mark_unknown",
+    "highRiskDecisionBehavior": "never_auto_execute",
+    "conflictBehavior": "preserve_all_sources",
+    "minimumConfidence": 0.75
+  },
+  "evidenceRefs": [
+    {
+      "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+      "claimId": "source-metadata"
+    },
+    {
+      "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+      "claimId": "configuration-gate"
+    },
+    {
+      "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+      "claimId": "six-unit-core"
+    },
+    {
+      "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+      "claimId": "trial-baie-warning"
+    },
+    {
+      "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g",
+      "claimId": "level-seven-baie"
+    }
+  ],
+  "notes": [
+    "此玩法被完整覆盖但明确标为experimental/configuration-gated；不进入零配置稳定首选。",
+    "作者攻略码见证据notes。",
+    "本文件为包内 guide-v44-baie-backline-himeko-countershock（guide-playbook.v1）的 v1.1 迁移演示：原 4 动作/2 阶段内容原样保留，仅追加 v1.1 结构化字段与 5 个 ASR 证据支撑的新动作；合并回包时应整体替换原文件并同步替换/合并其证据集。",
+    "证据双层说明：evidence-bilibili-bv1gkkv6ce4g（包内，投稿说明级）与 evidence-bilibili-bv1gkkv6ce4g-asr（夜班 ASR 逐句层）并存，合并前两层都保留。",
+    "『刃』归属已裁决 2026-09-09：包内口径千冶•刃（character_02）与 ASR 泛称『刃』的区分记录于 -asr 证据集 conflicts。",
+    "审查修复记录(R2)：星期日已映射 character_36；昔涟禁令理由改标 ai_inference；幸运旗/反甲映射已按目录与包内证据修正。",
+    "v1.2 升级（08:5x）：craftingPaths 演示——反甲获取路径的结构化表达（合成链出自 BWIKI 官方合成表，ID 全部对表实证）。",
+    "R4 勘误入档：首轮 craftingPaths 误把 BWIKI 家族行当配方链（我方抽查也因对照了同一错误源而假阳性），已按官方配置 compose_list 全部改正——教训：核验必须对照最权威源。"
+  ],
+  "sourceRefs": [
+    {
+      "platform": "bilibili",
+      "refId": "BV1GkKV6CE4g",
+      "url": "https://www.bilibili.com/video/BV1GkKV6CE4g",
+      "title": "姬子放后台？白厄带队反震体系降维打击A850（甘泽成谣雨成诗 2026-07-16，P1解说/P2纯演示）"
+    },
+    {
+      "platform": "bilibili",
+      "refId": "BV1Vz766SELa",
+      "url": "https://www.bilibili.com/video/BV1Vz766SELa",
+      "title": "反甲公式来源（4.3，链上前作）"
+    },
+    {
+      "platform": "bilibili",
+      "refId": "BV1jJNY6TEX4",
+      "url": "https://www.bilibili.com/video/BV1jJNY6TEX4",
+      "title": "领航员机制与光轨倍率（4.4，链上中间环）"
+    }
+  ],
+  "versionApplicability": {
+    "baselineVersion": "4.4",
+    "verifiedThrough": null,
+    "knownChanges": [
+      {
+        "gameVersion": "4.4",
+        "area": "反震体系结构",
+        "change": "反甲来源从装备扩展到『三月七领航员+四列车光轨倍率』；挂盾盾辅从砂金/三月七转向刃+泡泡枪(音)；刻律德菈被明确排除（直伤辅助）",
+        "impact": "结构级更新已并入本 v1.1 版本的新增动作与建议；ASR 逐句证据见 evidence-bilibili-bv1gkkv6ce4g-asr",
+        "evidenceRefs": [
+          {
+            "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g-asr",
+            "claimId": "counterattack-chain-v44"
+          },
+          {
+            "evidenceSetId": "evidence-bilibili-bv1gkkv6ce4g-asr",
+            "claimId": "shopping-and-equipment"
+          }
+        ]
+      },
+      {
+        "gameVersion": "4.5",
+        "area": "货币战争整体",
+        "change": "V4.5（2026-08-26）仅 19 条问题修复，无赛季扩充、A850 不变",
+        "impact": "参数基线不受影响；verified 升级仍需 V4.5 实机复验",
+        "evidenceRefs": []
+      },
+      {
+        "gameVersion": "4.5",
+        "area": "货币战争整体",
+        "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+        "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+        "evidenceRefs": []
+      }
+    ],
+    "supersededBy": null,
+    "notes": [
+      "反震主轴（护盾量×反甲倍率反震+吃直伤乘区）自 4.3 起存活，4.4 链条完整：BV1Vz766SELa → BV1jJNY6TEX4 → BV1GkKV6CE4g。"
+    ]
+  },
+  "excludedContent": [
+    {
+      "category": "bug_exploit",
+      "description": "姬子复制装备『双偷』分支（利用光轨复制装备的旧行为堆叠多件装备）",
+      "reason": "2026-07-16 热修后复制始终为第一次入站装备，旧行为分支已失效且属漏洞依赖，按判定规则永不入册（弹幕层旁证 + 夜班排除矩阵评估）",
+      "evidenceRefs": []
+    }
+  ],
+  "craftingPaths": [
+    {
+      "resultId": "currency_wars_equipment_055",
+      "inputIds": [
+        "currency_wars_equipment_046",
+        "currency_wars_equipment_046"
+      ],
+      "note": "轮滑鞋+轮滑鞋→反重力皮靴（官方配置 compose_list，2026-09-05 R4 勘误：BWIKI 合成表为同源家族行非配方）",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-official-cw-game-config",
+          "claimId": "compose-list-recipes"
+        }
+      ]
+    },
+    {
+      "resultId": "currency_wars_equipment_066",
+      "inputIds": [
+        "currency_wars_equipment_044",
+        "currency_wars_equipment_046"
+      ],
+      "note": "折叠小刀+轮滑鞋→火力风暴潮（官方配置 compose_list）",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-official-cw-game-config",
+          "claimId": "compose-list-recipes"
+        }
+      ]
+    },
+    {
+      "resultId": "currency_wars_equipment_073",
+      "inputIds": [
+        "currency_wars_equipment_044",
+        "currency_wars_equipment_044"
+      ],
+      "note": "折叠小刀+折叠小刀→碎星斩舰刀（官方配置 compose_list；与火力风暴潮无合成关系）",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-official-cw-game-config",
+          "claimId": "compose-list-recipes"
+        }
+      ]
+    },
+    {
+      "resultId": "currency_wars_equipment_086",
+      "inputIds": [
+        "currency_wars_equipment_084",
+        "currency_wars_equipment_084",
+        "currency_wars_equipment_084",
+        "currency_wars_equipment_085",
+        "currency_wars_equipment_085",
+        "currency_wars_equipment_085"
+      ],
+      "note": "红钻×2或红钻+蓝钻或蓝钻×2（三选一，各2颗）→财富宝钻（官方配置 compose_list craft37/38/39）",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-official-cw-game-config",
+          "claimId": "compose-list-recipes"
+        }
+      ]
+    }
+  ]
+}

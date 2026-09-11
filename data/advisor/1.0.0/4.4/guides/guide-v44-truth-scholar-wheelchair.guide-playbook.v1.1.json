@@ -1,0 +1,869 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-truth-scholar-wheelchair",
+ "title": "4.4 学者真理轮椅：三追击+双拉条+学者免伤体系（这看缘吧 08-17）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-truth-scholar-wheelchair",
+ "archetypeName": "学者真理轮椅（真理医生主C，三追击双拉条，学者共享免伤）",
+ "goalIds": [
+  "stable",
+  "high-tempo",
+  "a850-capable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_44",
+   "currency_wars_character_48"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_02",
+   "currency_wars_character_23",
+   "currency_wars_character_29",
+   "currency_wars_character_43",
+   "currency_wars_character_55",
+   "currency_wars_character_54",
+   "currency_wars_character_08",
+   "currency_wars_character_20"
+  ],
+  "equipmentIds": [],
+  "bondIds": [
+   "currency_wars_bond_21",
+   "currency_wars_bond_11",
+   "currency_wars_bond_08"
+  ],
+  "investmentEnvironmentIds": [],
+  "investmentStrategyIds": []
+ },
+ "sourceRefs": [
+  {
+   "platform": "bilibili",
+   "refId": "BV1Kibe6mEEi",
+   "url": "https://www.bilibili.com/video/BV1Kibe6mEEi",
+   "title": "全网最细4.4版本学者真理轮椅攻略（2026-08-17）"
+  },
+  {
+   "platform": "bilibili",
+   "refId": "BV1GHug63Evx",
+   "url": "https://www.bilibili.com/video/BV1GHug63Evx",
+   "title": "4.4 A850零命主C强度排行（2026-08-08，互证）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "V4.5（2026-08-26）对货币战争仅 19 条问题修复，无赛季扩充、无新员工、晋升上限 170 与 A850 不变",
+    "impact": "本攻略参数基线不受影响；verified 升级仍需 V4.5 实机复验",
+    "evidenceRefs": []
+   },
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+    "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+    "evidenceRefs": []
+   }
+  ],
+  "supersededBy": null,
+  "notes": [
+   "4.4 增量=阮•梅 2 星拐（150 增伤/50 抗穿）+银河学者 24%/30% 前排共享免伤+千冶•刃拼装位。"
+  ]
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+      "claimId": "source-metadata"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "plane1-transition",
+   "title": "第一位面：借阵容过渡并尽早挂阮•梅",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ],
+    "nodeRanges": [
+     {
+      "planeId": 1,
+      "fromNodeIndex": 1,
+      "toNodeIndex": 3
+     }
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": 6,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [],
+     "backCharacterIds": [],
+     "benchCharacterIds": [
+      "currency_wars_character_48"
+     ],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_48",
+       "priority": 1,
+       "targetStars": 2,
+       "note": "越早上阮•梅吃学者羁绊越好；2星=150增伤/50抗穿"
+      },
+      {
+       "characterId": "currency_wars_character_54",
+       "priority": 2,
+       "note": "拉条位过渡"
+      },
+      {
+       "characterId": "currency_wars_character_08",
+       "priority": 3,
+       "note": "过渡可用功能位"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_08"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_48",
+     "currency_wars_character_54",
+     "currency_wars_character_02"
+    ],
+    "costFocus": [
+     2,
+     3
+    ],
+    "refreshPolicy": "unknown",
+    "stopWhen": [
+     "阮•梅已上场且三追击组件过半"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+      "claimId": "early-ruanmei-transition"
+     }
+    ],
+    "notes": [
+     "来源视频未展开商店运营细节；模式口径：1-3 必须刷新、免费刷新额度来自部分投资策略不固定存在——软件侧执行时按节点口径处理，不由本表假设。"
+    ]
+   },
+   "actionIds": [
+    "transition-borrow-lineup",
+    "deploy-ruanmei-early"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "early-ruanmei-transition"
+    }
+   ],
+   "notes": [
+    "来源未给节点级锚点，本阶段仅人口节奏（≤6 人口）。"
+   ]
+  },
+  {
+   "phaseId": "core-six",
+   "title": "六人口成型：双拉条+三追击+银河学者",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [
+     "1-3"
+    ],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": 6,
+     "max": 6,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [],
+     "backCharacterIds": [
+      "currency_wars_character_44"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_44": 1
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_44",
+       "priority": 1,
+       "note": "三费主C，学者体系内直接吃阮梅拐"
+      },
+      {
+       "characterId": "currency_wars_character_02",
+       "priority": 2,
+       "note": "七人口拼装位"
+      },
+      {
+       "characterId": "currency_wars_character_48",
+       "priority": 1,
+       "targetStars": 2
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_21",
+     "currency_wars_bond_11",
+     "currency_wars_bond_08"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_44",
+     "currency_wars_character_02",
+     "currency_wars_character_48"
+    ],
+    "costFocus": [
+     2,
+     3
+    ],
+    "refreshPolicy": "until_afford_no_more",
+    "stopWhen": [
+     "三追击+双拉条+阮•梅全部上场",
+     "金币不足刷新价"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+      "claimId": "population-ladder"
+     }
+    ],
+    "notes": [
+     "1-3 备战节点口径：一条指令逛到黑，买到才关店；成员<4 或已升5 时无保留线。"
+    ]
+   },
+   "actionIds": [
+    "assemble-core-six",
+    "scholar-sustain-reduction"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "population-ladder"
+    },
+    {
+     "evidenceSetId": "evidence-bilibili-bv1ghug63evx",
+     "claimId": "truth-t0-scholar-buff"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "scale-seven-to-ten",
+   "title": "七至十人口爬梯与极限化选项",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": 7,
+     "max": 10,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [],
+     "backCharacterIds": [
+      "currency_wars_character_44"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_44": 3
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_02",
+       "priority": 1,
+       "note": "七人口上千冶•刃"
+      },
+      {
+       "characterId": "currency_wars_character_23",
+       "priority": 2,
+       "note": "八人口生存/功能位"
+      },
+      {
+       "characterId": "currency_wars_character_29",
+       "priority": 3,
+       "note": "追击速度轴核心，≥160速"
+      },
+      {
+       "characterId": "currency_wars_character_43",
+       "priority": 4,
+       "note": "十人口可选；本版优先级低于阮•梅"
+      },
+      {
+       "characterId": "currency_wars_character_55",
+       "priority": 4,
+       "note": "十人口可选"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_21",
+     "currency_wars_bond_08"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "actionIds": [
+    "ladder-seven-blade",
+    "keep-standard-eight",
+    "late-aggro-blade",
+    "ladder-nine-ten-cap",
+    "speed-tuning"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "population-ladder"
+    },
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "blade-front-taunt-late"
+    }
+   ],
+   "notes": [
+    "来源未给 2/3 位面节点级锚点，仅人口节奏（7→10 人口）。",
+    "真理主C目标为稳升三星（三费）。"
+   ]
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "transition-borrow-lineup",
+   "title": "六人口前借阵容过渡",
+   "instruction": "六人口前不硬凑学者真理组件，借用现有强势阵容过渡（周日/花火/不死途等混搭），保留金币与血量。",
+   "operationType": "other",
+   "priority": 100,
+   "conditions": [],
+   "benefits": [
+    "不掉前期连胜与经济"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "人口<6"
+   ],
+   "invalidatesWhen": [
+    "阮•梅与三追击组件已齐"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "early-ruanmei-transition"
+    }
+   ]
+  },
+  {
+   "actionId": "deploy-ruanmei-early",
+   "title": "尽早部署阮•梅",
+   "instruction": "阮•梅见到就买、能上就上：学者羁绊内 150 增伤/50 抗穿，越早吃满越收益。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_48"
+   ],
+   "priority": 90,
+   "conditions": [],
+   "benefits": [
+    "队伍伤害乘区提前到位"
+   ],
+   "costs": [
+    "占用一个人口"
+   ],
+   "risks": [],
+   "preconditions": [
+    "阮•梅已购入"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [
+    "transition-borrow-lineup"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "early-ruanmei-transition"
+    }
+   ]
+  },
+  {
+   "actionId": "assemble-core-six",
+   "title": "六人口成型",
+   "instruction": "六人口达成双拉条+三追击+银河学者标准阵（真理医生后排主C）。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_44"
+   ],
+   "priority": 80,
+   "conditions": [
+    {
+     "field": "population",
+     "operator": "greater_or_equal",
+     "expected": 6,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "体系成型，进入学者免伤节奏"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "人口≥6",
+    "真理医生已购入"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "population-ladder"
+    },
+    {
+     "evidenceSetId": "evidence-bilibili-bv1ghug63evx",
+     "claimId": "truth-t0-scholar-buff"
+    }
+   ]
+  },
+  {
+   "actionId": "scholar-sustain-reduction",
+   "title": "学者免伤换经济：前期减配生存位",
+   "instruction": "学者 30% 前排共享免伤下，前期少带或不带生存位（别的队带两生存的局只带一），不上砂金；高压词条局例外（见分支）。",
+   "operationType": "other",
+   "priority": 70,
+   "conditions": [],
+   "benefits": [
+    "省出一个人口与金币加速成型"
+   ],
+   "costs": [
+    "高压局容错下降"
+   ],
+   "risks": [
+    "高压例外名单（乐变化天人(音)/黑潮/稻火(音)等）术语未证实且已从机读条件移除，识别命中不了就按高压保守处理（require_review）"
+   ],
+   "preconditions": [
+    "学者免伤已生效（真理医生上场）"
+   ],
+   "invalidatesWhen": [
+    "血量进入危险区间"
+   ],
+   "fallbackActionIds": [
+    "keep-standard-eight"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "scholar-24-30-mitigation"
+    },
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "skip-sustain-early"
+    }
+   ]
+  },
+  {
+   "actionId": "ladder-seven-blade",
+   "title": "七人口上千冶•刃",
+   "instruction": "七人口补千冶•刃拼装位。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_02"
+   ],
+   "priority": 60,
+   "conditions": [
+    {
+     "field": "population",
+     "operator": "greater_or_equal",
+     "expected": 7,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "伤害/功能补强"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "千冶•刃已购入"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "population-ladder"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 7
+   }
+  },
+  {
+   "actionId": "keep-standard-eight",
+   "title": "八人口维持标准生存配置",
+   "instruction": "八人口补符玄等生存/功能位，换上知更鸟等追击速度件，保持稳健配置。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_23",
+    "currency_wars_character_29"
+   ],
+   "priority": 55,
+   "conditions": [],
+   "benefits": [
+    "容错稳定"
+   ],
+   "costs": [
+    "极限输出略低"
+   ],
+   "risks": [],
+   "preconditions": [
+    "人口≥8"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "population-ladder"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 8
+   }
+  },
+  {
+   "actionId": "late-aggro-blade",
+   "title": "八级后极限化：刃前排嘲讽",
+   "instruction": "两件以上生存装且手法有信心时：下符玄换刻律德菈/缇宝极限化，把刃丢前排嘲讽吸仇恨；瓦尔特（老杨）来了再丢回后排。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_02"
+   ],
+   "priority": 50,
+   "conditions": [
+    {
+     "field": "survival_equipment_count",
+     "operator": "greater_or_equal",
+     "expected": 2,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "输出极限化"
+   ],
+   "costs": [
+    "容错显著下降"
+   ],
+   "risks": [
+    "缺少操作把握时禁止执行",
+    "ASR 原话为泛称『刃』：已按用户拍板（2026-09-06）映射千冶•刃(character_02)——泛称默认 02，仅专家顾问语境指 1费刃(70)。"
+   ],
+   "preconditions": [
+    "人口≥8",
+    "千冶•刃已购入",
+    "生存装≥2"
+   ],
+   "invalidatesWhen": [
+    "血量进入危险区间",
+    "生存装不足"
+   ],
+   "fallbackActionIds": [
+    "keep-standard-eight"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "blade-front-taunt-late"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 8
+   }
+  },
+  {
+   "actionId": "ladder-nine-ten-cap",
+   "title": "九至十人口补挂件",
+   "instruction": "九人口上瓦尔特（老杨，character_20）；10 人口补刻律德菈或缇宝。本版刻律德菈优先级低于阮•梅（需二星+反重力皮靴启动，术语未证实）。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_20",
+    "currency_wars_character_43",
+    "currency_wars_character_55"
+   ],
+   "priority": 40,
+   "conditions": [
+    {
+     "field": "population",
+     "operator": "greater_or_equal",
+     "expected": 9,
+     "unknownPolicy": "accept_with_penalty"
+    }
+   ],
+   "benefits": [
+    "满配补强"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "人口≥9"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "population-ladder"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 9
+   }
+  },
+  {
+   "actionId": "speed-tuning",
+   "title": "追击速度轴调校",
+   "instruction": "玩追击往死里堆速度：知更鸟≥160 速（2+2+2 速度位可达 174）；拉条件速度要比真理医生低、错开行动值。",
+   "operationType": "other",
+   "priority": 30,
+   "conditions": [],
+   "benefits": [
+    "追击频率最大化"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "speed-axis"
+    }
+   ]
+  }
+ ],
+ "branches": [
+  {
+   "branchId": "late-aggro-gate",
+   "priority": 1,
+   "when": [
+    {
+     "field": "survival_equipment_count",
+     "operator": "greater_or_equal",
+     "expected": 2,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "thenActionIds": [
+    "late-aggro-blade"
+   ],
+   "otherwiseActionIds": [
+    "keep-standard-eight"
+   ],
+   "transitionToPhaseId": null,
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "blade-front-taunt-late"
+    }
+   ]
+  }
+ ],
+ "alternativeRoutes": [
+  {
+   "routeId": "conservative-sustain",
+   "title": "保守生存版（前期上砂金）",
+   "triggerConditions": [
+    {
+     "field": "survival_pressure",
+     "operator": "equals",
+     "expected": "high",
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [
+    "keep-standard-eight"
+   ],
+   "tradeoffs": [
+    "前期更稳",
+    "少一个人口换经济与输出",
+    "成型更慢"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "skip-sustain-early"
+    }
+   ]
+  }
+ ],
+ "risks": [
+  {
+   "riskId": "asr-numbers-unverified",
+   "severity": "medium",
+   "description": "150 增伤/50 抗穿、24%/30% 免伤、174/160 速等数值全部来自 ASR 语音转写，未经官方文本或实机独立核对。",
+   "mitigation": "升级 reviewed 前逐项与游戏内文本/BWIKI 对照；软件侧使用时按 author_recommendation 低置信处理。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "ruanmei-2star-150-50"
+    }
+   ]
+  },
+  {
+   "riskId": "pressure-affix-list-unverified",
+   "severity": "medium",
+   "description": "需要带生存位的高压例外名单（乐变化天人/黑潮/稻火等）多为 ASR 音译，识别误判会直接导致翻车。",
+   "mitigation": "识别保守化：命中不了就按高压处理（require_review）。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+     "claimId": "skip-sustain-early"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-bilibili-bv1kibe6meei",
+   "claimId": "source-metadata"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1ghug63evx",
+   "claimId": "source-metadata"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv1ghug63evx",
+   "claimId": "truth-t0-scholar-buff"
+  }
+ ],
+ "notes": [
+  "本文件是 v1.1 全新编写样例：演示 guideCodes/sourceRefs/versionApplicability/population/acquisitionPriorities/shoppingPlan/operationType/targetCharacterIds/nodeRanges/order。",
+  "强度口径来自同一 UP 的 08-08 排行榜（真理 T0）与本攻略视频互证。",
+  "[03:00-06:00] 窗口为 UP 礼物整活语音，无攻略内容，相关证据已按时间戳规避。",
+  "审查修复记录(R2)：health>50 分支阈值无来源已移除；enemy_affixes 机读条件中的未证实术语已移回 risks/instruction；guideCode 标注 composition_label。",
+  "审查修正(用户纠正 2026-09-05)：guideCodes 定位降级为溯源参考——游戏内攻略码是游戏客户端的攻略展示功能，对软件无功能意义。",
+  "v1.2 升级（08:5x）：等级驱动动作改用 trigger=on_level_threshold+triggerArgs 结构化时序（来源口径\"七人口/八级后/九人口\"），instruction 文本保留。",
+  "老杨=瓦尔特(character_20) 已由用户拍板确认（2026-09-06）：九人口挂件动作升级为正式 ID 映射，原 laoyang-identity-unknown 风险项销项移除。",
+  "2026-09-07 下午（用户最终定性）：guideCodes 字段整体移除——攻略码=游戏内部分享码，对软件无功能意义，最终 JSON 成品不得含攻略码字段（RULES 七.0 修订）。"
+ ]
+}

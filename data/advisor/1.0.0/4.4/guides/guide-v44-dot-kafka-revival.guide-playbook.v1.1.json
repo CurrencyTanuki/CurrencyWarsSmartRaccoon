@@ -1,0 +1,857 @@
+{
+  "schemaVersion": "guide-playbook.v1.1",
+  "guideId": "guide-v44-dot-kafka-revival",
+  "title": "4.4 持续伤害（dot）卡芙卡复起：星核猎手刃体系（iqizna 07-29）",
+  "status": "draft",
+  "applicableGameVersions": [
+    "4.4"
+  ],
+  "archetypeId": "archetype-dot-kafka-revival",
+  "archetypeName": "dot 流 4.4 后继（卡芙卡主C，星核猎手刃激活，鹅卡双C）",
+  "goalIds": [
+    "stable"
+  ],
+  "signals": {
+    "coreCharacterIds": [
+      "currency_wars_character_46",
+      "currency_wars_character_02",
+      "currency_wars_character_17"
+    ],
+    "optionalCharacterIds": [
+      "currency_wars_character_57",
+      "currency_wars_character_43",
+      "currency_wars_character_29",
+      "currency_wars_character_20",
+      "currency_wars_character_55",
+      "currency_wars_character_23",
+      "currency_wars_character_47",
+      "currency_wars_character_26",
+      "currency_wars_character_36",
+      "currency_wars_character_19",
+      "currency_wars_character_54"
+    ],
+    "equipmentIds": [
+      "currency_wars_equipment_066",
+      "currency_wars_equipment_079",
+      "currency_wars_equipment_065",
+      "currency_wars_equipment_056",
+      "currency_wars_equipment_077"
+    ],
+    "bondIds": [
+      "currency_wars_bond_01",
+      "currency_wars_bond_14",
+      "currency_wars_bond_17"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+  },
+  "sourceRefs": [
+    {
+      "platform": "miyoushe",
+      "refId": "post-77026641",
+      "url": "https://www.miyoushe.com/sr/article/77026641",
+      "title": "4.4货币战争攻略——持续伤害（iqizna，2026-07-29）"
+    }
+  ],
+  "versionApplicability": {
+    "baselineVersion": "4.4",
+    "verifiedThrough": null,
+    "knownChanges": [
+      {
+        "gameVersion": "4.5",
+        "area": "货币战争整体",
+        "change": "V4.5（2026-08-26）对货币战争仅 19 条问题修复，无赛季扩充、A850 不变",
+        "impact": "参数基线不受影响；verified 升级仍需 V4.5 实机复验",
+        "evidenceRefs": []
+      },
+      {
+        "gameVersion": "4.5",
+        "area": "货币战争-dot 阵营",
+        "change": "4.5 期社区结论（绝不是dd《哪些是陷阱哪些无脑冲》2026-08-27 评论区文字层）：dot 阵营复兴——dot 转+黑天鹅随便过 A850 三位面、卡芙卡找鞋、4dot2 减益；赌狗类阵容被归入陷阱位",
+        "impact": "本表 dot 主轴在 4.5 期获社区『复兴』口径背书；verified 仍需实机复验（R9 P2-4：依据=H 线 clean-h-monthly-tierline.md L116-117+BV1Kf8X6zEmB 评论区文字层，无独立证据集——建集待办）",
+        "evidenceRefs": [
+          {
+            "evidenceSetId": "evidence-multi-strength-tierlist",
+            "claimId": "version-answer-triangle"
+          }
+        ]
+      },
+      {
+        "gameVersion": "4.5",
+        "area": "货币战争整体",
+        "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+        "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+        "evidenceRefs": []
+      }
+    ],
+    "supersededBy": null,
+    "notes": [
+      "dot 流版本脉络：A8-30 强势 → A8-40 衰落（银狼顾问/卡芙卡失队友）→ 4.4 刃入池复起。"
+    ]
+  },
+  "applicability": {
+    "required": [
+      {
+        "field": "gameVersion",
+        "operator": "equals",
+        "expected": "4.4",
+        "unknownPolicy": "reject",
+        "evidenceRefs": [
+          {
+            "evidenceSetId": "evidence-miyoushe-77026641",
+            "claimId": "source-metadata"
+          }
+        ]
+      },
+      {
+        "field": "owned_characters",
+        "operator": "contains_all",
+        "expected": [
+          "currency_wars_character_46"
+        ],
+        "unknownPolicy": "reject",
+        "evidenceRefs": [
+          {
+            "evidenceSetId": "evidence-miyoushe-77026641",
+            "claimId": "kafka-windset-outside"
+          }
+        ]
+      }
+    ],
+    "prohibited": [],
+    "defaultUnknownPolicy": "require_review"
+  },
+  "phases": [
+    {
+      "phaseId": "early-dot-transition",
+      "title": "前期：椒丘 2dot2减益 过渡",
+      "order": 1,
+      "selector": {
+        "planeIds": [
+          1
+        ],
+        "nodeIds": [],
+        "nodeTypes": [
+          "preparation"
+        ],
+        "nodeRanges": [
+          {
+            "planeId": 1,
+            "fromNodeIndex": 1,
+            "toNodeIndex": 3
+          }
+        ]
+      },
+      "recommendedState": {
+        "economy": {
+          "min": null,
+          "max": null,
+          "unit": "coin"
+        },
+        "health": {
+          "min": null,
+          "max": null,
+          "unit": "health"
+        },
+        "level": {
+          "min": null,
+          "max": 7,
+          "unit": "level"
+        },
+        "population": {
+          "min": null,
+          "max": 7,
+          "unit": "population"
+        },
+        "remainingActionPoints": {
+          "min": null,
+          "max": null,
+          "unit": "action_point"
+        },
+        "lineup": {
+          "frontCharacterIds": [],
+          "backCharacterIds": [
+            "currency_wars_character_57"
+          ],
+          "benchCharacterIds": [],
+          "minimumStarsByCharacterId": {},
+          "acquisitionPriorities": [
+            {
+              "characterId": "currency_wars_character_46",
+              "priority": 1,
+              "targetStars": 3,
+              "note": "6/7级找卡芙卡三星；来得少就2星上9"
+            },
+            {
+              "characterId": "currency_wars_character_57",
+              "priority": 2,
+              "note": "前期 2dot2减益 核心"
+            },
+            {
+              "characterId": "currency_wars_character_02",
+              "priority": 3,
+              "note": "星核猎手激活位"
+            }
+          ]
+        },
+        "equipment": [],
+        "bondIds": [
+          "currency_wars_bond_14",
+          "currency_wars_bond_17"
+        ],
+        "investmentEnvironmentIds": [],
+        "investmentStrategyIds": []
+      },
+      "shoppingPlan": {
+        "priorityCharacterIds": [
+          "currency_wars_character_46",
+          "currency_wars_character_57",
+          "currency_wars_character_02"
+        ],
+        "costFocus": [
+          1,
+          2,
+          3
+        ],
+        "refreshPolicy": "until_target_found",
+        "stopWhen": [
+          "卡芙卡三星",
+          "或卡芙卡二星且等级≥9"
+        ],
+        "evidenceRefs": [
+          {
+            "evidenceSetId": "evidence-miyoushe-77026641",
+            "claimId": "early-transition"
+          }
+        ],
+        "notes": [
+          "生存位可选风堇，或无生存（靠椒丘治疗量与刃的泡泡枪）。"
+        ]
+      },
+      "actionIds": [
+        "deploy-early-dot-core",
+        "roll-kafka-at-6-7"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "early-transition"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "phaseId": "level9-dual-core",
+      "title": "九人口：鹅卡双C 成型",
+      "order": 2,
+      "selector": {
+        "planeIds": [
+          2
+        ],
+        "nodeIds": [],
+        "nodeTypes": [
+          "preparation"
+        ]
+      },
+      "recommendedState": {
+        "economy": {
+          "min": null,
+          "max": null,
+          "unit": "coin"
+        },
+        "health": {
+          "min": null,
+          "max": null,
+          "unit": "health"
+        },
+        "level": {
+          "min": 9,
+          "max": 9,
+          "unit": "level"
+        },
+        "population": {
+          "min": 9,
+          "max": 9,
+          "unit": "population"
+        },
+        "remainingActionPoints": {
+          "min": null,
+          "max": null,
+          "unit": "action_point"
+        },
+        "lineup": {
+          "frontCharacterIds": [],
+          "backCharacterIds": [
+            "currency_wars_character_46",
+            "currency_wars_character_17"
+          ],
+          "benchCharacterIds": [
+            "currency_wars_character_20",
+            "currency_wars_character_55",
+            "currency_wars_character_23"
+          ],
+          "minimumStarsByCharacterId": {
+            "currency_wars_character_17": 1
+          },
+          "acquisitionPriorities": [
+            {
+              "characterId": "currency_wars_character_17",
+              "priority": 1,
+              "note": "3星卡芙卡配1星鹅即可；2星卡芙卡则鹅必须2星"
+            },
+            {
+              "characterId": "currency_wars_character_20",
+              "priority": 2,
+              "note": "杨叔=瓦尔特（用户拍板 2026-09-06）"
+            }
+          ]
+        },
+        "equipment": [
+          {
+            "characterId": "currency_wars_character_46",
+            "equipmentIds": [
+              "currency_wars_equipment_066",
+              "currency_wars_equipment_066",
+              "currency_wars_equipment_066"
+            ],
+            "priority": 1,
+            "substituteEquipmentIds": []
+          },
+          {
+            "characterId": "currency_wars_character_02",
+            "equipmentIds": [
+              "currency_wars_equipment_079"
+            ],
+            "priority": 2,
+            "substituteEquipmentIds": [
+              "currency_wars_equipment_065"
+            ]
+          }
+        ],
+        "bondIds": [
+          "currency_wars_bond_01",
+          "currency_wars_bond_14"
+        ],
+        "investmentEnvironmentIds": [],
+        "investmentStrategyIds": []
+      },
+      "actionIds": [
+        "kafka-triple-storm",
+        "blade-hunter-activation",
+        "klaw-copy-chain",
+        "level9-recruit-welt-goose",
+        "goose-equipment-split"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "core-lineup-equipment"
+        },
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "level9-goose-kafka-dual-core"
+        }
+      ],
+      "notes": [
+        "2星卡芙卡上9时鹅必须二星并分 1-2 个风暴潮；剩余装备出轨道炮/蓄能帆/鞋子。"
+      ]
+    },
+    {
+      "phaseId": "level10-flex",
+      "title": "十人口：灵活挂件",
+      "order": 3,
+      "selector": {
+        "planeIds": [
+          3
+        ],
+        "nodeIds": [],
+        "nodeTypes": [
+          "preparation"
+        ]
+      },
+      "recommendedState": {
+        "economy": {
+          "min": null,
+          "max": null,
+          "unit": "coin"
+        },
+        "health": {
+          "min": null,
+          "max": null,
+          "unit": "health"
+        },
+        "level": {
+          "min": 10,
+          "max": 10,
+          "unit": "level"
+        },
+        "population": {
+          "min": 10,
+          "max": 10,
+          "unit": "population"
+        },
+        "remainingActionPoints": {
+          "min": null,
+          "max": null,
+          "unit": "action_point"
+        },
+        "lineup": {
+          "frontCharacterIds": [],
+          "backCharacterIds": [],
+          "benchCharacterIds": [
+            "currency_wars_character_36",
+            "currency_wars_character_19",
+            "currency_wars_character_54"
+          ],
+          "minimumStarsByCharacterId": {},
+          "acquisitionPriorities": []
+        },
+        "equipment": [],
+        "bondIds": [],
+        "investmentEnvironmentIds": [],
+        "investmentStrategyIds": []
+      },
+      "actionIds": [
+        "level10-flex-bench"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "level10-flex"
+        }
+      ],
+      "notes": [
+        "『2忘』术语未映射，暂不入结构化字段。"
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "actionId": "deploy-early-dot-core",
+      "title": "椒丘开局 2dot2减益",
+      "instruction": "前中期用椒丘开 2 持续伤害 2 减益过渡；生存位可选风堇或无生存。",
+      "operationType": "deploy_character",
+      "targetCharacterIds": [
+        "currency_wars_character_57"
+      ],
+      "priority": 90,
+      "conditions": [],
+      "benefits": [
+        "前期强度与过渡平滑"
+      ],
+      "costs": [],
+      "risks": [],
+      "preconditions": [],
+      "invalidatesWhen": [
+        "卡芙卡三星成型"
+      ],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "early-transition"
+        }
+      ]
+    },
+    {
+      "actionId": "roll-kafka-at-6-7",
+      "title": "6/7 级搜卡芙卡三星",
+      "instruction": "6/7 级找卡芙卡三星：来得多直接三星；来得少就 2 星上 9（转鹅卡双C路线）。",
+      "operationType": "refresh_shop",
+      "priority": 85,
+      "conditions": [
+        {
+          "field": "level",
+          "operator": "between_inclusive",
+          "expected": [
+            6,
+            7
+          ],
+          "unknownPolicy": "reject"
+        }
+      ],
+      "benefits": [
+        "主C星级到位"
+      ],
+      "costs": [
+        "金币消耗"
+      ],
+      "risks": [],
+      "preconditions": [],
+      "invalidatesWhen": [
+        "金币不足刷新价"
+      ],
+      "fallbackActionIds": [
+        "deploy-early-dot-core"
+      ],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "early-transition"
+        }
+      ]
+    },
+    {
+      "actionId": "kafka-triple-storm",
+      "title": "卡芙卡三风暴潮",
+      "instruction": "卡芙卡直接带 3 个火力风暴潮——作者论断：dot 不吃幸运乘区。",
+      "operationType": "equip_badge",
+      "targetCharacterIds": [
+        "currency_wars_character_46"
+      ],
+      "priority": 80,
+      "conditions": [],
+      "benefits": [
+        "dot 主C 装备上限"
+      ],
+      "costs": [],
+      "risks": [
+        "『dot 不吃幸运乘区』为作者机制论断，未经官方文本核对"
+      ],
+      "preconditions": [
+        "风暴潮装备已获得×3"
+      ],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "core-lineup-equipment"
+        }
+      ]
+    },
+    {
+      "actionId": "blade-hunter-activation",
+      "title": "刃激活 2 星核猎手",
+      "instruction": "刃上场激活 2 星核猎手：刃行动比普通银狼更频繁，更多触发星核猎手额外战技；带行星钻地弹+泡泡枪（术语，目录未见），第三件流星飞翼或散件/星徽。",
+      "operationType": "deploy_character",
+      "targetCharacterIds": [
+        "currency_wars_character_02"
+      ],
+      "priority": 75,
+      "conditions": [],
+      "benefits": [
+        "卡芙卡拐力与星核猎手联动"
+      ],
+      "costs": [],
+      "risks": [
+        "『刃』泛称按 conflicts-register A1 用户拍板（2026-09-06）=千冶•刃(character_02)——4.4 新入池单位即千冶•刃，原『临时映射 character_70』废止（非专家顾问语境）；泡泡枪不在装备目录"
+      ],
+      "preconditions": [],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "blade-44-return"
+        },
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "core-lineup-equipment"
+        }
+      ]
+    },
+    {
+      "actionId": "klaw-copy-chain",
+      "title": "刻律复制战技连动",
+      "instruction": "刻律德菈复制战技，配合刃让卡芙卡连续行动；知更鸟提高攻击并帮助启动；剩余位置挂通用轮椅（杨叔=瓦尔特/主角/缇宝/符玄）。",
+      "operationType": "deploy_character",
+      "targetCharacterIds": [
+        "currency_wars_character_43"
+      ],
+      "priority": 60,
+      "conditions": [],
+      "benefits": [
+        "卡芙卡高频行动"
+      ],
+      "costs": [],
+      "risks": [
+        "『主角』未映射"
+      ],
+      "preconditions": [],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "core-lineup-equipment"
+        }
+      ]
+    },
+    {
+      "actionId": "level9-recruit-welt-goose",
+      "title": "上9找杨叔与鹅",
+      "instruction": "上 9 级后找到瓦尔特（杨叔）和鹅（黑天鹅），强度达到后期标准，形成鹅卡双C。",
+      "operationType": "deploy_character",
+      "targetCharacterIds": [
+        "currency_wars_character_17",
+        "currency_wars_character_20"
+      ],
+      "priority": 70,
+      "conditions": [
+        {
+          "field": "level",
+          "operator": "greater_or_equal",
+          "expected": 9,
+          "unknownPolicy": "reject"
+        }
+      ],
+      "benefits": [
+        "后期强度达标"
+      ],
+      "costs": [],
+      "risks": [],
+      "preconditions": [
+        "等级≥9"
+      ],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "level9-goose-kafka-dual-core"
+        }
+      ]
+    },
+    {
+      "actionId": "goose-equipment-split",
+      "title": "2星卡芙卡时鹅必须二星并分装备",
+      "instruction": "若卡芙卡仅 2 星上 9：鹅（黑天鹅）必须二星，并分 1-2 个风暴潮给鹅，剩余装备出轨道炮/蓄能帆/鞋子。",
+      "operationType": "equip_badge",
+      "targetCharacterIds": [
+        "currency_wars_character_17"
+      ],
+      "priority": 65,
+      "conditions": [
+        {
+          "field": "kafka_stars",
+          "operator": "equals",
+          "expected": 2,
+          "unknownPolicy": "reject"
+        }
+      ],
+      "benefits": [
+        "双C兜底强度"
+      ],
+      "costs": [
+        "主C装备减少"
+      ],
+      "risks": [
+        "kafka_stars 为运行时待定义字段（对局快照角色星级），白班建字段字典时需收录"
+      ],
+      "preconditions": [
+        "卡芙卡为 2 星",
+        "黑天鹅 2 星"
+      ],
+      "invalidatesWhen": [
+        "卡芙卡升到 3 星"
+      ],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "level9-goose-kafka-dual-core"
+        }
+      ]
+    },
+    {
+      "actionId": "level10-flex-bench",
+      "title": "十人口灵活挂件",
+      "instruction": "上 10 级挂周日（星期日）/昔涟/花火/『2忘』（未映射）都行。",
+      "operationType": "deploy_character",
+      "targetCharacterIds": [
+        "currency_wars_character_36",
+        "currency_wars_character_19",
+        "currency_wars_character_54"
+      ],
+      "priority": 40,
+      "conditions": [
+        {
+          "field": "population",
+          "operator": "greater_or_equal",
+          "expected": 10,
+          "unknownPolicy": "accept_with_penalty"
+        }
+      ],
+      "benefits": [
+        "满配补强"
+      ],
+      "costs": [],
+      "risks": [
+        "『2忘』未映射"
+      ],
+      "preconditions": [
+        "人口≥10"
+      ],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "level10-flex"
+        }
+      ]
+    },
+    {
+      "actionId": "dot-transfer-swap",
+      "title": "dot 转：给刃并下鸟换 4dot",
+      "instruction": "找到『dot 转』（术语未证实）后给刃，下知更鸟换椒丘/海瑟音，开 4 持续伤害。",
+      "operationType": "reposition_character",
+      "targetCharacterIds": [
+        "currency_wars_character_02"
+      ],
+      "priority": 55,
+      "conditions": [
+        {
+          "field": "acquired_items",
+          "operator": "contains_any",
+          "expected": [
+            "dot转"
+          ],
+          "unknownPolicy": "require_review"
+        }
+      ],
+      "benefits": [
+        "dot 层数上限提升"
+      ],
+      "costs": [
+        "失去知更鸟攻击启动"
+      ],
+      "risks": [
+        "『dot转』为未证实术语且 acquired_items 为运行时待定义字段：字段字典建好并收录 dot转 的判定前，此分支永不触发（require_review 口径）"
+      ],
+      "preconditions": [
+        "刃已上场"
+      ],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "dot-transfer-branch"
+        }
+      ]
+    },
+    {
+      "actionId": "kafka-windset-prep",
+      "title": "局外前置：卡芙卡带风套",
+      "instruction": "进模式前在账号侧给卡芙卡配风套（局外遗器）：星核猎手+刻律双复制让卡芙卡回能快、高频开大。软件侧只能提示，不能代操作局外配装。",
+      "operationType": "other",
+      "targetCharacterIds": [
+        "currency_wars_character_46"
+      ],
+      "priority": 100,
+      "conditions": [],
+      "benefits": [
+        "卡芙卡大招频率显著提升"
+      ],
+      "costs": [],
+      "risks": [
+        "账号层操作，超出软件可执行范围，仅提示"
+      ],
+      "preconditions": [
+        "拥有卡芙卡本体（applicability 已强制）"
+      ],
+      "invalidatesWhen": [],
+      "fallbackActionIds": [],
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "kafka-windset-outside"
+        }
+      ]
+    }
+  ],
+  "branches": [
+    {
+      "branchId": "dot-transfer-gate",
+      "priority": 1,
+      "when": [
+        {
+          "field": "acquired_items",
+          "operator": "contains_any",
+          "expected": [
+            "dot转"
+          ],
+          "unknownPolicy": "require_review"
+        }
+      ],
+      "thenActionIds": [
+        "dot-transfer-swap"
+      ],
+      "otherwiseActionIds": [],
+      "transitionToPhaseId": null,
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "dot-transfer-branch"
+        }
+      ]
+    }
+  ],
+  "alternativeRoutes": [],
+  "risks": [
+    {
+      "riskId": "blade-identity-conflict",
+      "severity": "medium",
+      "description": "『刃』归属已裁决销项：按 conflicts-register A1 用户拍板（2026-09-06）泛称『刃』=千冶•刃(character_02)，4.4 新入池单位即千冶•刃，原 character_70 读法废止（非专家顾问语境）。",
+      "mitigation": "无需画面/实机复核；本表刃引用均已按 02 映射，require_review 解除。",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "blade-44-return"
+        }
+      ]
+    },
+    {
+      "riskId": "unmapped-terms",
+      "severity": "low",
+      "description": "『泡泡枪』『dot转』『主角』『2忘』等术语未入标准目录或未映射（『杨叔』=瓦尔特 character_20 已由用户拍板解决，2026-09-06）。",
+      "mitigation": "结构化字段不使用这些术语；出现在 instruction/risks 中并保持 require_review。",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "core-lineup-equipment"
+        }
+      ]
+    },
+    {
+      "riskId": "dot-lucky-claim-unverified",
+      "severity": "medium",
+      "description": "『dot 不吃幸运乘区』为作者机制论断，决定三风暴潮配装的根基，未经官方文本核对。",
+      "mitigation": "对照 BWIKI 持续伤害/幸运一击机制文本后升级 reviewed；软件侧按 author_recommendation 低置信处理。",
+      "evidenceRefs": [
+        {
+          "evidenceSetId": "evidence-miyoushe-77026641",
+          "claimId": "core-lineup-equipment"
+        }
+      ]
+    }
+  ],
+  "missingInformationPolicy": {
+    "defaultBehavior": "mark_unknown",
+    "highRiskDecisionBehavior": "never_auto_execute",
+    "conflictBehavior": "preserve_all_sources",
+    "minimumConfidence": 0.6
+  },
+  "evidenceRefs": [
+    {
+      "evidenceSetId": "evidence-miyoushe-77026641",
+      "claimId": "source-metadata"
+    },
+    {
+      "evidenceSetId": "evidence-miyoushe-77026641",
+      "claimId": "core-lineup-equipment"
+    },
+    {
+      "evidenceSetId": "evidence-miyoushe-77026641",
+      "claimId": "level9-goose-kafka-dual-core"
+    }
+  ],
+  "notes": [
+    "本文件是第三份 v1.1 样例：演示文字源证据（段落级定位）、applicability 的账号层前置（owned_characters）、装备分配（equipmentAssignment+substitute）、以及新流派（dot 流 4.4 后继，包内 13 攻略未覆盖）。",
+    "与包内 dot 相关旧证据（NGA 3.7 帖）为版本演化关系，非冲突。",
+    "审查修复记录(R3)：goalIds 移除无源的 a850-capable；dot转/kafka_stars 的运行时字段定义备案补齐。",
+    "2026-09-07 通宵收集增补：4.5 期 dot 复兴结论来自 clean-h-monthly-tierline.md（H 线），依据=BV1Kf8X6zEmB 评论区高赞文字层（评论区快照受游客限流仅取 3 主楼，残余不确定已由 H 线登记）。"
+  ]
+}

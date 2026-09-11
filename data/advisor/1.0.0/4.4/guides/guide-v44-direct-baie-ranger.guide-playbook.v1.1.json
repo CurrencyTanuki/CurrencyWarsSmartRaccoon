@@ -1,0 +1,830 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-direct-baie-ranger",
+ "title": "4.4 直伤游侠白厄：词条适应面最宽主C+练度硬门槛（厄焰 07-24，白厨特供）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-direct-baie-ranger",
+ "archetypeName": "直伤游侠白厄（4巡海游侠3追击+救世主，词条免疫最广主C，账号练度硬门槛）",
+ "goalIds": [
+  "stable",
+  "a850-capable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_40"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_08",
+   "currency_wars_character_55",
+   "currency_wars_character_54",
+   "currency_wars_character_43",
+   "currency_wars_character_31",
+   "currency_wars_character_68",
+   "currency_wars_character_19",
+   "currency_wars_character_29",
+   "currency_wars_character_23",
+   "currency_wars_character_20",
+   "currency_wars_character_02"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_075",
+   "currency_wars_equipment_083"
+  ],
+  "bondIds": [
+   "currency_wars_bond_05",
+   "currency_wars_bond_21",
+   "currency_wars_bond_24"
+  ],
+  "investmentEnvironmentIds": [
+   "investment_environment_044",
+   "investment_environment_003",
+   "investment_environment_017",
+   "investment_environment_082",
+   "investment_environment_004",
+   "investment_environment_059",
+   "investment_environment_069",
+   "investment_environment_005"
+  ],
+  "investmentStrategyIds": [
+   "investment_strategy_223",
+   "investment_strategy_196",
+   "investment_strategy_128",
+   "investment_strategy_156",
+   "investment_strategy_283",
+   "investment_strategy_120",
+   "investment_strategy_048",
+   "investment_strategy_184",
+   "investment_strategy_031",
+   "investment_strategy_154",
+   "investment_strategy_193",
+   "investment_strategy_051",
+   "investment_strategy_238",
+   "investment_strategy_293"
+  ]
+ },
+ "sourceRefs": [
+  {
+   "platform": "miyoushe",
+   "refId": "76913374",
+   "url": "https://www.miyoushe.com/sr/article/76913374",
+   "title": "直伤游侠白厄完整攻略（厄焰，2026-07-24，白厨特供）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "V4.5（2026-08-26）=19 条纯修复无赛季扩充；4.4 窗口内曾有 6 次高频热修（07-15~07-30，07-29 集中批次）",
+    "impact": "4.4 机制类主张引用时对照修复时间线；参数基线按 4.5 纯修复不变处理",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+      "claimId": "repair-timeline-44"
+     }
+    ]
+   },
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+    "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+    "evidenceRefs": []
+   }
+  ],
+  "supersededBy": null,
+  "notes": []
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+      "claimId": "source-metadata-76913374"
+     }
+    ]
+   },
+   {
+    "field": "owned_characters",
+    "operator": "contains_all",
+    "expected": [
+     "currency_wars_character_40"
+    ],
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+      "claimId": "win-record-and-practice-gate"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "opening-transition",
+   "title": "一位面：2dot/三仙舟过渡卖血攒件",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ],
+    "nodeRanges": [
+     {
+      "planeId": 1,
+      "fromNodeIndex": 1,
+      "toNodeIndex": 9
+     }
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": 7,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [],
+     "backCharacterIds": [],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_40",
+       "priority": 1,
+       "note": "顺手搜集白厄（本体卡）"
+      },
+      {
+       "characterId": "currency_wars_character_08",
+       "priority": 2,
+       "note": "不死途：中期前台游侠位"
+      },
+      {
+       "characterId": "currency_wars_character_02",
+       "priority": 3,
+       "note": "2dot 过渡可带千冶•刃（尤其有卡芙卡的 dot）"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_14",
+     "currency_wars_bond_12"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_40",
+     "currency_wars_character_08"
+    ],
+    "costFocus": [
+     1,
+     3
+    ],
+    "refreshPolicy": "never",
+    "stopWhen": [
+     "白厄装备（至少一拳套一风扇）已集齐且三游侠已开"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+      "claimId": "opening-transition"
+     }
+    ],
+    "notes": [
+     "尽量不刷新；一位面都可以卖血；遭遇选有把握的或『有猪的』（术语未证实），能打及格分即可。"
+    ]
+   },
+   "actionIds": [
+    "open-transition",
+    "boss-checkpoint"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+     "claimId": "opening-transition"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "midgame-ranger",
+   "title": "中期：游侠养成与 7 级保息搜牌",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     1,
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 6,
+     "max": 7,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_08"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_55",
+      "currency_wars_character_54",
+      "currency_wars_character_43"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_08",
+       "priority": 1,
+       "note": "前台不死途：钻和星徽优先做给它（推荐减益转/击破转）"
+      },
+      {
+       "characterId": "currency_wars_character_55",
+       "priority": 2,
+       "note": "缇宝二星即可（能满能可做蓄能帆）"
+      },
+      {
+       "characterId": "currency_wars_character_54",
+       "priority": 2,
+       "note": "花火二星即可（舞舞舞拉条）"
+      },
+      {
+       "characterId": "currency_wars_character_43",
+       "priority": 2,
+       "note": "刻律二星即可；有昔涟直接拿"
+      },
+      {
+       "characterId": "currency_wars_character_19",
+       "priority": 3,
+       "note": "昔涟：没有 2 昔的带个永动机"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_05",
+     "currency_wars_bond_21"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_40",
+     "currency_wars_character_08"
+    ],
+    "costFocus": [
+     3
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "花火/缇宝/刻律二星齐",
+     "金币不足 50 币利息线"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+      "claimId": "midgame-ranger-build"
+     }
+    ],
+    "notes": [
+     "到 7 级、保证吃 50 币利息的情况下开始搜牌（D 牌守 52 块利息线的同族口径）。"
+    ]
+   },
+   "actionIds": [
+    "mid-search",
+    "baie-equipment-priority"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+     "claimId": "midgame-ranger-build"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "late-four-ranger",
+   "title": "后期：3-7 备战升 8 补四游侠",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 8,
+     "max": 10,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_08",
+      "currency_wars_character_40"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_55",
+      "currency_wars_character_54",
+      "currency_wars_character_43",
+      "currency_wars_character_31"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_40": 3
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_31",
+       "priority": 1,
+       "note": "后台补波提欧（波波鲨）组四游侠——星级尽力追、追不上也不要紧"
+      },
+      {
+       "characterId": "currency_wars_character_29",
+       "priority": 3,
+       "note": "提上限：知更鸟开追击"
+      },
+      {
+       "characterId": "currency_wars_character_23",
+       "priority": 3,
+       "note": "提上限：符玄多开量子同频"
+      },
+      {
+       "characterId": "currency_wars_character_20",
+       "priority": 3,
+       "note": "提上限：老杨开减益"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_05",
+     "currency_wars_bond_21",
+     "currency_wars_bond_24"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_31"
+    ],
+    "costFocus": [
+     4
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "四游侠成型"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+      "claimId": "late-game-capacity"
+     }
+    ],
+    "notes": [
+     "作者大多数 sss 即此形态（保持连胜下 3-7 准备阶段升 8）。"
+    ]
+   },
+   "actionIds": [
+    "level8-four-ranger",
+    "cap-boost"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+     "claimId": "late-game-capacity"
+    }
+   ],
+   "notes": []
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "open-transition",
+   "title": "开局 2dot/三仙舟过渡",
+   "instruction": "开局用 2dot 或三仙舟过渡，可开 2 减益、可带千冶•刃（尤其有卡芙卡的 dot）；尽量不刷新，一位面都可以卖血，顺手搜集巡海游侠和白厄。",
+   "operationType": "deploy_character",
+   "priority": 85,
+   "conditions": [],
+   "benefits": [
+    "经济与血量双保"
+   ],
+   "costs": [
+    "前期血量压力"
+   ],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [
+    "首领战检查点通过（进中期）"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+     "claimId": "opening-transition"
+    }
+   ]
+  },
+  {
+   "actionId": "boss-checkpoint",
+   "title": "首领战检查点：集齐三件套才进中期",
+   "instruction": "一位面首领战准备阶段检查点：集齐白厄装备（至少一拳套一风扇）且开三游侠、花火/缇宝/刻律三选二→进中期；否则继续卖血。一般最迟 2-2 左右在 6/7 级上中期游侠养成阵容。",
+   "operationType": "other",
+   "priority": 90,
+   "conditions": [],
+   "benefits": [
+    "中期成型下限保障"
+   ],
+   "costs": [],
+   "risks": [
+    "『拳套』『风扇』具体装备未入标准目录（生命拳套/双联风扇为已知目录缺口），按描述对应"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+     "claimId": "opening-transition"
+    }
+   ],
+   "trigger": "on_boss_appear"
+  },
+  {
+   "actionId": "mid-search",
+   "title": "7 级保 50 币利息搜牌",
+   "instruction": "到 7 级、保证吃 50 币利息的情况下开始搜牌；花火/缇宝/刻律到二星即可；有昔涟直接拿（没有 2 昔的带个永动机）。",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_40",
+    "currency_wars_character_08"
+   ],
+   "priority": 80,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 7,
+     "unknownPolicy": "reject"
+    },
+    {
+     "field": "gold",
+     "operator": "greater_or_equal",
+     "expected": 50,
+     "unknownPolicy": "accept_with_penalty"
+    }
+   ],
+   "benefits": [
+    "利息与搜牌平衡"
+   ],
+   "costs": [
+    "搜牌花金"
+   ],
+   "risks": [],
+   "preconditions": [
+    "等级≥7"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+     "claimId": "midgame-ranger-build"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 7
+   }
+  },
+  {
+   "actionId": "baie-equipment-priority",
+   "title": "装备细则：仅白厄装备刚需，辅助装随后",
+   "instruction": "仅白厄装备是刚需，然后才是辅助装备；白厄幸运一击率满了给辅助追易伤和强度装备；幸运之旗（胜利之旗）是否制作取决于卡厄斯兰那的幸运一击率；幸运率溢出过多（盛会之星羁绊、老杨的星间旅人）可给白厄做个电锯；有钻必拿——推荐转都装给不死途（只有它一定在前台）。",
+   "operationType": "buy_equipment",
+   "targetCharacterIds": [
+    "currency_wars_character_40",
+    "currency_wars_character_08"
+   ],
+   "priority": 75,
+   "conditions": [],
+   "benefits": [
+    "主C装备优先级正确"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+     "claimId": "midgame-ranger-build"
+    }
+   ]
+  },
+  {
+   "actionId": "level8-four-ranger",
+   "title": "3-7 备战升 8 补波提欧组四游侠",
+   "instruction": "保持连胜下一般 3-7 准备阶段升 8 级，后台补波提欧（星级尽力追、追不上也不要紧）组成四游侠——作者大多数 sss 即此形态。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_31"
+   ],
+   "priority": 78,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 8,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "四游侠成型=sss 主形态"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "等级≥8"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+     "claimId": "late-game-capacity"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 8
+   }
+  },
+  {
+   "actionId": "cap-boost",
+   "title": "上限提升：羁绊数堆白厄",
+   "instruction": "有宝钻或人口多时通过激活羁绊提高白厄上限（作者最高 16 羁绊）；能开四星乱破和四星不死途就开（17 星游侠强而有力）；常见提上限=知更鸟开追击、符玄多开量子同频、老杨开减益（仅提供星徽的推荐装配不强求）；刻律到后排了一定记得做电磁弹射器。",
+   "operationType": "other",
+   "priority": 45,
+   "conditions": [],
+   "benefits": [
+    "白厄上限突破"
+   ],
+   "costs": [],
+   "risks": [
+    "电磁弹射器=currency_wars_equipment_071 已入标准目录（官方 35030103，和平手枪+轮滑鞋合成）——此前 unknowns 记录为误记，2026-09-10 仲裁订正"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+     "claimId": "late-game-capacity"
+    }
+   ]
+  },
+  {
+   "actionId": "warn-affix-immunity-scope",
+   "title": "特性提示：词条适应面与免疫边界",
+   "instruction": "白厄不吃推条（沉重脚步无效）、不吃回合开始时 debuff（灼热轰炸无效）、不吃点（极速制冷无效）、独立羁绊（形单影只无效）、反击自带 75% 减伤（正当防卫/忍无可忍/一鼓作气有救）、三星三件套后区别对待/霸凌弱者无效——全游戏词条适应面最宽的主 C；前期靠花火/刻律/缇宝舞舞舞拉条过渡。",
+   "operationType": "other",
+   "priority": 999,
+   "conditions": [],
+   "benefits": [],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+     "claimId": "affix-immunity-list"
+    }
+   ]
+  }
+ ],
+ "branches": [],
+ "alternativeRoutes": [
+  {
+   "routeId": "low-practice-anti-armor",
+   "title": "低练度分流：反甲游侠白厄（甘泽线）",
+   "triggerConditions": [],
+   "actionIds": [],
+   "tradeoffs": [
+    "试用白厄/低练度账号右转隔壁反甲游侠（作者原话）",
+    "反甲=直伤 10-20 倍输出（甘泽口径，全试用）",
+    "两路线为练度分层互补非对错（not_comparable，待实机分档）"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+     "claimId": "win-record-and-practice-gate"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [],
+ "craftingPaths": [
+  {
+   "resultId": "currency_wars_equipment_071",
+   "inputIds": [
+    "currency_wars_equipment_042",
+    "currency_wars_equipment_046"
+   ],
+   "note": "和平手枪+轮滑鞋→电磁弹射器（官方配置 35030103 compose_list；刻律后排必做）",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-official-cw-game-config",
+     "claimId": "source-metadata"
+    }
+   ]
+  }
+ ],
+ "risks": [
+  {
+   "riskId": "practice-hard-gate",
+   "severity": "high",
+   "description": "练度硬门槛（作者原话）：白厨特供、不轮椅、不吃 debuff 和 boss；『65 白最爽，推荐自身有 10 刻 10 缇 20 昔，试用白厄右转隔壁反甲游侠，21 白以下请有序离场』——账号层门槛，低练度账号强行走此线会翻车。",
+   "mitigation": "applicability 已挂 owned 白厄（R6 P2-1 后归未验证提示）；练度分档（65白/10刻10缇20昔）无运行时数据源，面板 tooltip 提示『账号练度门槛未验证』。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+     "claimId": "win-record-and-practice-gate"
+    }
+   ]
+  },
+  {
+   "riskId": "equipment-catalog-gap",
+   "severity": "medium",
+   "description": "『拳套』『风扇』未入 157 项装备目录（生命拳套/双联风扇为已知目录缺口，疑 07-24 Fate 新增）；『电磁弹射器』已核实入目录（071/官方 35030103，2026-09-10 仲裁移出本清单）；『卡厄斯兰那』『猪』『舞舞舞』为未证实术语。",
+   "mitigation": "结构化字段不使用；instruction/risks 保留原文并记 unknowns；目录增补工单（白班工单#5）覆盖。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+     "claimId": "midgame-ranger-build"
+    }
+   ]
+  },
+  {
+   "riskId": "tier-claim-scope",
+   "severity": "low",
+   "description": "17 连胜战绩与 16 羁绊上限为作者记录（截至 2026-07-24 版本最高难度）；与甘泽『直伤白厄彻底没优势』的 not_comparable 冲突沿用 C1 判读（练度分层互补）。",
+   "mitigation": "引用带口径声明与练度分档。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+     "claimId": "win-record-and-practice-gate"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+   "claimId": "source-metadata-76913374"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+   "claimId": "guide-code-direct-baie"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+   "claimId": "win-record-and-practice-gate"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+   "claimId": "affix-immunity-list"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+   "claimId": "opening-transition"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+   "claimId": "midgame-ranger-build"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+   "claimId": "late-game-capacity"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+   "claimId": "environment-list"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+   "claimId": "strategy-list"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+   "claimId": "repair-timeline-44"
+  }
+ ],
+ "notes": [
+  "2026-09-07 本体转化自 evidence-miyoushe-76913374-77042107 直伤白厄侧 10 条 claim（修复时间线帖 3 claims 已进 versionApplicability.knownChanges）。",
+  "杨叔=瓦尔特(20)、泛称『刃』=千冶•刃(02) 按用户拍板（2026-09-06）映射；环境/策略 22 个 ID 全部对表命中（investment-environments/strategies.json）。",
+  "applicability 的 owned 白厄为账号层门槛（R6 P2-1 语义：归未验证提示不阻断）；练度分档无运行时数据源，见 practice-hard-gate 风险。",
+  "词条免疫 11 条清单整体进警示卡（adaptability 是选角理由不是时点动作）；25+ 环境/策略评注浓缩进 signals+risks，逐条评注文本留在证据层。",
+  "『有钻必拿』的钻=等价钻钞（BWIKI 有独立页），未挂装备 ID。",
+  "2026-09-07 下午（用户最终定性）：guideCodes 字段整体移除——攻略码=游戏内部分享码，对软件无功能意义，最终 JSON 成品不得含攻略码字段（RULES 七.0 修订）。"
+ ]
+}

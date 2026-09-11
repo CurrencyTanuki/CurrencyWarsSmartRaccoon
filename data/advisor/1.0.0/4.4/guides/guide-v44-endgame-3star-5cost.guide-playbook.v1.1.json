@@ -1,0 +1,843 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-endgame-3star-5cost",
+ "title": "3-7 大后期三星五费达成学：跨阵容运营骨架（多源公式化，3.7~4.4 期八源交叉）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-endgame-3star-5cost",
+ "archetypeName": "大后期三星五费达成学（非阵容特定：开局条件→连胜保经济→速8/速9→9/10级D牌→复制器收尾）",
+ "goalIds": [
+  "stable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_19"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_05",
+   "currency_wars_character_20",
+   "currency_wars_character_23",
+   "currency_wars_character_17"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_152"
+  ],
+  "bondIds": [
+   "currency_wars_bond_07"
+  ],
+  "investmentEnvironmentIds": [
+   "investment_environment_082",
+   "investment_environment_060",
+   "investment_environment_026"
+  ],
+  "investmentStrategyIds": [
+   "investment_strategy_051",
+   "investment_strategy_238"
+  ]
+ },
+ "sourceRefs": [
+  {
+   "platform": "miyoushe",
+   "refId": "73848750",
+   "url": "https://www.miyoushe.com/sr/article/73848750",
+   "title": "公式化追全员三星五费攻略（Knowm1，2026-03-10）——主源"
+  },
+  {
+   "platform": "ngabbs",
+   "refId": "tid-45776649",
+   "url": "https://ngabbs.com/read.php?tid=45776649",
+   "title": "货币战争如何能D出三星五费来（12楼讨论，牌库数学+门槛公式）"
+  },
+  {
+   "platform": "bilibili",
+   "refId": "BV1BtoWB6ECQ",
+   "url": "https://www.bilibili.com/video/BV1BtoWB6ECQ",
+   "title": "三星五费银狼焚诀（甘泽，2026-04-22，179万播放）——实战层"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "3.7",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "4.4",
+    "area": "货币战争整体",
+    "change": "骨架（词条规避/经济策略/利息线/等级节奏/复制器收尾）跨 3.7~4.4 稳定；A840+ 分流（银狼第一优先）自 4.2 起（A8-40 难度与银狼LV.999 均 4.2/2026-04-22 实装，§17 时间线；2026-09-10 勘正，原'自 4.0 起'系版本跨度误压缩）",
+    "impact": "参数按 4.4 标注；昔涟线=A830 及以下最优，A840+ 走银狼分流",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-375cost-endgame",
+      "claimId": "silver-wolf-priority-a840"
+     }
+    ]
+   },
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+    "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+    "evidenceRefs": []
+   }
+  ],
+  "supersededBy": null,
+  "notes": [
+   "本表为非阵容特定『打法学』playbook：不绑定主C，任何阵容按此骨架运营均可提高三星五费达成率。",
+   "用户口径佐证（2026-09-07）：资深玩家实测一天可达成两个三星五费——骨架可行性获高层级玩家经验背书。"
+  ]
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-375cost-endgame",
+      "claimId": "source-metadata"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "plane1-economy-ramp",
+   "title": "一位面：词条规避+经济策略+连胜保经济",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ],
+    "nodeRanges": [
+     {
+      "planeId": 1,
+      "fromNodeIndex": 1,
+      "toNodeIndex": 9
+     }
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": 50,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": 9,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [],
+     "backCharacterIds": [],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_19",
+       "priority": 1,
+       "note": "昔涟：顺手搜集，追三第一优先"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [],
+    "costFocus": [
+     1,
+     2
+    ],
+    "refreshPolicy": "never",
+    "stopWhen": [
+     "9 级前非保连胜不 D 牌"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-375cost-endgame",
+      "claimId": "interest-50-timing"
+     }
+    ],
+    "notes": [
+     "过渡通用模板：2学者2dot（小黑塔/艾丝妲/桑博）→贝洛伯格，两源一致（71289037/71164174，R7 P2-3 勘误）；73848750 同主题但给出 3仙舟+2dot/2列车 备选模板。",
+     "50 金存款前选『及时经济』策略，50 金后选『未来经济』（如九级给 40 金类）。"
+    ]
+   },
+   "actionIds": [
+    "avoid-lethal-affixes",
+    "pick-economy-strategies",
+    "hold-interest-line"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "opening-debuff-avoid"
+    },
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "economy-strategy-formula"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "plane2-quality-spike",
+   "title": "二位面：选策略后大 D 提质量+速 8 锁血",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": 50,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 8,
+     "max": 9,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [],
+     "backCharacterIds": [],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": []
+    },
+    "equipment": [],
+    "bondIds": [],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [],
+    "costFocus": [
+     3,
+     4
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "阵容质量可锁血",
+     "8 级达成"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-375cost-endgame",
+      "claimId": "interest-50-timing"
+     }
+    ],
+    "notes": [
+     "夜神线：2-2 左右上 8、2-7 前凑 7 夜神、速 8 拿 1 星遐蝶锁血。"
+    ]
+   },
+   "actionIds": [
+    "quality-spike-after-strategy"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "interest-50-timing"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "plane3-chase-3star",
+   "title": "三位面：3-2 卡利息上 9→三星昔涟→升 10 追银狼",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": 50,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 9,
+     "max": 10,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [],
+     "backCharacterIds": [
+      "currency_wars_character_19"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_19": 3
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_19",
+       "priority": 1,
+       "targetStars": 3,
+       "note": "三星昔涟福利：3 神装+免费升 10+黄金裔全 3 星换钱"
+      },
+      {
+       "characterId": "currency_wars_character_05",
+       "priority": 2,
+       "note": "A840+ 第一优先=银狼（狼尊/Lv.999）"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_07"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_19",
+     "currency_wars_character_05"
+    ],
+    "costFocus": [
+     5
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "三星昔涟达成",
+     "金币不足刷新价"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-multi-375cost-endgame",
+      "claimId": "xilian-first-welfare"
+     },
+     {
+      "evidenceSetId": "evidence-multi-375cost-endgame",
+      "claimId": "silver-wolf-priority-a840"
+     }
+    ],
+    "notes": [
+     "9 级还是 10 级开 D：有完美投影→9 级开 D；啥都没有→攒 50-60 金上 10 再抽（M1 裁决规则）。",
+     "追三路上多拿其它五费缩小分母（『买别的五费挤目标卡』池子挤压学）。"
+    ]
+   },
+   "actionIds": [
+    "level9-at-3-2",
+    "chase-xilian-then-welt",
+    "projector-at-8of9",
+    "warn-failure-modes"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "xilian-first-welfare"
+    },
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "card-pool-math"
+    }
+   ],
+   "notes": []
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "avoid-lethal-affixes",
+   "title": "开局必刷五词条",
+   "instruction": "开局选关必刷五类词条：时间刺客、沉重脚步、战个痛快、免死金牌、正当防卫——本打法生命线是『少 D 牌的连胜』，这五类直接摧毁连胜。另注意降生命上限×天谴怪联动秒杀。（GOBS 3.7 总纲补强：急速制冷(官方名极速制冷/t3_13，ASR 同音=冻结/战技点)GOBS 11-19 总纲列难处理第一档；同作者 11-25 迭代帖降级为可解（追击雀 22 次解控收尾）——『对叠鞋/拉条轴类打法威胁尤其大(推断)』为整理者推断非原话，采信需队伍相性核对）",
+   "operationType": "select_encounter_option",
+   "priority": 999,
+   "conditions": [
+    {
+     "field": "enemy_affixes",
+     "operator": "contains_any",
+     "expected": [
+      "enemy_affix_t2_03",
+      "enemy_affix_t2_17",
+      "enemy_affix_t2_10",
+      "enemy_affix_t2_19",
+      "enemy_affix_t3_01",
+      "enemy_affix_t3_13"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [],
+   "costs": [],
+   "risks": [
+    "enemy_affixes 字段未接入运行时观测——本卡按常驻提示承载"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "opening-debuff-avoid"
+    },
+    {
+     "evidenceSetId": "evidence-multi-strength-tierlist",
+     "claimId": "affix-threat-consensus"
+    },
+    {
+     "evidenceSetId": "evidence-multi-old-era-37-41",
+     "claimId": "gobs-37-streak-framework"
+    },
+    {
+     "evidenceSetId": "evidence-multi-old-era-37-41",
+     "claimId": "gobs-self-revision-6days"
+    }
+   ],
+   "trigger": "on_affix_seen"
+  },
+  {
+   "actionId": "pick-economy-strategies",
+   "title": "经济策略分级刚需（采购专员必拿）",
+   "instruction": "棱彩档拿采购专员/概率事件/本金充裕；黄金档拿超发货币/大扩招/采购专员；白银档拿成长基金/返利兜底；采购专员见到必拿（前期给强力四费+降低后期追五费压力）；无采购专员需两个经济策略兜底。",
+   "operationType": "select_investment_strategy",
+   "priority": 92,
+   "conditions": [],
+   "benefits": [
+    "追三经济底盘"
+   ],
+   "costs": [],
+   "risks": [
+    "概率事件/本金充裕/超发货币/成长基金 等策略 ID 待逐一对表（名称已确认在目录）"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "economy-strategy-formula"
+    }
+   ],
+   "trigger": "on_phase_enter"
+  },
+  {
+   "actionId": "hold-interest-line",
+   "title": "50 金利息线纪律（中后期）",
+   "instruction": "中后期（战力足够时）卡 50 金利息线：金币保持 50、溢出才升级；9 级前尽量不 D 牌（凑不出羁绊才花钱保连胜）；打完遭遇用超出 50 金的部分升级。（GOBS 总纲阶段条件补强：第一层遭遇前战力不够时不考虑利息直接 D——断连胜亏的钱比利息多；钱不影响通关，血量影响容错。利息线适用于战力足够时的中后期。）",
+   "operationType": "other",
+   "priority": 88,
+   "conditions": [
+    {
+     "field": "gold",
+     "operator": "less_than",
+     "expected": 50,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "利息最大化=追三弹药"
+   ],
+   "costs": [
+    "前期强度让渡"
+   ],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [
+    "9 级追三阶段（转 until_target_found）"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "interest-50-timing"
+    },
+    {
+     "evidenceSetId": "evidence-multi-old-era-37-41",
+     "claimId": "gobs-37-streak-framework"
+    }
+   ]
+  },
+  {
+   "actionId": "quality-spike-after-strategy",
+   "title": "选策略后大 D 一波提质量",
+   "instruction": "第二位面选完策略后大 D 一波提质量锁血；夜神线 2-2 左右上 8、速 8 拿一星遐蝶锁血；八级找大黑塔（公式线）。",
+   "operationType": "refresh_shop",
+   "priority": 75,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 8,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "二位面锁血进三位面"
+   ],
+   "costs": [
+    "部分利息"
+   ],
+   "risks": [],
+   "preconditions": [
+    "等级≥8"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "interest-50-timing"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 8
+   }
+  },
+  {
+   "actionId": "level9-at-3-2",
+   "title": "3-2 卡利息上 9",
+   "instruction": "第三位面 3-2 节点卡利息上 9 级；9 级找昔涟（或昔涟+瓦尔特）。上 10 级成本无公认数字，按『3-2 上 9、三星昔涟到手再上 10』的相对节奏处理。",
+   "operationType": "buy_xp",
+   "priority": 82,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 9,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "五费概率跃升（9 级五费概率显著高于 8 级）"
+   ],
+   "costs": [
+    "买经验花金"
+   ],
+   "risks": [],
+   "preconditions": [
+    "进入第三位面"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "interest-50-timing"
+    }
+   ],
+   "trigger": "on_node_enter"
+  },
+  {
+   "actionId": "chase-xilian-then-welt",
+   "title": "先追三星昔涟，再升 10 追银狼",
+   "instruction": "9 级搜昔涟追三（三星福利：3 神装+免费升 10 级+全部黄金裔 3 星可全卖约 200 金保底）；追出三星昔涟后再升 10 级追其余五费；A840+ 对局银狼（狼尊/Lv.999）为第一优先（昔涟公式照搬会翻车）；追三路上多拿其它五费缩小分母。（持有完美投影仪(152)→9 级开 D；未持有→按 projector-at-8of9 列四渠道继续获取（R7 P3-2 分支降级为说明））（机制底座 2026-09-07 补实：BWIKI 挚爱之人页载昔涟诗篇全表——黄金裔集结 24 金=全部黄金裔、完美光影之诗 12 金=完美投影仪、等待黎明/黄昏 15 金=昼夜星徽、红/蓝之诗 12 金等，『三星昔涟福利』的道具来源即诗篇购买）（诗篇购买优先级参考 2026-09-07 官方全表：五行诗 3 金=商店充满 5 费、与我有关的诗 5 金=直接获得昔涟、五重奏 8 金=5 费聘用书、黄金裔集结 24 金=全黄金裔——全表见 evidence-bwiki-bond-gap12 xilian-poems-table）",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_19",
+    "currency_wars_character_05"
+   ],
+   "priority": 85,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 9,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "三星五费滚雪球"
+   ],
+   "costs": [
+    "大量刷新预算"
+   ],
+   "risks": [
+    "8 缺 1 陷阱：末张概率 1/73"
+   ],
+   "preconditions": [
+    "等级≥9"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "xilian-first-welfare"
+    },
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "silver-wolf-priority-a840"
+    },
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "card-pool-math"
+    },
+    {
+     "evidenceSetId": "evidence-bwiki-bond-gap12",
+     "claimId": "xilian-poems-table"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 9
+   }
+  },
+  {
+   "actionId": "projector-at-8of9",
+   "title": "投影仪/聘用书留到 8 缺 1",
+   "instruction": "完美投影仪/复制仪留到『8 缺 1』时刻（价值最大化的时机）；投影仪获取四渠道：投资策略/昔涟商店出售/夜神 5-6 级概率/三位面遭遇四（30 经验+财富宝钻+2 投影仪）；五费聘用书直接给指定五费；五费升 2 星必带复制仪；圣杯星辉升星/拷贝二选一只有一次，选错葬送爽局。",
+   "operationType": "other",
+   "priority": 65,
+   "conditions": [],
+   "benefits": [
+    "末张成本最小化"
+   ],
+   "costs": [],
+   "risks": [
+    "『遭遇四』『药王秘传避开』为玩家术语未入目录"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "key-items-timing"
+    }
+   ]
+  },
+  {
+   "actionId": "warn-failure-modes",
+   "title": "失败模式警示（八条）",
+   "instruction": "无复制器硬追（DPS 检查过不去）、8 缺 1 陷阱、连败流容错更薄（816 经济仍差一张实录）、圣杯/星辉二选一选错、大后期未行动暴毙（追三拖太久撞行动值机制）、白厄坑（队内有五费时白厄开大变单挑，五费成型后移除）、经济误判（升满 10 只剩 50 金追不出）、版本错配（A830 昔涟公式打 A840）。",
+   "operationType": "other",
+   "priority": 998,
+   "conditions": [],
+   "benefits": [],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "failure-modes"
+    }
+   ]
+  }
+ ],
+ "branches": [],
+ "alternativeRoutes": [
+  {
+   "routeId": "a840-silver-wolf-line",
+   "title": "A840+ 分流：银狼（狼尊）第一优先线",
+   "triggerConditions": [
+    {
+     "field": "difficulty",
+     "operator": "greater_or_equal",
+     "expected": 840,
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [],
+   "tradeoffs": [
+    "速 8/速 9 昔涟公式仅适用 A830 及以下",
+    "A840 后追三星银狼更优且思路差异大",
+    "三星银狼 Lv.999 被评当前最强单卡策略（Reddit/NGA 口径）",
+    "difficulty 字段未接入运行时观测（field-dictionary 待登记）——A840 判定本期靠对局难度选择时人工确认"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "silver-wolf-priority-a840"
+    }
+   ]
+  },
+  {
+   "routeId": "nine-god-line",
+   "title": "夜神线变体（9 夜神=全五费 2 星）",
+   "triggerConditions": [],
+   "actionIds": [],
+   "tradeoffs": [
+    "3-4/3-5 前 9 夜神直接给全部 2 星五费",
+    "开局环境三选一：夜神概念股/夜神星徽/经济严重过热",
+    "遐蝶/长夜月刚需本体星魂专武（配置门槛）"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "env-strategy-priority"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [],
+ "craftingPaths": [],
+ "risks": [
+  {
+   "riskId": "player-sourced-probabilities",
+   "severity": "medium",
+   "description": "牌库数学（9 张/81 张/末张 1/73/10 级 20%+ 概率）为玩家实测与推算口径，未逐项对官方概率表校准；官方表（BWIKI S1）只到各费用峰值等级。",
+   "mitigation": "数值引用带『玩家口径』声明；实机窗口对表。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "card-pool-math"
+    }
+   ]
+  },
+  {
+   "riskId": "affix-field-not-wired",
+   "severity": "medium",
+   "description": "enemy_affixes/acquired_items 条件字段未接入运行时观测——词条规避与投影仪分支本期按常驻提示/降级承载。",
+   "mitigation": "字段字典已登记补齐路径。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "opening-debuff-avoid"
+    }
+   ]
+  },
+  {
+   "riskId": "multi-version-synthesis",
+   "severity": "low",
+   "description": "多源时间跨度 2025-11~2026-08（3.7~4.4），个别数字（如刷新保底 7 次 vs 每 5 次）存在版本/策略歧义，已按 claim conditions 标注。",
+   "mitigation": "冲突保留双口径；实机复验裁决。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-multi-375cost-endgame",
+     "claimId": "card-pool-math"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-multi-375cost-endgame",
+   "claimId": "source-metadata"
+  },
+  {
+   "evidenceSetId": "evidence-multi-375cost-endgame",
+   "claimId": "card-pool-math"
+  },
+  {
+   "evidenceSetId": "evidence-multi-375cost-endgame",
+   "claimId": "opening-debuff-avoid"
+  },
+  {
+   "evidenceSetId": "evidence-multi-375cost-endgame",
+   "claimId": "economy-strategy-formula"
+  },
+  {
+   "evidenceSetId": "evidence-multi-375cost-endgame",
+   "claimId": "interest-50-timing"
+  },
+  {
+   "evidenceSetId": "evidence-multi-375cost-endgame",
+   "claimId": "xilian-first-welfare"
+  },
+  {
+   "evidenceSetId": "evidence-multi-375cost-endgame",
+   "claimId": "silver-wolf-priority-a840"
+  },
+  {
+   "evidenceSetId": "evidence-multi-375cost-endgame",
+   "claimId": "key-items-timing"
+  },
+  {
+   "evidenceSetId": "evidence-multi-375cost-endgame",
+   "claimId": "failure-modes"
+  },
+  {
+   "evidenceSetId": "evidence-multi-375cost-endgame",
+   "claimId": "env-strategy-priority"
+  },
+  {
+   "evidenceSetId": "evidence-bwiki-bond-gap12",
+   "claimId": "xilian-poems-table"
+  }
+ ],
+ "notes": [
+  "2026-09-07 夜班2 本体转化自 evidence-multi-375cost-endgame（13 claims，8+ 独立信源 compendium）——用户点名的『3-7 三星五费』攻略的结构化承载。",
+  "非阵容特定打法学 playbook 首例：骨架=开局条件→连胜保经济→速 8/速 9→9/10 级 D 牌→复制器收尾；与阵容型 playbook 正交（任何主C 线均可叠加）。",
+  "杨叔=瓦尔特(20)；『狼尊』建议作银狼LV.999(05) 别名（F 线官方 3 处佐证）；『免死金牌』=t2_19 对表命中。",
+  "用户三纪律落实：本表全部参数可在 evidence-multi-375cost-endgame 及其 textlayer_hunt_a 快照中溯源；表成后交子代理审查（重点审依据链）。",
+  "goalIds 仅保留 stable：a850-capable 无来源 claim 支撑（仅 B7 标题级存目），按 R3 P2-4 先例移除（R7 P3-3）。",
+  "文件名后缀 .v1.1 为批次命名惯例，schemaVersion=v1.2 为内容版本（R7 P3-1 登记说明）。",
+  "2026-09-07 深夜补实：BWIKI 挚爱之人页（bwiki_bond_gap12/bond_挚爱之人.wikitext）载昔涟诗篇全表——『三星昔涟福利』从口述升级为官方机制文本；bond-compendium 同步 33/33 官方级。",
+  "2026-09-07 兼容修改 A1（依 compat-modification-candidates.md）：词条卡补急速制冷(t3_13)——依据 GOBS 3.7 总纲『难处理第一档』，3.7 旧理解经 4.4 队伍相性核对后收录（待 R9 审查）。（R9 P1-3 勘误：补口径演进——GOBS 11-25 迭代帖已将急速制冷降级为可解；『叠鞋致命』为推断已标注；NGA 4.4 威胁共识未列急速制冷于头部=4.4 口径下超宣称不成立）",
+  "2026-09-07 兼容修改 B1（依 compat-modification-candidates.md）：利息线补阶段条件（GOBS 总纲）——前期连胜优先/中后期利息优先，待 R9 审查。",
+  "R9 P1-2 勘误：诗篇全表真实出处=evidence-bwiki-bond-gap12/xilian-poems-table，原错挂 mechanics-baseline-37 已移除。",
+  "2026-09-07 下午（用户最终定性）：guideCodes 字段整体移除——攻略码=游戏内部分享码，对软件无功能意义，最终 JSON 成品不得含攻略码字段（RULES 七.0 修订）。"
+ ]
+}

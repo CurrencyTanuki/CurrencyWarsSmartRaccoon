@@ -1,0 +1,859 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-double-shoe-aglaya",
+ "title": "4.4 双鞋阿雅：昼神能量叠速主C+花火叠鞋轴（甘泽最终优化版 BV18yoWBfEZe）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-double-shoe-aglaya",
+ "archetypeName": "双鞋阿雅（阿格莱雅攻速转攻击，两双鞋=反重力皮靴叠层，花火前排叠鞋轴+老杨终局）",
+ "goalIds": [
+  "stable",
+  "a850-capable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_72",
+   "currency_wars_character_54"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_55",
+   "currency_wars_character_36",
+   "currency_wars_character_20",
+   "currency_wars_character_49",
+   "currency_wars_character_43",
+   "currency_wars_character_19"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_055",
+   "currency_wars_equipment_046"
+  ],
+  "bondIds": [
+   "currency_wars_bond_06",
+   "currency_wars_bond_18"
+  ],
+  "investmentEnvironmentIds": [
+   "investment_environment_060"
+  ],
+  "investmentStrategyIds": [
+   "investment_strategy_128"
+  ]
+ },
+ "sourceRefs": [
+  {
+   "platform": "bilibili",
+   "refId": "BV18yoWBfEZe",
+   "url": "https://www.bilibili.com/video/BV18yoWBfEZe",
+   "title": "A840胎教级新版货币战争上分秘诀（甘泽成谣雨成诗，2026-04-22，142万播放——双鞋阿雅最终优化版）"
+  },
+  {
+   "platform": "bilibili",
+   "refId": "BV1Qz17BUEs9",
+   "url": "https://www.bilibili.com/video/BV1Qz17BUEs9",
+   "title": "初版：货币战争最强主C竟是一费角色？羊刀无限叠加（甘泽，2025-11-05，417万播放——演化锚点，参数已过时未转写）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.2",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "4.4",
+    "area": "货币战争整体",
+    "change": "4.4 增量：爻光退出战技点、远坂凛加入战技点、星间旅人老杨+红A、千冶刃新户口；不死途前台即后台满游侠系 4.2 实装本体特性（非 4.4 增量：§17 时间线不死途 4.2 实装+4.4 公告无不死途机制条目，2026-09-10 勘正版本归属）；追击附加 150→300 系 4.2 变更（三源证据+4.4 公告，2026-09-09 勘正版本归属）",
+    "impact": "本表主轴（双鞋叠速+花火叠鞋轴+老杨插件）不受 4.4 增量直接冲击；阿雅 4.2 T0 判定按持续有效处理，verified 需实机复验",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+      "claimId": "44-evolution-notes"
+     }
+    ]
+   },
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+    "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+    "evidenceRefs": []
+   }
+  ],
+  "supersededBy": null,
+  "notes": [
+   "初版 BV1Qz17BUEs9（3.7 期）的旧装备/运营参数不采信——本表全部参数以后版 BV18yoWBfEZe（4.2）+ 4.4 适配为准。",
+   "NGA 4.4 强度共识将双鞋阿雅列 T0.5（evidence-nga-47155742）；iqizna 万敌篇旁证『阿雅后期可靠鞋子抹平 2/3 星差距』。"
+  ]
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+      "claimId": "source-metadata"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "plane1-ramp",
+   "title": "一位面：拉条轴先行，凑阿雅与鞋",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ],
+    "nodeRanges": [
+     {
+      "planeId": 1,
+      "fromNodeIndex": 1,
+      "toNodeIndex": 9
+     }
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_54"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_55",
+      "currency_wars_character_36"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_72",
+       "priority": 1,
+       "note": "阿雅本体卡，见到就拿"
+      },
+      {
+       "characterId": "currency_wars_character_54",
+       "priority": 1,
+       "note": "花火：前台叠鞋轴核心（叠鞋效率比星期日 20→40 层）"
+      },
+      {
+       "characterId": "currency_wars_character_55",
+       "priority": 2,
+       "note": "缇宝：拉条+五五发射器"
+      },
+      {
+       "characterId": "currency_wars_character_36",
+       "priority": 2,
+       "note": "星期日：拉条位（花火未到时主力）"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_06",
+     "currency_wars_bond_18"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_72",
+     "currency_wars_character_54"
+    ],
+    "costFocus": [
+     1
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "阿雅与花火均已购入",
+     "轮滑鞋储备≥4（可合两件反重力皮靴）"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+      "claimId": "aglaya-t0-lineup-change"
+     }
+    ],
+    "notes": [
+     "一位面尽量『有些出门』(音)、二杠三尽量拿双血（音/简称未证实）——早期节点质量词。"
+    ]
+   },
+   "actionIds": [
+    "front-huohuo-stack",
+    "craft-double-shoe",
+    "warn-affix-ban"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+     "claimId": "aglaya-t0-lineup-change"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "mid-two-star-boss",
+   "title": "中期：二星阿雅=二页 boss 百亿门槛",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     1,
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_54",
+      "currency_wars_character_72"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_55",
+      "currency_wars_character_36",
+      "currency_wars_character_43"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_72": 2
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_72",
+       "priority": 1,
+       "targetStars": 2,
+       "note": "二星阿雅：第二页 boss 稳定百亿总伤"
+      },
+      {
+       "characterId": "currency_wars_character_43",
+       "priority": 3,
+       "note": "刻律德菈：五五发射器之一"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_06",
+     "currency_wars_bond_18"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_72"
+    ],
+    "costFocus": [
+     1
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "阿雅二星达成"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+      "claimId": "aglaya-t0-lineup-change"
+     }
+    ],
+    "notes": []
+   },
+   "actionIds": [
+    "chase-2star"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+     "claimId": "aglaya-t0-lineup-change"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "plane3-welt-finish",
+   "title": "第三位面：老杨到位=破千亿收官",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_54",
+      "currency_wars_character_72"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_20",
+      "currency_wars_character_49",
+      "currency_wars_character_55",
+      "currency_wars_character_36",
+      "currency_wars_character_47"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_72": 2
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_20",
+       "priority": 1,
+       "note": "老杨（瓦尔特）：第三位面核心件，到位输出破千亿"
+      },
+      {
+       "characterId": "currency_wars_character_49",
+       "priority": 1,
+       "note": "佩拉：与老杨组 2-1 插件（80% 减防+30% 真伤，4-1 起不带记忆主完全正确） || 【2026-09-08 自检修】出处语句含 4-1/2-1 记法（ASR 原文：至少4-1不带记忆组/哪些2-1可以不带记忆组）。币战官方无 4-1 节点；4-1/2-1 疑为 UP 口播的阵容组合代号而非节点编号（平行句式对举），现库内节点时点解读存疑——该时点判定未经原音频复核前不可作决策输入。"
+      },
+      {
+       "characterId": "currency_wars_character_19",
+       "priority": 2,
+       "note": "昔涟：前台三进二首选（甘泽第9楼细则：后期前台挤，有生存压力时只能昔涟>记忆主>=周日三进二）"
+      },
+      {
+       "characterId": "currency_wars_character_trailblazer",
+       "priority": 3,
+       "note": "记忆主（社区语=记忆命途开拓者，无命途级 stdId）：前台三进二次位，>=周日（置顶改良口径同向）"
+      },
+      {
+       "characterId": "currency_wars_character_36",
+       "priority": 4,
+       "note": "周日：前台三进二末位（记忆主优先级>周日）"
+      },
+      {
+       "characterId": "currency_wars_character_47",
+       "priority": 5,
+       "note": "风堇：条件位——有生存压力下不了前台（三进二兜底）；无生存压力下风堇上前台三拐"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_06",
+     "currency_wars_bond_18",
+     "currency_wars_bond_17"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_20",
+     "currency_wars_character_49"
+    ],
+    "costFocus": [
+     2,
+     5
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "老杨已购入"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+      "claimId": "welt-pela-plugin"
+     }
+    ],
+    "notes": []
+   },
+   "actionIds": [
+    "welt-pela-deploy"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+     "claimId": "welt-pela-plugin"
+    }
+   ],
+   "notes": [
+    "第三位面词条应对由全局禁区卡 warn-affix-ban 承载（力减30行动值致命）——原 survive-affix-plane3 动作并入警示卡，避免重复。",
+    "2026-09-07 SESSDATA 深爬清洗：后期前台站位细则增补（甘泽本人第9楼 4070 赞，游客视野不可见）——有生存压力：昔涟>记忆主>=周日三进二（风堇下不了）；无生存压力：下风堇前台三拐。出处 3.7 期，4.4 适用性由置顶改良口径延续互证（未单独实测）。"
+   ]
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "front-huohuo-stack",
+   "title": "花火前排叠鞋轴（本攻略核心优化）",
+   "instruction": "把花火放前台给阿雅叠鞋——花火的拉条频率让阿雅叠鞋层数从约 20 层提到至少 40 层（低危 N boss 实测口径），比星期日拉条夸张；思路=多带拉条拐（花火/缇宝/星期日/刻律德菈轮换前排）缩短前 10 动叠鞋时间；前排人越多机动性越高。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_54",
+    "currency_wars_character_72"
+   ],
+   "priority": 92,
+   "conditions": [],
+   "benefits": [
+    "叠鞋时间减半，阿雅提前进入斩速区间"
+   ],
+   "costs": [
+    "花火占用前排位"
+   ],
+   "risks": [],
+   "preconditions": [
+    "花火已购入",
+    "阿雅已上场"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+     "claimId": "aglaya-t0-lineup-change"
+    }
+   ]
+  },
+  {
+   "actionId": "craft-double-shoe",
+   "title": "双鞋合成：轮滑鞋×2→反重力皮靴",
+   "instruction": "给阿雅凑两件反重力皮靴（每件=两双轮滑鞋合成，共四双轮滑鞋的储备预期）——双鞋是本打法唯一核心装备：阿雅攻速转攻击，层数即伤害。 社区勘误补充（2026-09-07 SESSDATA 清洗）：作者未讲的前置——阿雅必须先找出第一件反重力皮靴（838赞实测）；非常缺鞋，有潘多拉（刷装备机制俗称，ID 未对表）时可走四双鞋两把羊刀路线（41赞）；鞋子优先给阿雅。",
+   "operationType": "buy_equipment",
+   "targetCharacterIds": [
+    "currency_wars_character_72"
+   ],
+   "priority": 90,
+   "conditions": [],
+   "benefits": [
+    "叠速收益翻倍",
+    "潘多拉路线可解四鞋需求（高难）"
+   ],
+   "costs": [
+    "鞋类装备需求大"
+   ],
+   "risks": [
+    "三风扇负反馈（579赞正评 vs 4赞'3个风扇不厉害'个例再证）——风扇≠鞋，勿混刷｜缓解：风扇仅作过渡，目标恒为双反重力"
+   ],
+   "preconditions": [
+    "阿雅已购入"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+     "claimId": "aglaya-t0-lineup-change"
+    }
+   ],
+   "trigger": "on_equipment_acquired"
+  },
+  {
+   "actionId": "chase-2star",
+   "title": "追二星阿雅（二页 boss 百亿门槛）",
+   "instruction": "二星阿雅=第二页 boss 稳定百亿总伤的档位门槛；商店刷找阿雅至二星。",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_72"
+   ],
+   "priority": 85,
+   "conditions": [],
+   "benefits": [
+    "中期强度门槛"
+   ],
+   "costs": [
+    "刷新花金"
+   ],
+   "risks": [],
+   "preconditions": [
+    "阿雅已上场"
+   ],
+   "invalidatesWhen": [
+    "阿雅已二星"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+     "claimId": "aglaya-t0-lineup-change"
+    }
+   ]
+  },
+  {
+   "actionId": "welt-pela-deploy",
+   "title": "老杨+佩拉 2-1 插件上后",
+   "instruction": "老杨（瓦尔特）到位后与佩拉组 2-1 插件：自带 80% 减防+30% 真伤，随便补拐就溢出；至少 4-1 起不带记忆主是完全正确的——第三位面输出随便破千亿。 || 【2026-09-08 自检修】出处语句含 4-1/2-1 记法（ASR 原文：至少4-1不带记忆组/哪些2-1可以不带记忆组）。币战官方无 4-1 节点；4-1/2-1 疑为 UP 口播的阵容组合代号而非节点编号（平行句式对举），现库内节点时点解读存疑——该时点判定未经原音频复核前不可作决策输入。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_20",
+    "currency_wars_character_49"
+   ],
+   "priority": 70,
+   "conditions": [],
+   "benefits": [
+    "减防+真伤双乘区"
+   ],
+   "costs": [],
+   "risks": [
+    "80%/30% 为 ASR 口播数未对官方文本"
+   ],
+   "preconditions": [
+    "老杨已购入",
+    "佩拉已购入"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+     "claimId": "welt-pela-plugin"
+    }
+   ]
+  },
+  {
+   "actionId": "pick-affix-rationale",
+   "title": "好词条：忍无可忍/一鼓作气抬前期",
+   "instruction": "1-7 遭遇关有忍无可忍/一鼓作气时可以硬打（抬二刀伤害）；否则升 6 人口上佩拉组双贝洛伯格保连胜——词条选择同时是阵容分流信号。",
+   "operationType": "select_encounter_option",
+   "priority": 60,
+   "conditions": [
+    {
+     "field": "enemy_affixes",
+     "operator": "contains_any",
+     "expected": [
+      "enemy_affix_t3_02",
+      "enemy_affix_t2_04"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "前期连胜保住"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+     "claimId": "aglaya-affix-avoid-and-lethal"
+    }
+   ],
+   "trigger": "on_affix_seen"
+  },
+  {
+   "actionId": "warn-affix-ban",
+   "title": "开局禁区：三类词条直接排除",
+   "instruction": "开局词条有明显输出/生存压力类直接排除（换一局/重开）：战个痛快、榜样激励、正当防卫；皮糙肉厚比较恶心（慎选）；第三位面『力减30行动值』类词条对阿雅致命（音译未对上目录，见到行动值削减类词条按致命处理）；NGA 禁选表互证：时间刺客+能量散溢组合禁配阿雅。（GOBS 3.7 总纲补强：急速制冷(官方名极速制冷/t3_13，ASR 同音=冻结/战技点)GOBS 11-19 总纲列难处理第一档；同作者 11-25 迭代帖降级为可解（追击雀 22 次解控收尾）——『叠鞋/拉条轴尤其致命』为整理者推断非原话，采信需队伍相性核对）",
+   "operationType": "other",
+   "priority": 999,
+   "conditions": [
+    {
+     "field": "enemy_affixes",
+     "operator": "contains_any",
+     "expected": [
+      "enemy_affix_t2_10",
+      "enemy_affix_t2_02",
+      "enemy_affix_t3_01",
+      "enemy_affix_t3_20",
+      "enemy_affix_t2_03",
+      "enemy_affix_t3_13"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [],
+   "costs": [],
+   "risks": [
+    "enemy_affixes 字段未接入运行时观测——识别命中不了时本卡按常驻提示显示"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+     "claimId": "aglaya-affix-avoid-and-lethal"
+    },
+    {
+     "evidenceSetId": "evidence-multi-old-era-37-41",
+     "claimId": "gobs-37-streak-framework"
+    },
+    {
+     "evidenceSetId": "evidence-multi-old-era-37-41",
+     "claimId": "gobs-self-revision-6days"
+    }
+   ]
+  },
+  {
+   "actionId": "pick-environment",
+   "title": "选环境：经济严重过热+羁绊专属类",
+   "instruction": "A840 最好配超强投资环境开局：经济严重过热（官方效果=全部奖励节点替换为超级次元扑满、掉落超多战利品，无刷新返金）或各羁绊专属投资类环境——环境补强度，弥补道中压力；白厄线推荐的环境（深井角斗场/二手市场/劳务派遣/长线利好/人才下沉/红蓝钻贵族/人才储备）同为通用优质池可参考。",
+   "operationType": "select_investment_environment",
+   "targetCharacterIds": [],
+   "priority": 65,
+   "conditions": [],
+   "benefits": [
+    "道中压力对冲"
+   ],
+   "costs": [],
+   "risks": [
+    "『各羁绊专属投资』为类目描述未点名具体 ID"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+     "claimId": "environment-recommendation"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+     "claimId": "environment-list"
+    }
+   ],
+   "trigger": "on_phase_enter"
+  }
+ ],
+ "branches": [
+  {
+   "branchId": "affix-good-gate",
+   "priority": 1,
+   "when": [
+    {
+     "field": "enemy_affixes",
+     "operator": "contains_any",
+     "expected": [
+      "enemy_affix_t3_02",
+      "enemy_affix_t2_04"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "thenActionIds": [
+    "pick-affix-rationale"
+   ],
+   "otherwiseActionIds": [],
+   "transitionToPhaseId": null,
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+     "claimId": "aglaya-affix-avoid-and-lethal"
+    }
+   ]
+  }
+ ],
+ "alternativeRoutes": [
+  {
+   "routeId": "trial-vs-owned",
+   "title": "档位分流：试用档与本体档",
+   "triggerConditions": [],
+   "actionIds": [],
+   "tradeoffs": [
+    "A840 阵容推荐：试用档=阿雅/火花/龙丹/狼尊(音)",
+    "有本体=希儿/飞霄",
+    "『选择大于努力』"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+     "claimId": "lineup-recommendation-tier"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [],
+ "craftingPaths": [
+  {
+   "resultId": "currency_wars_equipment_055",
+   "inputIds": [
+    "currency_wars_equipment_046",
+    "currency_wars_equipment_046"
+   ],
+   "note": "轮滑鞋+轮滑鞋→反重力皮靴（官方配置 compose_list）——『羊刀/双鞋』本体：阿雅需两件 055，四双 046 的储备预期；99 层为叠层上限（社区机制梗，数值待实机核）",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-official-cw-game-config",
+     "claimId": "compose-list-recipes"
+    }
+   ]
+  }
+ ],
+ "risks": [
+  {
+   "riskId": "word-affix-lethal-unverified",
+   "severity": "high",
+   "description": "第三位面『力减30行动值』对阿雅致命——词条名为 ASR 音译，enemy-affixes 目录无直接命中（疑行动值削减类 t3 词条）；识别不到=防线失效。",
+   "mitigation": "见到行动值削减类词条按致命处理（保守化）；实机窗口核对目录补 ID。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+     "claimId": "aglaya-affix-avoid-and-lethal"
+    }
+   ]
+  },
+  {
+   "riskId": "enemy-field-not-wired",
+   "severity": "medium",
+   "description": "enemy_affixes 条件字段未接入运行时观测——词条类条件/分支评估会走『字段未接入』降级，排除与好词条识别本期都靠常驻提示卡承载。",
+   "mitigation": "字段字典已登记补齐路径（识别/事件通道）。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+     "claimId": "aglaya-affix-avoid-and-lethal"
+    }
+   ]
+  },
+  {
+   "riskId": "42-claims-on-44",
+   "severity": "low",
+   "description": "源视频为 4.2 当日锚点（A840 结构、百亿/20→40 层数值均为 ASR 口播未对官方）；4.4 期 NGA 共识双鞋阿雅 T0.5 与 iqizna 鞋子抹星差旁证支持持续有效，但无 4.4 期甘泽阿雅新正片。",
+   "mitigation": "verified 升级需 4.4/4.5 实机复验；参数引用带口径。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+     "claimId": "44-evolution-notes"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+   "claimId": "source-metadata"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+   "claimId": "a840-difficulty-structure"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+   "claimId": "aglaya-t0-lineup-change"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+   "claimId": "aglaya-affix-avoid-and-lethal"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+   "claimId": "environment-recommendation"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+   "claimId": "welt-pela-plugin"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+   "claimId": "lineup-recommendation-tier"
+  },
+  {
+   "evidenceSetId": "evidence-bilibili-bv18yowbfeze",
+   "claimId": "44-evolution-notes"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76913374-77042107",
+   "claimId": "environment-list"
+  }
+ ],
+ "notes": [
+  "2026-09-07 夜班2 本体转化：双鞋阿雅经典攻略（甘泽）最终优化版 BV18yoWBfEZe 落 playbook；初版 BV1Qz17BUEs9（417 万播放）参数已过时仅作演化锚点。",
+  "用户三问的结构化承载：①开局排除词条=warn-affix-ban（t2_10/t2_02/t3_01/t3_20+t2_03 NGA 互证）；②合适的敌人/词条正面=good-affix 分支（t3_02/t2_04 抬前期）；③投资环境=select-environment（env_060+羁绊专属类+白厄线通用池互证）。",
+  "杨叔=瓦尔特(20) 按用户拍板映射；『羊刀』=反重力皮靴 055（高置信语境映射：初版标题+99层机制梗+合成链）。",
+  "『力减30行动值』『有些出门』『点胶』『双血』『五五发射器』为音译/简称未证实——结构化字段未使用，instruction/risks 保留。",
+  "2026-09-07 兼容修改 A1（依 compat-modification-candidates.md）：词条卡补急速制冷(t3_13)——依据 GOBS 3.7 总纲『难处理第一档』，3.7 旧理解经 4.4 队伍相性核对后收录（待 R9 审查）。（R9 P1-3 勘误：补口径演进——GOBS 11-25 迭代帖已将急速制冷降级为可解；『叠鞋致命』为推断已标注；NGA 4.4 威胁共识未列急速制冷于头部=4.4 口径下超宣称不成立）",
+  "2026-09-07 兼容修改 A2（依 compat-modification-candidates.md）：正当防卫条件化解法补入（GOBS 迭代帖）——词条评价从一刀切升级为条件化，待 R9 审查。（R9 P1-1 勘误：初版脚本 actionId 错配致正文未命中，本条为补正文后真实状态；另注『盾单』经 R9 快照对照确认为『盾单=群盾角色』泛称与三月七对照使用，非丹恒•腾荒）",
+  "2026-09-07 接班AI SESSDATA 深爬清洗（evidence-bilibili-bv1qz17bues9-sess 新集）：①plane3 站位细则（甘泽第9楼 4070 赞三进二/风堇条件位）②craft-double-shoe 找鞋勘误（先反重力/潘多拉路线/三风扇负反馈）③置顶改良码尾'='补全核验（底册转写丢失，在线三处复读一致）④升人口公式两造并存存证（证据集 claim4，未入 playbook——局况边界未仲裁）。攻略码码体不入 playbook（guideCodes 保持空，2026-09-07 用户定性+RULES 七.0）。待 R10 审查。",
+  "2026-09-07 下午（用户最终定性）：guideCodes 字段整体移除——攻略码=游戏内部分享码，对软件无功能意义，最终 JSON 成品不得含攻略码字段（RULES 七.0 修订）。"
+ ]
+}

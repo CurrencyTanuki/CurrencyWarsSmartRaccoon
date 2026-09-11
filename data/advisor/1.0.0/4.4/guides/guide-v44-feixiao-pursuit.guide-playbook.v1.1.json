@@ -1,0 +1,813 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-feixiao-pursuit",
+ "title": "4.4 飞霄追击流：3追击300%附加轴+2星上9（iqizna 07-22）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-feixiao-pursuit",
+ "archetypeName": "飞霄追击流（飞霄天赋追击永久自拐，3追击开 300% 附加倍率）",
+ "goalIds": [
+  "stable",
+  "a850-capable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_56"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_29",
+   "currency_wars_character_55",
+   "currency_wars_character_08",
+   "currency_wars_character_02",
+   "currency_wars_character_20",
+   "currency_wars_character_54",
+   "currency_wars_character_23",
+   "currency_wars_character_60",
+   "currency_wars_character_47"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_066",
+   "currency_wars_equipment_064",
+   "currency_wars_equipment_052"
+  ],
+  "bondIds": [
+   "currency_wars_bond_21"
+  ],
+  "investmentEnvironmentIds": [],
+  "investmentStrategyIds": []
+ },
+ "sourceRefs": [
+  {
+   "platform": "miyoushe",
+   "refId": "76883466",
+   "url": "https://www.miyoushe.com/sr/article/76883466",
+   "title": "4.4货币战争攻略——追击（iqizna，2026-07-22）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "V4.5（2026-08-26）对货币战争仅 19 条修复，无赛季扩充、晋升上限 170 与 A850 不变",
+    "impact": "参数基线不受影响；verified 升级仍需 V4.5 实机复验",
+    "evidenceRefs": []
+   },
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+    "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+    "evidenceRefs": []
+   }
+  ],
+  "supersededBy": null,
+  "notes": []
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+      "claimId": "source-metadata-76883466"
+     }
+    ]
+   },
+   {
+    "field": "owned_characters",
+    "operator": "contains_all",
+    "expected": [
+     "currency_wars_character_56"
+    ],
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+      "claimId": "feixiao-outside-precondition"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "transition-3p2d",
+   "title": "前期过渡：赛飞儿后台开 3追击2减益",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ],
+    "nodeRanges": [
+     {
+      "planeId": 1,
+      "fromNodeIndex": 1,
+      "toNodeIndex": 9
+     }
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_56"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_60"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_56": 2
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_56",
+       "priority": 1,
+       "targetStars": 2
+      },
+      {
+       "characterId": "currency_wars_character_60",
+       "priority": 2,
+       "note": "赛飞儿前期挂后台开 3追击2减益"
+      },
+      {
+       "characterId": "currency_wars_character_47",
+       "priority": 3,
+       "note": "风堇：前期生存位（上 8 后被符玄替换）"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_21"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_56",
+     "currency_wars_character_60",
+     "currency_wars_character_47"
+    ],
+    "costFocus": [
+     1,
+     2
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "飞霄 2 星达成",
+     "金币不足刷新价"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+      "claimId": "feixiao-roll-timing"
+     }
+    ],
+    "notes": [
+     "星级口径与万敌/阿雅相反：3 星飞霄锁血能力下降，2 星即够——不要追三。"
+    ]
+   },
+   "actionIds": [
+    "back-sefailo-early",
+    "star2-stop"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "feixiao-roll-timing"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "level8-swap-core",
+   "title": "上 8 换轴：符玄/知更鸟/记忆主进场",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 8,
+     "max": 9,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_56"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_23",
+      "currency_wars_character_29",
+      "currency_wars_character_trailblazer"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_29",
+       "priority": 1,
+       "note": "知更鸟：开关键 3 追击、获取 300% 附加倍率"
+      },
+      {
+       "characterId": "currency_wars_character_23",
+       "priority": 2,
+       "note": "符玄：替换风堇的生存位"
+      },
+      {
+       "characterId": "currency_wars_character_trailblazer",
+       "priority": 3,
+       "note": "记忆主：提供真伤乘区"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_21"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_29",
+     "currency_wars_character_23"
+    ],
+    "costFocus": [
+     4
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "符玄与知更鸟均已购入"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+      "claimId": "feixiao-roll-timing"
+     }
+    ],
+    "notes": []
+   },
+   "actionIds": [
+    "level8-swap"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "feixiao-roll-timing"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "level9-complete",
+   "title": "9 级挂杨叔大成（终阵容）",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 9,
+     "max": 10,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_56"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_29",
+      "currency_wars_character_55",
+      "currency_wars_character_08",
+      "currency_wars_character_02",
+      "currency_wars_character_20",
+      "currency_wars_character_54",
+      "currency_wars_character_23"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_56": 2
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_20",
+       "priority": 1,
+       "note": "杨叔（瓦尔特，用户拍板 2026-09-06）必备"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_21"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_20"
+    ],
+    "costFocus": [
+     5
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "杨叔已购入"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+      "claimId": "feixiao-roll-timing"
+     }
+    ],
+    "notes": []
+   },
+   "actionIds": [
+    "level9-hang-yangshu",
+    "pursuit-transfer-upgrade"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "feixiao-roll-timing"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "feixiao-lineup-equipment"
+    }
+   ],
+   "notes": [
+    "终阵容（作者口径）：飞霄+缇宝/不死途/刃（hit+拐力）+知更鸟（3追击）+记忆主（真伤）+杨叔+花火+符玄。"
+   ]
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "back-sefailo-early",
+   "title": "前期赛飞儿后台开 3追击2减益",
+   "instruction": "前期把赛飞儿挂后台，开 3 追击 2 减益；生存位用风堇。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_60",
+    "currency_wars_character_47"
+   ],
+   "priority": 85,
+   "conditions": [],
+   "benefits": [
+    "前期羁绊收益即时启动"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "赛飞儿已购入"
+   ],
+   "invalidatesWhen": [
+    "上 8（赛飞儿被知更鸟替换）"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "feixiao-roll-timing"
+    }
+   ]
+  },
+  {
+   "actionId": "star2-stop",
+   "title": "飞霄 2 星即停（勿追三）",
+   "instruction": "3 星飞霄锁血能力下降，只需 2 星上 9——与万敌/阿雅的追三口径相反，2 星到手就把刷新预算转向等级与挂件。",
+   "operationType": "other",
+   "priority": 80,
+   "conditions": [
+    {
+     "field": "feixiao_stars",
+     "operator": "greater_or_equal",
+     "expected": 2,
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "刷新预算转向等级与挂件"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "feixiao-roll-timing"
+    }
+   ]
+  },
+  {
+   "actionId": "level8-swap",
+   "title": "上 8 换轴三连",
+   "instruction": "上 8 之后：风堇用符玄替代、赛飞儿用知更鸟替代、上场记忆主（真伤乘区）。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_23",
+    "currency_wars_character_29",
+    "currency_wars_character_trailblazer"
+   ],
+   "priority": 70,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 8,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "3 追击 300% 附加+真伤乘区就位"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "知更鸟已购入",
+    "符玄已购入"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "feixiao-roll-timing"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 8
+   }
+  },
+  {
+   "actionId": "level9-hang-yangshu",
+   "title": "9 级挂杨叔大成",
+   "instruction": "继续拉等级，9 级挂上杨叔（瓦尔特）即大成。装备口径：飞霄至少双风暴潮，第三件永动机或冷笑话引擎。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_20"
+   ],
+   "priority": 75,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 9,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "终阵容成型"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "杨叔已购入"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "feixiao-roll-timing"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "feixiao-lineup-equipment"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 9
+   }
+  },
+  {
+   "actionId": "pursuit-transfer-upgrade",
+   "title": "分支：拿到追击转/貘泽专家→开 5 追击",
+   "instruction": "拿到追击转（或貘泽专家）时：缇宝换成托帕开 5 追击——60% 真伤（总攻击）与 50% 增幅提升很大；追击转给花火还能让花火爆伤拐翻倍；黄泉、大黑塔等角色也都能带。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_16"
+   ],
+   "priority": 50,
+   "conditions": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_141",
+      "investment_strategy_291"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [
+    "5 追击 60% 真伤+50% 增幅"
+   ],
+   "costs": [
+    "缇宝位让出"
+   ],
+   "risks": [
+    "『追击转』=equipment_141、『貘泽专家』=strategy_291 均为中置信映射，实机核对前按 require_review 处理"
+   ],
+   "preconditions": [
+    "已拿到追击转或貘泽专家"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "feixiao-variants-and-transfer"
+    }
+   ],
+   "trigger": "on_equipment_acquired"
+  }
+ ],
+ "branches": [
+  {
+   "branchId": "transfer-gate",
+   "priority": 1,
+   "when": [
+    {
+     "field": "acquired_items",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_equipment_141",
+      "investment_strategy_291"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "thenActionIds": [
+    "pursuit-transfer-upgrade"
+   ],
+   "otherwiseActionIds": [],
+   "transitionToPhaseId": null,
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "feixiao-variants-and-transfer"
+    }
+   ]
+  }
+ ],
+ "alternativeRoutes": [
+  {
+   "routeId": "bukitou-main-c",
+   "title": "不死途主 C 变体（高配置）",
+   "triggerConditions": [
+    {
+     "field": "owned_characters",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_character_08"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [
+    "back-sefailo-early",
+    "level8-swap"
+   ],
+   "tradeoffs": [
+    "高配置不死途可替代飞霄 C 位",
+    "飞霄位可换托帕补 3 追击"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "feixiao-variants-and-transfer"
+    }
+   ]
+  },
+  {
+   "routeId": "no-transfer-five-pursuit",
+   "title": "无追击转 5 追击（砂金版，仅低压）",
+   "triggerConditions": [],
+   "actionIds": [],
+   "tradeoffs": [
+    "无转也可开 5 追击",
+    "需要砂金位，生存能力较弱",
+    "仅限低压环境"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "feixiao-variants-and-transfer"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [
+  {
+   "category": "other",
+   "description": "邪修磨血叠层：关闭奖励关『对敌方造成 99% 生命上限伤害』强化，在 1-1/1-2 慢磨血期间多次追击叠[常胜]",
+   "reason": "利用奖励关强化关闭机制放大叠层收益的机制边界整活，按 C1 §6.5 判定只记档禁入 playbook（证据 claim 原文亦标注『只记档，禁入 playbook』）",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "feixiao-boundary-trick"
+    }
+   ]
+  }
+ ],
+ "craftingPaths": [
+  {
+   "resultId": "currency_wars_equipment_066",
+   "inputIds": [
+    "currency_wars_equipment_044",
+    "currency_wars_equipment_046"
+   ],
+   "note": "折叠小刀+轮滑鞋→火力风暴潮（官方配置 compose_list；飞霄双风暴潮刚需）",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-official-cw-game-config",
+     "claimId": "compose-list-recipes"
+    }
+   ]
+  }
+ ],
+ "risks": [
+  {
+   "riskId": "outside-hard-prereq",
+   "severity": "medium",
+   "description": "局外硬前置：必须有自己的飞霄，带风套；缇宝带 555（减少跑条时间）——账号层门槛，试用账号不适用本表。",
+   "mitigation": "applicability 已挂 owned_characters 拒绝门禁；风套/555 为局外遗器概念，软件侧只提示不强校验。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "feixiao-outside-precondition"
+    }
+   ]
+  },
+  {
+   "riskId": "tier-claim-scope",
+   "severity": "medium",
+   "description": "强度口径：iqizna 试用/0命口径将『追击（流派）』列 B 级；本表为其运营层细则，与榜单互补非冲突。",
+   "mitigation": "引用带口径声明。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "source-metadata-76883466"
+    }
+   ]
+  },
+  {
+   "riskId": "term-mapping-confidence",
+   "severity": "low",
+   "description": "『追击转』=equipment_141、『貘泽专家』=strategy_291 为中置信映射（D5 先例）；『555』『风套』为局外概念未入目录。",
+   "mitigation": "实机核对前相关条件字段按 require_review 降级。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+     "claimId": "feixiao-variants-and-transfer"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+   "claimId": "source-metadata-76883466"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+   "claimId": "feixiao-mechanics"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+   "claimId": "pursuit-bond-attach-300"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+   "claimId": "feixiao-lineup-equipment"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+   "claimId": "feixiao-roll-timing"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+   "claimId": "feixiao-outside-precondition"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-76987716-76883466",
+   "claimId": "feixiao-variants-and-transfer"
+  }
+ ],
+ "notes": [
+  "2026-09-06 本体转化自 evidence-miyoushe-76987716-76883466 追击侧 8 条 claim；龙丹侧 6 条 claim 留待单独转化（4战技点4列车轴差异大）。",
+  "机制底座（供局势分析引用）：追击羁绊 3 级开『附加 1 次等同于攻击者 300% 攻击力的随机属性附加伤害』（BWIKI 官方文本互证）；飞霄后台攻击叠 1/4 层飞黄（前台半层）、天赋追击每次永久+6% 追击增伤。",
+  "杨叔=瓦尔特(character_20) 按用户拍板（2026-09-06）入结构化字段。",
+  "自造条件字段备案（STANDARD §14.6 运行时字段字典）：feixiao_stars（星级查询）、acquired_items（已获物品/策略查询，本期新用）。",
+  "刃归属已拍板（用户 2026-09-06）：泛称『刃』默认千冶•刃(character_02)；仅攻略明示专家顾问语境才指 1费刃(70)——本表挂件位已按 02 映射。",
+  "R6 P3-6 登记待决：level8-swap-core 与 level9-complete 的 selector 完全相同（仅 planeIds [2,3]）——阶段自动定位按 order 取先者，level9-complete 无法被自动定位（用户手选可达）；消歧需 recommendedState.level 或细化 nodeRanges，留样例数据修订。",
+  "2026-09-07 下午（用户最终定性）：guideCodes 字段整体移除——攻略码=游戏内部分享码，对软件无功能意义，最终 JSON 成品不得含攻略码字段（RULES 七.0 修订）。"
+ ]
+}

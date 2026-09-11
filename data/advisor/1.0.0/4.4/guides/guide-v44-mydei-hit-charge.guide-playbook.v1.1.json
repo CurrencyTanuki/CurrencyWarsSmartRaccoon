@@ -1,0 +1,813 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-mydei-hit-charge",
+ "title": "4.4 万敌受击充能流：登神轴+装备硬前置（iqizna 07-30）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "archetype-mydei-hit-charge",
+ "archetypeName": "万敌受击充能流（万敌前台吃伤叠充能登神，杨叔昔涟启动轴）",
+ "goalIds": [
+  "stable",
+  "a850-capable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_59"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_19",
+   "currency_wars_character_20",
+   "currency_wars_character_54",
+   "currency_wars_character_55",
+   "currency_wars_character_02",
+   "currency_wars_character_43",
+   "currency_wars_character_37",
+   "currency_wars_character_36"
+  ],
+  "equipmentIds": [
+   "currency_wars_equipment_066",
+   "currency_wars_equipment_074"
+  ],
+  "bondIds": [
+   "currency_wars_bond_07"
+  ],
+  "investmentEnvironmentIds": [],
+  "investmentStrategyIds": [
+   "investment_strategy_128"
+  ]
+ },
+ "sourceRefs": [
+  {
+   "platform": "miyoushe",
+   "refId": "77056698",
+   "url": "https://www.miyoushe.com/sr/article/77056698",
+   "title": "4.4货币战争攻略——万敌（iqizna，2026-07-30）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": [
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "V4.5（2026-08-26）对货币战争仅 19 条修复，无赛季扩充、晋升上限 170 与 A850 不变",
+    "impact": "参数基线不受影响；verified 升级仍需 V4.5 实机复验",
+    "evidenceRefs": []
+   },
+   {
+    "gameVersion": "4.5",
+    "area": "货币战争整体",
+    "change": "4.5 期第三方攻略侧『沉默存活』：B站 140 条 4.5 期 CW 内容零『修复后失效/重测』类攻略，体系化长文仍用 4.4 框架，社区注意力直奔 4.6",
+    "impact": "本表 4.4/4.3 期结论获『4.5 未见推翻』口径背书（三源同构：官方 19 条纯修复+B站 140 条零推翻+米游社新帖绝迹）；仍不能升『已实测』",
+    "evidenceRefs": []
+   }
+  ],
+  "supersededBy": null,
+  "notes": [
+   "V4.5 修复盯防清单（研究结论）：本阵容挂件『刃』按拍板口径=千冶•刃(character_02)，4.5 修复的『千冶刃后台终结技』不在本轴关键位，影响有限。"
+  ]
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+      "claimId": "source-metadata-77056698"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "require_review"
+ },
+ "phases": [
+  {
+   "phaseId": "plane1-equipment-window",
+   "title": "第一位面：装备优先，boss 房门口凑齐万敌套",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ],
+    "nodeRanges": [
+     {
+      "planeId": 1,
+      "fromNodeIndex": 1,
+      "toNodeIndex": 9
+     }
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_59"
+     ],
+     "backCharacterIds": [],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_59",
+       "priority": 1
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_59"
+    ],
+    "costFocus": [
+     1
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "万敌已购入",
+     "风暴潮+绝对热量已到位或金币不足"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+      "claimId": "mydei-equipment-priority"
+     }
+    ],
+    "notes": [
+     "万敌非常吃装备：装备投入优先于角色投入，第一位面 boss 房门口必须凑齐（作者原口径）。"
+    ]
+   },
+   "actionIds": [
+    "equip-mydei-plane1",
+    "front-solo-early"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-equipment-priority"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-core-lineup"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "level45-chase-star",
+   "title": "4/5 级追三星万敌",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     1,
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 4,
+     "max": 5,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_59"
+     ],
+     "backCharacterIds": [],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {
+      "currency_wars_character_59": 3
+     },
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_59",
+       "priority": 1,
+       "targetStars": 3
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_59"
+    ],
+    "costFocus": [
+     1
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "万敌三星达成",
+     "金币不足刷新价"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+      "claimId": "mydei-roll-timing"
+     }
+    ],
+    "notes": [
+     "作者口径：4/5 级追三星，否则后期强度不够——万敌与阿雅不同，后期无法靠装备抹平 2/3 星差距。"
+    ]
+   },
+   "actionIds": [
+    "chase-mydei-star"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-roll-timing"
+    }
+   ],
+   "notes": []
+  },
+  {
+   "phaseId": "level8-9-assembly",
+   "title": "上 8 挂件期→上 9 完整登场（禁符玄）",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     2,
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [
+     "preparation"
+    ]
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": 8,
+     "max": 10,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [
+      "currency_wars_character_59"
+     ],
+     "backCharacterIds": [
+      "currency_wars_character_19",
+      "currency_wars_character_20"
+     ],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_20",
+       "priority": 1,
+       "note": "杨叔（瓦尔特，用户拍板 2026-09-06）必备"
+      },
+      {
+       "characterId": "currency_wars_character_19",
+       "priority": 1,
+       "note": "昔涟：让万敌立刻登神、帮助队伍启动"
+      },
+      {
+       "characterId": "currency_wars_character_43",
+       "priority": 3,
+       "note": "刻律德菈可复制登神"
+      },
+      {
+       "characterId": "currency_wars_character_37",
+       "priority": 4,
+       "note": "娜塔莎：开 2 治疗+增伤（冷门可选）"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_07"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_20",
+     "currency_wars_character_19"
+    ],
+    "costFocus": [
+     5
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "杨叔与昔涟均已购入",
+     "金币不足刷新价"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+      "claimId": "mydei-roll-timing"
+     }
+    ],
+    "notes": []
+   },
+   "actionIds": [
+    "level8-hangers",
+    "level9-full-deploy",
+    "warn-fuquen-ban"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-roll-timing"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-core-lineup"
+    }
+   ],
+   "notes": [
+    "通用拐名单（作者口径）：花火/缇宝/刃/符玄都是通用拐——但本轴上 8 后禁上符玄（见警示卡）；前期没有符玄可用星期日代替拐位。"
+   ]
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "equip-mydei-plane1",
+   "title": "装备硬前置：风暴潮+绝对热量",
+   "instruction": "万敌必备风暴潮与绝对热量，第三件带风暴潮或热血沸腾拳；昔涟必备永动机。必须在第一位面 boss 房门口凑齐，否则伤害不理想。",
+   "operationType": "buy_equipment",
+   "priority": 95,
+   "conditions": [],
+   "benefits": [
+    "万敌吃装备，装备到位才有理想伤害"
+   ],
+   "costs": [
+    "第一位面金币大量投入装备"
+   ],
+   "risks": [],
+   "preconditions": [
+    "万敌已购入"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-equipment-priority"
+    }
+   ]
+  },
+  {
+   "actionId": "front-solo-early",
+   "title": "前期万敌前台单挂",
+   "instruction": "前期让万敌前台单挂、其他角色放后台，让万敌尽可能多受击叠充能；没有合适的牌就前台保持 1 人、直接放弃一个人口。",
+   "operationType": "reposition_character",
+   "targetCharacterIds": [
+    "currency_wars_character_59"
+   ],
+   "priority": 85,
+   "conditions": [],
+   "benefits": [
+    "受击充能效率最大化"
+   ],
+   "costs": [
+    "前期场面强度低"
+   ],
+   "risks": [],
+   "preconditions": [
+    "万敌已上场"
+   ],
+   "invalidatesWhen": [
+    "上 9 且杨叔+昔涟到齐（完整阵容登场）"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-core-lineup"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-roll-timing"
+    }
+   ]
+  },
+  {
+   "actionId": "chase-mydei-star",
+   "title": "4/5 级刷商店追三星",
+   "instruction": "在 4/5 级商店刷找万敌至三星——与阿雅不同，万敌后期不能靠鞋子抹平二星和三星的差距，必须在 4/5 级追。",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_59"
+   ],
+   "priority": 90,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 4,
+     "unknownPolicy": "reject"
+    },
+    {
+     "field": "level",
+     "operator": "less_or_equal",
+     "expected": 5,
+     "unknownPolicy": "use_fallback"
+    }
+   ],
+   "benefits": [
+    "后期强度保障"
+   ],
+   "costs": [
+    "4/5 级集中花金"
+   ],
+   "risks": [],
+   "preconditions": [
+    "等级 4-5"
+   ],
+   "invalidatesWhen": [
+    "万敌已三星"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-roll-timing"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 4
+   }
+  },
+  {
+   "actionId": "level8-hangers",
+   "title": "上 8 找到杨叔/昔涟就上",
+   "instruction": "上 8 级后找到杨叔（瓦尔特）或昔涟就上，也可以上其他挂件；但没有合适的牌就前台保持 1 人、放弃一个人口。本轴禁上符玄（见警示卡）。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_20",
+    "currency_wars_character_19"
+   ],
+   "priority": 60,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 8,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "启动轴就位"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "杨叔或昔涟已购入"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-roll-timing"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 8
+   }
+  },
+  {
+   "actionId": "level9-full-deploy",
+   "title": "上 9 且杨叔+昔涟双到齐→完整阵容",
+   "instruction": "上 9 级且同时有杨叔（瓦尔特）和昔涟之后，再登场完整阵容（刻律德菈可复制登神；娜塔莎开 2 治疗+增伤；花火/缇宝/刃补乘区）。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_20",
+    "currency_wars_character_19",
+    "currency_wars_character_43",
+    "currency_wars_character_37",
+    "currency_wars_character_54",
+    "currency_wars_character_55",
+    "currency_wars_character_02"
+   ],
+   "priority": 70,
+   "conditions": [
+    {
+     "field": "level",
+     "operator": "greater_or_equal",
+     "expected": 9,
+     "unknownPolicy": "reject"
+    }
+   ],
+   "benefits": [
+    "完整受击充能轴成型"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [
+    "杨叔已购入",
+    "昔涟已购入"
+   ],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [
+    "front-solo-early"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-roll-timing"
+    },
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-core-lineup"
+    }
+   ],
+   "trigger": "on_level_threshold",
+   "triggerArgs": {
+    "level": 9
+   }
+  },
+  {
+   "actionId": "warn-fuquen-ban",
+   "title": "禁区：本轴勿上符玄",
+   "instruction": "上 8 之后不要上符玄——其分摊机制会减少万敌受伤，拖慢充能（作者论断，机制归因未经官方文本核对）。前期没有符玄可用星期日代替拐位。",
+   "operationType": "other",
+   "priority": 999,
+   "conditions": [],
+   "benefits": [],
+   "costs": [],
+   "risks": [
+    "机制归因为作者论断（分摊减少受伤→充能变慢），未经官方文本核对"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-roll-timing"
+    }
+   ]
+  },
+  {
+   "actionId": "trial-gate",
+   "title": "试用口径：两条成立条件之一",
+   "instruction": "玩试用（无本体万敌）需满足其一：①来牌顺——能找到三星万敌的同时上 9 找到昔涟杨叔；②有合适负面词条（忍无可忍/正当防卫/灼热轰炸；应激反应/一鼓作气算半个）。拿到超光速提拔直接爽局。",
+   "operationType": "other",
+   "priority": 40,
+   "conditions": [
+    {
+     "field": "owned_characters",
+     "operator": "contains_none",
+     "expected": [
+      "currency_wars_character_59"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "benefits": [],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [
+    "已持有本体万敌（不受附加条件约束）"
+   ],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-trial-conditions"
+    }
+   ]
+  }
+ ],
+ "branches": [
+  {
+   "branchId": "trial-vs-owned",
+   "priority": 1,
+   "when": [
+    {
+     "field": "owned_characters",
+     "operator": "contains_none",
+     "expected": [
+      "currency_wars_character_59"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "thenActionIds": [
+    "trial-gate"
+   ],
+   "otherwiseActionIds": [],
+   "transitionToPhaseId": null,
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-trial-conditions"
+    }
+   ]
+  }
+ ],
+ "alternativeRoutes": [
+  {
+   "routeId": "owned-mydei-no-level9",
+   "title": "本体万敌线：不上 9 也可胜利结算",
+   "triggerConditions": [
+    {
+     "field": "owned_characters",
+     "operator": "contains_any",
+     "expected": [
+      "currency_wars_character_59"
+     ],
+     "unknownPolicy": "require_review"
+    }
+   ],
+   "actionIds": [
+    "front-solo-early",
+    "chase-mydei-star"
+   ],
+   "tradeoffs": [
+    "省下上 9 的等级投入",
+    "依赖本体练度兜底"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-roll-timing"
+    }
+   ]
+  }
+ ],
+ "excludedContent": [
+  {
+   "category": "outdated_core",
+   "description": "永久创伤词条局的万敌线",
+   "reason": "作者明示『负面词条如果有永久创伤，不可玩』——该词条在场时本攻略整体不适用，按禁区处理而非收录玩法",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-trial-conditions"
+    }
+   ]
+  }
+ ],
+ "craftingPaths": [
+  {
+   "resultId": "currency_wars_equipment_066",
+   "inputIds": [
+    "currency_wars_equipment_044",
+    "currency_wars_equipment_046"
+   ],
+   "note": "折叠小刀+轮滑鞋→火力风暴潮（官方配置 compose_list；万敌双风暴潮刚需，主动合成比等刷稳）",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-official-cw-game-config",
+     "claimId": "compose-list-recipes"
+    }
+   ]
+  }
+ ],
+ "risks": [
+  {
+   "riskId": "tier-claim-scope",
+   "severity": "medium",
+   "description": "强度口径：本表为 iqizna 试用/0命口径（其全主C分级将万敌列 B 级）；与包内甘泽『试用万敌主线』为不同口径（not_comparable，统一辅助基线 vs 攻略码复现），两源并存。",
+   "mitigation": "引用与匹配时带口径声明；分练度档复核留实机窗口。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "source-metadata-77056698"
+    }
+   ]
+  },
+  {
+   "riskId": "charge-wording-two-readings",
+   "severity": "low",
+   "description": "万敌充能口径两读：帖内『充能不受血量提高干扰』vs BWIKI 官方『生命上限使受伤充能额外提高』——方向一致、强度不同，归一待白班合并。",
+   "mitigation": "数值层使用前与官方文本对照。",
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+     "claimId": "mydei-ascension-mechanic"
+    }
+   ]
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+   "claimId": "source-metadata-77056698"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+   "claimId": "mydei-equipment-priority"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+   "claimId": "mydei-core-lineup"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+   "claimId": "mydei-roll-timing"
+  },
+  {
+   "evidenceSetId": "evidence-miyoushe-77056698-77006068",
+   "claimId": "mydei-trial-conditions"
+  }
+ ],
+ "notes": [
+  "2026-09-06 本体转化自 evidence-miyoushe-77056698-77006068 万敌侧 7 条 claim；银枝侧 5 条 claim 留待银枝单独转化（轮椅通拐体系差异大，不合卷）。",
+  "杨叔=瓦尔特(character_20) 已按用户拍板（2026-09-06）从 otherRefs 升级为正式 ID——本文件是该拍板首次落进 playbook 结构化字段。",
+  "作者原文内部张力如实保留：段7 把符玄列为通用拐并称『没有符玄就用星期日代替』，段9-11 又要求上 8 后禁符玄——运行时以禁区（禁符玄）为准，星期日代替仅指前期拐位。",
+  "level9-full-deploy 的 fallbackActionIds 指向 front-solo-early：上 9 后若杨叔/昔涟未双到齐，维持单挂等牌。",
+  "刃归属已拍板（用户 2026-09-06）：泛称『刃』默认千冶•刃(character_02)；仅攻略明示专家顾问语境才指 1费刃(70)——本表挂件位已按 02 映射。",
+  "2026-09-07 下午（用户最终定性）：guideCodes 字段整体移除——攻略码=游戏内部分享码，对软件无功能意义，最终 JSON 成品不得含攻略码字段（RULES 七.0 修订）。"
+ ]
+}

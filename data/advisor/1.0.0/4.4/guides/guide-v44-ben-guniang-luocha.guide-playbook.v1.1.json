@@ -1,0 +1,624 @@
+{
+ "schemaVersion": "guide-playbook.v1.2",
+ "guideId": "guide-v44-ben-guniang-luocha",
+ "title": "本姑娘就是罗刹：三月七罗刹转化主C+四列车+8减益（4.4 全试用挑战 SSS 实战体系）",
+ "status": "draft",
+ "applicableGameVersions": [
+  "4.4"
+ ],
+ "archetypeId": "ben-guniang-luocha",
+ "archetypeName": "罗刹转化/四列车/减益终局",
+ "goalIds": [
+  "stable"
+ ],
+ "signals": {
+  "coreCharacterIds": [
+   "currency_wars_character_67",
+   "currency_wars_character_36",
+   "currency_wars_character_20"
+  ],
+  "optionalCharacterIds": [
+   "currency_wars_character_01"
+  ],
+  "equipmentIds": [],
+  "bondIds": [
+   "currency_wars_bond_11",
+   "currency_wars_bond_17"
+  ],
+  "investmentEnvironmentIds": [],
+  "investmentStrategyIds": []
+ },
+ "applicability": {
+  "required": [
+   {
+    "field": "gameVersion",
+    "operator": "equals",
+    "expected": "4.4",
+    "unknownPolicy": "reject",
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-marathon-g-p11",
+      "claimId": "source-metadata"
+     }
+    ]
+   }
+  ],
+  "prohibited": [],
+  "defaultUnknownPolicy": "reject"
+ },
+ "sourceRefs": [
+  {
+   "platform": "bilibili",
+   "refId": "BV1wNu26fEYX",
+   "url": "https://www.bilibili.com/video/BV1wNu26fEYX?p=11",
+   "title": "甘泽20连胜联合挑战P11 本姑娘就是罗刹 SSS（洋葱操刀，147分钟）"
+  }
+ ],
+ "versionApplicability": {
+  "baselineVersion": "4.4",
+  "verifiedThrough": null,
+  "knownChanges": []
+ },
+ "phases": [
+  {
+   "phaseId": "early-lock-and-ramp",
+   "title": "开局锁彩头+三月七主C过渡（1-1~1-9）",
+   "order": 1,
+   "selector": {
+    "planeIds": [
+     1
+    ],
+    "nodeIds": [],
+    "nodeTypes": [],
+    "nodeRanges": []
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [],
+     "backCharacterIds": [],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_67",
+       "priority": 1,
+       "targetStars": 3,
+       "note": "主C：三星即停（四星卡人口腾经济找老杨）"
+      },
+      {
+       "characterId": "currency_wars_character_36",
+       "priority": 2,
+       "note": "列车同行成员（周日）：8-1 实战口令『8-1走四列车就行了，走地主走周日』确认在列（transcripts/marathon_g_p11.txt [85:00]）"
+      },
+      {
+       "characterId": "currency_wars_character_01",
+       "priority": 4,
+       "note": "姬子·启行可选（领航员偷羁绊：流派+原生，阵营偷不到）"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_11"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "actionIds": [
+    "lock-luocha-early",
+    "march7-three-star-stop",
+    "survival-item-priority"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p11",
+     "claimId": "source-metadata"
+    }
+   ],
+   "notes": [
+    "开局即判词条：战技点系开局出局（本局『这把需要玩不了任何战技点的流派』）",
+    "帧证血线：1-1 HP80 → 每胜+2 → 1-7 HP90（连胜买容错）",
+    "遭遇难度选择学：打不满就打遭遇一，把『打不过』转化为『不拿奖励』保血线"
+   ]
+  },
+  {
+   "phaseId": "mid-train-and-hp",
+   "title": "中期四列车纯加强+血线管理（2-1~2-7）",
+   "order": 2,
+   "selector": {
+    "planeIds": [
+     2
+    ],
+    "nodeIds": [],
+    "nodeTypes": [],
+    "nodeRanges": []
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [],
+     "backCharacterIds": [],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_67",
+       "priority": 1,
+       "note": "本姑娘三星已停，保持"
+      },
+      {
+       "characterId": "currency_wars_character_36",
+       "priority": 2,
+       "note": "四列车：撞天谴召唤波次清场（『列车撞一波就清完了』）"
+      },
+      {
+       "characterId": "currency_wars_character_20",
+       "priority": 1,
+       "note": "老杨=8减益硬前置，速九后全力找"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_11"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_20"
+    ],
+    "costFocus": [
+     5
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "老杨（瓦尔特）已购入"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-marathon-g-p11",
+      "claimId": "debuff-8-requires-welt"
+     }
+    ],
+    "notes": [
+     "2-7 落 Lv9 后全力找老杨（经验帧证 2/72→2/84 与官方 A5+ 列吻合）"
+    ]
+   },
+   "actionIds": [
+    "train-clear-summons",
+    "encounter-difficulty-downshift",
+    "fast-nine-at-2-7"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p11",
+     "claimId": "source-metadata"
+    }
+   ],
+   "notes": [
+    "帧证：2-4 Lv7 血满 100（此后全程满血）；2-7 速九落位（Lv9 2/84）",
+    "四列车=纯加强（本版口述）；后台吃 80% 强度换算口径",
+    "圣杯任务可暂停：下圣杯再上，奖励关再做（保连败计数，福星类比）——挂实测窗口"
+   ]
+  },
+  {
+   "phaseId": "late-welt-or-survive",
+   "title": "第三位面：速九 all-in 老杨 / 无老杨免伤预案（3-1~3-7）",
+   "order": 3,
+   "selector": {
+    "planeIds": [
+     3
+    ],
+    "nodeIds": [],
+    "nodeTypes": [],
+    "nodeRanges": []
+   },
+   "recommendedState": {
+    "economy": {
+     "min": null,
+     "max": null,
+     "unit": "coin"
+    },
+    "health": {
+     "min": null,
+     "max": null,
+     "unit": "health"
+    },
+    "level": {
+     "min": null,
+     "max": null,
+     "unit": "level"
+    },
+    "population": {
+     "min": null,
+     "max": null,
+     "unit": "population"
+    },
+    "remainingActionPoints": {
+     "min": null,
+     "max": null,
+     "unit": "action_point"
+    },
+    "lineup": {
+     "frontCharacterIds": [],
+     "backCharacterIds": [],
+     "benchCharacterIds": [],
+     "minimumStarsByCharacterId": {},
+     "acquisitionPriorities": [
+      {
+       "characterId": "currency_wars_character_20",
+       "priority": 1,
+       "note": "老杨到手=体系升档（8-1 兑现+装备重排）"
+      },
+      {
+       "characterId": "currency_wars_character_67",
+       "priority": 2,
+       "note": "本姑娘半血斩杀收尾"
+      }
+     ]
+    },
+    "equipment": [],
+    "bondIds": [
+     "currency_wars_bond_11",
+     "currency_wars_bond_17"
+    ],
+    "investmentEnvironmentIds": [],
+    "investmentStrategyIds": []
+   },
+   "shoppingPlan": {
+    "priorityCharacterIds": [
+     "currency_wars_character_20"
+    ],
+    "costFocus": [
+     5
+    ],
+    "refreshPolicy": "until_target_found",
+    "stopWhen": [
+     "第一个老杨出现（事前承诺收手）"
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceSetId": "evidence-marathon-g-p11",
+      "claimId": "double-allin-welt-discipline"
+     }
+    ],
+    "notes": [
+     "3-1/3-2 两波 all-in 纪律：递老杨落空立即切免伤顶压，不再补偿性上头"
+    ]
+   },
+   "actionIds": [
+    "double-allin-welt",
+    "survival-item-priority",
+    "debuff-8-unlock"
+   ],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p11",
+     "claimId": "source-metadata"
+    }
+   ],
+   "notes": [
+    "两波 all-in 纪律：递老杨落空立即切免伤顶压（硬甲×5+反甲+外骨骼），不再补偿性上头；事前承诺『第一个老杨出来就收手』",
+    "零鞋参照系：零成装四列车+免伤堆叠维持 100 血打 3-4 并 SSS——生存装件数＞成装质量＞输出装",
+    "单敲纪律：外骨骼绝对不能砸炉（只有一个敲）"
+   ]
+  }
+ ],
+ "actions": [
+  {
+   "actionId": "lock-luocha-early",
+   "title": "开局锁「本姑娘就是罗刹」转化彩头",
+   "instruction": "开局策略选择时若刷出「本姑娘就是罗刹」优先锁定：不占阵容名额、难刷、刷到即锁——三月七罗刹化获得半血斩杀与急救段数输出底层，全队后续决策围绕已定核心展开。",
+   "operationType": "select_investment_strategy",
+   "targetCharacterIds": [
+    "currency_wars_character_67"
+   ],
+   "priority": 900,
+   "conditions": [],
+   "benefits": [
+    "体系确定性：转化彩头价值=确定性而非强度，等效体系税后收益"
+   ],
+   "costs": [],
+   "risks": [
+    "急救段数/斩杀线为口述级，未经 BWIKI 官方文本核对"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p11",
+     "claimId": "luocha-convert-mechanic"
+    },
+    {
+     "evidenceSetId": "evidence-marathon-g-p11",
+     "claimId": "source-metadata"
+    }
+   ]
+  },
+  {
+   "actionId": "march7-three-star-stop",
+   "title": "三月七三星即停，腾经济找老杨",
+   "instruction": "本姑娘（三月七罗刹化）三星即停：四星卡人口，三星提前成型腾出经济与人口预算给速九与老杨——罗刹线老杨优先级高于主C升星。",
+   "operationType": "buy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_67"
+   ],
+   "priority": 700,
+   "conditions": [],
+   "benefits": [
+    "经济向老杨倾斜，提前 8 减益窗口"
+   ],
+   "costs": [],
+   "risks": [
+    "口述级策略理由"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p11",
+     "claimId": "three-star-over-four"
+    }
+   ]
+  },
+  {
+   "actionId": "survival-item-priority",
+   "title": "装备饥荒预案：生存装件数优先",
+   "instruction": "装备面饥荒时优先级=生存装件数＞成装质量＞输出装：硬甲×5+反甲+外骨骼堆免伤硬顶；外骨骼不可砸炉（单敲纪律），电池可敲。",
+   "operationType": "buy_equipment",
+   "targetCharacterIds": [],
+   "priority": 400,
+   "conditions": [],
+   "benefits": [
+    "零成装维持血线的下界证明"
+   ],
+   "costs": [],
+   "risks": [
+    "实战单局样本"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p11",
+     "claimId": "zero-shoe-survival-build"
+    }
+   ]
+  },
+  {
+   "actionId": "train-clear-summons",
+   "title": "四列车撞清召唤波次",
+   "instruction": "保持四名列车同行成员：天谴（召唤）波次靠列车碰撞清场（『列车撞一波就清完了』）；四列车=纯加强（本版口述），后台吃 80% 强度换算口径。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_36"
+   ],
+   "priority": 450,
+   "conditions": [],
+   "benefits": [
+    "召唤波次无需输出装即可清场，主C资源全投入体系轴"
+   ],
+   "costs": [],
+   "risks": [
+    "四列车纯加强为本版口述，未核对官方文本"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p11",
+     "claimId": "four-train-pure-buff"
+    }
+   ]
+  },
+  {
+   "actionId": "encounter-difficulty-downshift",
+   "title": "遭遇难度降档保血",
+   "instruction": "遭遇节点打不满（打不过遭遇四）就主动降打遭遇一：把『打不过』转化为『不拿奖励』，用连胜+2 血/关维持血线 second currency 地位。",
+   "operationType": "select_encounter_option",
+   "targetCharacterIds": [],
+   "priority": 600,
+   "conditions": [],
+   "benefits": [
+    "血线管理：每胜+2 血帧链（80→100）与评级=血量档一致"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p11",
+     "claimId": "source-metadata"
+    }
+   ]
+  },
+  {
+   "actionId": "fast-nine-at-2-7",
+   "title": "2-7 速九找老杨",
+   "instruction": "罗刹线终局前置=速 9：2-7 落 Lv9 后全力找老杨（比『三杠二上九』原计划更早）；经验帧证 2/72→2/84 与官方 A5+ 列吻合。",
+   "operationType": "buy_xp",
+   "targetCharacterIds": [
+    "currency_wars_character_20"
+   ],
+   "priority": 650,
+   "conditions": [],
+   "benefits": [
+    "8 减益窗口提前，老杨到手即体系升档"
+   ],
+   "costs": [],
+   "risks": [],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p11",
+     "claimId": "source-metadata"
+    }
+   ]
+  },
+  {
+   "actionId": "double-allin-welt",
+   "title": "两波 all-in 递老杨（纪律版）",
+   "instruction": "3-1/3-2 两波 all-in 递老杨：落空立即切免伤顶压而非继续 D；事前承诺『第一个老杨出来就收手』并事后执行——连败旋涡唯一刹车。",
+   "operationType": "refresh_shop",
+   "targetCharacterIds": [
+    "currency_wars_character_20"
+   ],
+   "priority": 500,
+   "conditions": [],
+   "benefits": [
+    "期望值：老杨同时解锁 8 减益档位与终结技轴"
+   ],
+   "costs": [],
+   "risks": [
+    "all-in 落空需执行免伤预案，禁止补偿性上头"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p11",
+     "claimId": "double-allin-welt-discipline"
+    }
+   ]
+  },
+  {
+   "actionId": "debuff-8-unlock",
+   "title": "8 减益档位：老杨硬前置",
+   "instruction": "8 减益档位硬性要求老杨：必须有老杨才能开 8-1；6 档需减益转职。老杨到手后一分钟内完成体系升档（8-1 兑现+装备重排）。",
+   "operationType": "deploy_character",
+   "targetCharacterIds": [
+    "currency_wars_character_20"
+   ],
+   "priority": 600,
+   "conditions": [],
+   "benefits": [
+    "减益终局档位解锁"
+   ],
+   "costs": [],
+   "risks": [
+    "4.4 期口径"
+   ],
+   "preconditions": [],
+   "invalidatesWhen": [],
+   "fallbackActionIds": [],
+   "evidenceRefs": [
+    {
+     "evidenceSetId": "evidence-marathon-g-p11",
+     "claimId": "debuff-8-requires-welt"
+    }
+   ]
+  }
+ ],
+ "branches": [],
+ "alternativeRoutes": [],
+ "excludedContent": [],
+ "risks": [
+  {
+   "riskId": "oral-numbers-unverified",
+   "severity": "medium",
+   "description": "本姑娘急救段数/斩杀线/四列车 160 均为口述级数字，未经 BWIKI 官方文本核对。",
+   "mitigation": "不入结构化数值字段；挂实机验证窗口后才能升实锤。",
+   "evidenceRefs": []
+  },
+  {
+   "riskId": "strategy-reroll-dependent",
+   "severity": "high",
+   "description": "体系依赖开局策略刷新出转化彩头（UP 口述『很不好刷』），未刷出时本 playbook 整体不适用。",
+   "mitigation": "刷新落空立即按既有 playbook 换体系，禁止沉没成本硬等。",
+   "evidenceRefs": []
+  },
+  {
+   "riskId": "welt-missing-endgame",
+   "severity": "medium",
+   "description": "老杨缺失时 8 减益终局不可达，第三位面只能走免伤运营。",
+   "mitigation": "按 survival-item-priority 转免伤预案（生存装件数＞成装质量＞输出装），单敲纪律：外骨骼不砸炉。",
+   "evidenceRefs": []
+  }
+ ],
+ "missingInformationPolicy": {
+  "defaultBehavior": "mark_unknown",
+  "highRiskDecisionBehavior": "never_auto_execute",
+  "conflictBehavior": "preserve_all_sources",
+  "minimumConfidence": 0.6
+ },
+ "evidenceRefs": [
+  {
+   "evidenceSetId": "evidence-marathon-g-p11",
+   "claimId": "source-metadata"
+  },
+  {
+   "evidenceSetId": "evidence-marathon-g-p11",
+   "claimId": "luocha-convert-mechanic"
+  }
+ ],
+ "notes": [
+  "来源：甘泽 20 连胜联合挑战 P11（BV1wNu26fEYX P11，洋葱操刀，147 分钟 SSS 完整对局）——该体系为 17 份既有 playbook 零收录的全库空白，本份为第一份结构化转化。",
+  "体系核心：「本姑娘就是罗刹」为不占阵容名额的转化彩头，三月七罗刹化后具备半血斩杀与急救段数输出底层；开局锁定后全局围绕已定核心展开，拒绝换阵摇摆。",
+  "硬前置：8 减益档位（8-1）必须老杨（瓦尔特）；老杨未到前的过渡=四列车+免伤堆叠维持血线。",
+  "口述级标注：本姑娘急救段数/斩杀线/四列车 160 数值/圣杯暂停窗口均为 UP 口述+实战行为佐证，未经 BWIKI 官方文本核对。",
+  "纪律：无攻略码；音译标（音）。",
+  "2026-09-09 夜班本体 schema 精修：按 guide-playbook.v1.2 schema 与 truth-pursuit 逐字段对照重写——schemaVersion 字面修正、operationType 全部重映射到合法枚举、recommendedState 九必需键 range 化+lineup 归位、risks 对象化、补 train-clear-summons 动作修复 phase 悬挂引用、shoppingPlan 按 P11 证据补建（phase2/3）、applicability 补 4.4 版本条件；内容与数字零变更，全部出处仍指向 evidence-marathon-g-p11。",
+  "2026-09-10 R10 处置（reviews/arbitration_20260910/r10_formal_review.md §五 项1/3/4）：signals.bondIds 与 phase3 bondIds bond_07→bond_17（8 减益档位=减益羁绊 bond_17，档位 2/4/6/8；bond_07=夜之半神阵营羁绊系错置）；coreCharacterIds char_11→char_36（大丽花非 bond_11 列车同行成员；转写 [85:00]『8-1走四列车就行了，走地主走周日』实证星期日在列，acquisitionPriorities 两条与 train-clear-summons.targetCharacterIds 同步修正）；encounter-difficulty-downshift 与 fast-nine-at-2-7 的 evidenceRefs 改引 source-metadata（集内无对应 claim，补 encounter 降档/经验帧 claim 列入下批）；phase2 shoppingPlan evidenceRefs 改引 debuff-8-requires-welt。",
+  "v1.2 声明保留说明（R10 P3-B2）：本份按 v1.2 schema 对照重写但未使用 v1.2 新增字段，暂不回退版本号以与同批 lili/toppa（v1.2）保持一致；后续批补装 v1.2 字段或统一回退，二选一待定。"
+ ]
+}

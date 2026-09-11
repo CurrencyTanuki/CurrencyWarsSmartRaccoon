@@ -22,17 +22,3 @@ The .NET application uses Microsoft.ML.OnnxRuntime to run the packaged ONNX
 model locally. ONNX Runtime is distributed under the MIT License:
 
 - https://github.com/microsoft/onnxruntime
-
-## CPython 3.14.7 embedded runtime
-
-The Windows package includes the official 64-bit CPython 3.14.7 embeddable
-distribution solely to generate the local detailed-history HTML report. It is
-used under the Python Software Foundation License Version 2. The unmodified
-runtime license is included at `runtime/python/LICENSE.txt`; the runtime archive,
-SHA-256, Sigstore bundle, SPDX SBOM, and upstream URL are documented in
-`third_party/PYTHON_RUNTIME.md` in the source delivery.
-
-Upstream project and release:
-
-- https://www.python.org/
-- https://www.python.org/downloads/release/python-3147/

@@ -24,7 +24,7 @@
 
 ```powershell
 dotnet build CurrencyWarsAssistant.sln -c Release
-dotnet publish src/CurrencyWarsAssistant.App -c Release -r win-x64 --self-contained false
+dotnet publish src/CurrencyWarsAssistant.App -c Release -r win-x64 --self-contained
 ```
 
 ## 测试

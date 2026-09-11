@@ -179,6 +179,12 @@ public sealed record RunSnapshot
     public Observation<int> Health { get; init; } = Observation<int>.Unknown("not observed");
     /// <summary>备战页左下角"购买经验"等级（Lv.N，区域 StoreLevelValue，用户 2026-08-06 要求补录）。</summary>
     public Observation<int> StoreLevel { get; init; } = Observation<int>.Unknown("not observed");
+    // R5 P3-7（人口镜像·注释级备案）：本快照【无独立"人口/团队规模"字段】，下游一律以 StoreLevel 镜像近似。
+    // 近似口径：真实人口 ≈ 基础人口（=商店等级）+ 扩容特例——财富宝钻每个 +1 上限（无需穿戴）、
+    // 特殊单位（佩佩/叽米/姵姵等）至多 3 个且每个 +1 格、硬上限 13（research/basic-mechanics/xp-bench-tables.md §四；
+    // mechanics-verification-report.md F3，用户实机独有口径）。宝钻/特殊单位多的局真实人口 > 等级，镜像低估。
+    // TODO(人口字段)：未来 OCR/快照链路落地独立人口观测时，在本 record 新增 Observation<int> Population 字段，
+    // 并同步切换两处消费点：GuideEvaluator.RunContextFactory.FromSnapshot（镜像行）与 GuideMatcher 的 Caveats。
     public Observation<int> ActionPoints { get; init; } = Observation<int>.Unknown("not observed");
     public Observation<long> CurrentNodeDamage { get; init; } = Observation<long>.Unknown("not observed");
     public Observation<IReadOnlyList<string>> BoardCharacterIds { get; init; } =

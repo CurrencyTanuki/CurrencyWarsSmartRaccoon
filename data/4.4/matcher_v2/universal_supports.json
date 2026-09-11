@@ -1,0 +1,77 @@
+{
+ "meta": "通用拐=阵容无关辅助件;出处=行为规则behavior_rules_20260910.md+用户实测口径2026-09-10(阵容成型后通用拐优先于羁绊追加)",
+ "categories": {
+  "治疗": [
+   {
+    "name": "罗刹",
+    "id": "currency_wars_character_32",
+    "cost": 4,
+    "note": "群体回复,面板加成后台生效",
+    "source": "character-kits/bond-compendium"
+   },
+   {
+    "name": "风堇",
+    "id": "currency_wars_character_47",
+    "cost": 2,
+    "note": "雨过天晴循环+攻击后回复(E1后全队生命上限+回复强化)",
+    "source": "character-kits §1.x/nanoka eidolons"
+   },
+   {
+    "name": "加拉赫",
+    "id": "currency_wars_character_1301",
+    "cost": 1,
+    "note": "专家顾问(特邀机制获得);治疗",
+    "source": "character-kits/is_expert roster"
+   }
+  ],
+  "拉条": [
+   {
+    "name": "花火",
+    "id": "currency_wars_character_54",
+    "cost": 2,
+    "note": "战技点抽奖+拉条;4列车+战技点hybrid点名第四人",
+    "source": "character-kits 刻律耦合④"
+   },
+   {
+    "name": "停云",
+    "id": "currency_wars_character_1202",
+    "cost": 1,
+    "note": "专家顾问(特邀机制);充能+拉条",
+    "source": "is_expert roster"
+   },
+   {
+    "name": "缇宝",
+    "id": "currency_wars_character_55",
+    "cost": 2,
+    "note": "量子同频+昼之半神;拉条(555)",
+    "source": "character-kits §2.4"
+   }
+  ],
+  "充能": [
+   {
+    "name": "藿藿",
+    "id": "currency_wars_character_69",
+    "cost": 1,
+    "note": "充能",
+    "source": "能量成员表"
+   }
+  ],
+  "减益": [
+   {
+    "name": "佩拉",
+    "id": "currency_wars_character_1106",
+    "cost": 2,
+    "note": "减防/减益;专家顾问(特邀机制)",
+    "source": "is_expert roster"
+   },
+   {
+    "name": "桑博",
+    "id": "currency_wars_character_1108",
+    "cost": 1,
+    "note": "减益+持续伤害铺垫",
+    "source": "is_expert roster"
+   }
+  ]
+ },
+ "rule": "阵容成型后(主档羁绊满/进入第3位面):通用拐权重上浮,羁绊追加权重下浮;HP低→治疗件再上调"
+}

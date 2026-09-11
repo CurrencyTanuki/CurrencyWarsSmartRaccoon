@@ -1,0 +1,1262 @@
+{
+ "schemaVersion": "matcher-v2.1-data-0.1",
+ "generated": "2026-09-10",
+ "difficulty_ladder": {
+  "major_step": 3,
+  "sub_step": 1,
+  "A1": 52,
+  "A2": 55,
+  "A3": 58,
+  "A4": 61,
+  "A5": 64,
+  "A6": 67,
+  "A7": 70,
+  "A80": 73,
+  "A810": 74,
+  "A820": 75,
+  "A830": 76,
+  "A840": 77,
+  "A850": 78,
+  "authority": "用户实机口径 2026-09-10",
+  "status": "待今晚A820实测终验",
+  "encounter_bonus": {
+   "其二": 10,
+   "其三": 20,
+   "其四": 30
+  },
+  "encounter_temporary": true,
+  "strategy_bonus": {
+   "黄金": 3,
+   "棱彩": 6
+  }
+ },
+ "hp_formula": {
+  "base_boss": 200000000,
+  "base_encounter4": 100000000,
+  "factor": 1.052,
+  "boundary": "第3位面难度<100实证,超出外推需标注"
+ },
+ "necessity": {
+  "guide-v44-argenti-wheelchair.guide-playbook.v1.1.json": {
+   "currency_wars_character_45": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_20": {
+    "tier": "N1",
+    "confidence": "medium"
+   },
+   "currency_wars_character_23": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_02": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_54": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_55": {
+    "tier": "N2",
+    "confidence": "low"
+   },
+   "currency_wars_character_65": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_trailblazer": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_29": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_36": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_57": {
+    "tier": "N3",
+    "confidence": "high"
+   }
+  },
+  "guide-v44-baie-armor.guide-playbook.v1.1.json": {
+   "currency_wars_character_08": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_40": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_54": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_15": {
+    "tier": "N2",
+    "confidence": "high"
+   },
+   "currency_wars_character_34": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_67": {
+    "tier": "N2",
+    "confidence": "low"
+   },
+   "currency_wars_character_trailblazer": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_05": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_19": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_52": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_55": {
+    "tier": "N3",
+    "confidence": "low"
+   },
+   "currency_wars_character_68": {
+    "tier": "N3",
+    "confidence": "medium"
+   }
+  },
+  "guide-v44-baie-backline-himeko-countershock.v1.1.json": {
+   "currency_wars_character_01": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_40": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_67": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_02": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_36": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_04": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_53": {
+    "tier": "N3",
+    "confidence": "high"
+   }
+  },
+  "guide-v44-ben-guniang-luocha.guide-playbook.v1.1.json": {
+   "currency_wars_character_20": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_67": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_36": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_01": {
+    "tier": "N3",
+    "confidence": "high"
+   }
+  },
+  "guide-v44-direct-baie-ranger.guide-playbook.v1.1.json": {
+   "currency_wars_character_40": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_08": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_19": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_31": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_43": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_54": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_55": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_02": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_20": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_23": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_29": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_68": {
+    "tier": "N3",
+    "confidence": "medium"
+   }
+  },
+  "guide-v44-dot-kafka-revival.guide-playbook.v1.1.json": {
+   "currency_wars_character_46": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_02": {
+    "tier": "N1",
+    "confidence": "medium"
+   },
+   "currency_wars_character_17": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_43": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_20": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_29": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_57": {
+    "tier": "N2",
+    "confidence": "low"
+   },
+   "currency_wars_character_19": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_23": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_26": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_36": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_47": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_54": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_55": {
+    "tier": "N3",
+    "confidence": "high"
+   }
+  },
+  "guide-v44-double-shoe-aglaya.guide-playbook.v1.1.json": {
+   "currency_wars_character_54": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_72": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_20": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_19": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_36": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_49": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_55": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_43": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_47": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_trailblazer": {
+    "tier": "N3",
+    "confidence": "medium"
+   }
+  },
+  "guide-v44-dragonil-sp-point.guide-playbook.v1.1.json": {
+   "currency_wars_character_53": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_20": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_trailblazer": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_23": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_36": {
+    "tier": "N2",
+    "confidence": "high"
+   },
+   "currency_wars_character_01": {
+    "tier": "N3",
+    "confidence": "low"
+   },
+   "currency_wars_character_02": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_03": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_04": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_29": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_33": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_47": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_67": {
+    "tier": "N3",
+    "confidence": "low"
+   },
+   "currency_wars_character_69": {
+    "tier": "N3",
+    "confidence": "medium"
+   }
+  },
+  "guide-v44-endgame-3star-5cost.guide-playbook.v1.1.json": {
+   "currency_wars_character_19": {
+    "tier": "N0",
+    "confidence": "medium"
+   },
+   "currency_wars_character_05": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_20": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_21": {
+    "tier": "N3",
+    "confidence": "low"
+   },
+   "currency_wars_character_22": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_24": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_58": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_62": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_71": {
+    "tier": "N3",
+    "confidence": "medium"
+   }
+  },
+  "guide-v44-feixiao-pursuit.guide-playbook.v1.1.json": {
+   "currency_wars_character_56": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_20": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_29": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_23": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_55": {
+    "tier": "N2",
+    "confidence": "low"
+   },
+   "currency_wars_character_trailblazer": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_02": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_08": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_16": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_22": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_34": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_47": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_52": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_54": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_60": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_61": {
+    "tier": "N3",
+    "confidence": "low"
+   }
+  },
+  "guide-v44-himeko-garrison.guide-playbook.v1.1.json": {
+   "currency_wars_character_01": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_67": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_20": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_65": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_36": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_54": {
+    "tier": "N2",
+    "confidence": "low"
+   },
+   "currency_wars_character_trailblazer": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_02": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_08": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_30": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_38": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_43": {
+    "tier": "N3",
+    "confidence": "low"
+   },
+   "currency_wars_character_45": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_46": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_55": {
+    "tier": "N3",
+    "confidence": "high"
+   }
+  },
+  "guide-v44-huangquan-ranger-debuff.guide-playbook.v1.1.json": {
+   "currency_wars_character_08": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_34": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_23": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_20": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_57": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_68": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_02": {
+    "tier": "N3",
+    "confidence": "low"
+   },
+   "currency_wars_character_31": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_54": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_55": {
+    "tier": "N3",
+    "confidence": "high"
+   }
+  },
+  "guide-v44-joy-aha-slot-expansion.guide-playbook.v1.1.json": {
+   "currency_wars_character_10": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_trailblazer": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_20": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_23": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_02": {
+    "tier": "N2",
+    "confidence": "low"
+   },
+   "currency_wars_character_54": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_01": {
+    "tier": "N3",
+    "confidence": "low"
+   },
+   "currency_wars_character_05": {
+    "tier": "N3",
+    "confidence": "low"
+   },
+   "currency_wars_character_07": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_09": {
+    "tier": "N3",
+    "confidence": "low"
+   },
+   "currency_wars_character_16": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_26": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_41": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_55": {
+    "tier": "N3",
+    "confidence": "high"
+   }
+  },
+  "guide-v44-lili-wolf-chain.guide-playbook.v1.1.json": {
+   "currency_wars_character_56": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_20": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_25": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_39": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_51": {
+    "tier": "N2",
+    "confidence": "low"
+   },
+   "currency_wars_character_57": {
+    "tier": "N2",
+    "confidence": "low"
+   },
+   "currency_wars_character_71": {
+    "tier": "N3",
+    "confidence": "medium"
+   }
+  },
+  "guide-v44-mydei-hit-charge.guide-playbook.v1.1.json": {
+   "currency_wars_character_59": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_19": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_20": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_02": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_23": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_36": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_37": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_43": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_54": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_55": {
+    "tier": "N3",
+    "confidence": "medium"
+   }
+  },
+  "guide-v44-oldera-a-beloqingque-driver.guide-playbook.v1.1.json": {
+   "currency_wars_character_64": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_12": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_54": {
+    "tier": "N2",
+    "confidence": "high"
+   },
+   "currency_wars_character_43": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_59": {
+    "tier": "N3",
+    "confidence": "low"
+   }
+  },
+  "guide-v44-oldera-b-quantum-seele.guide-playbook.v1.1.json": {
+   "currency_wars_character_35": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_23": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_27": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_54": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_49": {
+    "tier": "N3",
+    "confidence": "high"
+   }
+  },
+  "guide-v44-oldera-c-fate-grail-archer.guide-playbook.v1.1.json": {
+   "currency_wars_character_14": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_04": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_trailblazer": {
+    "tier": "N1",
+    "confidence": "medium"
+   },
+   "currency_wars_character_42": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_03": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_15": {
+    "tier": "N3",
+    "confidence": "low"
+   },
+   "currency_wars_character_33": {
+    "tier": "N3",
+    "confidence": "medium"
+   }
+  },
+  "guide-v44-oldera-c-feiguang-moonlight.guide-playbook.v1.1.json": {
+   "currency_wars_character_13": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_39": {
+    "tier": "N0",
+    "confidence": "high"
+   }
+  },
+  "guide-v44-oldera-c-kafka-pursuit3.guide-playbook.v1.1.json": {
+   "currency_wars_character_46": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_17": {
+    "tier": "N1",
+    "confidence": "medium"
+   },
+   "currency_wars_character_23": {
+    "tier": "N3",
+    "confidence": "high"
+   }
+  },
+  "guide-v44-opening-tier-selector.guide-playbook.v1.1.json": {
+   "currency_wars_character_03": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_04": {
+    "tier": "N2",
+    "confidence": "high"
+   },
+   "currency_wars_character_33": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_48": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_58": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_71": {
+    "tier": "N3",
+    "confidence": "medium"
+   }
+  },
+  "guide-v44-toppa-company-contract.guide-playbook.v1.1.json": {
+   "currency_wars_character_16": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_20": {
+    "tier": "N1",
+    "confidence": "medium"
+   },
+   "currency_wars_character_54": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_72": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_36": {
+    "tier": "N2",
+    "confidence": "low"
+   },
+   "currency_wars_character_52": {
+    "tier": "N2",
+    "confidence": "high"
+   },
+   "currency_wars_character_55": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_23": {
+    "tier": "N3",
+    "confidence": "low"
+   }
+  },
+  "guide-v44-truth-pursuit.guide-playbook.v1.1.json": {
+   "currency_wars_character_44": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_54": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_20": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_43": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_08": {
+    "tier": "N2",
+    "confidence": "low"
+   },
+   "currency_wars_character_16": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_23": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_29": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_55": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_36": {
+    "tier": "N3",
+    "confidence": "medium"
+   },
+   "currency_wars_character_52": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_60": {
+    "tier": "N3",
+    "confidence": "high"
+   }
+  },
+  "guide-v44-truth-scholar-wheelchair.guide-playbook.v1.1.json": {
+   "currency_wars_character_44": {
+    "tier": "N0",
+    "confidence": "high"
+   },
+   "currency_wars_character_29": {
+    "tier": "N1",
+    "confidence": "medium"
+   },
+   "currency_wars_character_48": {
+    "tier": "N1",
+    "confidence": "high"
+   },
+   "currency_wars_character_02": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_23": {
+    "tier": "N2",
+    "confidence": "medium"
+   },
+   "currency_wars_character_08": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_20": {
+    "tier": "N3",
+    "confidence": "low"
+   },
+   "currency_wars_character_36": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_43": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_52": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_54": {
+    "tier": "N3",
+    "confidence": "high"
+   },
+   "currency_wars_character_55": {
+    "tier": "N3",
+    "confidence": "high"
+   }
+  }
+ },
+ "necessity_stats": {
+  "N0": 32,
+  "N1": 33,
+  "N2": 59,
+  "N3": 101,
+  "total": 225
+ },
+ "source_confidence": {
+  "念熙": {
+   "coefficient": 1.0,
+   "basis": "项目方既定边界（TASKS_EXTRA D + matcher-design v2 §1.3 待拍板①默认=念熙、甘泽）；包内 usage：oldera-b-quantum-seele 的 3.7 期教学局转写报告（103.4 万播放，斩杀阈值机制起源锚）"
+  },
+  "甘泽（甘泽成谣雨成诗）": {
+   "coefficient": 1.0,
+   "basis": "项目方既定边界；包内 usage：baie-armor/double-shoe-aglaya/baie-backline-himeko-countershock/endgame 主源之一/oldera 演化引用，BV1Qz17BUEs9 417 万播放、BV18yoWBfEZe 142 万、BV1aNCnBQELf 131 万；official-lineups-600 作者榜 6 套"
+  },
+  "BWIKI 货币战争页面组（wiki.biligame.com/sr）": {
+   "coefficient": 1.0,
+   "basis": "项目方既定边界（官方/BWIKI=1.0）。注意如实披露：BWIKI 页面自述『编辑组为非官方民间组织』，其 1.0 的正当理由不是官方身份而是【数据与官方配置同源】——bond-compendium 的 values.status=bwiki_official 快照即来自该站羁绊详解页；本会话 2026-09-10 实抓 9 个羁绊页 raw wikitext 与包内转录逐字吻合（含『实装版本』字段）"
+  },
+  "米哈游官方（公告/热更/游戏配置）": {
+   "coefficient": 1.0,
+   "basis": "包内 official-game-dictionary / official-lineups-600 / 各册 versionApplicability 引用的『官方 19 条纯修复』公告口径；配置 compose_list 等以 evidence-official-cw-game-config 证据集承载"
+  },
+  "项目内部审计（OLDER_VIDEO_AUDIT_MID482 等 internal 源）": {
+   "coefficient": 1.0,
+   "basis": "oldera-a 的 4.4 兴替断点锚（贝洛伯格 2/4/6→2/4、引擎充能上限 12→10）；审计链=项目方自有配置对比，等同官方口径"
+  },
+  "iqizna": {
+   "coefficient": 0.9,
+   "basis": "7 册主源（argenti/dot-kafka/dragonil/feixiao/huangquan/mydei/opening-tier），米游社『4.4货币战争攻略——X』系列成体系，逐条带 A 级/试用 0 命口径声明，数值多与 BWIKI/官方对表；扣分点=部分数字为口播未实测（册内 risks 自披露）"
+  },
+  "这看缘吧": {
+   "coefficient": 0.85,
+   "basis": "truth 两册主源（BV1yQ9dBYEJB 85.8 万播放 4.2 期 + BV1Kibe6mEEi 4.4 学者真理），同 UP 框架跨版本沿用互证；official-lineups-600 作者榜 10 套（榜眼）；扣分点=源视频 4.2 期、部分 boss 名 ASR 未证实（册内 risks 自披露）"
+  },
+  "RX1018": {
+   "coefficient": 0.85,
+   "basis": "joy-aha 主源（77726062，7400 字系统级解析，实测拟合模型主动标注『仅记档不入动作参数』的自律披露）；official-lineups-600 作者榜 21 套（榜首）"
+  },
+  "烟波浩渺的彼岸": {
+   "coefficient": 0.8,
+   "basis": "strategy-priority-ten 主源 + fate-grail/feiguang 引用（10 大必选策略 08-06、命运圣杯 07-31）；标题含『选到就通关』式夸张用语、十大无排序自评 → 0.8 不给 0.9"
+  },
+  "让我摸个鱼吧Moyu": {
+   "coefficient": 0.75,
+   "basis": "oldera-a 贝洛青雀体系主源（3.7 期原文快照在档，体系自洽）；official-lineups 作者榜 4 套；4.4 未复测（册内『未见推翻≠已复测』定级）"
+  },
+  "Jape": {
+   "coefficient": 0.75,
+   "basis": "oldera-b 量子希儿 4.2 机制/出装主源，全文快照在档；+10% 数值自标『乘区调整后未复测』"
+  },
+  "厄焰": {
+   "coefficient": 0.7,
+   "basis": "direct-baie-ranger 主源；『白厨特供/65白最爽/21白以下请有序离场』账号练度门槛向，17 连胜记录为作者自报"
+  },
+  "月下chaos": {
+   "coefficient": 0.7,
+   "basis": "himeko-garrison 主源之一（77151995，A8-50 新手向）；机制链多处『作者转述/实测未对官方文本』（册内 risks 自披露）"
+  },
+  "落雨谪仙": {
+   "coefficient": 0.7,
+   "basis": "himeko-garrison 双主源之二（76845072）；与月下chaos 互证但同源性质相同"
+  },
+  "蹉跎往生": {
+   "coefficient": 0.7,
+   "basis": "fate-grail 引用源（76917798 圣杯羁绊）；标题向『有多强』=评价型非数据型"
+  },
+  "o独v泪o": {
+   "coefficient": 0.7,
+   "basis": "feiguang 的 M-07 策略全文载体（76747952）；作为『官方新增策略文本转录』用途可靠性高，但属搬运性质不给 0.75+"
+  },
+  "竹间檐上": {
+   "coefficient": 0.7,
+   "basis": "fate-grail 引用（77495769 A8N50 50 连胜）；战绩自报型内容"
+  },
+  "强碱性硫酸茶": {
+   "coefficient": 0.7,
+   "basis": "feiguang 简介层引用（BV18KNz6gEYD『抽到就通关』式标题）；仅简介层无正文深文"
+  },
+  "Knowm1": {
+   "coefficient": 0.7,
+   "basis": "endgame 主源（73848750 公式化追全员三星五费）；数学推导向、与 NGA 楼讨论双源互证，但『速9公式』有 A830/A840 适用边界（册内 alternativeRoutes 自披露）"
+  },
+  "风风风风风瑾（风瑾）": {
+   "coefficient": 0.7,
+   "basis": "oldera-b 口碑定位与弱点主源（75227513『各流派个人评价』）；作者自标 主观评价体"
+  },
+  "巴哈姆特论坛帖群（Himari/青树海底捞月/月嶽岚 等回帖）": {
+   "coefficient": 0.6,
+   "basis": "oldera-a/bahamut 12290（0 行动值循环原型+环境口碑）、fate-grail/13490（天湖开局+任务解法跟帖）；RULES §一.4 论坛帖=低信源，取 0.6 而非 0.5（因其为机制原型记录且被包内交叉引用）（本档交叉引用成立：oldera-a 正文二次引用 12290；fate-grail 二次引用 13490）"
+  },
+  "巴哈姆特攻略帖（卡芙卡追擊流3.0，snA=13457）": {
+   "coefficient": 0.6,
+   "basis": "oldera-c-kafka 主源；系列第三版跨版本自述、有结构，但版本内零复测点自披露（4.5 期未实测）→高于跟帖低于米游社单帖【复核修订】独立复核指出 0.65 落在既定带隙 (0.6,0.7)；项目边界只定义了 0.5~0.6 与 0.7~0.9，故下调至 0.6 贴带顶。若项目方确认允许带间插值，可恢复 0.65（理由：系列第三版+结构完整，高于普通跟帖）。"
+  },
+  "NGA 论坛楼（tid-45776649 等）": {
+   "coefficient": 0.6,
+   "basis": "endgame 牌库数学+门槛公式（12 楼讨论）；有可复算数学但非署名权威。诚实修订（独立复核指出）：本条目与巴哈回帖群有包内交叉引用，但同档的『4.5 评论区』与『硬币豚豚鼠』两项 basis 自述为单源/非实测，故本表 0.6 档整体理由应为『论坛/评论层级（RULES §一.4）+ 内容可核验』，不是『均有交叉引用』。NGA tid=47155742（double-shoe 正文内引，4.4 阿雅 T0.5 共识）亦归本档。"
+  },
+  "甘泽20连胜联合挑战分P操刀者（洋葱/缘神/扑满(音) 等）": {
+   "coefficient": 0.6,
+   "basis": "ben-guniang-luocha/lili-wolf-chain/toppa 三册主源=P11/P5/P13 回放转写；操刀者非甘泽本人，实战帧证（金币/经验帧）可信度高，但大量数值为 ASR 口播（『诺抄昔涟』『哈基米』等未对表）→0.65；注意其挂靠的频道=甘泽（1.0），降级只针对『操刀者口播未复核』部分【复核修订】0.65 越出既定带隙，按 §1.3 建议带（素人回放=0.5~0.6）下调至 0.6 贴带顶；帧级证据带来的上浮主张保留为项目方拍板项。"
+  },
+  "4.5 期社区二创/评论区结论（『绝不是dd』等）": {
+   "coefficient": 0.6,
+   "basis": "dot-kafka 4.5 版注引用（B站评论区）；单源、非正文、版本口径新→取下限区间 0.6；单源（包内无第二处印证），按 §一.2『单源结论降置信』精神贴 0.6 上限而非 0.65"
+  },
+  "社区口径提供者『硬币豚豚鼠』": {
+   "coefficient": 0.6,
+   "basis": "joy-aha 的 4.2 期内修正口径数据源（社区提供，非作者实测）；包内自披露『4.4/4.5 需实机复核』；单源口径（非实测），同上贴下限带顶格"
+  },
+  "NGA tid=47155742（正文内引）": {
+   "coefficient": 0.6,
+   "basis": "double-shoe-aglaya 正文内引『（NGA 4.4 强度共识，tid=47155742）』；独立复核发现该引用未单列，补档同 NGA 层"
+  },
+  "巴哈 snA=13560 / 米游社 77092893（fate-grail 正文内引）": {
+   "coefficient": 0.6,
+   "basis": "fate-grail 正文与 evidenceRefs 内引 13560（不完美完成定义）与 77092893（天湖，作者自述），独立复核要求点名，同论坛层定值"
+  }
+ },
+ "bond_timing_priors": {
+  "仙舟": {
+   "timing": "strong_early",
+   "confidence": "high"
+  },
+  "列车同行": {
+   "timing": "strong_early",
+   "confidence": "medium"
+  },
+  "持续伤害": {
+   "timing": "strong_early",
+   "confidence": "high"
+  },
+  "狼狩": {
+   "timing": "strong_early",
+   "confidence": "medium"
+  },
+  "贝洛伯格": {
+   "timing": "strong_early",
+   "confidence": "medium"
+  },
+  "银河学者": {
+   "timing": "strong_early",
+   "confidence": "medium"
+  },
+  "公司": {
+   "timing": "balanced",
+   "confidence": "low"
+  },
+  "减益": {
+   "timing": "balanced",
+   "confidence": "medium"
+  },
+  "击破": {
+   "timing": "balanced",
+   "confidence": "medium"
+  },
+  "命运圣杯": {
+   "timing": "balanced",
+   "confidence": "medium"
+  },
+  "夜之半神": {
+   "timing": "balanced",
+   "confidence": "low"
+  },
+  "头号玩家": {
+   "timing": "balanced",
+   "confidence": "low"
+  },
+  "巡海游侠": {
+   "timing": "balanced",
+   "confidence": "medium"
+  },
+  "战技点": {
+   "timing": "balanced",
+   "confidence": "medium"
+  },
+  "护盾": {
+   "timing": "balanced",
+   "confidence": "medium"
+  },
+  "救世主": {
+   "timing": "balanced",
+   "confidence": "low"
+  },
+  "星核猎手": {
+   "timing": "balanced",
+   "confidence": "medium"
+  },
+  "昼之半神": {
+   "timing": "balanced",
+   "confidence": "low"
+  },
+  "燃血": {
+   "timing": "balanced",
+   "confidence": "medium"
+  },
+  "群攻": {
+   "timing": "balanced",
+   "confidence": "medium"
+  },
+  "追击": {
+   "timing": "balanced",
+   "confidence": "low"
+  },
+  "领航员": {
+   "timing": "balanced",
+   "confidence": "medium"
+  },
+  "命运卜者": {
+   "timing": "strong_late",
+   "confidence": "low"
+  },
+  "大守护者": {
+   "timing": "strong_late",
+   "confidence": "low"
+  },
+  "挚爱之人": {
+   "timing": "strong_late",
+   "confidence": "high"
+  },
+  "星间旅人": {
+   "timing": "strong_late",
+   "confidence": "high"
+  },
+  "欢愉": {
+   "timing": "strong_late",
+   "confidence": "low"
+  },
+  "治疗": {
+   "timing": "strong_late",
+   "confidence": "high"
+  },
+  "盛会之星": {
+   "timing": "strong_late",
+   "confidence": "high"
+  },
+  "能量": {
+   "timing": "strong_late",
+   "confidence": "medium"
+  },
+  "量子同频": {
+   "timing": "strong_late",
+   "confidence": "medium"
+  },
+  "魔术师": {
+   "timing": "strong_late",
+   "confidence": "high"
+  },
+  "师徒": {
+   "timing": "unknown",
+   "confidence": "low"
+  }
+ },
+ "stages_ref": "standard/official-lineups-600.v1.json (stages: Early/Middle/Final)",
+ "pace_ref": "research/guides/pace_baseline_evidence.json (22节点等级曲线)",
+ "expert_gate": {
+  "is_expert_roster": [
+   "加拉赫",
+   "貊泽",
+   "刃",
+   "停云",
+   "青雀",
+   "桑博",
+   "佩拉",
+   "姬子",
+   "银狼"
+  ],
+  "mechanic": "不通过常规刷新出现,需专门机制加入商店(T1 机制库L145)",
+  "rule": "购买推荐对 is_expert=true 全员挂专家门控"
+ },
+ "cost_gate_rule": "cost 超过当前等级概率上限(如 5费@Lv6=0%)→\"不可得\"标注,不进即时购买栏"
+}

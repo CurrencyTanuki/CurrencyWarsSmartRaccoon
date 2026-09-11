@@ -1,10 +1,12 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyWarsAssistant.Core", "src\CurrencyWarsAssistant.Core\CurrencyWarsAssistant.Core.csproj", "{9A7EC8D0-5D39-432B-B183-A157E0191A89}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyWarsAssistant.Advisor", "src\CurrencyWarsAssistant.Advisor\CurrencyWarsAssistant.Advisor.csproj", "{D84228CE-26C6-4E0B-8A53-A4D6835A4FE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyWarsAssistant.VisionCli", "src\CurrencyWarsAssistant.VisionCli\CurrencyWarsAssistant.VisionCli.csproj", "{C393F42A-8104-490C-82CF-64FA528DA7E3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyWarsAssistant.Vision", "src\CurrencyWarsAssistant.Vision\CurrencyWarsAssistant.Vision.csproj", "{A4A39E36-AB9D-4A82-8A05-5FB9E7EF9EA7}"
 EndProject
@@ -27,9 +29,13 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D84228CE-26C6-4E0B-8A53-A4D6835A4FE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {C393F42A-8104-490C-82CF-64FA528DA7E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D84228CE-26C6-4E0B-8A53-A4D6835A4FE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {C393F42A-8104-490C-82CF-64FA528DA7E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D84228CE-26C6-4E0B-8A53-A4D6835A4FE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {C393F42A-8104-490C-82CF-64FA528DA7E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D84228CE-26C6-4E0B-8A53-A4D6835A4FE1}.Release|Any CPU.Build.0 = Release|Any CPU
+        {C393F42A-8104-490C-82CF-64FA528DA7E3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9A7EC8D0-5D39-432B-B183-A157E0191A89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9A7EC8D0-5D39-432B-B183-A157E0191A89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A7EC8D0-5D39-432B-B183-A157E0191A89}.Release|Any CPU.ActiveCfg = Release|Any CPU

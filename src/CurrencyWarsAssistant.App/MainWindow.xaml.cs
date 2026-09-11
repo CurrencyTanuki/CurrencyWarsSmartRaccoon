@@ -27,6 +27,7 @@ public partial class MainWindow : Window
     private static readonly TimeSpan ShutdownTimeout = TimeSpan.FromSeconds(3);
     private readonly MainViewModel _viewModel;
     private readonly SituationAnalysisViewModel _situationAnalysis;
+    private readonly AdvisorRecommendationViewModel _advisorRecommendation;
     private readonly LocalRunStore _runStore;
     private readonly UiTaskEventSink _eventSink;
     private nint _handle;
@@ -62,6 +63,7 @@ public partial class MainWindow : Window
     public MainWindow(
         MainViewModel viewModel,
         SituationAnalysisViewModel situationAnalysis,
+        AdvisorRecommendationViewModel advisorRecommendation,
         LocalRunStore runStore,
         UiTaskEventSink eventSink,
         IGameWindowService gameWindowService,
@@ -77,6 +79,7 @@ public partial class MainWindow : Window
     {
         _viewModel = viewModel;
         _situationAnalysis = situationAnalysis;
+        _advisorRecommendation = advisorRecommendation;
         _runStore = runStore;
         _eventSink = eventSink;
         _gameWindowService = gameWindowService;
@@ -102,6 +105,10 @@ public partial class MainWindow : Window
 
     public SituationAnalysisViewModel SituationAnalysis =>
         _situationAnalysis;
+
+    /// <summary>「攻略推荐（局势+阵容）」面板子 VM（XAML 以 ElementName=RootWindow 绑定，同 SituationAnalysis 先例）。</summary>
+    public AdvisorRecommendationViewModel AdvisorRecommendation =>
+        _advisorRecommendation;
 
     private void OnSourceInitialized(object? sender, EventArgs e)
     {
@@ -155,6 +162,7 @@ public partial class MainWindow : Window
         _threeStarFiveCostCts?.Cancel();
         _viewModel.RequestShutdownStop();
         _situationAnalysis.RequestShutdownStop();
+        _advisorRecommendation.RequestShutdownStop();
         PublishShutdownStage(
             "ShutdownCancellationSent",
             "已停止接收新任务并发送后台取消请求。");

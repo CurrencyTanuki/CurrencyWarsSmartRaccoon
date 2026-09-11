@@ -477,6 +477,7 @@ public partial class App : Application
             UnifiedRunLifecycleService>();
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<SituationAnalysisViewModel>();
+        services.AddSingleton<AdvisorRecommendationViewModel>();
         services.AddSingleton<MainWindow>();
         services.AddSingleton<CommandTestWindow>();
         _services = services.BuildServiceProvider();

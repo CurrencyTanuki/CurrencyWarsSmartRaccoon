@@ -25,6 +25,14 @@
             <Setter Property="FontWeight" Value="SemiBold" />
         </Style>
 
+        <!-- 攻略推荐面板分组标题（AdvisorRecommendationSection 专用小标题） -->
+        <Style x:Key="AdvisorGroupHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="#7F93AA" />
+            <Setter Property="Margin" Value="0,14,0,4" />
+        </Style>
+
         <Style x:Key="NavigationButtonStyle"
                TargetType="Button"
                BasedOn="{StaticResource {x:Type Button}}">
@@ -690,6 +698,341 @@
                       VerticalScrollBarVisibility="Hidden"
                       Focusable="True">
           <StackPanel>
+            <!-- ▼ 攻略推荐（局势+阵容）：AdvisorPipeline v2.1 面板（只读识别，独立于自动化；开始记录按钮正下方成组） -->
+            <Border x:Name="AdvisorRecommendationSection"
+                    Margin="0,0,0,10"
+                    Padding="12"
+                    CornerRadius="8"
+                    Background="{StaticResource PanelBrush}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- 标题 + 生成按钮 -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource SectionTitleStyle}"
+                                       Text="攻略推荐（局势+阵容）" />
+                            <TextBlock Margin="0,3,0,0"
+                                       Foreground="{StaticResource MutedBrush}"
+                                       Text="按当前识别快照生成购买推荐与阶段匹配（v2.1 匹配器）；只读识别，不影响游戏。"
+                                       TextWrapping="Wrap" />
+                            <TextBlock Margin="0,3,0,0"
+                                       FontSize="11"
+                                       Foreground="#83BDD9"
+                                       Text="{Binding AdvisorRecommendation.SnapshotSummary, ElementName=RootWindow}" />
+                        </StackPanel>
+                        <Button Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Command="{Binding AdvisorRecommendation.GenerateCommand, ElementName=RootWindow}"
+                                Style="{StaticResource PrimaryActionButtonStyle}"
+                                Content="生成攻略推荐"
+                                ToolTip="对当前游戏窗口做一次只读识别（记录中则直接取识别流最新快照），运行 AdvisorPipeline v2.1 生成推荐" />
+                    </Grid>
+
+                    <!-- 面板状态行 -->
+                    <TextBlock Grid.Row="1"
+                               Margin="1,8,0,0"
+                               Foreground="#D9E3EF"
+                               Text="{Binding AdvisorRecommendation.Status, ElementName=RootWindow}"
+                               TextWrapping="Wrap" />
+
+                    <!-- 错误提示（AdvisorPipeline 异常落在面板内，不崩程序） -->
+                    <Border Grid.Row="2"
+                            Margin="0,8,0,0"
+                            Padding="10,7"
+                            CornerRadius="6"
+                            Background="#33222A">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding AdvisorRecommendation.HasError, ElementName=RootWindow}"
+                                                 Value="True">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Foreground="#FDA4AF"
+                                   Text="{Binding AdvisorRecommendation.ErrorMessage, ElementName=RootWindow}"
+                                   TextWrapping="Wrap" />
+                    </Border>
+
+                    <!-- 结果区（只在成功生成后展开） -->
+                    <StackPanel Grid.Row="3">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding AdvisorRecommendation.HasResult, ElementName=RootWindow}"
+                                                 Value="True">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+
+                        <!-- 1) 最佳阶段匹配 -->
+                        <TextBlock Style="{StaticResource AdvisorGroupHeaderStyle}"
+                                   Text="最佳阶段匹配" />
+                        <TextBlock Margin="1,0,0,0"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="#A5E5FF"
+                                   Text="{Binding AdvisorRecommendation.BestStageSummary, ElementName=RootWindow}"
+                                   TextWrapping="Wrap" />
+                        <TextBlock Style="{StaticResource AdvisorGroupHeaderStyle}"
+                                   Margin="0,8,0,3"
+                                   Text="阶段候选（前 3）" />
+                        <ItemsControl ItemsSource="{Binding AdvisorRecommendation.TopStageMatches, ElementName=RootWindow}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Margin="0,1"
+                                               Text="{Binding StringFormat=• {0}}"
+                                               TextWrapping="Wrap" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- 2) 已激活攻略（N0 门控命中） -->
+                        <TextBlock Style="{StaticResource AdvisorGroupHeaderStyle}"
+                                   Text="已激活攻略（N0 门控命中）" />
+                        <ItemsControl ItemsSource="{Binding AdvisorRecommendation.ActivatedGuides, ElementName=RootWindow}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Margin="0,1"
+                                               Foreground="#9EE6FF"
+                                               Text="{Binding StringFormat=• {0}}"
+                                               TextWrapping="Wrap" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- 3) 购买推荐（Score 降序） -->
+                        <TextBlock Style="{StaticResource AdvisorGroupHeaderStyle}"
+                                   Text="购买推荐（按推荐度降序）" />
+                        <Grid Margin="1,0,0,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="170" />
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="60" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock FontSize="11"
+                                       Foreground="#60748B"
+                                       Text="角色ID" />
+                            <TextBlock Grid.Column="1"
+                                       FontSize="11"
+                                       Foreground="#60748B"
+                                       Text="推荐度" />
+                            <TextBlock Grid.Column="2"
+                                       FontSize="11"
+                                       Foreground="#60748B"
+                                       Text="必要性" />
+                            <TextBlock Grid.Column="3"
+                                       FontSize="11"
+                                       Foreground="#60748B"
+                                       Text="说明" />
+                        </Grid>
+                        <ItemsControl ItemsSource="{Binding AdvisorRecommendation.Buys, ElementName=RootWindow}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="170" />
+                                            <ColumnDefinition Width="70" />
+                                            <ColumnDefinition Width="60" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock VerticalAlignment="Center"
+                                                   FontWeight="SemiBold"
+                                                   Text="{Binding CharacterId}"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   ToolTip="{Binding CharacterId}" />
+                                        <TextBlock Grid.Column="1"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#9EE6FF"
+                                                   Text="{Binding ScoreDisplay}" />
+                                        <TextBlock Grid.Column="2"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#D6A84A"
+                                                   Text="{Binding TierDisplay}" />
+                                        <TextBlock Grid.Column="3"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="{StaticResource MutedBrush}"
+                                                   Text="{Binding Note}"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   ToolTip="{Binding Note}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- 4) 门控项（费用不可达/专家）：单独一组，灰色，带 GateNote 原因 -->
+                        <StackPanel>
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding AdvisorRecommendation.HasGatedBuys, ElementName=RootWindow}"
+                                                     Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <TextBlock Style="{StaticResource AdvisorGroupHeaderStyle}"
+                                       Text="门控项（当前不进购买栏）" />
+                            <ItemsControl ItemsSource="{Binding AdvisorRecommendation.GatedBuys, ElementName=RootWindow}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,2" Opacity="0.62">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="170" />
+                                                <ColumnDefinition Width="70" />
+                                                <ColumnDefinition Width="60" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock VerticalAlignment="Center"
+                                                       Foreground="#8B96A8"
+                                                       Text="{Binding CharacterId}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       ToolTip="{Binding CharacterId}" />
+                                            <TextBlock Grid.Column="1"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="#8B96A8"
+                                                       Text="{Binding ScoreDisplay}" />
+                                            <TextBlock Grid.Column="2"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="#8B96A8"
+                                                       Text="{Binding TierDisplay}" />
+                                            <TextBlock Grid.Column="3"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="#8B96A8"
+                                                       Text="{Binding Note}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       ToolTip="{Binding Note}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <!-- 5) 通用拐价值线 -->
+                        <TextBlock Style="{StaticResource AdvisorGroupHeaderStyle}"
+                                   Text="通用拐价值线" />
+                        <ItemsControl ItemsSource="{Binding AdvisorRecommendation.UniversalNow, ElementName=RootWindow}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Margin="0,1"
+                                               Text="{Binding StringFormat=• {0}}"
+                                               TextWrapping="Wrap" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- 6) 难度 advisory（有值才显示；数据待 A820 实测终验，仅参考） -->
+                        <StackPanel>
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding AdvisorRecommendation.HasDifficultyAdvisory, ElementName=RootWindow}"
+                                                     Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <TextBlock Style="{StaticResource AdvisorGroupHeaderStyle}"
+                                       Text="难度参考（数据待 A820 实测终验，仅参考）" />
+                            <TextBlock Margin="1,0,0,0"
+                                       Foreground="#E7CA82"
+                                       Text="{Binding AdvisorRecommendation.DifficultyAdvisory, ElementName=RootWindow}"
+                                       TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <!-- 7) Caveats（诚实纪律：v2.1 与 v1 报告的局限全部见字） -->
+                        <TextBlock Style="{StaticResource AdvisorGroupHeaderStyle}"
+                                   Text="Caveats（v2.1 局限声明）" />
+                        <ItemsControl ItemsSource="{Binding AdvisorRecommendation.Caveats, ElementName=RootWindow}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Margin="0,1"
+                                               Foreground="#FB9AA5"
+                                               Text="{Binding StringFormat=• {0}}"
+                                               TextWrapping="Wrap" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- 8) v1 MatchReport：攻略匹配 + MatchReport.Caveats -->
+                        <TextBlock Style="{StaticResource AdvisorGroupHeaderStyle}"
+                                   Text="攻略匹配（v1 报告）" />
+                        <ItemsControl ItemsSource="{Binding AdvisorRecommendation.GuideMatches, ElementName=RootWindow}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,1"
+                                                Orientation="Horizontal">
+                                        <TextBlock TextWrapping="Wrap">
+                                            <Run Text="{Binding Title, Mode=OneWay}" />
+                                            <Run Text=" · " />
+                                            <Run Foreground="#9EE6FF"
+                                                 Text="{Binding SimilarityDisplay, Mode=OneWay}" />
+                                            <Run Text=" · 命中阶段 " />
+                                            <Run Text="{Binding MatchedPhase, Mode=OneWay}" />
+                                        </TextBlock>
+                                        <Border Margin="6,0,0,0"
+                                                Padding="5,1"
+                                                VerticalAlignment="Center"
+                                                CornerRadius="3"
+                                                Background="#4A3A15">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsPrimary}"
+                                                                     Value="True">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <TextBlock FontSize="11"
+                                                       Foreground="#E7CA82"
+                                                       Text="主匹配" />
+                                        </Border>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Style="{StaticResource AdvisorGroupHeaderStyle}"
+                                   Margin="0,8,0,3"
+                                   Text="v1 匹配器 Caveats" />
+                        <ItemsControl ItemsSource="{Binding AdvisorRecommendation.MatchCaveats, ElementName=RootWindow}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Margin="0,1"
+                                               Foreground="#FB9AA5"
+                                               Text="{Binding StringFormat=• {0}}"
+                                               TextWrapping="Wrap" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <!-- ▲ 攻略推荐 面板结束 -->
+
             <Border x:Name="IncompleteRunsSection"
                     Margin="0,0,0,10"
                     Padding="12"

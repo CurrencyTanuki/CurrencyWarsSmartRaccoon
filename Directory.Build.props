@@ -5,8 +5,8 @@
     <LangVersion>12</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Deterministic>true</Deterministic>
-    <Version>1.2.131</Version>
-    <InformationalVersion>1.2.131</InformationalVersion>
+    <Version>1.2.132</Version>
+    <InformationalVersion>1.2.132</InformationalVersion>
   </PropertyGroup>
 </Project>
 

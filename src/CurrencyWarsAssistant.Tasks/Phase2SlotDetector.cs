@@ -107,10 +107,6 @@ public sealed class Phase2SlotDetector
 
         if (centers.Count < 2)
         {
-            return 6; // 检测不足回退
-        }
-
-        Console.WriteLine($"[DetectBackSlotCount] centers={string.Join(",", centers)}");
 
         // 3) 与 6/7/8/9 格模型匹配（960 对称、等距 145）：
         //    统计"模型格与最近检测中心距离 < 60px"的匹配数，
@@ -212,7 +208,6 @@ public sealed class Phase2SlotDetector
                 frame,
                 yTop,
                 Math.Min(yBottom, frame.Height - 1));
-            Console.WriteLine(
                 $"[AlignSlotColumns] row y={row.Key} band={yTop}-{Math.Min(yBottom, frame.Height - 1)} " +
                 $"clusters={clusters.Count}: [{string.Join(",", clusters.Select(c => $"{c.Center}w{c.Width}"))}]");
             if (clusters.Count == 0)

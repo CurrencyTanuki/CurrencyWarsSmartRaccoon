@@ -39,6 +39,10 @@ public sealed class GrailRunLoop(
         Task StartAsync(string roundId, CancellationToken cancellationToken = default);
 
         Task FinishAsync(bool success, string? outputDirectory, CancellationToken cancellationToken = default);
+
+        /// <summary>1.2.133（审计 P1-3 修复）：局边界旋转——上一段封箱落盘到保留目录并开启下一段。
+        /// 未在录制时等价于 StartAsync。</summary>
+        Task RotateAsync(string newRoundId, string outputDirectory, CancellationToken cancellationToken = default);
     }
 
     /// <summary>录像输出目录（成功局 MP4 保留位置）。</summary>
@@ -64,10 +68,18 @@ public sealed class GrailRunLoop(
         {
             for (var round = 1; options.MaxRounds <= 0 || round <= options.MaxRounds; round++)
             {
+                // P1（审计 09-12）修复：跨局状态不复位——组合根每轮复用同一 holder，
+                // 旧实现第 2 局起继承祈愿计数/聘用书/购买账（单人局判山穷水尽无限速刷、
+                // 全员局可假 Success 停机）。每局开局复位全部事件态与执行器进度。
+                stateHolder.Reset();
+                executor.ResetDeploymentProgressForNewMatch();
+
                 // ① 重刷开局（环境过滤器只收 067/019；命中后进 1-1/1-2/1-3）
+                // 1.2.133（审计 P1-3 修复）：局边界旋转——上一局封箱落盘 Recordings（不再被
+                // 下一局 StartAsync 删除），本局开启新段。首轮未录制时等价于 StartAsync。
                 if (RoundRecorder is not null)
                 {
-                    await RoundRecorder.StartAsync($"grail-round-{round}", cancellationToken);
+                    await RoundRecorder.RotateAsync($"grail-round-{round}", RecordingOutputDirectory, cancellationToken);
                 }
 
                 // W1：1-1/1-2 也会强制弹祈愿——opening 期间挂"轻量"弹框泵
@@ -126,6 +138,12 @@ public sealed class GrailRunLoop(
                         windowHandle, goal, options, round, cancellationToken);
                     if (outcome.Succeeded)
                     {
+                        // 1.2.133（审计 P1-1 修复）：成功局录像转正保留（旧路径被
+                        // MainWindow 收尾 FinishAsync(false) 无差别删除）。
+                        if (RoundRecorder is not null)
+                        {
+                            await RoundRecorder.FinishAsync(true, RecordingOutputDirectory, cancellationToken);
+                        }
                         return outcome;
                     }
                 }

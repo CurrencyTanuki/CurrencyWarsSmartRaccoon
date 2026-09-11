@@ -2606,7 +2606,6 @@ public sealed partial class Phase2OperationalScreenshotAnalyzer(
                 }
                 dedup.Add((h.CxPx, h.Conf, h.Res));
             }
-            Console.WriteLine($"[EquipSeg] zone={zone} slot={owner.SlotIndex} " +
                 $"segSegments={segList.Count} segSlots={segSlots.Count} cand={quadCandidates.Count} " +
                 $"matched={matched.Count}({string.Join(",", matched.Select(m => $"{m.Res.TemplateId}:{m.Res.Confidence:F2}@{(int)m.CxPx}"))}) " +
                 $"final={dedup.Count}");

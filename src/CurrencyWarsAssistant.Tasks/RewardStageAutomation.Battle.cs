@@ -449,9 +449,12 @@ public sealed partial class RewardStageAutomationController
                         last3[^1] == AutoBattleVisualState.Enabled &&
                         last3[^2] == AutoBattleVisualState.Enabled &&
                         last3[^3] == AutoBattleVisualState.Enabled;
-                    var consecutiveDisabled = last3.Count >= 2 &&
+                    // P1-9（审计 09-12）修复：与 Enabled 对称改 3 帧确认——旧 2 帧门槛
+                    // 会被终结技动画遮挡的 2 帧假 Disabled 关掉已开启的自动战斗（V 为切换键）。
+                    var consecutiveDisabled = last3.Count >= 3 &&
                         last3[^1] == AutoBattleVisualState.Disabled &&
-                        last3[^2] == AutoBattleVisualState.Disabled;
+                        last3[^2] == AutoBattleVisualState.Disabled &&
+                        last3[^3] == AutoBattleVisualState.Disabled;
                     var justToggled = autoBattleToggleAttempts > 0 &&
                         recentAutoBattleStates.Count <= 3;
 

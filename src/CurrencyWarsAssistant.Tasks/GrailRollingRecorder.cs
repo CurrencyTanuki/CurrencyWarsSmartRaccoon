@@ -20,11 +20,15 @@ namespace CurrencyWarsAssistant.Tasks;
 /// 下一局重新 <see cref="StartAsync"/> 重新录，实现"每局滚动"。
 /// </para>
 /// <para>依赖外置 ffmpeg（不捆绑，见 <see cref="FfmpegLocator"/>）。</para>
+/// <para>1.2.133 楔死修复（审计 P1-4）：stdin 写改异步可取消；stderr/stdout 后台排干
+///（防 4KB 管道填满反压楔死）；停止等待加 10 秒超时（超时 Kill ffmpeg 解阻塞）。</para>
 /// </summary>
 public sealed class GrailRollingRecorder :
     GrailRunLoop.IRoundRecorder,
     IDisposable
 {
+    private const TimeSpan StopWaitTimeout = TimeSpan.FromSeconds(10);
+
     private readonly IGameCapture _capture;
     private readonly GameWindowInfo _window;
     private readonly FateGrailRecordingQuality _quality;
@@ -34,6 +38,8 @@ public sealed class GrailRollingRecorder :
     private CancellationTokenSource? _cts;
     private Process? _ffmpeg;
     private Task? _captureLoop;
+    private Task? _stderrDrain;
+    private Task? _stdoutDrain;
     private string? _tempFile;
     private bool _disposed;
 
@@ -90,6 +96,11 @@ public sealed class GrailRollingRecorder :
                 _ffmpeg = null;
                 throw new InvalidOperationException("无法启动 ffmpeg 进程（录制器启动失败）。");
             }
+
+            // P1-4：stderr/stdout 必须排干——ffmpeg 错误输出填满 4KB 管道缓冲会反压
+            // stdin 写入造成楔死（经典 Process 重定向死锁）。任务句柄保留防未观察异常。
+            _stderrDrain = _ffmpeg.StandardError.ReadToEndAsync();
+            _stdoutDrain = _ffmpeg.StandardOutput.ReadToEndAsync();
 
             _captureLoop = Task.Run(() => RunCaptureLoopAsync(_cts.Token));
         }
@@ -154,7 +165,16 @@ public sealed class GrailRollingRecorder :
         _cts?.Cancel();
         if (_captureLoop is not null)
         {
-            try { await _captureLoop.ConfigureAwait(false); }
+            try
+            {
+                // P1-4：采集循环若卡在 stdin 写（磁盘满/ffmpeg 停止消费），Cancel 无法
+                // 解除同步 Write 的阻塞——加 10 秒超时，超时走下方 Kill ffmpeg 解阻塞。
+                await _captureLoop.WaitAsync(StopWaitTimeout, CancellationToken.None)
+                    .ConfigureAwait(false);
+            }
+            catch (TimeoutException)
+            {
+            }
             catch (OperationCanceledException) { }
             catch (Exception) { }
         }
@@ -180,6 +200,11 @@ public sealed class GrailRollingRecorder :
             _ffmpeg.Dispose();
             _ffmpeg = null;
         }
+        // 排干任务随进程退出自然完成；观察句柄防未观察异常。
+        ObserveDrain(_stderrDrain);
+        ObserveDrain(_stdoutDrain);
+        _stderrDrain = null;
+        _stdoutDrain = null;
 
         // 处理临时文件。
         if (_tempFile is not null && File.Exists(_tempFile))
@@ -222,6 +247,15 @@ public sealed class GrailRollingRecorder :
         cancellationToken.ThrowIfCancellationRequested();
     }
 
+    private static void ObserveDrain(Task? drain)
+    {
+        if (drain is null)
+        {
+            return;
+        }
+        _ = drain.ContinueWith(_ => { }, TaskScheduler.Default);
+    }
+
     private async Task RunCaptureLoopAsync(CancellationToken cancellationToken)
     {
         var frameInterval = _quality.FrameInterval;
@@ -231,7 +265,8 @@ public sealed class GrailRollingRecorder :
             while (!cancellationToken.IsCancellationRequested)
             {
                 var frame = await _capture.CaptureAsync(_window, cancellationToken).ConfigureAwait(false);
-                WriteFrame(_ffmpeg, frame);
+                // P1-4：改异步可取消写——磁盘满/ffmpeg 停止消费时不再永久阻塞。
+                await WriteFrameAsync(_ffmpeg, frame, cancellationToken).ConfigureAwait(false);
 
                 next += frameInterval;
                 var delay = next - DateTimeOffset.UtcNow;
@@ -250,7 +285,7 @@ public sealed class GrailRollingRecorder :
         }
     }
 
-    private static void WriteFrame(Process? ffmpeg, CaptureFrame frame)
+    private static async Task WriteFrameAsync(Process? ffmpeg, CaptureFrame frame, CancellationToken cancellationToken)
     {
         if (ffmpeg is null || ffmpeg.HasExited)
         {
@@ -262,7 +297,7 @@ public sealed class GrailRollingRecorder :
         if (frame.Stride == frame.Width * 4)
         {
             // 无 padding：整块写。
-            stream.Write(pixels, 0, pixels.Length);
+            await stream.WriteAsync(pixels, 0, pixels.Length, cancellationToken).ConfigureAwait(false);
         }
         else
         {
@@ -276,9 +311,9 @@ public sealed class GrailRollingRecorder :
                     buffer, y * pitch,
                     pitch);
             }
-            stream.Write(buffer, 0, buffer.Length);
+            await stream.WriteAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false);
         }
-        stream.Flush();
+        await stream.FlushAsync(cancellationToken).ConfigureAwait(false);
     }
 
     private ProcessStartInfo BuildFfmpegArguments(string outputFile)

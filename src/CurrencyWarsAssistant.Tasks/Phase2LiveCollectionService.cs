@@ -107,6 +107,10 @@ public sealed class Phase2LiveCollectionService(
                 SingleReader = true,
                 FullMode = BoundedChannelFullMode.DropOldest
             });
+    // P1（审计 09-12）修复：写盘泵改为实例级懒启动常驻——旧实现每次 RunAsync 起一个泵、
+    // 会话收尾 TryComplete 把实例级通道永久 Complete，之后所有会话的普通帧观察静默不落盘
+    // （savedCount 照涨）。常驻泵 + 通道不 Complete = 跨会话持续可用。
+    private Task? _savePumpTask;
     // 3-7 自动封存待确认标志（用户 2026-08-06 深夜拍板）：
     // 探测到 3-7 战斗结束（finalize）时置位，随后只有语义分类命中
     // 评级页（挑战成功 + "下一步"）才算封存整局；检测到 home 页面
@@ -223,10 +227,9 @@ public sealed class Phase2LiveCollectionService(
             pageClassifier);
         // 1.2.96 诊断：暴露当前会话的截图循环统计（会话停止/未启动=保留最近一次读数）。
         Volatile.Write(ref activePipeline, pipeline);
-        // 持久化通道：普通帧写盘泵（独立于收集主循环的串行消费者）。
-        var savePump = Task.Run(
-            () => PumpObservationSavesAsync(CancellationToken.None),
-            CancellationToken.None);
+        // P1（审计 09-12）修复：写盘泵为实例级懒启动常驻（跨会话持续落盘），
+        // 不再每次 RunAsync 起独立泵（SingleReader 通道禁止并发消费者）。
+        EnsureSavePump();
         // 统一识别流：把本次对局的 pipeline 挂到 feed，供刷开局等下游
         // 共享同一份识别结果（用户架构：一个摄像机+一个识别器，数据分发）。
         if (recognitionFeed is Phase2RecognitionFeed feed)
@@ -1347,8 +1350,8 @@ public sealed class Phase2LiveCollectionService(
                         pausedFeed.Detach();
                     }
 
-                    _saveQueue.Writer.TryComplete();
-                    await savePump.ConfigureAwait(false);
+                    // P1（审计 09-12）修复：写盘泵常驻，通道不再 Complete（旧实现在此
+                    // 永久封通道，之后所有会话帧证据静默不落盘）。
                     return;
                 }
 
@@ -1359,8 +1362,7 @@ public sealed class Phase2LiveCollectionService(
             }
             }
 
-            _saveQueue.Writer.TryComplete();
-            await savePump.ConfigureAwait(false);
+            // P1（审计 09-12）修复：写盘泵常驻，通道不再 Complete——跨会话持续落盘。
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
@@ -1420,6 +1422,17 @@ public sealed class Phase2LiveCollectionService(
 
     private void EnqueueObservationSave(ObservationSaveRequest request) =>
         _saveQueue.Writer.TryWrite(request);
+
+    /// <summary>P1（审计 09-12）修复：确保常驻写盘泵已启动（幂等；实例生命周期内只起一次）。</summary>
+    private void EnsureSavePump()
+    {
+        if (_savePumpTask is null)
+        {
+            _savePumpTask = Task.Run(
+                () => PumpObservationSavesAsync(CancellationToken.None),
+                CancellationToken.None);
+        }
+    }
 
     private async Task PumpObservationSavesAsync(
         CancellationToken cancellationToken)

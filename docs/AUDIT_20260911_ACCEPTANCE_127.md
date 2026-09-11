@@ -82,6 +82,8 @@
 
 **05:57-07:26 会话聚合（test-session-20260911-055701，1.2.128，3633 事件）**：命中 6/干净弃局 46/**R3GoldExhausted 3（3 局全判死）**/ShopRecognized 175/购买 8/LoopSummary 35/徽章 **3 试 3 成**（Y=479×2、582×1，全首试）/祈愿退出 9；**零 PurchaseNotConfirmed/零 NavigationFailed/零 TimedOut/零 GameFocusPaused**。红旗仅 monitor 信息性"连续金尽摘要"（矿掉落补充可卖单位所致，引擎变卖-刷新合法循环）。
 
+**08:09 聚合刷新（5532 事件，DECIDE 起 2 小时 12 分）**：命中 9/干净弃局 73/**R3GoldExhausted 7（7 局全判死，判死率 100%）**/ShopRecognized 233/购买 13/徽章 3 试 3 成/祈愿退出 12/零 PurchaseNotConfirmed/零 NavigationFailed/零 TimedOut/零 GameFocusPaused——1.2.128 判死链+徽章+商店全指标稳定。
+
 | 04:53:09-53 | **吉尔伽美什购买成功**（后置 3 帧：原槽识别→空→ConfirmedInShop，金19→17=2费）→部署前台4验证→祈愿弹框竞态被页面门禁安全拦截（SalePageMismatch×2）→祈愿试炼 NoWinningSide→**兜底选左+确认 4s 退出**（四.7）→ShopLoopSummary 买=[吉尔伽美什] 刷=3 终态金=17 ShelfTargetsExhausted | 购买链健康（对比 09-10 失效表型：同角色同槽族今日干净成交=间歇性实证）|
 
 **观察点 3 如实记录（边缘）**：祈愿弹框在屏时长≈14s（04:53:32 页面已读出 wish_trial_selection → 04:53:46 退出），其中 M5 循环收尾占用~10s 才到 WishTrialSelectionDetected——检测泵在繁忙循环下有延迟，但零死锁零空等（对比 09-09 祈愿死锁已根除）。判定：安全达标、时效字面未达（≤3s），挂"祈愿泵优先级"观察项，不构成缺陷升级。

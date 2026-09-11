@@ -160,3 +160,21 @@
 **遗留疑似（全标注待查，不阻断）**：060438 wall_04 时序错位两说；064528/070225 共 4 次日志外双按钮弹框（已自愈）；064528 wall_09 C 页 ♥89 读数；062207 帧 12 金"0"/帧 75 金"5" 低置信读数。
 
 **结论**：画面通道全量补审完成，与日志通道三差对照闭合。1.2.128 的判死链（R3GoldExhausted 11/11）、徽章链（4/4 首试成功）、商店链（零购买失效）在画面层面全部成立；1.2.127 的两处 4-5 分钟金尽停滞由 Fix A 修复并有画面级前後对照。遗留专项三件（徽章 Y684 补偿/账本卖款入账/识别管线静态页饥饿修复）维持等用户拍板。
+
+## 十一、攻略匹配器 v2.1（Advisor）接入+逐行审计（09-11 下午，用户令：逐行审计另一交接区代码并融入最新程序）
+
+**接入内容**：MatcherV2.cs/MatcherUrgency.cs/GuideMatcher.cs/GuideEvaluator.cs/GuidePlaybook.cs 五核心（1622 行）+ matcher_v2 数据三件（225 必要性/600 阵容阶段/9 通用拐）+ VisionCli 识别组件入 solution——commit 4e67ff3，全解决方案 0 警 0 错。镜像契约四文件与主工作区 diff=0（基线即含）；Contracts.cs 差异=纯注释（人口镜像备案，已采 guide 版）。
+
+**逐行审计分工**：本体=MatcherV2/MatcherUrgency/GuideMatcher 核心三件（552 行）+全交叉验证；子代理甲=GuideEvaluator+GuidePlaybook（713 行）；子代理乙=VisionCli+数据三件。
+
+**审计发现（按级别）**：
+- **P1×2（GuideEvaluator，交付代码自带）**：①ApplicabilityGaps 把"未观测"的羁绊/策略条件当阻断性缺口（未观测≠不满足），带羁绊前置的攻略会在数据未接入时被整册误杀，与同文件 owned_characters"归 Unverified 不阻断"口径自相矛盾；②分支门控方向反+覆盖缺：OtherwiseActionIds 完全绕过门控，且 when 成立时 otherwise 动作反被放行（当前攻略数据未用 branches=潜伏，public API 外部消费即踩）。
+- **P2×5**：③BestMatch 无观测门控——阵容未接入时全库同分静默返回首册；④GuidePlaybook 嵌套层字段静默丢弃（shoppingPlan.keepGoldAtLeast 等**费用可达门控所需数据**在内）——该丢数据使费用门控在数据层不可实装；⑤捆绑样例攻略 taptap-himeko 为 v0 形制，Load 必抛；⑥VisionCli 后台槽识别参数错（Standard 未切 BackRow+BackRight，后台槽系统性 Uncertain）；⑦VisionCli 识别器未带 App 放宽集合+special_unit 模板 Kind 错装。
+- **P2（MatcherV2 本体，接入点性质）**：sim 缺省 0.5=v1→v2 接线待做（清单 F5 明示一行接入）；source_confidence 28 源加载后零消费（v2.2 待接）；difficulty/hp/expert/cost_gate 数据段零代码消费（=记忆中"6 项拍板待用户"的实态：数据已出厂、逻辑未实现）。
+- **P3 群**：阶段权重按固定段名而非真·邻近衰减（疑似 vs 设计稿，待对照 matcher-design-v2）；双必要性标尺并存（v1 文本推导 1.0/0.7/0.4/0.15 vs v2.1 数据 1.0/0.8/0.6/0.4）；命名空间不一致；LevelTodo 默认 timeWindow=0.6 封顶黄档；Build 的 caveat 实未输出；C 页 ♥89 等数值疑点维持待放大核验。
+
+**数据质量**：三 JSON 全过（225 条必要性 tier 全合法且与 stats 吻合/28 源置信 0.6-1.0/600 条三阶段向量 11702 id 全合法无重复/9 通用拐字段齐）。
+
+**跨验结论**：本体逐行与两子代理审计交叉后确认——主干判定逻辑自洽、no-fabrication 纪律执行到位（ PaceBaseline 不内置曲线/无据不手写/在场不产生 urge 三处尤其规范）；P1×2 与 P2 群全部是**交付前未暴露的既有缺陷**，非移植引入（移植 diff 已核对）。
+
+**待用户拍板的处置顺序**：A. 先修 P1×2+P2③④（推荐正确性硬伤+门控数据链，修完才接 v1→v2 接线）；B. VisionCli 六项对齐 App（后台槽参数/放宽集合/模板 Kind/参数健壮性）；C. v2.2 接线（guideSims 实接+SourceConfidenceFor 映射表）；D. 六项拍板（费用门控/专家门控/难度阶梯逻辑实装）。未接到指令前不再动代码。
